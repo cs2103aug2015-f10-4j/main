@@ -1,7 +1,12 @@
 package main;
 
-public class Magical {
-	public static void main(String args[]) {
+import java.util.*;
 
+public class Magical {
+	
+	private static UI userInterface = new UI();
+	
+	public static void main(String args[]) {
+		userInterface.initialize();
 	}
 }
