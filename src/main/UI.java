@@ -137,9 +137,9 @@ public class UI {
 		int hours = time / 100;
 		int minutes = time - (hours*100);
 		if (hours < 12) {
-			meridiem = " a.m.";
+			meridiem = " AM";
 		} else {
-			meridiem = " p.m.";
+			meridiem = " PM";
 		}
 		if (minutes < 10) {
 			return hours + ":0" + minutes + meridiem;
