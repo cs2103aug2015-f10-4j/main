@@ -1,9 +1,14 @@
 package main;
 
-import java.io.BufferedWriter;
+// import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+// import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class Storage {
@@ -18,7 +23,8 @@ public class Storage {
 	private static final String MESSAGE_INVALID_DELETE = "Delete failed: The line does not exist.";
 	private static final String MESSAGE_INVALID_DELETE_ARGUMENT = "Please enter a non-zero positive integer to delete line";
 
-	File file;
+	private static File file;
+	private static String fileName;
 	
 	/**
 	 * This method creates a .txt file based on the file name provided by the
@@ -35,6 +41,7 @@ public class Storage {
 	public Storage (String fileName) { // constructor
 
 		file = new File(fileName);
+		Storage.fileName = fileName;
 
 		if ( !(file.exists()) ) {
 			try {
@@ -63,24 +70,26 @@ public class Storage {
 	 *                On writing file.
 	 * @see IOException
 	 */
-	protected static String writeFile(String fileName, ArrayList<String> contents, String command, String newContent) {
+	protected static String writeFile(String fileName, ArrayList<Task> contents, String command, Task newContent) {
 
 		String result = "";
 		
 		try {
-			FileWriter fileWriter = new FileWriter(fileName);
-			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			// FileWriter fileWriter = new FileWriter(fileName);
+			// BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			FileOutputStream fout = new FileOutputStream(fileName);
+			ObjectOutputStream oos = new ObjectOutputStream(fout);   
 			
 			switch (command) {
 			case "ADD":
-				result = writeAdd(contents, newContent, bufferedWriter, fileName);
+				result = writeAdd(contents, newContent, oos, fileName);
 				break;
 
 			case "DELETE":
-				if ( !(isValidDelete(newContent, contents, fileName, bufferedWriter)) ) {
+				if ( !(isValidDelete(newContent, contents, fileName, oos)) ) {
 					break;
 				} else {
-					result = writeDelete(bufferedWriter, contents, fileName, newContent);
+					result = writeDelete(oos, contents, fileName, newContent);
 				}
 				break;
 
@@ -89,7 +98,8 @@ public class Storage {
 				break;
 			}
 			
-			bufferedWriter.close();
+			// bufferedWriter.close();
+			oos.close();
 
 		} catch (IOException ex) {
 			System.out.println(String.format(MESSAGE_WRITE_FILE_ERROR, fileName));
@@ -111,13 +121,13 @@ public class Storage {
 	 *                On writing file.
 	 * @see IOException
 	 */
-	private static void writeExistingContent(BufferedWriter bufferedWriter, ArrayList<String> contents,
+	private static void writeExistingContent(ObjectOutputStream oos, ArrayList<Task> contents,
 			String fileName) {
 		try {
 			int numOfLines = contents.size();
 			for (int i = 0; i < numOfLines; i++) {
-				bufferedWriter.write(contents.get(i));
-				bufferedWriter.newLine();
+				oos.writeObject(contents.get(i));
+				// oos.newLine();
 			}
 		} catch (IOException ex) {
 			System.out.println(String.format(MESSAGE_WRITE_FILE_ERROR, fileName));
@@ -142,10 +152,10 @@ public class Storage {
 	 * @exception None.
 	 * @see None.
 	 */
-	private static String writeAdd (ArrayList<String> contents, String newContent, BufferedWriter bufferedWriter, String fileName) {
+	private static String writeAdd (ArrayList<Task> contents, Task newContent, ObjectOutputStream oos, String fileName) {
 		
 		contents.add(newContent);
-		writeExistingContent(bufferedWriter, contents, fileName);
+		writeExistingContent(oos, contents, fileName);
 		System.out.println(String.format(MESSAGE_ADDED, fileName, newContent));
 		return String.format(MESSAGE_ADDED, fileName, newContent);
 	}
@@ -167,14 +177,14 @@ public class Storage {
 	 * @exception None.
 	 * @see None.
 	 */
-	private static boolean isValidDelete(String newContent, ArrayList<String> contents, String fileName, BufferedWriter bufferedWriter) {
+	private static boolean isValidDelete(Task newContent, ArrayList<Task> contents, String fileName, ObjectOutputStream oos) {
 		
 		try {
-			Integer.parseInt(newContent); // check if newContent is a valid integer
+			// Integer.parseInt(newContent); // check if newContent is a valid integer
 			return true;
 		} catch (NumberFormatException e) {
 			// still write whatever you already have into the text file
-			writeExistingContent(bufferedWriter, contents, fileName);
+			writeExistingContent(oos, contents, fileName);
 			System.out.println(MESSAGE_INVALID_DELETE_ARGUMENT);
 			return false;
 		}
@@ -198,10 +208,11 @@ public class Storage {
 	 * @exception None.
 	 * @see None.
 	 */
-	private static String writeDelete(BufferedWriter bufferedWriter, ArrayList<String> contents, String fileName, String newContent) {
+	private static String writeDelete(ObjectOutputStream oos, ArrayList<Task> contents, String fileName, Task newContent) {
 		
 		int numOfLines = contents.size();
-		int lineToDelete = Integer.parseInt(newContent);
+		int lineToDelete = 0;
+				// Integer.parseInt(newContent);
 	
 		if (numOfLines == 0 && lineToDelete > 0) {
 			
@@ -210,14 +221,14 @@ public class Storage {
 			
 		} else if (lineToDelete > numOfLines || lineToDelete <= 0) {
 			
-			writeExistingContent(bufferedWriter, contents, fileName);
+			writeExistingContent(oos, contents, fileName);
 			System.out.println(String.format(MESSAGE_INVALID_DELETE));
 			return String.format(MESSAGE_INVALID_DELETE);
 			
 		} else {
 			
-			String removedElement = contents.remove(lineToDelete - 1);
-			writeExistingContent(bufferedWriter, contents, fileName);
+			Task removedElement = contents.remove(lineToDelete - 1);
+			writeExistingContent(oos, contents, fileName);
 			System.out.println(String.format(MESSAGE_DELETED_LINE, fileName, removedElement));
 			return String.format(MESSAGE_DELETED_LINE, fileName, removedElement);
 			
@@ -253,17 +264,34 @@ public class Storage {
 	
 	// create readData method for Logic to call
 	// returns Task[] array
-	protected static ArrayList<String> readData() {
+	protected static Task[] readData() {
 
-		ArrayList<String> allData = new ArrayList<String> ();
-		// TODO
-		// for each line in the file, store it as one ArrayList object
-		// return the arrayList
+		Task[] tasks = null;
+
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			tasks = (Task[]) ois.readObject();
+			ois.close();
+
+		} catch (FileNotFoundException e) {
+			// need to write more accurate error message
+			e.printStackTrace();
+		} catch (IOException ex) {
+			// need to write more accurate error message
+			System.out.println(String.format(MESSAGE_WRITE_FILE_ERROR, fileName));
+		} catch (ClassNotFoundException ex1) {
+			// need to write more accurate error message
+			System.out.println(String.format("Class Not Found Exception"));
+		}
 		
-		return allData;
+		return tasks;
 	}
 	
 	// create writeData(Task[]) for Logic to call
-	// calls the internal methods in Storage class and do whatever it needs to do
+	// calls the internal methods in Storage class and writes data into file
+	protected static void writeData(Task newTask) {
+		
+	}
 
 }
