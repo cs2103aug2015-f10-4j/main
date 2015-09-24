@@ -18,10 +18,12 @@ public class Magical {
 		try {
 			init();
 			ui.start();
-			String userInput = ui.readInput();
-			parser.execute(userInput);
-			String message = executeCommand(parser.readCmd(), parser.readArgs());
-			ui.showToUser(message);
+			while (true){
+				String userInput = ui.readInput();
+				parser.execute(userInput);
+				String message = executeCommand(parser.readCmd(), parser.readArgs());
+				ui.showToUser(message);
+			}
 		} catch (Exception e) {
 			ui.displayErrorMessage();
 			e.printStackTrace();
@@ -80,7 +82,7 @@ public class Magical {
 				filteredResults.add(t);
 			}
 		}
-		UI.displayTaskList("all", filteredResults);
+		UI.displayTaskList("Search results", filteredResults);
 		return null;
 	}
 
