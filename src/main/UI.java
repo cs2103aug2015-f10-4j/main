@@ -10,7 +10,7 @@ public class UI {
 	
 	private static Scanner scanner = new Scanner(System.in);
 	
-	public static void initialize() {
+	public static void start() {
 		displayWelcomeMessage();
 		while(true) {
 			showToUser(MESSAGE_COMMAND_PROMPT);
@@ -18,18 +18,17 @@ public class UI {
 			String userInput = scanner.nextLine();
 			showToUser("You said: " + userInput );
 		}
-		
 	}
 	
-	public static void showToUser(String text) {
+	private static void showToUser(String text) {
 		System.out.println(text);
 	}
 	
-	public static void displayWelcomeMessage() {
+	private static void displayWelcomeMessage() {
 		showToUser(MESSAGE_WELCOME);
 	}
 	
-	public static void displayErrorMessage() {
+	private static void displayErrorMessage() {
 		showToUser(MESSAGE_ERROR);
 	}
 	
