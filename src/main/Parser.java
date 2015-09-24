@@ -44,12 +44,17 @@ public class Parser {
 	
 	//checks if command and args are valid
 	private boolean isValidInput(String command, String args) throws Exception{
-		switch(command){
+		switch (command) {
 			case "add":
 				AddCommand add = new AddCommand(args);
 				commandClass = add;
 				return true;
+			case "block":
+				
+				return true;
 			case "search":
+				return true;
+			case "delete":
 				return true;
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND);
@@ -79,22 +84,26 @@ public class Parser {
 	public HashMap<String, String> readArgs() throws Exception{
 		
 		switch(command){
-		case "add":
-			return commandClass.getArgs();
-		case "search":
-			if(args != null){
-				String[] argsArray = args.split("/");
-				String query = argsArray[0];
-				String type = argsArray[1];
+			case "add":
+				return commandClass.getArgs();
+			case "search":
+				if (args != null) {
+					String[] argsArray = args.split("/");
+					String query = argsArray[0];
+					String type = argsArray[1];
+					HashMap<String, String> h = new HashMap<String, String>();
+					h.put("query", query);
+					h.put("type", type);
+					return h;
+				} else {
+					return new HashMap<String, String>();
+				}
+			case "delete":
 				HashMap<String, String> h = new HashMap<String, String>();
-				h.put("query", query);
-				h.put("type", type);
+				h.put("task id", args);
 				return h;
-			} else {
-				return new HashMap<String, String>();
-			}
-		default:
-			return null;
+			default:
+				return null;
 		}
 	}
 	
