@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.util.*;
 
-public class UI extends Application {
+public class UI {
 
 	private static final String MESSAGE_WELCOME = "*:.。.☆ Welcome to Magical! ☆.。.:*\n";
 	private static final String MESSAGE_GOODBYE = "*:.。.☆ Farewell! ☆.。.:*\n";
@@ -43,7 +43,8 @@ public class UI extends Application {
 		displayTaskList("To-Do", myTasks);
 		myEvents.add(new Task());
 		myEvents.get(0).setTitle("Commit suicide");
-		myEvents.get(0).setStartTime(new Date(115, 9, 3, 11, 8));
+		myEvents.get(0).setDueDate(new Date(115, 9, 4));
+		myEvents.get(0).setStartTime(1108);
 		displayEventList("Upcoming Events", myEvents);
 		displayTaskDetails(myTasks.get(0));
 		displayGoodbyeMessage();
@@ -137,7 +138,7 @@ public class UI extends Application {
 	
 	private static String makeShortEvent(Task event) {
 		return String.format(FORMAT_SHORT_EVENT, event.getTitle(),
-				makeShortDate(event.getStartTime()), makeShortTime(event.getStartTime()));
+				makeShortDate(event.getDueDate()), makeShortTime(event.getStartTime()));
 	}
 	
 	private static String makeShortDate(Date date) {
