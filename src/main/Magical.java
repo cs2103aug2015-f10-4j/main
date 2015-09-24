@@ -106,9 +106,7 @@ public class Magical {
 		task.setStartTime(Integer.parseInt(args.get("startTime")));
 		task.setEndTime(Integer.parseInt(args.get("endTime")));
 
-		ArrayList<Task> taskList = storage.getTasks();
-		taskList.add(task);
-		storage.writeTaskList(taskList);
+		storage.createTask(task);
 		return "task added";
 	}
 
