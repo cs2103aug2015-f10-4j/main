@@ -27,7 +27,7 @@ public class Magical {
 		}
 	}
 	
-	public static String executeCommand(String cmd, HashMap<String, String> args) throws ParseException, IOException {
+	public static String executeCommand(String cmd, HashMap<String, String> args) throws Exception {
 		switch(cmd) {
 		case "add":
 			return add(args);
@@ -64,7 +64,7 @@ public class Magical {
 		}		
 	}
 
-	private static String add(HashMap<String, String> args) throws ParseException, IOException {
+	private static String add(HashMap<String, String> args) throws Exception {
 		Task task = new Task();
 		if (args.get("type").equals("task")) {
 			task.setType(Task.Type.TASK);

@@ -1,8 +1,9 @@
 package main;
 
+import java.io.*;
 import java.util.*;
 
-public class Task {
+public class Task implements Serializable {
 	static enum Type {
 		TASK, RECURRING_TASK, EVENT
 	}
