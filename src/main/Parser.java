@@ -70,12 +70,19 @@ public class Parser {
 		String recurrence;
 		checkAddType(type);
 		checkAddTitle(title);
+		checkAddDueDate(dueDate);
 		if(argsArray.length == 6){
 			recurrence = null;
 		} else {
 			recurrence = argsArray[6];
 		}
 		return true;
+	}
+
+	private void checkAddDueDate(String dueDate) throws Exception {
+		if(dueDate.length() != 8){
+			throw new Exception(String.format(MESSAGE_INVALID_ARG, "dueDate", dueDate));
+		}
 	}
 
 	private void checkAddTitle(String title) throws Exception {
@@ -106,7 +113,7 @@ public class Parser {
 
 	public HashMap<String, String> readArgs(){
 		
-		HashMap<String, String> argsTable = new Hashtable<String, String>();
+		HashMap<String, String> argsTable = new HashMap<String, String>();
 		String[] argsArray = args.split("/");
 		System.out.println(Arrays.toString(argsArray));
 		String type = argsArray[0];
@@ -131,7 +138,7 @@ public class Parser {
 		try {
 			System.out.println("------- TEST 1-------");
 			Parser p1 = new Parser();
-			p1.execute("Add task//this is a test/24092015/1000/1700/daily");
+			p1.execute("Add task/test/this is a test/24092015/1000/1700/daily");
 			System.out.println(p1.userInput);
 			System.out.println(p1.command);
 			System.out.println(p1.checkAdd(p1.args));
