@@ -1,5 +1,6 @@
 package main;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,7 +27,7 @@ public class Magical {
 		}
 	}
 	
-	public static String executeCommand(String cmd, HashMap<String, String> args) throws ParseException {
+	public static String executeCommand(String cmd, HashMap<String, String> args) throws ParseException, IOException {
 		switch(cmd) {
 		case "add":
 			return add(args);
@@ -63,7 +64,7 @@ public class Magical {
 		}		
 	}
 
-	private static String add(HashMap<String, String> args) throws ParseException {
+	private static String add(HashMap<String, String> args) throws ParseException, IOException {
 		Task task = new Task();
 		if (args.get("type").equals("task")) {
 			task.setType(Task.Type.TASK);
@@ -80,7 +81,7 @@ public class Magical {
 		task.setStartTime(Integer.parseInt(args.get("startTime")));
 		task.setEndTime(Integer.parseInt(args.get("endTime")));
 
-		storage.writeData(task);
+		storage.writeTask(task);
 		return "task added";
 	}
 
