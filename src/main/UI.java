@@ -33,13 +33,11 @@ public class UI {
 		myTasks.get(1).setTitle("Do that");		
 		myTasks.get(2).setDueDate(new Date(115, 9, 2));
 		myTasks.get(2).setTitle("Do some other stuff");		
-		displayHeader("To-Do");
-		displayTaskList(myTasks);
+		displayTaskList("To-Do", myTasks);
 		myEvents.add(new Task());
 		myEvents.get(0).setTitle("Commit suicide");
 		myEvents.get(0).setStartTime(new Date(115, 9, 3, 12, 30));
-		displayHeader("Upcoming Events");
-		displayEventList(myEvents);
+		displayEventList("Upcoming Events", myEvents);
 		displayGoodbyeMessage();
 	}
 	*/
@@ -75,7 +73,8 @@ public class UI {
 		showToUser(String.format(FORMAT_HEADER, header));
 	}
 	
-	private static void displayTaskList(ArrayList<Task> taskList) {
+	public static void displayTaskList(String header, ArrayList<Task> taskList) {
+		displayHeader(header);
 		Iterator<Task> iterator = taskList.iterator();
 		int index = 0;
 		while(iterator.hasNext()) {
@@ -85,7 +84,8 @@ public class UI {
 		showToUser("");
 	}
 	
-	private static void displayEventList(ArrayList<Task> eventList) {
+	public static void displayEventList(String header, ArrayList<Task> eventList) {
+		displayHeader(header);
 		Iterator<Task> iterator = eventList.iterator();
 		int index = 0;
 		while(iterator.hasNext()) {
