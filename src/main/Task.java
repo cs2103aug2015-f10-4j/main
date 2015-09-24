@@ -15,8 +15,8 @@ public class Task {
 	private String title;
 	private String description;
 	private Date dueDate;
-	private Date startTime;
-	private Date endTime;
+	private int startTime;
+	private int endTime;
 	private RecurrencePeriod recurrence;
 	
 	public Type getType() {
@@ -51,19 +51,19 @@ public class Task {
 		this.dueDate = dueDate;
 	}
 	
-	public Date getStartTime() {
+	public int getStartTime() {
 		return startTime;
 	}
 	
-	public void setStartTime(Date startTime) {
+	public void setStartTime(int startTime) {
 		this.startTime = startTime;
 	}
 	
-	public Date getEndTime() {
+	public int getEndTime() {
 		return endTime;
 	}
 	
-	public void setEndTime(Date endTime) {
+	public void setEndTime(int endTime) {
 		this.endTime = endTime;
 	}
 	
@@ -71,7 +71,15 @@ public class Task {
 		return recurrence;
 	}
 	
-	public void setRecurrence(RecurrencePeriod recurrence) {
-		this.recurrence = recurrence;
+	public void setRecurrence(String str) {
+		if (str.equals("yearly")) {
+			this.recurrence = RecurrencePeriod.YEARLY;
+		} else if (str.equals("monthly")) {
+			this.recurrence = RecurrencePeriod.MONTHLY;
+		} else if (str.equals("weekly")) {
+			this.recurrence = RecurrencePeriod.WEEKLY;
+		} else if (str.equals("daily")) {
+			this.recurrence = RecurrencePeriod.DAILY;
+		}
 	}
 }
