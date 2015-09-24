@@ -2,6 +2,7 @@ package main;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 public class Parser {
@@ -14,7 +15,7 @@ public class Parser {
 			"untag", "help", "exit"};
 	private static final String MESSAGE_EXECUTE_ERROR = "Parser has not been executed";
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command";
-	private static final String MESSAGE_INVALID_ARGS = "Invalid arguments";
+	private static final String MESSAGE_INVALID_ARG = "Invalid %1s: %2s";
 	private static final String MESSAGE_INVALID_NUM_INPUTS = "Invalid number of inputs";
 	private boolean hasValidInput = false;
 	
@@ -68,6 +69,7 @@ public class Parser {
 		String endTime = argsArray[5];
 		String recurrence;
 		checkAddType(type);
+		checkAddTitle(title);
 		if(argsArray.length == 6){
 			recurrence = null;
 		} else {
@@ -76,14 +78,19 @@ public class Parser {
 		return true;
 	}
 
-	private void checkAddType(String type) throws Exception {
-		if(type.toLowerCase().equals("event") || type.toLowerCase().equals("task")){
-			
-		} else {
-			//Write the exception type next time
-			throw new Exception();
+	private void checkAddTitle(String title) throws Exception {
+		if(title.equals("")){
+			throw new Exception(String.format(MESSAGE_INVALID_ARG, "title", title));
 		}
 	}
+
+	private void checkAddType(String type) throws Exception {
+		if(!type.toLowerCase().equals("event") 
+			&& !type.toLowerCase().equals("task")){
+			throw new Exception(String.format(MESSAGE_INVALID_ARG, "type", type));
+		}
+	}
+	
 
 	private void checkExecute() throws Exception{
 		if(!this.hasValidInput){
@@ -97,9 +104,9 @@ public class Parser {
 	}
 	
 
-	public Hashtable<String, String> readArgs(){
+	public HashMap<String, String> readArgs(){
 		
-		Hashtable<String, String> argsTable = new Hashtable<String, String>();
+		HashMap<String, String> argsTable = new Hashtable<String, String>();
 		String[] argsArray = args.split("/");
 		System.out.println(Arrays.toString(argsArray));
 		String type = argsArray[0];
@@ -124,7 +131,7 @@ public class Parser {
 		try {
 			System.out.println("------- TEST 1-------");
 			Parser p1 = new Parser();
-			p1.execute("Add task/test/this is a test/24092015/1000/1700/daily");
+			p1.execute("Add task//this is a test/24092015/1000/1700/daily");
 			System.out.println(p1.userInput);
 			System.out.println(p1.command);
 			System.out.println(p1.checkAdd(p1.args));
