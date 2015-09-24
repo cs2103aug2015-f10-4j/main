@@ -31,11 +31,11 @@ public class UI {
 		System.out.println(text);
 	}
 	
-	private static void displayWelcomeMessage() {
+	public static void displayWelcomeMessage() {
 		showToUser(MESSAGE_WELCOME);
 	}
 	
-	private static void displayErrorMessage() {
+	public static void displayErrorMessage() {
 		showToUser(MESSAGE_ERROR);
 	}
 	
