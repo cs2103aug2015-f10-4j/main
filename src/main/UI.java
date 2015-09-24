@@ -133,6 +133,17 @@ public class UI {
 	}
 	
 	private static String makeShortTime(int time) {
-		return "" + time;
+		String meridiem;
+		int hours = time / 100;
+		int minutes = time - (hours*100);
+		if (hours < 12) {
+			meridiem = " a.m.";
+		} else {
+			meridiem = " p.m.";
+		}
+		if (minutes < 10) {
+			return hours + ":0" + minutes + meridiem;
+		}
+		return hours + ":" + minutes + meridiem;
 	}
 }
