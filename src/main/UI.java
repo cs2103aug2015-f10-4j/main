@@ -11,10 +11,19 @@ public class UI {
 	private static final String MESSAGE_TASK_ADDED = "Added task: %s";
 	private static final String MESSAGE_TASK_DELETED = "Deleted task: %s";
 	
-	private static final String FORMAT_DIVIDER = "----------------------\n";
-	private static final String FORMAT_TASK = "[%s] %s\n"+ FORMAT_DIVIDER +"Description: %s\nDue Date: %s";
-	
+	private static final String DIVIDER = "======================";
+
+	private static final String FORMAT_HEADER = "%s\n" + DIVIDER;
+	private static final String FORMAT_TASK = "[t%s] %s\n"+ DIVIDER +"Description: %s\nDue Date: %s";
+	private static final String FORMAT_EVENT = "[e%s] %s\n" + DIVIDER + "";
+
 	private static Scanner scanner = new Scanner(System.in);
+	
+	public static void main(String args[]) {
+		start();
+		displaySection("Upcoming Events", "some random shit");
+		displaySection("To-Do", "ur mom");
+	}
 	
 	public static void start() {
 		displayWelcomeMessage();
@@ -31,6 +40,12 @@ public class UI {
 		System.out.println(text);
 	}
 	
+	public static void displaySection(String header, String contents) {
+		showToUser(DIVIDER);
+		showToUser(String.format(FORMAT_HEADER, header));
+		showToUser(contents+"\n");
+	}
+	
 	public static void displayWelcomeMessage() {
 		showToUser(MESSAGE_WELCOME);
 	}
@@ -39,9 +54,8 @@ public class UI {
 		showToUser(MESSAGE_ERROR);
 	}
 	
-	private static void displayTaskInFull(Task task) {
-		showToUser(String.format(FORMAT_TASK, "t1", task.getTitle(),
-				task.getDescription(), task.getDueDate()));
+	private static String makeTaskDisplay(Task task) {
+		return String.format(FORMAT_TASK, 1, task.getTitle(), task.getDescription(), task.getDueDate());
 	}
 	
 }
