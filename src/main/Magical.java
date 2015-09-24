@@ -18,13 +18,23 @@ public class Magical {
 		try {
 			init();
 			ui.start();
-			String userInput = ui.readInput();
-			parser.execute(userInput);
-			String message = executeCommand(parser.readCmd(), parser.readArgs());
-			ui.showToUser(message);
+			startREPL();
 		} catch (Exception e) {
 			ui.displayErrorMessage();
 			e.printStackTrace();
+		}
+	}
+
+	private static void startREPL() throws Exception {
+		while(true) {
+			try {
+				String userInput = ui.readInput();
+				parser.execute(userInput);
+				String message = executeCommand(parser.readCmd(), parser.readArgs());
+				ui.showToUser(message);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
