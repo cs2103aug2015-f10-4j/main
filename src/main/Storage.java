@@ -288,10 +288,12 @@ public class Storage {
 		return tasks;
 	}
 	
-	// create writeData(Task[]) for Logic to call
+	// create writeData(Task newTask) for Logic to call
 	// calls the internal methods in Storage class and writes data into file
 	protected static void writeData(Task newTask) {
-		
+		ArrayList<Task> contents = new ArrayList<Task> (); // hard coded for now
+		String command = "ADD"; // hardcoded for now
+		writeFile(fileName, contents, command, newTask);
 	}
 
 }
