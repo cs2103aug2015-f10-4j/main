@@ -47,8 +47,8 @@ public class Magical {
 //			return date(args);
 //		case "undo":
 //			return undo(args);
-//		case "search":
-//			return search(args);
+		case "search":
+			return search(args);
 //		case "remind":
 //			return remind(args);
 //		case "tag":
@@ -64,14 +64,23 @@ public class Magical {
 		}		
 	}
 
+	private static String search(HashMap<String, String> args) throws Exception {
+		String query = args.get("query") != null ? args.get("query") : "";
+		String type = args.get("type") != null ? args.get("type") : "";
+		ArrayList<Task> results = storage.readTasks();
+		ArrayList<Task> filteredResults = new ArrayList<Task>();
+		for (Task t : results) {
+			if ((t.getTitle().contains(query) || t.getDescription().contains(query)) && t.getType().contains(type)) {
+				filteredResults.add(t);
+			}
+		}
+		UI.displayTaskList("all", filteredResults);
+		return null;
+	}
+
 	private static String add(HashMap<String, String> args) throws Exception {
 		Task task = new Task();
-		if (args.get("type").equals("task")) {
-			task.setType(Task.Type.TASK);
-		} else {
-			task.setType(Task.Type.EVENT);
-		}
-
+		task.setType(args.get("type"));
 		task.setTitle(args.get("title"));
 		task.setDescription(args.get("description"));
 		task.setRecurrence(args.get("recurrence"));
