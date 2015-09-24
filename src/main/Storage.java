@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class Storage {
 	
-	private static final String MESSAGE_WELCOME = "Welcome to Magical. %1$s is ready for use";
 	// private static final String MESSAGE_FILE_NOT_CREATED = "Error. File is not created successfully.";
 
 	private static File file;
@@ -26,8 +25,6 @@ public class Storage {
 		} else {
 			readTaskList();
 		}
-		
-		System.out.println(String.format(MESSAGE_WELCOME, fileName));
 	}
 	
 	public ArrayList<Task> getTasks() throws Exception {
