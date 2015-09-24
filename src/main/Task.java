@@ -3,7 +3,7 @@ package main;
 import java.io.*;
 import java.util.*;
 
-public class Task implements Serializable {
+public class Task implements Serializable, Comparable<Task> {
 	static enum RecurrencePeriod {
 		DAILY, WEEKLY, MONTHLY, YEARLY
 	}
@@ -78,5 +78,9 @@ public class Task implements Serializable {
 		} else if (str.equals("daily")) {
 			this.recurrence = RecurrencePeriod.DAILY;
 		}
+	}
+	
+	public int compareTo(Task task) {
+		return dueDate.compareTo(task.dueDate);
 	}
 }

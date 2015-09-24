@@ -1,12 +1,5 @@
 package main;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import java.util.*;
 
 public class UI {
@@ -26,7 +19,8 @@ public class UI {
 	private static final String FORMAT_SHORT_EVENT = "%s on %s at %s";
 	
 	private static Scanner scanner = new Scanner(System.in);
-
+	
+	
 	public static void main(String args[]) {
 		start();
 		ArrayList<Task> myTasks = new ArrayList<Task>();
@@ -49,22 +43,13 @@ public class UI {
 		displayTaskDetails(myTasks.get(0));
 		displayGoodbyeMessage();
 	}
-
-	/*
-	public void start(Stage primaryStage) {
-        primaryStage.setTitle("Magical V0.0");
-        Text scenetitle = new Text(MESSAGE_WELCOME);
-        StackPane root = new StackPane();
-        primaryStage.setScene(new Scene(root, 500, 720));
-        primaryStage.show();
-    }
 	
-	*/
+	
 	
 	/*
 	 * PUBLIC METHODS
-	 */
-	
+	 
+	*/
 	public static void start() {
 		displayWelcomeMessage();
 	}
@@ -77,7 +62,9 @@ public class UI {
 	}
 	
 	public static void showToUser(String text) {
-		System.out.println(text);
+		if (text != null) {
+			System.out.println(text);
+		}
 	}
 	
 	public static void displayWelcomeMessage() {
@@ -146,6 +133,17 @@ public class UI {
 	}
 	
 	private static String makeShortTime(int time) {
-		return "" + time;
+		String meridiem;
+		int hours = time / 100;
+		int minutes = time - (hours*100);
+		if (hours < 12) {
+			meridiem = " AM";
+		} else {
+			meridiem = " PM";
+		}
+		if (minutes < 10) {
+			return hours + ":0" + minutes + meridiem;
+		}
+		return hours + ":" + minutes + meridiem;
 	}
 }
