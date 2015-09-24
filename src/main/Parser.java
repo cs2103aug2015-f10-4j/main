@@ -1,5 +1,6 @@
 package main;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -82,6 +83,14 @@ public class Parser {
 	private void checkAddDueDate(String dueDate) throws Exception {
 		if(dueDate.length() != 8){
 			throw new Exception(String.format(MESSAGE_INVALID_ARG, "dueDate", dueDate));
+		} else {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+			dateFormat.setLenient(false);
+			try {
+				dateFormat.parse(dueDate);
+			} catch (Exception e){
+				throw new Exception(String.format(MESSAGE_INVALID_ARG, "dueDate", dueDate));
+			}
 		}
 	}
 
@@ -120,6 +129,8 @@ public class Parser {
 		argsTable.put("type", type);
 		String title = argsArray[1];;
 		argsTable.put("title", title);
+		String desc = argsArray[2];
+		argsTable.put("description", desc);
 		String dueDate = argsArray[3];
 		argsTable.put("dueDate", dueDate);
 		String startTime = argsArray[4];
@@ -138,7 +149,7 @@ public class Parser {
 		try {
 			System.out.println("------- TEST 1-------");
 			Parser p1 = new Parser();
-			p1.execute("Add task/test/this is a test/24092015/1000/1700/daily");
+			p1.execute("Add task/test/this is a test/2409201a/1000/1700/daily");
 			System.out.println(p1.userInput);
 			System.out.println(p1.command);
 			System.out.println(p1.checkAdd(p1.args));
