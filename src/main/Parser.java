@@ -20,32 +20,38 @@ public class Parser {
 	
 	public void execute(String userInput) throws Exception{
 		this.userInput = userInput.trim();
-		splitInput(this.userInput);
+		String command = getCommand(this.userInput);
+		//System.out.println(command);
+		String args = getArgs(this.userInput);
+		//System.out.println(args);
 		//this.hasValidInput = isValidCmd() && isValidArgs();
-		this.hasValidInput = isValidInput(this.command);
+		this.hasValidInput = isValidInput(command, args);
+		this.command = command;
+		this.args = args;
 	}
 	
-	//Splits the input to command and args
-	private void splitInput (String input){
-		String[] toSplit = input.split(" ", 2);
-		this.command = toSplit[0].toLowerCase().trim();
-		this.args = toSplit[1].trim();
+	private String getCommand(String userInput) {
+		String[] toSplit = userInput.split(" ", 2);
+		return toSplit[0].toLowerCase().trim();
 	}
-	
-	//DONT NEED THIS ANYMORE
-	private boolean isValidCmd() throws Exception{
-		if(Arrays.asList(COMMANDS).contains(this.command)){
-			return true;
+
+	private String getArgs(String userInput) {
+		String[] toSplit = userInput.split(" ", 2);
+		if(toSplit.length > 1){
+			return toSplit[1].trim();
 		} else {
-			throw new Exception(MESSAGE_INVALID_COMMAND);
+			return null;
 		}
 	}
 	
 	//checks if command and args are valid
-	private boolean isValidInput(String command) throws Exception{
+	private boolean isValidInput(String command, String args) throws Exception{
 		switch(command){
 			case "add":
-				return checkAdd(this.args);
+				AddCommand add = new AddCommand(args);
+				return true;
+			case "search":
+				return true;
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND);
 		}
@@ -53,11 +59,16 @@ public class Parser {
 	
 	//checks if add command arguments are okay
 	private boolean checkAdd(String args) throws Exception {
+		
+		AddCommand add = new AddCommand(args);
+		
+		/*
 		int count = args.length() - args.replace("/", "").length();
 		
 		if(count != 6){
 			throw new Exception(MESSAGE_INVALID_NUM_INPUTS);
 		}
+		
 		
 		String[] argsArray = args.split("/");
 		//System.out.println(Arrays.toString(argsArray));
@@ -78,9 +89,12 @@ public class Parser {
 			recurrence = argsArray[6].trim();
 			checkAddRecurrence(recurrence);
 		}
+		//*/
 		return true;
+		
 	}
-
+	
+	/*
 	private void checkAddRecurrence(String recurrence) throws Exception {
 		String r = recurrence.toLowerCase();
 		if (!r.equals("daily") 
@@ -143,7 +157,8 @@ public class Parser {
 		}
 	}
 	
-
+	//*/
+	
 	private void checkExecute() throws Exception{
 		if(!this.hasValidInput){
 			throw new Exception(MESSAGE_EXECUTE_ERROR);
@@ -156,8 +171,9 @@ public class Parser {
 	}
 	
 
-	public HashMap<String, String> readArgs(){
+	public HashMap<String, String> readArgs() throws Exception{
 		
+		/*
 		HashMap<String, String> argsTable = new HashMap<String, String>();
 		String[] argsArray = args.split("/");
 		System.out.println(Arrays.toString(argsArray));
@@ -176,7 +192,26 @@ public class Parser {
 		String recurrence = argsArray[6].trim();
 		argsTable.put("recurrence", recurrence);
 		return argsTable;
-		
+		*/
+		switch(command){
+		case "add":
+			AddCommand add = new AddCommand(args);
+			return add.getArgs();
+		case "search":
+			if(args != null){
+				String[] argsArray = args.split("/");
+				String query = argsArray[0];
+				String type = argsArray[1];
+				HashMap<String, String> h = new HashMap<String, String>();
+				h.put("query", query);
+				h.put("type", type);
+				return h;
+			} else {
+				return new HashMap<String, String>();
+			}
+		default:
+			return null;
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -185,17 +220,19 @@ public class Parser {
 		try {
 			System.out.println("------- TEST 1-------");
 			Parser p1 = new Parser();
-			p1.execute("Add  task/test/this is a test/24-9-2015/1000/1700/daily");
+			//p1.execute("Add  task/test/this is a test/24-9-2015/1000/1700/daily");
+			p1.execute("search /task");
 			System.out.println(p1.userInput);
 			System.out.println(p1.command);
 			System.out.println(p1.args);
-			System.out.println(p1.readCmd());
+			System.out.println(p1.readArgs());
+			//System.out.println(p1.readCmd());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+		/*
 		//Invalid command
-		//*
 		try {
 			System.out.println("------- TEST 2-------");
 			Parser p2 = new Parser();
@@ -204,10 +241,8 @@ public class Parser {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-		//*/
 		
 		//No input
-		//*
 		try {
 			System.out.println("------- TEST 3-------");
 			Parser p3 = new Parser();
@@ -215,7 +250,7 @@ public class Parser {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-		//*/
+		
 		
 		// ----------- FOR ADD ------------
 		
@@ -287,5 +322,6 @@ public class Parser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//*/
 	}
 }

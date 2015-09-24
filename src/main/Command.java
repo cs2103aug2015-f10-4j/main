@@ -4,17 +4,18 @@ import java.text.SimpleDateFormat;
 
 public class Command {
 
-	protected String command;
 	protected String args;
 	protected int count;
 
-	public Command(String command, String args){
-		this.command = command;
+	public Command(String args){
 		this.args = args;
 		this.count = args.length() - args.replace("/", "").length();
 	}
 	
-	public boolean checkRecurrence(String recurrence) {
+	protected boolean checkRecurrence(String recurrence) {
+		if(recurrence.equals(null)){
+			return true;
+		}
 		String r = recurrence.toLowerCase();
 		if (!r.equals("daily") 
 				&& !r.equals("weekly")
@@ -25,7 +26,7 @@ public class Command {
 		return true;
 	}
 
-	public boolean checkTime(String time) {
+	protected boolean checkTime(String time) {
 		if(time.length() != 4){
 			return false;
 		} else {
@@ -40,7 +41,7 @@ public class Command {
 		return true;
 	}
 
-	public boolean checkDueDate(String dueDate, String type)  {
+	protected boolean checkDueDate(String dueDate, String type)  {
 		if(dueDate.equals("") && type.equals("task")){
 			return true;
 		}
@@ -58,14 +59,14 @@ public class Command {
 		return true;
 	}
 
-	public boolean checkTitle(String title) {
+	protected boolean checkTitle(String title) {
 		if(title.equals("")){
 			return false;
 		}
 		return true;
 	}
 
-	public boolean checkType(String type){
+	protected boolean checkType(String type){
 		if(!type.toLowerCase().equals("event") 
 			&& !type.toLowerCase().equals("task")){
 			return false;
