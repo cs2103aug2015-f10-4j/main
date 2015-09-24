@@ -20,14 +20,14 @@ public class UI {
 		displayWelcomeMessage();
 	}
 	
-	private static String readInput() {
+	public static String readInput() {
 		showToUser(MESSAGE_COMMAND_PROMPT);
 		System.out.print("> ");
 		String userInput = scanner.nextLine();
 		return userInput;
 	}
 	
-	private static void showToUser(String text) {
+	public static void showToUser(String text) {
 		System.out.println(text);
 	}
 	
