@@ -14,28 +14,26 @@ public class Parser {
 			"untag", "help", "exit"};
 	private static final String MESSAGE_EXECUTE_ERROR = "Parser has not been executed";
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command";
-	private static final String MESSAGE_INVALID_ARG = "Invalid %1s: %2s";
-	private static final String MESSAGE_INVALID_NUM_INPUTS = "Invalid number of inputs";
 	private boolean hasValidInput = false;
+	private Command commandClass;
 	
 	public void execute(String userInput) throws Exception{
 		this.userInput = userInput.trim();
-		String command = getCommand(this.userInput);
-		//System.out.println(command);
-		String args = getArgs(this.userInput);
-		//System.out.println(args);
-		//this.hasValidInput = isValidCmd() && isValidArgs();
+		
+		String command = splitCommand(this.userInput);
+		String args = splitArgs(this.userInput);
+		
 		this.hasValidInput = isValidInput(command, args);
 		this.command = command;
 		this.args = args;
 	}
 	
-	private String getCommand(String userInput) {
+	private String splitCommand(String userInput) {
 		String[] toSplit = userInput.split(" ", 2);
 		return toSplit[0].toLowerCase().trim();
 	}
 
-	private String getArgs(String userInput) {
+	private String splitArgs(String userInput) {
 		String[] toSplit = userInput.split(" ", 2);
 		if(toSplit.length > 1){
 			return toSplit[1].trim();
@@ -49,6 +47,7 @@ public class Parser {
 		switch(command){
 			case "add":
 				AddCommand add = new AddCommand(args);
+				commandClass = add;
 				return true;
 			case "search":
 				return true;
@@ -61,103 +60,9 @@ public class Parser {
 	private boolean checkAdd(String args) throws Exception {
 		
 		AddCommand add = new AddCommand(args);
-		
-		/*
-		int count = args.length() - args.replace("/", "").length();
-		
-		if(count != 6){
-			throw new Exception(MESSAGE_INVALID_NUM_INPUTS);
-		}
-		
-		
-		String[] argsArray = args.split("/");
-		//System.out.println(Arrays.toString(argsArray));
-		String type = argsArray[0].trim();
-		String title = argsArray[1].trim();
-		String dueDate = argsArray[3].trim();
-		String startTime = argsArray[4].trim();
-		String endTime = argsArray[5].trim();
-		String recurrence;
-		checkAddType(type);
-		checkAddTitle(title);
-		checkAddDueDate(dueDate, type);
-		checkAddTime(startTime, 0);
-		checkAddTime(endTime, 1);
-		if(argsArray.length == 6){
-			recurrence = null;
-		} else {
-			recurrence = argsArray[6].trim();
-			checkAddRecurrence(recurrence);
-		}
-		//*/
 		return true;
 		
 	}
-	
-	/*
-	private void checkAddRecurrence(String recurrence) throws Exception {
-		String r = recurrence.toLowerCase();
-		if (!r.equals("daily") 
-				&& !r.equals("weekly")
-				&& !r.equals("monthly")
-				&& !r.equals("yearly")) {
-			throw new Exception(String.format(MESSAGE_INVALID_ARG, "recurrence", recurrence));
-		}
-	}
-
-	private void checkAddTime(String time, int startEnd) throws Exception {
-		String timeType;
-		if(startEnd == 0){
-			timeType = "startTime";
-		} else {
-			timeType = "endTime";
-		}
-		
-		if(time.length() != 4){
-			throw new Exception(String.format(MESSAGE_INVALID_ARG, timeType, time));
-		} else {
-			int hour = Integer.parseInt(time.substring(0, 2));
-			int min = Integer.parseInt(time.substring(2, 4));
-			
-			if(hour > 23 || hour < 0
-				|| min > 59 || min < 0){
-				throw new Exception(String.format(MESSAGE_INVALID_ARG, timeType, time));
-			}
-		}
-	}
-
-	private void checkAddDueDate(String dueDate, String type) throws Exception {
-		if(dueDate.equals("") && type.equals("task")){
-			return;
-		}
-		if(dueDate.matches("^\\d+\\-\\d+\\-\\d+")){
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-			dateFormat.setLenient(false);
-			try {
-				dateFormat.parse(dueDate);
-			} catch (Exception e){
-				throw new Exception(String.format(MESSAGE_INVALID_ARG, "dueDate", dueDate));
-			}
-		} else {
-			throw new Exception(String.format(MESSAGE_INVALID_ARG, "dueDate", dueDate));
-		}
-
-	}
-
-	private void checkAddTitle(String title) throws Exception {
-		if(title.equals("")){
-			throw new Exception(String.format(MESSAGE_INVALID_ARG, "title", title));
-		}
-	}
-
-	private void checkAddType(String type) throws Exception {
-		if(!type.toLowerCase().equals("event") 
-			&& !type.toLowerCase().equals("task")){
-			throw new Exception(String.format(MESSAGE_INVALID_ARG, "type", type));
-		}
-	}
-	
-	//*/
 	
 	private void checkExecute() throws Exception{
 		if(!this.hasValidInput){
@@ -173,30 +78,9 @@ public class Parser {
 
 	public HashMap<String, String> readArgs() throws Exception{
 		
-		/*
-		HashMap<String, String> argsTable = new HashMap<String, String>();
-		String[] argsArray = args.split("/");
-		System.out.println(Arrays.toString(argsArray));
-		String type = argsArray[0].trim();
-		argsTable.put("type", type);
-		String title = argsArray[1].trim();
-		argsTable.put("title", title);
-		String desc = argsArray[2].trim();
-		argsTable.put("description", desc);
-		String dueDate = argsArray[3].trim();
-		argsTable.put("dueDate", dueDate);
-		String startTime = argsArray[4].trim();
-		argsTable.put("startTime", startTime);
-		String endTime = argsArray[5].trim();
-		argsTable.put("endTime", endTime);
-		String recurrence = argsArray[6].trim();
-		argsTable.put("recurrence", recurrence);
-		return argsTable;
-		*/
 		switch(command){
 		case "add":
-			AddCommand add = new AddCommand(args);
-			return add.getArgs();
+			return commandClass.getArgs();
 		case "search":
 			if(args != null){
 				String[] argsArray = args.split("/");
@@ -220,8 +104,8 @@ public class Parser {
 		try {
 			System.out.println("------- TEST 1-------");
 			Parser p1 = new Parser();
-			//p1.execute("Add  task/test/this is a test/24-9-2015/1000/1700/daily");
-			p1.execute("search /task");
+			p1.execute("Add  task/test/this is a test/24-9-2015/1000/1700/daily");
+			//p1.execute("search /task");
 			System.out.println(p1.userInput);
 			System.out.println(p1.command);
 			System.out.println(p1.args);
@@ -231,7 +115,7 @@ public class Parser {
 			e.printStackTrace();
 		}
 		
-		/*
+		//*
 		//Invalid command
 		try {
 			System.out.println("------- TEST 2-------");
