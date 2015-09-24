@@ -2,11 +2,7 @@ package main;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 public class Parser {
 
@@ -23,7 +19,7 @@ public class Parser {
 	private boolean hasValidInput = false;
 	
 	public void execute(String userInput) throws Exception{
-		this.userInput = userInput;
+		this.userInput = userInput.trim();
 		splitInput(this.userInput);
 		//this.hasValidInput = isValidCmd() && isValidArgs();
 		this.hasValidInput = isValidInput(this.command);
@@ -282,7 +278,7 @@ public class Parser {
 			e.printStackTrace();
 		}
 		
-		// Invalid endTime
+		// Invalid recurrence
 		try {
 			System.out.println("------- ADDTEST 7-------");
 			Parser pa7 = new Parser();
