@@ -5,6 +5,7 @@ import java.util.*;
 public class UI {
 
 	private static final String MESSAGE_WELCOME = "*:.。.☆ Welcome to Magical! ☆.。.:*\n";
+	private static final String MESSAGE_GOODBYE = "*:.。.☆ Farewell! ☆.。.:*\n";
 	private static final String MESSAGE_COMMAND_PROMPT = "What would you like to do?";
 	private static final String MESSAGE_ERROR = "An error has occurred.";
 	
@@ -15,25 +16,33 @@ public class UI {
 
 	private static final String FORMAT_HEADER = DIVIDER + "\n%s\n" + DIVIDER;
 	private static final String FORMAT_SHORT_TASK = "%s | Due: %s";
-
+	private static final String FORMAT_SHORT_EVENT = "%s on %s at %s";
+	
 	private static Scanner scanner = new Scanner(System.in);
 	
-
+/*
 	public static void main(String args[]) {
 		start();
 		ArrayList<Task> myTasks = new ArrayList<Task>();
+		ArrayList<Task> myEvents = new ArrayList<Task>();
 		for (int i = 0; i < 3; i++) {
 			myTasks.add(new Task());	
 		}
 		myTasks.get(0).setTitle("Do this");
 		myTasks.get(0).setDueDate(new Date(115, 8, 24));
-		myTasks.get(1).setDueDate(new Date(115, 9, 1));
 		myTasks.get(1).setTitle("Do that");		
 		myTasks.get(2).setDueDate(new Date(115, 9, 2));
 		myTasks.get(2).setTitle("Do some other stuff");		
 		displayHeader("To-Do");
 		displayTaskList(myTasks);
+		myEvents.add(new Task());
+		myEvents.get(0).setTitle("Commit suicide");
+		myEvents.get(0).setStartTime(new Date(115, 9, 3, 12, 30));
+		displayHeader("Upcoming Events");
+		displayEventList(myEvents);
+		displayGoodbyeMessage();
 	}
+	*/
 	
 	public static void start() {
 		displayWelcomeMessage();
@@ -54,6 +63,10 @@ public class UI {
 		showToUser(MESSAGE_WELCOME);
 	}
 	
+	public static void displayGoodbyeMessage() {
+		showToUser(MESSAGE_GOODBYE);
+	}
+	
 	public static void displayErrorMessage() {
 		showToUser(MESSAGE_ERROR);
 	}
@@ -69,13 +82,36 @@ public class UI {
 			index++;
 			showToUser("t" + index + ". "+ makeShortTask(iterator.next()));
 		}
+		showToUser("");
+	}
+	
+	private static void displayEventList(ArrayList<Task> eventList) {
+		Iterator<Task> iterator = eventList.iterator();
+		int index = 0;
+		while(iterator.hasNext()) {
+			index++;
+			showToUser("e" + index + ". "+ makeShortEvent(iterator.next()));
+		}
+		showToUser("");
 	}
 	
 	private static String makeShortTask(Task task) {
+		if (task.getDueDate() == null) { // if floating task
+			return task.getTitle();
+		}
 		return String.format(FORMAT_SHORT_TASK, task.getTitle(), makeShortDate(task.getDueDate()));
+	}
+	
+	private static String makeShortEvent(Task event) {
+		return String.format(FORMAT_SHORT_EVENT, event.getTitle(),
+				makeShortDate(event.getStartTime()), makeShortTime(event.getStartTime()));
 	}
 	
 	private static String makeShortDate(Date date) {
 		return date.getDate() + "/" + (date.getMonth()+1);
+	}
+	
+	private static String makeShortTime(Date date) {
+		return date.getHours() + ":" + date.getMinutes();
 	}
 }
