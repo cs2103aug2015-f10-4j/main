@@ -15,4 +15,8 @@ hs_err_pid*
 .classpath
 .project
 .settings/
+<<<<<<< HEAD
 /bin/
+=======
+bin/
+>>>>>>> origin/master
