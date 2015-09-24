@@ -16,7 +16,7 @@ public class Storage {
 	private static File file;
 	private ArrayList<Task> taskList;
 	
-	public Storage (String fileName) throws Exception { // constructor
+	public Storage (String fileName) throws IOException {
 
 		file = new File(fileName);
 
@@ -50,11 +50,16 @@ public class Storage {
 	}
 	
 	// for reading contents in the file
-	public ArrayList<Task> readTaskList() throws Exception {
-		FileInputStream fis = new FileInputStream(file);
-		ObjectInputStream ois = new ObjectInputStream(fis);
-		taskList = (ArrayList<Task>) ois.readObject();
-		ois.close();
+	public ArrayList<Task> readTaskList() {
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			taskList = (ArrayList<Task>) ois.readObject();
+			ois.close();
+		} catch (Exception e) {
+			taskList = new ArrayList<Task>();
+		} 
+		
 		return taskList;
 	}
 }

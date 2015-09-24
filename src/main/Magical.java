@@ -11,11 +11,12 @@ public class Magical {
 	private static final String MESSAGE_INVALID_CMD = "Invalid command given.";
 	
 	private static UI ui = new UI();
-	private static Parser parser = new Parser();
-	private static Storage storage = new Storage(CONFIG_STORAGE_FILENAME);
+	private static Parser parser;
+	private static Storage storage;
 	
 	public static void main(String args[]) {
 		try {
+			init();
 			ui.start();
 			String userInput = ui.readInput();
 			parser.execute(userInput);
@@ -25,6 +26,11 @@ public class Magical {
 			ui.displayErrorMessage();
 			e.printStackTrace();
 		}
+	}
+	
+	public static void init() throws IOException {
+		parser = new Parser();
+		storage = new Storage(CONFIG_STORAGE_FILENAME);
 	}
 	
 	public static String executeCommand(String cmd, HashMap<String, String> args) throws Exception {
@@ -67,7 +73,7 @@ public class Magical {
 	private static String search(HashMap<String, String> args) throws Exception {
 		String query = args.get("query") != null ? args.get("query") : "";
 		String type = args.get("type") != null ? args.get("type") : "";
-		ArrayList<Task> results = storage.readTasks();
+		ArrayList<Task> results = storage.getTasks();
 		ArrayList<Task> filteredResults = new ArrayList<Task>();
 		for (Task t : results) {
 			if ((t.getTitle().contains(query) || t.getDescription().contains(query)) && t.getType().contains(type)) {
@@ -90,7 +96,9 @@ public class Magical {
 		task.setStartTime(Integer.parseInt(args.get("startTime")));
 		task.setEndTime(Integer.parseInt(args.get("endTime")));
 
-		storage.writeTask(task);
+		ArrayList<Task> taskList = storage.getTasks();
+		taskList.add(task);
+		storage.writeTaskList(taskList);
 		return "task added";
 	}
 
