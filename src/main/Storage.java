@@ -124,11 +124,7 @@ public class Storage {
 	private static void writeExistingContent(ObjectOutputStream oos, ArrayList<Task> contents,
 			String fileName) {
 		try {
-			int numOfLines = contents.size();
-			for (int i = 0; i < numOfLines; i++) {
-				oos.writeObject(contents.get(i));
-				// oos.newLine();
-			}
+			oos.writeObject(contents);
 		} catch (IOException ex) {
 			System.out.println(String.format(MESSAGE_WRITE_FILE_ERROR, fileName));
 		}
@@ -263,15 +259,16 @@ public class Storage {
 	}
 	
 	// create readData method for Logic to call
-	// returns Task[] array
-	protected static Task[] readData() {
+	// read from the file, store as an ArrayList
+	// returns ArrayList
+	protected static ArrayList<Task> readData() {
 
-		Task[] tasks = null;
+		ArrayList<Task> tasks = null;
 
 		try {
 			FileInputStream fis = new FileInputStream(file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			tasks = (Task[]) ois.readObject();
+			tasks = (ArrayList<Task>) ois.readObject(); // just returns an ArrayList
 			ois.close();
 
 		} catch (FileNotFoundException e) {
