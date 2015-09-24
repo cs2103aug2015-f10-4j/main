@@ -15,8 +15,16 @@ hs_err_pid*
 .classpath
 .project
 .settings/
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 /bin/
 =======
 bin/
 >>>>>>> origin/master
+=======
+<<<<<<< Updated upstream
+bin/
+=======
+/bin/
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
