@@ -2,7 +2,7 @@ package main;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+// import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,22 +13,21 @@ public class Storage {
 	
 	private static final String MESSAGE_WELCOME = "Welcome to Magical. %1$s is ready for use";
 	private static final String MESSAGE_FILE_NOT_CREATED = "Error. File is not created successfully.";
-	private static final String MESSAGE_WRITE_FILE_ERROR = "Error writing to file '%1$s'";
-	private static final String MESSAGE_DELETE_ALL = "all content deleted from %1$s";
-	private static final String MESSAGE_ADDED = "added to %1$s: \"%2$s\"";
-	private static final String MESSAGE_DELETED_LINE = "deleted from %1$s: \"%2$s\"";
-	private static final String MESSAGE_NO_CONTENT_TO_DELETE = "There is nothing to delete in %1$s.";
-	private static final String MESSAGE_INVALID_DELETE = "Delete failed: The line does not exist.";
-	private static final String MESSAGE_INVALID_DELETE_ARGUMENT = "Please enter a non-zero positive integer to delete line";
+	// private static final String MESSAGE_WRITE_FILE_ERROR = "Error writing to file '%1$s'";
+	// private static final String MESSAGE_DELETE_ALL = "all content deleted from %1$s";
+	// private static final String MESSAGE_ADDED = "added to %1$s: \"%2$s\"";
+	// private static final String MESSAGE_DELETED_LINE = "deleted from %1$s: \"%2$s\"";
+	// private static final String MESSAGE_NO_CONTENT_TO_DELETE = "There is nothing to delete in %1$s.";
+	// private static final String MESSAGE_INVALID_DELETE = "Delete failed: The line does not exist.";
+	// private static final String MESSAGE_INVALID_DELETE_ARGUMENT = "Please enter a non-zero positive integer to delete line";
 
 	private static File file;
-	private static String fileName;
+	// private static String fileName;
 	private ArrayList<Task> taskList;
 	
 	public Storage (String fileName) { // constructor
 
 		file = new File(fileName);
-		Storage.fileName = fileName;
 
 		if ( !(file.exists()) ) {
 			try {
@@ -41,6 +40,7 @@ public class Storage {
 		System.out.println(String.format(MESSAGE_WELCOME, fileName));
 	}
 	
+	// for reading contents in the file
 	public ArrayList<Task> readTasks() throws Exception {
 		FileInputStream fis = new FileInputStream(file);
 		ObjectInputStream ois = new ObjectInputStream(fis);
@@ -49,18 +49,23 @@ public class Storage {
 		return taskList;
 	}
 	
-	public void writeTask(Task task) throws IOException {
-		taskList.add(task);
-		writeTaskList();
+	// for clearing
+	public void clearTaskList() throws IOException {
+		taskList = new ArrayList<Task>();
+		writeTaskList(taskList);
 	}
 	
-	public void writeTaskList() throws IOException {
+	// for add, delete and update
+	public void writeTaskList(ArrayList<Task> tasks) throws IOException {
 		FileOutputStream fos = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		taskList = tasks;
 		oos.writeObject(taskList);
 		oos.close();
 	}
-	/* 
+
+	
+	/*
 	protected static String writeFile(String fileName, ArrayList<Task> contents, String command, Task newContent) {
 
 		String result = "";
@@ -194,6 +199,7 @@ public class Storage {
 		String command = "ADD"; // hardcoded for now
 		writeFile(fileName, contents, command, newTask);
 	}
-
 	*/
+
+	
 }
