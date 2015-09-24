@@ -32,8 +32,8 @@ public class Parser {
 	//Splits the input to command and args
 	private void splitInput (String input){
 		String[] toSplit = input.split(" ", 2);
-		this.command = toSplit[0].toLowerCase();
-		this.args = toSplit[1];
+		this.command = toSplit[0].toLowerCase().trim();
+		this.args = toSplit[1].trim();
 	}
 	
 	//DONT NEED THIS ANYMORE
@@ -64,26 +64,51 @@ public class Parser {
 		}
 		
 		String[] argsArray = args.split("/");
-		System.out.println(Arrays.toString(argsArray));
-		String type = argsArray[0];
-		String title = argsArray[1];
-		String dueDate = argsArray[3];
-		String startTime = argsArray[4];
-		String endTime = argsArray[5];
+		//System.out.println(Arrays.toString(argsArray));
+		String type = argsArray[0].trim();
+		String title = argsArray[1].trim();
+		String dueDate = argsArray[3].trim();
+		String startTime = argsArray[4].trim();
+		String endTime = argsArray[5].trim();
 		String recurrence;
 		checkAddType(type);
 		checkAddTitle(title);
-		checkAddDueDate(dueDate);
+		checkAddDueDate(dueDate, type);
+		checkAddTime(startTime, 0);
+		checkAddTime(endTime, 1);
 		if(argsArray.length == 6){
 			recurrence = null;
 		} else {
-			recurrence = argsArray[6];
+			recurrence = argsArray[6].trim();
 		}
 		return true;
 	}
 
-	private void checkAddDueDate(String dueDate) throws Exception {
+	private void checkAddTime(String time, int startEnd) throws Exception {
+		String timeType;
+		if(startEnd == 0){
+			timeType = "startTime";
+		} else {
+			timeType = "endTime";
+		}
 		
+		if(time.length() != 4){
+			throw new Exception(String.format(MESSAGE_INVALID_ARG, timeType, time));
+		} else {
+			int hour = Integer.parseInt(time.substring(0, 2));
+			int min = Integer.parseInt(time.substring(2, 4));
+			
+			if(hour > 23 || hour < 0
+				|| min > 59 || min < 0){
+				throw new Exception(String.format(MESSAGE_INVALID_ARG, timeType, time));
+			}
+		}
+	}
+
+	private void checkAddDueDate(String dueDate, String type) throws Exception {
+		if(dueDate.equals("") && type.equals("task")){
+			return;
+		}
 		if(dueDate.matches("^\\d+\\-\\d+\\-\\d+")){
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			dateFormat.setLenient(false);
@@ -129,19 +154,19 @@ public class Parser {
 		HashMap<String, String> argsTable = new HashMap<String, String>();
 		String[] argsArray = args.split("/");
 		System.out.println(Arrays.toString(argsArray));
-		String type = argsArray[0];
+		String type = argsArray[0].trim();
 		argsTable.put("type", type);
-		String title = argsArray[1];;
+		String title = argsArray[1].trim();
 		argsTable.put("title", title);
-		String desc = argsArray[2];
+		String desc = argsArray[2].trim();
 		argsTable.put("description", desc);
-		String dueDate = argsArray[3];
+		String dueDate = argsArray[3].trim();
 		argsTable.put("dueDate", dueDate);
-		String startTime = argsArray[4];
+		String startTime = argsArray[4].trim();
 		argsTable.put("startTime", startTime);
-		String endTime = argsArray[5];
+		String endTime = argsArray[5].trim();
 		argsTable.put("endTime", endTime);
-		String recurrence = argsArray[6];
+		String recurrence = argsArray[6].trim();
 		argsTable.put("recurrence", recurrence);
 		return argsTable;
 		
@@ -153,18 +178,17 @@ public class Parser {
 		try {
 			System.out.println("------- TEST 1-------");
 			Parser p1 = new Parser();
-			p1.execute("Add task/test/this is a test/24-9-2015/1000/1700/daily");
+			p1.execute("Add  task/test/this is a test/24-9-2015/1000/1700/daily");
 			System.out.println(p1.userInput);
 			System.out.println(p1.command);
-			System.out.println(p1.checkAdd(p1.args));
-			//System.out.println(p1.args);
-			//System.out.println(p1.readCmd());
+			System.out.println(p1.args);
+			System.out.println(p1.readCmd());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		//Invalid input
-		/*
+		//Invalid command
+		//*
 		try {
 			System.out.println("------- TEST 2-------");
 			Parser p2 = new Parser();
@@ -176,7 +200,7 @@ public class Parser {
 		//*/
 		
 		//No input
-		/*
+		//*
 		try {
 			System.out.println("------- TEST 3-------");
 			Parser p3 = new Parser();
@@ -185,5 +209,66 @@ public class Parser {
 			e.printStackTrace();
 		}
 		//*/
+		
+		// ----------- FOR ADD ------------
+		
+		//Invalid type
+		try {
+			System.out.println("------- ADDTEST 1-------");
+			Parser pa1 = new Parser();
+			pa1.execute("Add foobar/test/this is a test/24-9-2015/1000/1700/daily");
+			System.out.println(pa1.readCmd());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//Invalid title
+		try {
+			System.out.println("------- ADDTEST 2-------");
+			Parser pa2 = new Parser();
+			pa2.execute("Add task//this is a test/24-9-2015/1000/1700/daily");
+			System.out.println(pa2.readCmd());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// Invalid date
+		try {
+			System.out.println("------- ADDTEST 3-------");
+			Parser pa3 = new Parser();
+			pa3.execute("Add task/test/this is a test/24-9-2015a/1000/1700/daily");
+			System.out.println(pa3.readCmd());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// Valid date
+		try {
+			System.out.println("------- ADDTEST 4-------");
+			Parser pa4 = new Parser();
+			pa4.execute("Add task/test/this is a test/ /1000/1700/daily");
+			System.out.println(pa4.readCmd());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// Invalid startTime
+		try {
+			System.out.println("------- ADDTEST 5-------");
+			Parser pa5 = new Parser();
+			pa5.execute("Add task/test/this is a test/24-9-2015/1260/1700/daily");
+			System.out.println(pa5.readCmd());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// Invalid endTime
+		try {
+			System.out.println("------- ADDTEST 6-------");
+			Parser pa6 = new Parser();
+			pa6.execute("Add task/test/this is a test/24-9-2015/1000/2400/daily");
+			System.out.println(pa6.readCmd());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
