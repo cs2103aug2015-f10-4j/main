@@ -80,8 +80,19 @@ public class Parser {
 			recurrence = null;
 		} else {
 			recurrence = argsArray[6].trim();
+			checkAddRecurrence(recurrence);
 		}
 		return true;
+	}
+
+	private void checkAddRecurrence(String recurrence) throws Exception {
+		String r = recurrence.toLowerCase();
+		if (!r.equals("daily") 
+				&& !r.equals("weekly")
+				&& !r.equals("monthly")
+				&& !r.equals("yearly")) {
+			throw new Exception(String.format(MESSAGE_INVALID_ARG, "recurrence", recurrence));
+		}
 	}
 
 	private void checkAddTime(String time, int startEnd) throws Exception {
@@ -267,6 +278,16 @@ public class Parser {
 			Parser pa6 = new Parser();
 			pa6.execute("Add task/test/this is a test/24-9-2015/1000/2400/daily");
 			System.out.println(pa6.readCmd());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// Invalid endTime
+		try {
+			System.out.println("------- ADDTEST 7-------");
+			Parser pa7 = new Parser();
+			pa7.execute("Add task/test/this is a test/24-9-2015/1000/1700/foobar");
+			System.out.println(pa7.readCmd());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
