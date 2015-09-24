@@ -4,15 +4,11 @@ import java.io.*;
 import java.util.*;
 
 public class Task implements Serializable {
-	static enum Type {
-		TASK, RECURRING_TASK, EVENT
-	}
-	
 	static enum RecurrencePeriod {
 		DAILY, WEEKLY, MONTHLY, YEARLY
 	}
 	
-	private Type type;
+	private String type;
 	private String title;
 	private String description;
 	private Date dueDate;
@@ -20,11 +16,11 @@ public class Task implements Serializable {
 	private int endTime;
 	private RecurrencePeriod recurrence;
 	
-	public Type getType() {
+	public String getType() {
 		return type;
 	}
 	
-	public void setType(Type type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	
