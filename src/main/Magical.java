@@ -81,8 +81,8 @@ public class Magical {
 	}
 
 	private static String search(HashMap<String, String> args) throws Exception {
-		String query = args.get("query") != null ? args.get("query") : "";
-		String type = args.get("type") != null ? args.get("type") : "";
+		String query = args.get("query");
+		String type = args.get("type");
 		ArrayList<Task> results = storage.getTasks();
 		ArrayList<Task> filteredResults = new ArrayList<Task>();
 		for (Task t : results) {

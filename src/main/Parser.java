@@ -46,13 +46,14 @@ public class Parser {
 	private boolean isValidInput(String command, String args) throws Exception{
 		switch (command) {
 			case "add":
-				AddCommand add = new AddCommand(args);
-				commandClass = add;
+				commandClass = new AddCommand(args);
 				return true;
 			case "block":
 				
 				return true;
 			case "search":
+				args = args == null ? "" : args;
+				commandClass = new SearchCommand(args);
 				return true;
 			case "delete":
 				return true;
@@ -81,23 +82,13 @@ public class Parser {
 	}
 	
 
-	public HashMap<String, String> readArgs() throws Exception{
+	public HashMap<String, String> readArgs() throws Exception {
 		
 		switch(command){
 			case "add":
 				return commandClass.getArgs();
 			case "search":
-				if (args != null) {
-					String[] argsArray = args.split("/");
-					String query = argsArray[0];
-					String type = argsArray[1];
-					HashMap<String, String> h = new HashMap<String, String>();
-					h.put("query", query);
-					h.put("type", type);
-					return h;
-				} else {
-					return new HashMap<String, String>();
-				}
+				return commandClass.getArgs();
 			case "delete":
 				HashMap<String, String> h = new HashMap<String, String>();
 				h.put("task id", args);
@@ -215,6 +206,21 @@ public class Parser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+
+		// ----------- FOR SEARCH ------------
+		
+		//Invalid type
+		try {
+			System.out.println("------- SEARCHTEST 1-------");
+			Parser pa1 = new Parser();
+			pa1.execute("search /task");
+			System.out.println(pa1.readCmd());
+			System.out.println(pa1.readArgs());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		//*/
 	}
 }
