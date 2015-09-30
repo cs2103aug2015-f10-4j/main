@@ -105,14 +105,35 @@ public class StorageTest extends TestCase {
 	}
 
 	
-	public void testWriteTaskList() {
+	public void testWriteTaskList() throws IOException {
 		// write into the file using Storage methods
 		// read out the arraylist from the Storage methods
-		// compare if both arraylists are the same	
+		// compare if both arraylists are the same
+		ArrayList<Task> localArray = new ArrayList<Task> ();
+		localArray.add(task1);
+		localArray.add(task2);
+		localArray.add(event1);
+		localArray.add(event2); // adding items into local array
+		
+		Storage testStorage = new Storage("mytasks.txt");
+		
+		testStorage.clearTaskList(); // clears previous content
+		
+		testStorage.createTask(task1);
+		testStorage.createTask(task2);
+		testStorage.createTask(event1);
+		testStorage.createTask(event2); //adding items into Storage array
+		
+		testStorage.writeTaskList();
+		ArrayList<Task> testingArray = testStorage.readTaskList();
+		assertEquals(localArray, testingArray);
+		
+		
 	}
+	
 
 	
-	public void testReadTaskList() {
+	public void testReadTaskList() throws IOException {
 		// insert tasks and read tasks ArrayList using Storage class method
 		// create an arraylist here to compare with
 		// compare both arraylists
@@ -122,31 +143,16 @@ public class StorageTest extends TestCase {
 		localArray.add(event1);
 		localArray.add(event2); // adding items into local array
 		
-		Storage testStorage = null;
-		try {
-			testStorage = new Storage("mytasks.txt");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Storage testStorage = new Storage("mytasks.txt");
 		
-		try {
-			testStorage.clearTaskList();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		} // clears previous content
+		testStorage.clearTaskList(); // clears previous content
 		
-		try {
-			testStorage.createTask(task1);
-			testStorage.createTask(task2);
-			testStorage.createTask(event1);
-			testStorage.createTask(event2);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		testStorage.createTask(task1);
+		testStorage.createTask(task2);
+		testStorage.createTask(event1);
+		testStorage.createTask(event2);
 		
 		ArrayList<Task> testingArray = testStorage.readTaskList();
-		String debug = testingArray.get(0).getTitle();
-		System.out.println("debug: " + debug);
 		assertEquals(localArray, testingArray);
 		
 	}
