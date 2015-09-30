@@ -29,7 +29,7 @@ public class Magical {
 		while(true) {
 			try {
 				String userInput = ui.readInput();
-				parser.execute(userInput);
+				parser.parse(userInput);
 				String message = executeCommand(parser.readCmd(), parser.readArgs());
 				ui.showToUser(message);
 			} catch (Exception e) {

@@ -8,13 +8,11 @@ public class Parser {
 	private static final String MESSAGE_EXECUTE_ERROR = "Parser has not been executed";
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command";
 	
-	public Command execute(String userInput) throws Exception{
+	public Command parse(String userInput) throws Exception{
 		if(userInput != null){
 			String trimInput = userInput.trim();
-
 			String command = splitCommand(trimInput);
 			String args = splitArgs(trimInput);
-
 			return inputValidation(command, args);
 		} else {
 			throw new Exception("Must enter a command when calling execute");
@@ -39,14 +37,12 @@ public class Parser {
 	private Command inputValidation(String command, String args) throws Exception{
 		switch (command) {
 			case "add":
-				AddCommand add = new AddCommand(args);
-				return add;
+				return new AddCommand(args);
 			case "block":
 				
 			case "search":
 				args = args == null ? "" : args;
-				SearchCommand commandClass = new SearchCommand(args);
-				return commandClass;
+				return new SearchCommand(args);
 			case "delete":
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND);
@@ -59,7 +55,7 @@ public class Parser {
 		try {
 			System.out.println("------- TEST 1-------");
 			Parser p1 = new Parser();
-			Command c = p1.execute("Add  task/test/this is a test/24-9-2015/1000/1700/daily");
+			Command c = p1.parse("Add  task/test/this is a test/24-9-2015/1000/1700/daily");
 			//p1.execute("search /task");
 			//System.out.println(p1.userInput);
 			//System.out.println(p1.command);
@@ -75,7 +71,7 @@ public class Parser {
 		try {
 			System.out.println("------- TEST 2-------");
 			Parser p2 = new Parser();
-			p2.execute("foobar task/test/this is a test/24092015/1000/1700/daily");
+			p2.parse("foobar task/test/this is a test/24092015/1000/1700/daily");
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -84,7 +80,7 @@ public class Parser {
 		try {
 			System.out.println("------- TEST 3-------");
 			Parser p3 = new Parser();
-			p3.execute(null);
+			p3.parse(null);
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -96,7 +92,7 @@ public class Parser {
 		try {
 			System.out.println("------- ADDTEST 1-------");
 			Parser pa1 = new Parser();
-			pa1.execute("Add foobar/test/this is a test/24-9-2015/1000/1700/daily");
+			pa1.parse("Add foobar/test/this is a test/24-9-2015/1000/1700/daily");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -105,7 +101,7 @@ public class Parser {
 		try {
 			System.out.println("------- ADDTEST 2-------");
 			Parser pa2 = new Parser();
-			pa2.execute("Add task//this is a test/24-9-2015/1000/1700/daily");
+			pa2.parse("Add task//this is a test/24-9-2015/1000/1700/daily");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -114,7 +110,7 @@ public class Parser {
 		try {
 			System.out.println("------- ADDTEST 3-------");
 			Parser pa3 = new Parser();
-			pa3.execute("Add task/test/this is a test/24-9-2015a/1000/1700/daily");
+			pa3.parse("Add task/test/this is a test/24-9-2015a/1000/1700/daily");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -124,7 +120,7 @@ public class Parser {
 		try {
 			System.out.println("------- ADDTEST 4-------");
 			Parser pa4 = new Parser();
-			pa4.execute("Add task/test/this is a test/ /1000/1700/daily");
+			pa4.parse("Add task/test/this is a test/ /1000/1700/daily");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -133,7 +129,7 @@ public class Parser {
 		try {
 			System.out.println("------- ADDTEST 5-------");
 			Parser pa5 = new Parser();
-			pa5.execute("Add task/test/this is a test/24-9-2015/1260/1700/daily");
+			pa5.parse("Add task/test/this is a test/24-9-2015/1260/1700/daily");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -141,7 +137,7 @@ public class Parser {
 		try {
 			System.out.println("------- ADDTEST 6-------");
 			Parser pa6 = new Parser();
-			pa6.execute("Add task/test/this is a test/24-9-2015/1000/2400/daily");
+			pa6.parse("Add task/test/this is a test/24-9-2015/1000/2400/daily");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -150,7 +146,7 @@ public class Parser {
 		try {
 			System.out.println("------- ADDTEST 7-------");
 			Parser pa7 = new Parser();
-			pa7.execute("Add task/test/this is a test/24-9-2015/1000/1700/foobar");
+			pa7.parse("Add task/test/this is a test/24-9-2015/1000/1700/foobar");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -162,7 +158,7 @@ public class Parser {
 		try {
 			System.out.println("------- SEARCHTEST 1-------");
 			Parser pa1 = new Parser();
-			pa1.execute("search /task");
+			pa1.parse("search /task");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
