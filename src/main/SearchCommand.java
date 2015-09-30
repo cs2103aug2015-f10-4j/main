@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -28,17 +29,17 @@ public class SearchCommand extends Command {
 			error += "Number of Arguments\n";
 		}
 		
-		if (!type.equals("") && !validType()){
+		if (!type.equals("") && !validType()) {
 			error += "Type: " + type + "\n";
 		}
 
-		if (!error.equals("")){
+		if (!error.equals("")) {
 			throw new Exception("\n----- Invalid arguments ---- \n" + error);
 		}
 	}
 	
-	private boolean checkCount(){
-		if (this.count > 2){
+	private boolean checkCount() {
+		if (this.count > 2) {
 			return false;
 		} else {
 			return true;
@@ -53,10 +54,18 @@ public class SearchCommand extends Command {
 		return checkType(this.type);
 	}
 	
-	public HashMap<String, String> getArgs() {
-		HashMap<String, String> argsTable = new HashMap<String, String>();
-		argsTable.put("query", query);
-		argsTable.put("type", type);
-		return argsTable;
+	public void execute() {
+		ArrayList<Task> results = Magical.storage.getTasks();
+		ArrayList<Task> filteredResults = new ArrayList<Task>();
+		for (Task t : results) {
+			if ((t.getTitle().contains(query) || t.getDescription().contains(query)) && t.getType().contains(type)) {
+				filteredResults.add(t);
+			}
+		}
+		UI.displayTaskList("Search results", filteredResults);
+	}
+	
+	public void undo() {
+		// no changes done => nothing to undo
 	}
 }
