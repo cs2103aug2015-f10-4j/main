@@ -79,7 +79,7 @@ public class Storage {
 	}
 	
 	// for reading contents in the file
-	private ArrayList<Task> readTaskList() {
+	protected ArrayList<Task> readTaskList() {
 		try {
 			FileInputStream fis = new FileInputStream(file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
