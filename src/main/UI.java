@@ -5,12 +5,10 @@ import java.util.*;
 public class UI {
 
 	private static final String MESSAGE_WELCOME = "*:.。.☆ Welcome to Magical! ☆.。.:*\r\n";
+	private static final String MESSAGE_HELP = "PLACEHOLDER HELP MESSAGE.\r\n";
 	private static final String MESSAGE_GOODBYE = "*:.。.☆ Farewell! ☆.。.:*\r\n";
 	private static final String MESSAGE_COMMAND_PROMPT = "What would you like to do?";
 	private static final String MESSAGE_ERROR = "An error has occurred.";
-	
-	private static final String MESSAGE_TASK_ADDED = "Added task: %s";
-	private static final String MESSAGE_TASK_DELETED = "Deleted task: %s";
 	
 	private static final String DIVIDER = "======================";
 
@@ -48,6 +46,10 @@ public class UI {
 	
 	public static void displayWelcomeMessage() {
 		showToUser(MESSAGE_WELCOME);
+	}
+	
+	public static void displayHelpMessage() {
+		showToUser(MESSAGE_HELP);
 	}
 	
 	public static void displayGoodbyeMessage() {
