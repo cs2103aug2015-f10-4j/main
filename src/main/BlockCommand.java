@@ -3,6 +3,7 @@ package main;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -26,6 +27,7 @@ public class BlockCommand extends Command{
 		if(checkCount()){
 
 			this.argsArray = args.split("/");
+			System.out.println(Arrays.toString(argsArray));
 			
 			this.type = argsArray[0];
 			this.title = argsArray[1];
@@ -40,47 +42,53 @@ public class BlockCommand extends Command{
 			if(!validTitle()){
 				error += "No Title" + "\n";
 			}
-			
-			if(args.contains("//") 
-					&& argsArray[3].matches("^\\d+\\-\\d+\\-\\d+")
-					&& argsArray[5].matches("^\\d+\\-\\d+\\-\\d+")){
-				this.startD = argsArray[3];
-				this.endD = argsArray[5];
-				
-				if(!validStartDate()){
-					error += "Start date: " + startD + "\n";
-				}
-				if(!validEndDate()){
-					error += "End date: " + endD + "\n";
-				}
-				if(!error.equals("")){
-					throw new Exception("\n----- Invalid arguments ---- \n" + error);
-				} else {
-					
-					// creates an array list of Dates within start and end date
-					try {
-						Date first = dateFormat.parse(startD);
-						Date last = dateFormat.parse(endD);
-						dates.add(first);
-						Calendar c = new GregorianCalendar();
-						c.setTime(first);
-						c.add(Calendar.DATE, 1);
+			if (!error.equals("")) {
+				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			}
+			if(args.contains("//")){
+				if(argsArray.length == 6){
+					this.startD = argsArray[3];
+					this.endD = argsArray[5];
 
-						while (c.getTime().before(last)) {
-							Date result = c.getTime();
-							dates.add(result);
-							c.add(Calendar.DATE, 1);
-						}
-						dates.add(last);
-
-
-					} catch (Exception e) {
-						e.printStackTrace();
+					if (!validStartDate()) {
+						error += "Start date: " + startD + "\n";
 					}
+					if (!validEndDate()) {
+						error += "End date: " + endD + "\n";
+					}
+					if (!error.equals("")) {
+						throw new Exception("\n----- Invalid arguments ---- \n" + error);
+					} else {
+
+						// creates an array list of Dates within start and end
+						// date
+						try {
+							Date first = dateFormat.parse(startD);
+							Date last = dateFormat.parse(endD);
+							dates.add(first);
+							Calendar c = new GregorianCalendar();
+							c.setTime(first);
+							c.add(Calendar.DATE, 1);
+
+							while (c.getTime().before(last)) {
+								Date result = c.getTime();
+								dates.add(result);
+								c.add(Calendar.DATE, 1);
+							}
+							dates.add(last);
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				} else {
+					error += "Invalid usage of //";
+					throw new Exception("\n----- Invalid arguments ---- \n" + error);
 				}
 			} else {
 				for(int i = 3; i < argsArray.length; i++){
 					String currDate = argsArray[i];
+					System.out.println(currDate);
 					boolean isValidDate = checkDate(currDate);
 					if(!isValidDate){
 						error += "Date: " + currDate + "\n";
@@ -125,12 +133,23 @@ public class BlockCommand extends Command{
 		return checkType(this.type);
 	}
 	
+	@Override
+	public String execute(){
+		return null;
+	}
+	@Override
+	public String undo(){
+		return null;
+	}
+	
+	/*
 	public static void main(String[] args) throws Exception {
 		Parser p = new Parser();
-		p.parse("block event/title/desc/30-09-2015//02-10-2015");
-		p.parse("block event/title/desc/30-09-2015/02-10-2015/03-10-2015/04-10-2015");
-		p.parse("block event/title/desc/30-09-2015/02-10-2015//03-10-2015");	//doesnt account for typing wrong
-		p.parse("block penis//desc/32-09-2015/302-10-2015/03-10-2015");			//doesnt throw the correct exception
+		//p.parse("block event/title/desc/30-09-2015//02-10-2015");
+		//p.parse("block event/title/desc/30-09-2015/02-10-2015/03-10-2015/04-10-2015");
+		p.parse("block event/title/desc/30-09-2015/02-10-2015//03-10-2015");	//throws invalid usage exception
+		//p.parse("block foobar//desc/32-09-2015/302-10-2015/03-10-2015");		//throws invalid type and title
 	}
+	//*/
 
 }
