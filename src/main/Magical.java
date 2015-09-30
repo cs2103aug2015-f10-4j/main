@@ -18,15 +18,32 @@ public class Magical {
 		try {
 			init();
 			ui.start();
+<<<<<<< HEAD
 			while (true){
 				String userInput = ui.readInput();
 				parser.execute(userInput);
 				String message = executeCommand(parser.readCmd(), parser.readArgs());
 				ui.showToUser(message);
 			}
+=======
+			startREPL();
+>>>>>>> origin/master
 		} catch (Exception e) {
 			ui.displayErrorMessage();
 			e.printStackTrace();
+		}
+	}
+
+	private static void startREPL() throws Exception {
+		while(true) {
+			try {
+				String userInput = ui.readInput();
+				parser.execute(userInput);
+				String message = executeCommand(parser.readCmd(), parser.readArgs());
+				ui.showToUser(message);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -73,8 +90,8 @@ public class Magical {
 	}
 
 	private static String search(HashMap<String, String> args) throws Exception {
-		String query = args.get("query") != null ? args.get("query") : "";
-		String type = args.get("type") != null ? args.get("type") : "";
+		String query = args.get("query");
+		String type = args.get("type");
 		ArrayList<Task> results = storage.getTasks();
 		ArrayList<Task> filteredResults = new ArrayList<Task>();
 		for (Task t : results) {
@@ -98,9 +115,7 @@ public class Magical {
 		task.setStartTime(Integer.parseInt(args.get("startTime")));
 		task.setEndTime(Integer.parseInt(args.get("endTime")));
 
-		ArrayList<Task> taskList = storage.getTasks();
-		taskList.add(task);
-		storage.writeTaskList(taskList);
+		storage.createTask(task);
 		return "task added";
 	}
 
