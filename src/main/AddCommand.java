@@ -3,6 +3,7 @@ package main;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 
 public class AddCommand extends Command{
 
@@ -65,7 +66,7 @@ public class AddCommand extends Command{
 	}
 	
 	private boolean checkCount(){
-		if(this.count != 6){
+		if(this.count != 7){
 			return false;
 		} else {
 			return true;

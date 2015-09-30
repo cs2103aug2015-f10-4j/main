@@ -5,11 +5,13 @@ import java.text.SimpleDateFormat;
 public class Command {
 
 	protected String args;
+	protected String[] argsArray;
 	protected int count;
 
 	public Command(String args){
 		this.args = args;
-		this.count = args.length() - args.replace("/", "").length();
+		this.argsArray = args.split("/");
+		this.count = argsArray.length;
 	}
 	
 	protected boolean checkRecurrence(String recurrence) {

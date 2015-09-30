@@ -1,12 +1,9 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class SearchCommand extends Command {
 
-	private String[] argsArray;
 	private String query;
 	private String type;
 	private String error = "";
@@ -15,7 +12,6 @@ public class SearchCommand extends Command {
 		super(args);
 		
 		if (validNumArgs()) {
-			this.argsArray = args.split("/");
 			this.query = argsArray[0].trim();
 
 			if (argsArray.length == 1) {

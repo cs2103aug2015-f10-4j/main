@@ -8,9 +8,9 @@ public class ShowCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
-			taskID = args;
+			taskID = argsArray[0];
 			if(!validTaskID()){
-				error += "Task ID" + taskID + "\n";
+				error += "Task ID: " + taskID + "\n";
 			}
 			if (!error.equals("")) {
 				throw new Exception("\n----- Invalid arguments ---- \n" + error);
