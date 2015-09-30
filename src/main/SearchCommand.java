@@ -61,7 +61,7 @@ public class SearchCommand extends Command {
 				filteredResults.add(t);
 			}
 		}
-		UI.displayTaskList("Search results", filteredResults);
+		Magical.ui.displayTaskList("Search results", filteredResults);
 		return null;
 	}
 	

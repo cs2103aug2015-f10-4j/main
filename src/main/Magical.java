@@ -10,10 +10,10 @@ public class Magical {
 
 	private static final String MESSAGE_INVALID_CMD = "Invalid command given.";
 	
-	private static UI ui = new UI();
+	protected static UI ui = new UI();
 	private static Parser parser;
-	static Storage storage;
-	static Command lastCommand;
+	protected static Storage storage;
+	protected static Command lastCommand;
 	
 	public static void main(String args[]) {
 		try {
