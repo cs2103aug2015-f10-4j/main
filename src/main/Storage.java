@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class Storage {
 	
-	private static final String MESSAGE_WELCOME = "Welcome to Magical. %1$s is ready for use";
 	// private static final String MESSAGE_FILE_NOT_CREATED = "Error. File is not created successfully.";
 
 	private static File file;
@@ -26,31 +25,61 @@ public class Storage {
 		} else {
 			readTaskList();
 		}
-		
-		System.out.println(String.format(MESSAGE_WELCOME, fileName));
 	}
 	
-	public ArrayList<Task> getTasks() throws Exception {
+	public boolean fileExist() {
+		if (file.exists()) {
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	
+	public void createTask(Task t) throws IOException {
+		taskList.add(t);
+		writeTaskList();
+	}
+	
+	public ArrayList<Task> getTasks() {
 		return taskList;
+	}
+	
+	public void updateTask(Task t) throws IOException {
+		int pos = getTaskPos(t);
+		if (pos > -1) {
+			taskList.set(pos, t);
+			writeTaskList();
+		}
+	}
+	
+	public void deleteTask(Task t) throws IOException {
+		int pos = getTaskPos(t);
+		if (pos > -1) {
+			taskList.remove(pos);
+			writeTaskList();
+		}
 	}
 	
 	// for clearing
 	public void clearTaskList() throws IOException {
 		taskList = new ArrayList<Task>();
-		writeTaskList(taskList);
+		writeTaskList();
 	}
 	
-	// for add, delete and update
-	public void writeTaskList(ArrayList<Task> tasks) throws IOException {
+	private int getTaskPos(Task t) {
+		return taskList.indexOf(t);
+	}
+	
+	private void writeTaskList() throws IOException {
 		FileOutputStream fos = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		taskList = tasks;
 		oos.writeObject(taskList);
 		oos.close();
 	}
 	
 	// for reading contents in the file
-	public ArrayList<Task> readTaskList() {
+	private ArrayList<Task> readTaskList() {
 		try {
 			FileInputStream fis = new FileInputStream(file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
@@ -59,7 +88,7 @@ public class Storage {
 		} catch (Exception e) {
 			taskList = new ArrayList<Task>();
 		} 
-		
+
 		return taskList;
 	}
 }

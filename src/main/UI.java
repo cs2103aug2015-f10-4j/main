@@ -4,8 +4,8 @@ import java.util.*;
 
 public class UI {
 
-	private static final String MESSAGE_WELCOME = "*:.。.☆ Welcome to Magical! ☆.。.:*\n";
-	private static final String MESSAGE_GOODBYE = "*:.。.☆ Farewell! ☆.。.:*\n";
+	private static final String MESSAGE_WELCOME = "*:.。.☆ Welcome to Magical! ☆.。.:*\r\n";
+	private static final String MESSAGE_GOODBYE = "*:.。.☆ Farewell! ☆.。.:*\r\n";
 	private static final String MESSAGE_COMMAND_PROMPT = "What would you like to do?";
 	private static final String MESSAGE_ERROR = "An error has occurred.";
 	
@@ -14,42 +14,16 @@ public class UI {
 	
 	private static final String DIVIDER = "======================";
 
-	private static final String FORMAT_HEADER = DIVIDER + "\n%s\n" + DIVIDER;
+	private static final String FORMAT_HEADER = DIVIDER + "\r\n%s\r\n" + DIVIDER;
 	private static final String FORMAT_SHORT_TASK = "%s | Due: %s";
 	private static final String FORMAT_SHORT_EVENT = "%s on %s at %s";
 	
 	private static Scanner scanner = new Scanner(System.in);
-	
-	
-	public static void main(String args[]) {
-		start();
-		ArrayList<Task> myTasks = new ArrayList<Task>();
-		ArrayList<Task> myEvents = new ArrayList<Task>();
-		for (int i = 0; i < 3; i++) {
-			myTasks.add(new Task());	
-		}
-		myTasks.get(0).setTitle("Do this");
-		myTasks.get(0).setDueDate(new Date(115, 8, 24));
-		myTasks.get(0).setDescription("Or you will cry & die");
-		myTasks.get(1).setTitle("Do that");		
-		myTasks.get(2).setDueDate(new Date(115, 9, 2));
-		myTasks.get(2).setTitle("Do some other stuff");		
-		displayTaskList("To-Do", myTasks);
-		myEvents.add(new Task());
-		myEvents.get(0).setTitle("Commit suicide");
-		myEvents.get(0).setDueDate(new Date(115, 9, 4));
-		myEvents.get(0).setStartTime(1108);
-		displayEventList("Upcoming Events", myEvents);
-		displayTaskDetails(myTasks.get(0));
-		displayGoodbyeMessage();
-	}
-	
-	
-	
+
 	/*
 	 * PUBLIC METHODS
-	 
-	*/
+	 * */
+	
 	public static void start() {
 		displayWelcomeMessage();
 	}
@@ -82,7 +56,7 @@ public class UI {
 	public static void displayTaskDetails(Task task) {
 		displayHeader(task.getTitle());
 		showToUser("Description: " + task.getDescription() +
-				"\nDue Date: " + makeShortDate(task.getDueDate()) + "\n");
+				"\r\nDue Date: " + makeShortDate(task.getDueDate()) + "\r\n");
 		
 	}
 	
@@ -129,7 +103,9 @@ public class UI {
 	}
 	
 	private static String makeShortDate(Date date) {
-		return date.getDate() + "/" + (date.getMonth()+1);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.DATE) + "/" + (cal.get(Calendar.MONTH) + 1);
 	}
 	
 	private static String makeShortTime(int time) {

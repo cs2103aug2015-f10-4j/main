@@ -44,8 +44,10 @@ public class Parser {
 			case "block":
 				
 			case "search":
+				args = args == null ? "" : args;
+				SearchCommand commandClass = new SearchCommand(args);
+				return commandClass;
 			case "delete":
-
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND);
 		}
@@ -152,6 +154,19 @@ public class Parser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+
+		// ----------- FOR SEARCH ------------
+		
+		//Invalid type
+		try {
+			System.out.println("------- SEARCHTEST 1-------");
+			Parser pa1 = new Parser();
+			pa1.execute("search /task");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		//*/
 	}
 }
