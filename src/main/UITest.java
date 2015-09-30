@@ -29,15 +29,4 @@ public class UITest extends TestCase {
 		assertEquals("*:.。.☆ Welcome to Magical! ☆.。.:*\r\n\r\n", outContent.toString());
 	}
 	
-	public static void testDisplayTaskDetails() {
-		UI userInterface = new UI();
-		Task myTask = new Task();
-		myTask.setTitle("Do 2103 homework");
-		myTask.setDescription("Finish writing test cases for Magical");
-		myTask.setDueDate(new Date(115, 8, 30));
-		userInterface.displayTaskDetails(myTask);
-		String expected = "Do 2103 homework";
-	}
-	
-	
 }
