@@ -1,5 +1,9 @@
 package main;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class AddCommand extends Command{
 
 	private String[] argsArray;
@@ -11,6 +15,8 @@ public class AddCommand extends Command{
 	private String endTime;
 	private String recurrence;
 	private String error = "";
+	private boolean hasExecuted = false;
+	private Task task;
 	
 	public AddCommand(String args) throws Exception {
 		super(args);
@@ -94,7 +100,43 @@ public class AddCommand extends Command{
 	}
 	
 	@Override
-	public String execute(){
-		return null;
+	public String execute() {
+		task = new Task();
+		task.setType(type);
+		task.setTitle(title);
+		task.setDescription(desc);
+		task.setRecurrence(recurrence);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			task.setDueDate(dateFormat.parse(dueDate));
+		} catch (ParseException e) {
+			return "unable to parse due date";
+		}
+		task.setStartTime(Integer.parseInt(startTime));
+		task.setEndTime(Integer.parseInt(endTime));
+		
+		try {
+			Magical.storage.createTask(task);
+		} catch (IOException e) {
+			return "unable to add task";
+		}
+		
+		hasExecuted = true;
+		return "task added";
+	}
+	
+	@Override
+	public String undo() {
+		if (hasExecuted) {
+			try {
+				Magical.storage.deleteTask(task);
+				return "task deleted";
+			} catch (IOException e) {
+				return "unable to delete task";
+			}
+		} else {
+			return "cannot undo failed add command.";
+		}
 	}
 }
