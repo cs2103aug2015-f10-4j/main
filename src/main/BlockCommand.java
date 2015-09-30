@@ -1,6 +1,5 @@
 package main;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +28,9 @@ public class BlockCommand extends Command{
 			this.argsArray = args.split("/");
 			System.out.println(Arrays.toString(argsArray));
 			
-			this.type = argsArray[0];
-			this.title = argsArray[1];
-			this.desc = argsArray[2];
+			this.type = argsArray[0].trim();
+			this.title = argsArray[1].trim();
+			this.desc = argsArray[2].trim();
 			
 			if(!validNumArgs()){
 				error += "Number of Arguments\n";
@@ -47,8 +46,8 @@ public class BlockCommand extends Command{
 			}
 			if(args.contains("//")){
 				if(argsArray.length == 6){
-					this.startD = argsArray[3];
-					this.endD = argsArray[5];
+					this.startD = argsArray[3].trim();
+					this.endD = argsArray[5].trim();
 
 					if (!validStartDate()) {
 						error += "Start date: " + startD + "\n";
@@ -87,7 +86,7 @@ public class BlockCommand extends Command{
 				}
 			} else {
 				for(int i = 3; i < argsArray.length; i++){
-					String currDate = argsArray[i];
+					String currDate = argsArray[i].trim();
 					System.out.println(currDate);
 					boolean isValidDate = checkDate(currDate);
 					if(!isValidDate){
