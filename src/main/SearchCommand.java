@@ -61,11 +61,6 @@ public class SearchCommand extends Command {
 		return null;
 	}
 	
-	public String undo() {
-		// no changes done => nothing to undo
-		return null;
-	}
-	
 	@Override
 	public boolean isUndoable(){
 		return false;
