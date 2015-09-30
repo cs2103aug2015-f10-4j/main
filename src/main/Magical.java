@@ -18,16 +18,7 @@ public class Magical {
 		try {
 			init();
 			ui.start();
-<<<<<<< HEAD
-			while (true){
-				String userInput = ui.readInput();
-				parser.execute(userInput);
-				String message = executeCommand(parser.readCmd(), parser.readArgs());
-				ui.showToUser(message);
-			}
-=======
 			startREPL();
->>>>>>> origin/master
 		} catch (Exception e) {
 			ui.displayErrorMessage();
 			e.printStackTrace();
