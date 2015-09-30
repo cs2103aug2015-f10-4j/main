@@ -12,6 +12,7 @@ import javafx.scene.text.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
+import javafx.scene.input.*;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
@@ -20,15 +21,18 @@ public class GUI extends Application {
 	private static final int DEFAULT_WINDOW_WIDTH = 600;
 	private static final int DEFAULT_WINDOW_HEIGHT = 800;
 	
+	private Label whatYouJustSaid = new Label("");
+	
 	
 	private TableView<Task> eventTable = new TableView<Task>();
-	private TextField commandLineTextField = new TextField();
+	
 	private VBox vbox = new VBox(VBOX_PADDING);
 	private Scene scene = new Scene(vbox, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 	
 	
 	public ArrayList<Task> tasksToDisplay = new ArrayList<Task>();
 	public ArrayList<Task> eventsToDisplay = new ArrayList<Task>();
+
 	
 	private void makeTestTasks() {
 		Task task1 = new Task();
@@ -56,7 +60,8 @@ public class GUI extends Application {
 	private void makeVBox() {
     	vbox.setPadding(new Insets(VBOX_PADDING, VBOX_PADDING, VBOX_PADDING, VBOX_PADDING));
     	vbox.getChildren().addAll(makeHeader("To-Do"), makeTaskTable(tasksToDisplay),
-    			makeHeader("Upcoming Events"), makeEventTable(eventsToDisplay), commandLineTextField);
+    			makeHeader("Upcoming Events"), makeEventTable(eventsToDisplay), makeCommandLine(),
+    			whatYouJustSaid);
 
 	}
 
@@ -114,8 +119,19 @@ public class GUI extends Application {
 		return eventTable;
 	}
 	
-	private void makeCommandLine() {
+	private TextField makeCommandLine() {
+		TextField commandLineTextField = new TextField();
 		commandLineTextField.setPromptText("What would you like to do?");
+		
+		commandLineTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		    public void handle(KeyEvent keyEvent) {
+		        if (keyEvent.getCode() == KeyCode.ENTER)  {
+		             whatYouJustSaid.setText("You just said: "+commandLineTextField.getText());
+		        }
+		    }
+		});
+		
+		return commandLineTextField;
 	}
 	
     @Override
