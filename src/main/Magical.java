@@ -13,6 +13,7 @@ public class Magical {
 	private static UI ui = new UI();
 	private static Parser parser;
 	static Storage storage;
+	static Command lastCommand;
 	
 	public static void main(String args[]) {
 		try {
@@ -31,6 +32,7 @@ public class Magical {
 				String userInput = ui.readInput();
 				Command command = parser.parse(userInput); 
 				String message = command.execute();
+				lastCommand = command;
 				ui.showToUser(message);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -45,8 +47,6 @@ public class Magical {
 	
 	public static String executeCommand(String cmd, HashMap<String, String> args) throws Exception {
 		switch(cmd) {
-		case "add":
-			return add(args);
 //		case "block":
 //			return block(args);
 //		case "confirm":
@@ -76,22 +76,6 @@ public class Magical {
 		default:
 			return MESSAGE_INVALID_CMD;
 		}		
-	}
-
-	private static String add(HashMap<String, String> args) throws Exception {
-		Task task = new Task();
-		task.setType(args.get("type"));
-		task.setTitle(args.get("title"));
-		task.setDescription(args.get("description"));
-		task.setRecurrence(args.get("recurrence"));
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		task.setDueDate(dateFormat.parse(args.get("dueDate")));
-		task.setStartTime(Integer.parseInt(args.get("startTime")));
-		task.setEndTime(Integer.parseInt(args.get("endTime")));
-
-		storage.createTask(task);
-		return "task added";
 	}
 
 	private static String exit() {
