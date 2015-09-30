@@ -71,7 +71,7 @@ public class Storage {
 		return taskList.indexOf(t);
 	}
 	
-	private void writeTaskList() throws IOException {
+	protected void writeTaskList() throws IOException {
 		FileOutputStream fos = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		oos.writeObject(taskList);
