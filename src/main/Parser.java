@@ -44,6 +44,10 @@ public class Parser {
 				return block;
 			case "search":
 				return new SearchCommand(args);
+			case "tag":
+				return new TagCommand(args);
+			case "untag":
+				return new UntagCommand(args);
 			case "delete":
 				return new DelCommand(args);
 			case "undo":
