@@ -78,7 +78,9 @@ public class Command {
 		}
 		return true;
 	}
-	
+	protected boolean checkTaskID(String taskID){
+		return Magical.ui.getLastTaskListDisplayed().containsKey(taskID);
+	}
 	public String execute(){
 		return null;
 	}
