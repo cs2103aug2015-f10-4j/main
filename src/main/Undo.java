@@ -8,8 +8,7 @@ public class Undo extends Command {
 	
 	@Override
 	public String execute() {
-		Magical.lastCommand.undo();
-		return null;
+		return Magical.lastCommand.undo();
 	}
 	
 	@Override
