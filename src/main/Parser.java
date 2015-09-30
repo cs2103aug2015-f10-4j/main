@@ -51,11 +51,15 @@ public class Parser {
 			case "delete":
 				return new DelCommand(args);
 			case "undo":
-				return new Undo(args);
+				return new UndoCommand(args);
 			case "done":
 				return new DoneCommand(args);
 			case "show":
 				return new ShowCommand(args);
+			case "help":
+				return new HelpCommand(args);
+			case "exit":
+				return new ExitCommand(args);
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND);
 		}
