@@ -1,7 +1,8 @@
 package main;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class AddCommand extends Command{
 
@@ -14,11 +15,13 @@ public class AddCommand extends Command{
 	private String endTime;
 	private String recurrence;
 	private String error = "";
+	private boolean hasExecuted = false;
+	private Task task;
 	
 	public AddCommand(String args) throws Exception {
 		super(args);
 		
-		if(checkCount()){
+		if(validNumArgs()){
 			this.argsArray = args.split("/");
 			this.type = argsArray[0].trim();
 			this.title = argsArray[1].trim();
@@ -32,30 +35,31 @@ public class AddCommand extends Command{
 			} else {
 				recurrence = argsArray[6].trim();
 			}
-		}
 		 
-		if(!validNumArgs()){
+		
+			if (!validType()) {
+				error += "Type: " + type + "\n";
+			}
+			if (!validTitle()) {
+				error += "No Title" + "\n";
+			}
+			if (!validDueDate()) {
+				error += "Due date: " + dueDate + "\n";
+			}
+			if (!validStartTime()) {
+				error += "Start time: " + startTime + "\n";
+			}
+			if (!validEndTime()) {
+				error += "End time: " + endTime + "\n";
+			}
+			if (!validRecurrence()) {
+				error += "Recurrence: " + recurrence + "\n";
+			}
+			if (!error.equals("")) {
+				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			}
+		} else {
 			error += "Number of Arguments\n";
-		}
-		if(!validType()){
-			error += "Type: " + type + "\n";
-		}
-		if(!validTitle()){
-			error += "Title: " + title + "\n";
-		}
-		if(!validDueDate()){
-			error += "Due date: " + dueDate + "\n";
-		}
-		if(!validStartTime()){
-			error += "Start time: " + startTime + "\n";
-		}
-		if(!validEndTime()){
-			error += "End time: " + endTime + "\n";
-		}
-		if(!validRecurrence()){
-			error += "Recurrence: " + recurrence + "\n";
-		}
-		if(!error.equals("")){
 			throw new Exception("\n----- Invalid arguments ---- \n" + error);
 		}
 	}
@@ -81,7 +85,7 @@ public class AddCommand extends Command{
 	}
 	
 	public boolean validDueDate(){
-		return checkDueDate(this.dueDate, this.type);
+		return checkDate(this.dueDate) || checkFloatingTask(this.dueDate, this.type);
 	}
 	
 	public boolean validStartTime(){
@@ -96,15 +100,44 @@ public class AddCommand extends Command{
 		return checkRecurrence(this.recurrence);
 	}
 	
-	public HashMap<String, String> getArgs(){
-		HashMap<String, String> argsTable = new HashMap<String, String>();
-		argsTable.put("type", type);
-		argsTable.put("title", title);
-		argsTable.put("description", desc);
-		argsTable.put("dueDate", dueDate);
-		argsTable.put("startTime", startTime);
-		argsTable.put("endTime", endTime);
-		argsTable.put("recurrence", recurrence);
-		return argsTable;
+	@Override
+	public String execute() {
+		task = new Task();
+		task.setType(type);
+		task.setTitle(title);
+		task.setDescription(desc);
+		task.setRecurrence(recurrence);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			task.setDueDate(dateFormat.parse(dueDate));
+		} catch (ParseException e) {
+			return "unable to parse due date";
+		}
+		task.setStartTime(Integer.parseInt(startTime));
+		task.setEndTime(Integer.parseInt(endTime));
+		
+		try {
+			Magical.storage.createTask(task);
+		} catch (IOException e) {
+			return "unable to add task";
+		}
+		
+		hasExecuted = true;
+		return "task added";
+	}
+	
+	@Override
+	public String undo() {
+		if (hasExecuted) {
+			try {
+				Magical.storage.deleteTask(task);
+				return "task deleted";
+			} catch (IOException e) {
+				return "unable to delete task";
+			}
+		} else {
+			return "cannot undo failed add command.";
+		}
 	}
 }

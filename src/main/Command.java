@@ -1,7 +1,6 @@
 package main;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 
 public class Command {
 
@@ -42,22 +41,27 @@ public class Command {
 		return true;
 	}
 
-	protected boolean checkDueDate(String dueDate, String type)  {
-		if(dueDate.equals("") && type.equals("task")){
-			return true;
-		}
-		if(dueDate.matches("^\\d+\\-\\d+\\-\\d+")){
+	protected boolean checkDate(String date)  {
+		if(date.matches("^\\d+\\-\\d+\\-\\d+")){
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			dateFormat.setLenient(false);
 			try {
-				dateFormat.parse(dueDate);
+				dateFormat.parse(date);
+				return true;
 			} catch (Exception e){
 				return false;
 			}
 		} else {
 			return false;
 		}
-		return true;
+	}
+	
+	protected boolean checkFloatingTask(String date, String type){
+		if(date.equals("") && type.equals("task")){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	protected boolean checkTitle(String title) {
@@ -75,7 +79,11 @@ public class Command {
 		return true;
 	}
 	
-	public HashMap<String, String> getArgs(){
+	public String execute(){
+		return null;
+	}
+	
+	public String undo(){
 		return null;
 	}
 	
