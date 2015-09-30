@@ -98,10 +98,27 @@ public class StorageTest extends TestCase {
 		// compare both arraylists
 	}
 
-	public void testGetTaskPos() {
+	public void testGetTaskPos() throws IOException {
 		// create an arraylist, get the index of one of the items
-		// using the method, get the index of the same items
+		// using Storage method, get the index of the same items
 		// compare if the indexes are the same
+		ArrayList<Task> localArray = new ArrayList<Task> ();
+		localArray.add(task1);
+		localArray.add(task2);
+		localArray.add(event1);
+		localArray.add(event2); // adding items into local array
+		
+		Storage testStorage = new Storage("mytasks.txt");
+		
+		testStorage.clearTaskList(); // clears previous content
+		
+		testStorage.createTask(task1);
+		testStorage.createTask(task2);
+		testStorage.createTask(event1);
+		testStorage.createTask(event2); //adding items into Storage array
+		
+		int taskPos = testStorage.getTaskPos(event1);
+		assertEquals(taskPos, 2);
 	}
 
 	
