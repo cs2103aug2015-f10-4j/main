@@ -12,7 +12,7 @@ public class Magical {
 	
 	private static UI ui = new UI();
 	private static Parser parser;
-	private static Storage storage;
+	static Storage storage;
 	
 	public static void main(String args[]) {
 		try {
@@ -29,8 +29,8 @@ public class Magical {
 		while(true) {
 			try {
 				String userInput = ui.readInput();
-				parser.parse(userInput);
-				String message = executeCommand(parser.readCmd(), parser.readArgs());
+				Command command = parser.parse(userInput); 
+				String message = command.execute();
 				ui.showToUser(message);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -63,8 +63,6 @@ public class Magical {
 //			return date(args);
 //		case "undo":
 //			return undo(args);
-		case "search":
-			return search(args);
 //		case "remind":
 //			return remind(args);
 //		case "tag":
@@ -78,20 +76,6 @@ public class Magical {
 		default:
 			return MESSAGE_INVALID_CMD;
 		}		
-	}
-
-	private static String search(HashMap<String, String> args) throws Exception {
-		String query = args.get("query");
-		String type = args.get("type");
-		ArrayList<Task> results = storage.getTasks();
-		ArrayList<Task> filteredResults = new ArrayList<Task>();
-		for (Task t : results) {
-			if ((t.getTitle().contains(query) || t.getDescription().contains(query)) && t.getType().contains(type)) {
-				filteredResults.add(t);
-			}
-		}
-		UI.displayTaskList("Search results", filteredResults);
-		return null;
 	}
 
 	private static String add(HashMap<String, String> args) throws Exception {

@@ -54,7 +54,7 @@ public class SearchCommand extends Command {
 		return checkType(this.type);
 	}
 	
-	public void execute() {
+	public String execute() {
 		ArrayList<Task> results = Magical.storage.getTasks();
 		ArrayList<Task> filteredResults = new ArrayList<Task>();
 		for (Task t : results) {
@@ -63,9 +63,11 @@ public class SearchCommand extends Command {
 			}
 		}
 		UI.displayTaskList("Search results", filteredResults);
+		return null;
 	}
 	
-	public void undo() {
+	public String undo() {
 		// no changes done => nothing to undo
+		return null;
 	}
 }
