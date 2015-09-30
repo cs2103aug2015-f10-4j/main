@@ -27,7 +27,7 @@ public class Storage {
 		}
 	}
 	
-	public boolean fileExist() {
+	protected boolean fileExist() {
 		if (file.exists()) {
 			return true;
 		}
@@ -36,16 +36,16 @@ public class Storage {
 	}
 	
 	
-	public void createTask(Task t) throws IOException {
+	protected void createTask(Task t) throws IOException {
 		taskList.add(t);
 		writeTaskList();
 	}
 	
-	public ArrayList<Task> getTasks() {
+	protected ArrayList<Task> getTasks() {
 		return taskList;
 	}
 	
-	public void updateTask(Task t) throws IOException {
+	protected void updateTask(Task t) throws IOException {
 		int pos = getTaskPos(t);
 		if (pos > -1) {
 			taskList.set(pos, t);
@@ -53,7 +53,7 @@ public class Storage {
 		}
 	}
 	
-	public void deleteTask(Task t) throws IOException {
+	protected void deleteTask(Task t) throws IOException {
 		int pos = getTaskPos(t);
 		if (pos > -1) {
 			taskList.remove(pos);
@@ -62,12 +62,12 @@ public class Storage {
 	}
 	
 	// for clearing
-	public void clearTaskList() throws IOException {
+	protected void clearTaskList() throws IOException {
 		taskList = new ArrayList<Task>();
 		writeTaskList();
 	}
 	
-	private int getTaskPos(Task t) {
+	protected int getTaskPos(Task t) {
 		return taskList.indexOf(t);
 	}
 	
