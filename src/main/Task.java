@@ -4,6 +4,19 @@ import java.io.*;
 import java.util.*;
 
 public class Task implements Serializable, Comparable<Task> {
+	static enum RecurrencePeriod {
+		DAILY, WEEKLY, MONTHLY, YEARLY
+	}
+	
+	private String type;
+	private String title;
+	private String description;
+	private Date dueDate;
+	private int startTime;
+	private int endTime;
+	private RecurrencePeriod recurrence;
+	private Set<String> tags = new HashSet<String>();
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -15,6 +28,7 @@ public class Task implements Serializable, Comparable<Task> {
 		result = prime * result
 				+ ((recurrence == null) ? 0 : recurrence.hashCode());
 		result = prime * result + startTime;
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -45,6 +59,11 @@ public class Task implements Serializable, Comparable<Task> {
 			return false;
 		if (startTime != other.startTime)
 			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
 		if (title == null) {
 			if (other.title != null)
 				return false;
@@ -58,18 +77,6 @@ public class Task implements Serializable, Comparable<Task> {
 		return true;
 	}
 
-	static enum RecurrencePeriod {
-		DAILY, WEEKLY, MONTHLY, YEARLY
-	}
-	
-	private String type;
-	private String title;
-	private String description;
-	private Date dueDate;
-	private int startTime;
-	private int endTime;
-	private RecurrencePeriod recurrence;
-	
 	public String getType() {
 		return type;
 	}
@@ -136,5 +143,13 @@ public class Task implements Serializable, Comparable<Task> {
 	
 	public int compareTo(Task task) {
 		return dueDate.compareTo(task.dueDate);
+	}
+
+	public Set<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<String> tags) {
+		this.tags = tags;
 	}
 }
