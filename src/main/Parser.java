@@ -44,6 +44,8 @@ public class Parser {
 				return block;
 			case "search":
 				return new SearchCommand(args);
+			case "date":
+				return new DateCommand(args);
 			case "tag":
 				return new TagCommand(args);
 			case "untag":
