@@ -39,7 +39,8 @@ public class Parser {
 			case "add":
 				return new AddCommand(args);
 			case "block":
-				
+				BlockCommand block = new BlockCommand(args);
+				return block;
 			case "search":
 				args = args == null ? "" : args;
 				return new SearchCommand(args);

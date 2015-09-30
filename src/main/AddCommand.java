@@ -78,7 +78,7 @@ public class AddCommand extends Command{
 	}
 	
 	public boolean validDueDate(){
-		return checkDueDate(this.dueDate, this.type);
+		return checkDate(this.dueDate) || checkFloatingTask(this.dueDate, this.type);
 	}
 	
 	public boolean validStartTime(){
@@ -94,7 +94,7 @@ public class AddCommand extends Command{
 	}
 	
 	@Override
-	public void execute(){
-		//Do Something
+	public String execute(){
+		return null;
 	}
 }
