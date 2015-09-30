@@ -1,7 +1,6 @@
 package main;
 
 import java.util.*;
-import javafx.*;
 
 public class UI {
 
@@ -104,7 +103,9 @@ public class UI {
 	}
 	
 	private static String makeShortDate(Date date) {
-		return date.getDate() + "/" + (date.getMonth()+1);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.DATE) + "/" + (cal.get(Calendar.MONTH) + 1);
 	}
 	
 	private static String makeShortTime(int time) {
