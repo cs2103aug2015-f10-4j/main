@@ -30,9 +30,9 @@ public class Magical {
 		while(true) {
 			try {
 				String userInput = ui.readInput();
-				Command command = parser.parse(userInput); 
+				Command command = parser.parse(userInput);
 				String message = command.execute();
-				lastCommand = command;
+				lastCommand = command.isUndoable()? command : lastCommand;
 				ui.showToUser(message);
 			} catch (Exception e) {
 				e.printStackTrace();

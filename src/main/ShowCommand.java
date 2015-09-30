@@ -41,8 +41,14 @@ public class ShowCommand extends Command{
 	public String execute(){
 		return null;
 	}
+	
 	@Override
 	public String undo(){
 		return null;
+	}
+	
+	@Override
+	public boolean isUndoable(){
+		return false;
 	}
 }

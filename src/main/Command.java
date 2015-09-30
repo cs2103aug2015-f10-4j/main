@@ -91,4 +91,8 @@ public class Command {
 		return null;
 	}
 	
+	public boolean isUndoable(){
+		return true;
+	}
+	
 }
