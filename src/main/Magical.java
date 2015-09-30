@@ -13,15 +13,15 @@ public class Magical {
 	protected static UI ui = new UI();
 	private static Parser parser;
 	protected static Storage storage;
-	protected static Command lastCommand;
+	protected static Command lastCommand = null;
 	
 	public static void main(String args[]) {
 		try {
 			init();
-			ui.start();
+			UI.start();
 			startREPL();
 		} catch (Exception e) {
-			ui.displayErrorMessage();
+			UI.displayErrorMessage();
 			e.printStackTrace();
 		}
 	}
@@ -33,7 +33,7 @@ public class Magical {
 				Command command = parser.parse(userInput);
 				String message = command.execute();
 				lastCommand = command.isUndoable()? command : lastCommand;
-				ui.showToUser(message);
+				UI.showToUser(message);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -79,7 +79,7 @@ public class Magical {
 	}
 
 	private static String exit() {
-		ui.displayGoodbyeMessage();
+		UI.displayGoodbyeMessage();
 		System.exit(0);
 		return null;
 	}
