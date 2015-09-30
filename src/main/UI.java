@@ -63,12 +63,14 @@ public class UI {
 	public static void displayTaskDetails(Task task) {
 		displayHeader(task.getTitle());
 		Set<String> taskTags = task.getTags();
-		Iterator<String> iterator = taskTags.iterator();
 		String tagString = "";
-		for (int i = 0; i < taskTags.size() - 1; i++) {
-			tagString += iterator.next() + ", ";
+		if (taskTags.size() > 0) {
+			Iterator<String> iterator = taskTags.iterator();
+			for (int i = 0; i < taskTags.size() - 1; i++) {
+				tagString += iterator.next() + ", ";
+			}
+			tagString += iterator.next();
 		}
-		tagString += iterator.next();
 		showToUser("Description: " + task.getDescription() +
 				"\r\nDue Date: " + makeShortDate(task.getDueDate()) + "\r\nTags: " + tagString);
 		

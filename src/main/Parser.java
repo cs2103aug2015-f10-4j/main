@@ -40,8 +40,9 @@ public class Parser {
 			case "add":
 				return new AddCommand(args);
 			case "block":
-				BlockCommand block = new BlockCommand(args);
-				return block;
+				return new BlockCommand(args);
+			case "edit":
+				return new EditCommand(args);
 			case "search":
 				return new SearchCommand(args);
 			case "date":
