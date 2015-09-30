@@ -27,6 +27,15 @@ public class Storage {
 		}
 	}
 	
+	public boolean fileExist() {
+		if (file.exists()) {
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	
 	public void createTask(Task t) throws IOException {
 		taskList.add(t);
 		writeTaskList();
