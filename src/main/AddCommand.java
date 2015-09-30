@@ -21,7 +21,7 @@ public class AddCommand extends Command{
 	public AddCommand(String args) throws Exception {
 		super(args);
 		
-		if(checkCount()){
+		if(validNumArgs()){
 			this.argsArray = args.split("/");
 			this.type = argsArray[0].trim();
 			this.title = argsArray[1].trim();
@@ -35,30 +35,31 @@ public class AddCommand extends Command{
 			} else {
 				recurrence = argsArray[6].trim();
 			}
-		}
 		 
-		if(!validNumArgs()){
+		
+			if (!validType()) {
+				error += "Type: " + type + "\n";
+			}
+			if (!validTitle()) {
+				error += "No Title" + "\n";
+			}
+			if (!validDueDate()) {
+				error += "Due date: " + dueDate + "\n";
+			}
+			if (!validStartTime()) {
+				error += "Start time: " + startTime + "\n";
+			}
+			if (!validEndTime()) {
+				error += "End time: " + endTime + "\n";
+			}
+			if (!validRecurrence()) {
+				error += "Recurrence: " + recurrence + "\n";
+			}
+			if (!error.equals("")) {
+				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			}
+		} else {
 			error += "Number of Arguments\n";
-		}
-		if(!validType()){
-			error += "Type: " + type + "\n";
-		}
-		if(!validTitle()){
-			error += "No Title" + "\n";
-		}
-		if(!validDueDate()){
-			error += "Due date: " + dueDate + "\n";
-		}
-		if(!validStartTime()){
-			error += "Start time: " + startTime + "\n";
-		}
-		if(!validEndTime()){
-			error += "End time: " + endTime + "\n";
-		}
-		if(!validRecurrence()){
-			error += "Recurrence: " + recurrence + "\n";
-		}
-		if(!error.equals("")){
 			throw new Exception("\n----- Invalid arguments ---- \n" + error);
 		}
 	}

@@ -35,6 +35,7 @@ public class Parser {
 	
 	//checks if command and args are valid
 	private Command inputValidation(String command, String args) throws Exception{
+		args = args == null ? "" : args;
 		switch (command) {
 			case "add":
 				return new AddCommand(args);
@@ -42,11 +43,9 @@ public class Parser {
 				BlockCommand block = new BlockCommand(args);
 				return block;
 			case "search":
-				args = args == null ? "" : args;
 				return new SearchCommand(args);
 			case "delete":
 			case "undo":
-				args = args == null ? "" : args;
 				return new Undo(args);
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND);
