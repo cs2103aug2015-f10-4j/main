@@ -45,6 +45,9 @@ public class Parser {
 				args = args == null ? "" : args;
 				return new SearchCommand(args);
 			case "delete":
+			case "undo":
+				args = args == null ? "" : args;
+				return new Undo(args);
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND);
 		}
