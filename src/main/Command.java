@@ -1,7 +1,6 @@
 package main;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 
 public class Command {
 
@@ -75,8 +74,8 @@ public class Command {
 		return true;
 	}
 	
-	public HashMap<String, String> getArgs(){
-		return null;
+	public void execute(){
+
 	}
 	
 }

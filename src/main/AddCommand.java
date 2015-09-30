@@ -1,8 +1,5 @@
 package main;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
 public class AddCommand extends Command{
 
 	private String[] argsArray;
@@ -41,7 +38,7 @@ public class AddCommand extends Command{
 			error += "Type: " + type + "\n";
 		}
 		if(!validTitle()){
-			error += "Title: " + title + "\n";
+			error += "No Title" + "\n";
 		}
 		if(!validDueDate()){
 			error += "Due date: " + dueDate + "\n";
@@ -96,15 +93,8 @@ public class AddCommand extends Command{
 		return checkRecurrence(this.recurrence);
 	}
 	
-	public HashMap<String, String> getArgs(){
-		HashMap<String, String> argsTable = new HashMap<String, String>();
-		argsTable.put("type", type);
-		argsTable.put("title", title);
-		argsTable.put("description", desc);
-		argsTable.put("dueDate", dueDate);
-		argsTable.put("startTime", startTime);
-		argsTable.put("endTime", endTime);
-		argsTable.put("recurrence", recurrence);
-		return argsTable;
+	@Override
+	public void execute(){
+		//Do Something
 	}
 }
