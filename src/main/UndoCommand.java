@@ -1,8 +1,8 @@
 package main;
 
-public class Undo extends Command {
+public class UndoCommand extends Command {
 
-	public Undo(String args) {
+	public UndoCommand(String args) {
 		super(args);
 	}
 	
