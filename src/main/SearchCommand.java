@@ -14,26 +14,25 @@ public class SearchCommand extends Command {
 	public SearchCommand(String args) throws Exception {
 		super(args);
 		
-		if (checkCount()) {
+		if (validNumArgs()) {
 			this.argsArray = args.split("/");
 			this.query = argsArray[0].trim();
-			
-			if(argsArray.length == 1){
+
+			if (argsArray.length == 1) {
 				type = "";
 			} else {
 				type = argsArray[1].trim();
 			}
-		}
-		 
-		if (!validNumArgs()) {
-			error += "Number of Arguments\n";
-		}
-		
-		if (!type.equals("") && !validType()) {
-			error += "Type: " + type + "\n";
-		}
 
-		if (!error.equals("")) {
+			if (!type.equals("") && !validType()) {
+				error += "Type: " + type + "\n";
+			}
+
+			if (!error.equals("")) {
+				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			}
+		} else {
+			error += "Number of Arguments\n";
 			throw new Exception("\n----- Invalid arguments ---- \n" + error);
 		}
 	}

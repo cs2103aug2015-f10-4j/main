@@ -23,7 +23,7 @@ public class BlockCommand extends Command{
 		super(args);
 		dates = new ArrayList<Date>();
 		
-		if(checkCount()){
+		if(validNumArgs()){
 
 			this.argsArray = args.split("/");
 			System.out.println(Arrays.toString(argsArray));
@@ -32,9 +32,6 @@ public class BlockCommand extends Command{
 			this.title = argsArray[1].trim();
 			this.desc = argsArray[2].trim();
 			
-			if(!validNumArgs()){
-				error += "Number of Arguments\n";
-			}
 			if(!validType()){
 				error += "Type: " + type + "\n";
 			}
@@ -101,6 +98,9 @@ public class BlockCommand extends Command{
 				}
 			}
 			System.out.println(dates);
+		} else {
+			error += "Number of Arguments\n";
+			throw new Exception("\n----- Invalid arguments ---- \n" + error);
 		}
 	}
 	
