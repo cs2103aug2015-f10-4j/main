@@ -33,7 +33,7 @@ public class GUI extends Application {
 	public ArrayList<Task> tasksToDisplay = new ArrayList<Task>();
 	public ArrayList<Task> eventsToDisplay = new ArrayList<Task>();
 
-	
+	// TEST
 	private void makeTestTasks() {
 		Task task1 = new Task();
 		Task task2 = new Task();
