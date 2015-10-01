@@ -43,7 +43,7 @@ public class DelCommand extends Command{
 	}
 	
 	public String execute() {
-		task = Magical.ui.getLastTaskListDisplayed().get(taskID);
+		task = Magical.ui.getLastTaskList().get(taskID);
 		try {
 			Magical.storage.deleteTask(task);
 			hasExecuted = true;

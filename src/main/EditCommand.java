@@ -92,7 +92,7 @@ public class EditCommand extends Command{
 	
 	@Override
 	public String execute() {
-		task = Magical.ui.getLastTaskListDisplayed().get(taskID);
+		task = Magical.ui.getLastTaskList().get(taskID);
 		try {
 			prevTask = (Task) task.clone();
 			Magical.storage.deleteTask(prevTask);

@@ -39,7 +39,7 @@ public class ShowCommand extends Command{
 	
 	@Override
 	public String execute() {
-		Task task = Magical.ui.getLastTaskListDisplayed().get(taskID);
+		Task task = Magical.ui.getLastTaskList().get(taskID);
 		UI.displayTaskDetails(task);
 		return null;
 	}

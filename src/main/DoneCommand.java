@@ -43,7 +43,7 @@ public class DoneCommand extends Command{
 	}
 	
 	public String execute() {
-		Task task = Magical.ui.getLastTaskListDisplayed().get(taskID);
+		Task task = Magical.ui.getLastTaskList().get(taskID);
 		Set<String> tags = task.getTags();
 		tags.add("done");
 		task.setTags(tags);
