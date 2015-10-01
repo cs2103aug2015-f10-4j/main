@@ -10,6 +10,7 @@ public class UntagCommand extends Command {
 	private String error = "";
 	private boolean hasExecuted = false;
 	private Task task;
+	private Task prevTask;
 	
 	public UntagCommand(String args) throws Exception {
 		super(args);
@@ -48,32 +49,46 @@ public class UntagCommand extends Command {
 	}
 	
 	public String execute() {
-		task = Magical.ui.getLastTaskListDisplayed().get(taskID);
+		task = Magical.ui.getLastTaskList().get(taskID);
+		try {
+			prevTask = (Task) task.clone();
+			Magical.storage.deleteTask(prevTask);
+		} catch (CloneNotSupportedException e1) {
+			prevTask = null;
+		} catch (IOException e) {
+			// TODO Fix Magical.storage.deleteTask(prevTask) location
+		}
+		
 		Set<String> tags = task.getTags();
 		tags.remove(tag);
 		task.setTags(tags);
+		
 		try {
-			Magical.storage.updateTask(task);
-			hasExecuted = true;
-			return tag + " removed from task";
+			Magical.storage.deleteTask(prevTask);
+			Magical.storage.createTask(task);
 		} catch (IOException e) {
 			return "unable to remove tag from task";
 		}
+		
+		hasExecuted = true;
+		return tag + " removed from task";
 	}
 	
+	@Override
 	public String undo() {
 		if (hasExecuted) {
-			Set<String> tags = task.getTags();
-			tags.add(tag);
-			task.setTags(tags);
+			if (prevTask == null) {
+				return "unable to undo edit";
+			}
 			try {
-				Magical.storage.updateTask(task);
-				return tag + " added to task";
+				Magical.storage.deleteTask(task);
+				Magical.storage.createTask(prevTask);
+				return "Undo successful.";
 			} catch (IOException e) {
-				return "unable to add tag to task";
+				return "unable to undo untag";
 			}
 		} else {
-			return "cannot undo failed untag command";
+			return "cannot undo failed untag command.";
 		}
 	}
 }
