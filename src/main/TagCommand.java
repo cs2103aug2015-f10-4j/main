@@ -8,7 +8,6 @@ public class TagCommand extends Command {
 	private String taskID;
 	private String tag;
 	private String error = "";
-	private boolean hasExecuted = false;
 	private Task task;
 	private Task prevTask;
 	
@@ -69,25 +68,6 @@ public class TagCommand extends Command {
 			return "unable to add tag to task";
 		}
 
-		hasExecuted = true;
 		return tag + " added to task";
-	}
-	
-	@Override
-	public String undo() {
-		if (hasExecuted) {
-			if (prevTask == null) {
-				return "unable to undo edit";
-			}
-			try {
-				Magical.storage.deleteTask(task);
-				Magical.storage.createTask(prevTask);
-				return "Undo successful.";
-			} catch (IOException e) {
-				return "unable to undo tag";
-			}
-		} else {
-			return "cannot undo failed tag command.";
-		}
 	}
 }

@@ -8,7 +8,6 @@ public class UntagCommand extends Command {
 	private String taskID;
 	private String tag;
 	private String error = "";
-	private boolean hasExecuted = false;
 	private Task task;
 	private Task prevTask;
 	
@@ -70,25 +69,6 @@ public class UntagCommand extends Command {
 			return "unable to remove tag from task";
 		}
 		
-		hasExecuted = true;
 		return tag + " removed from task";
-	}
-	
-	@Override
-	public String undo() {
-		if (hasExecuted) {
-			if (prevTask == null) {
-				return "unable to undo edit";
-			}
-			try {
-				Magical.storage.deleteTask(task);
-				Magical.storage.createTask(prevTask);
-				return "Undo successful.";
-			} catch (IOException e) {
-				return "unable to undo untag";
-			}
-		} else {
-			return "cannot undo failed untag command.";
-		}
 	}
 }

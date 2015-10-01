@@ -6,7 +6,6 @@ public class DelCommand extends Command{
 	
 	private String taskID;
 	private String error = "";
-	private boolean hasExecuted = false;
 	private Task task;
 	
 	public DelCommand(String args) throws Exception{
@@ -46,23 +45,9 @@ public class DelCommand extends Command{
 		task = Magical.ui.getLastTaskList().get(taskID);
 		try {
 			Magical.storage.deleteTask(task);
-			hasExecuted = true;
 			return "task deleted";
 		} catch (IOException e) {
 			return "unable to delete task";
-		}
-	}
-	
-	public String undo() {
-		if (hasExecuted) {
-			try {
-				Magical.storage.createTask(task);
-				return "task added";
-			} catch (IOException e) {
-				return "unable to undo delete task";
-			}
-		} else {
-			return "unable to undo failed delete command";
 		}
 	}
 }

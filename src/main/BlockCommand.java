@@ -136,19 +136,4 @@ public class BlockCommand extends Command{
 	public String execute(){
 		return null;
 	}
-	@Override
-	public String undo(){
-		return null;
-	}
-	
-	/*
-	public static void main(String[] args) throws Exception {
-		Parser p = new Parser();
-		//p.parse("block event/title/desc/30-09-2015//02-10-2015");
-		//p.parse("block event/title/desc/30-09-2015/02-10-2015/03-10-2015/04-10-2015");
-		p.parse("block event/title/desc/30-09-2015/02-10-2015//03-10-2015");	//throws invalid usage exception
-		//p.parse("block foobar//desc/32-09-2015/302-10-2015/03-10-2015");		//throws invalid type and title
-	}
-	//*/
-
 }

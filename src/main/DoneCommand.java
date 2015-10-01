@@ -6,7 +6,6 @@ import java.util.Set;
 public class DoneCommand extends Command{
 	private String taskID;
 	private String error = "";
-	private boolean hasExecuted = false;
 	private Task task;
 	
 	public DoneCommand(String args) throws Exception{
@@ -49,26 +48,9 @@ public class DoneCommand extends Command{
 		task.setTags(tags);
 		try {
 			Magical.storage.updateTask(task);
-			hasExecuted = true;
 			return "task archived";
 		} catch (IOException e) {
 			return "unable to archive task";
-		}
-	}
-	
-	public String undo() {
-		if (hasExecuted) {
-			Set<String> tags = task.getTags();
-			tags.remove("done");
-			task.setTags(tags);
-			try {
-				Magical.storage.updateTask(task);
-				return "task unarchived";
-			} catch (IOException e) {
-				return "unable to unarchive task";
-			}
-		} else {
-			return "cannot undo failed done command";
 		}
 	}
 }

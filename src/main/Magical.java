@@ -11,7 +11,6 @@ public class Magical {
 	protected static UI ui = new UI();
 	private static Parser parser;
 	protected static Storage storage;
-	protected static Command lastCommand = null;
 	protected static Stack<ArrayList<Task>> undoHistory;
 
 	public static void main(String args[]) {
@@ -35,7 +34,6 @@ public class Magical {
 				if (command.isUndoable()) {
 					undoHistory.push(prevTaskList);
 				}
-				lastCommand = command.isUndoable()? command : lastCommand;
 				UI.showToUser(message);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -59,6 +57,5 @@ public class Magical {
 		parser = new Parser();
 		storage = new Storage(CONFIG_STORAGE_FILENAME);
 		undoHistory = new Stack<ArrayList<Task>>();
-//		undoHistory.push(listClone(storage.getTasks()));
 	}
 }

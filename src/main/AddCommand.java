@@ -16,7 +16,6 @@ public class AddCommand extends Command{
 	private String endTime;
 	private String recurrence;
 	private String error = "";
-	private boolean hasExecuted = false;
 	private Task task;
 	
 	public AddCommand(String args) throws Exception {
@@ -124,21 +123,6 @@ public class AddCommand extends Command{
 			return "unable to add task";
 		}
 		
-		hasExecuted = true;
 		return "task added";
-	}
-	
-	@Override
-	public String undo() {
-		if (hasExecuted) {
-			try {
-				Magical.storage.deleteTask(task);
-				return "task deleted";
-			} catch (IOException e) {
-				return "unable to delete task";
-			}
-		} else {
-			return "cannot undo failed add command.";
-		}
 	}
 }

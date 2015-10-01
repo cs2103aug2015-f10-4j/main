@@ -10,7 +10,6 @@ public class EditCommand extends Command{
 	private String field;
 	private String value;
 	private String error = "";
-	private boolean hasExecuted = false;
 	private Task task;
 	private Task prevTask;
 	
@@ -133,25 +132,6 @@ public class EditCommand extends Command{
 			return "unable to edit task";
 		}
 		
-		hasExecuted = true;
 		return "Task edited.";
-	}
-	
-	@Override
-	public String undo() {
-		if (hasExecuted) {
-			if (prevTask == null) {
-				return "unable to undo edit";
-			}
-			try {
-				Magical.storage.deleteTask(task);
-				Magical.storage.createTask(prevTask);
-				return "Undo successful.";
-			} catch (IOException e) {
-				return "unable to undo edit";
-			}
-		} else {
-			return "cannot undo failed edit command.";
-		}
 	}
 }
