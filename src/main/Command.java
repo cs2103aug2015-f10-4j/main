@@ -87,10 +87,6 @@ public class Command {
 		return null;
 	}
 	
-	public String undo(){
-		return null;
-	}
-	
 	public boolean isUndoable(){
 		return true;
 	}
