@@ -105,6 +105,9 @@ public class EditCommand extends Command{
 		case "title":
 			task.setTitle(value);
 			break;
+		case "desc":
+			task.setDescription(value);
+			break;
 		case "due date":
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			try {
