@@ -47,7 +47,7 @@ public class Magical {
 		ArrayList<Task> newTaskList = new ArrayList<Task>(tasks.size());
 		try {
 			for(Task t : tasks) {
-				newTaskList.add((Task) t.clone());
+				newTaskList.add(t.copy());
 			}
 			return newTaskList;
 		} catch (Exception e) {
