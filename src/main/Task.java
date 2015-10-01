@@ -7,7 +7,7 @@ public class Task implements Serializable, Comparable<Task>, Cloneable {
 	static enum RecurrencePeriod {
 		DAILY, WEEKLY, MONTHLY, YEARLY
 	}
-	
+
 	private String type;
 	private String title;
 	private String description;
@@ -16,7 +16,7 @@ public class Task implements Serializable, Comparable<Task>, Cloneable {
 	private int endTime;
 	private RecurrencePeriod recurrence;
 	private Set<String> tags = new HashSet<String>();
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -80,58 +80,72 @@ public class Task implements Serializable, Comparable<Task>, Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
+
+	public Task copy() throws IOException, ClassNotFoundException {
+		Object obj = null;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream out = new ObjectOutputStream(bos);
+		out.writeObject(this);
+		out.flush();
+		out.close();
+
+		ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+		obj = in.readObject();
+		return (Task) obj;
+	}
+
 	public String getType() {
 		return type;
 	}
-	
+
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public Date getDueDate() {
 		return dueDate;
 	}
-	
+
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
-	
+
 	public int getStartTime() {
 		return startTime;
 	}
-	
+
 	public void setStartTime(int startTime) {
 		this.startTime = startTime;
 	}
-	
+
 	public int getEndTime() {
 		return endTime;
 	}
-	
+
 	public void setEndTime(int endTime) {
 		this.endTime = endTime;
 	}
-	
+
 	public RecurrencePeriod getRecurrence() {
 		return recurrence;
 	}
-	
+
 	public void setRecurrence(String str) {
 		if (str.equals("yearly")) {
 			this.recurrence = RecurrencePeriod.YEARLY;
@@ -143,7 +157,7 @@ public class Task implements Serializable, Comparable<Task>, Cloneable {
 			this.recurrence = RecurrencePeriod.DAILY;
 		}
 	}
-	
+
 	public int compareTo(Task task) {
 		return dueDate.compareTo(task.dueDate);
 	}
