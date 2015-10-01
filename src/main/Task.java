@@ -3,7 +3,7 @@ package main;
 import java.io.*;
 import java.util.*;
 
-public class Task implements Serializable, Comparable<Task> {
+public class Task implements Serializable, Comparable<Task>, Cloneable {
 	static enum RecurrencePeriod {
 		DAILY, WEEKLY, MONTHLY, YEARLY
 	}
@@ -77,6 +77,9 @@ public class Task implements Serializable, Comparable<Task> {
 		return true;
 	}
 
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 	public String getType() {
 		return type;
 	}

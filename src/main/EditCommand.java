@@ -3,7 +3,6 @@ package main;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 
 public class EditCommand extends Command{
 
@@ -13,6 +12,7 @@ public class EditCommand extends Command{
 	private String error = "";
 	private boolean hasExecuted = false;
 	private Task task;
+	private Task prevTask;
 	
 	public EditCommand(String args) throws Exception {
 		super(args);
@@ -93,7 +93,14 @@ public class EditCommand extends Command{
 	@Override
 	public String execute() {
 		task = Magical.ui.getLastTaskListDisplayed().get(taskID);
-		Task tempTask = task;		
+		try {
+			prevTask = (Task) task.clone();
+			Magical.storage.deleteTask(prevTask);
+		} catch (CloneNotSupportedException e1) {
+			prevTask = null;
+		} catch (IOException e) {
+			// TODO Fix Magical.storage.deleteTask(prevTask) location
+		}
 		switch (field.toLowerCase()) {
 		case "title":
 			task.setTitle(value);
@@ -120,21 +127,25 @@ public class EditCommand extends Command{
 		}
 		
 		try {
-			Magical.storage.updateTask(task);
+			Magical.storage.deleteTask(prevTask);
+			Magical.storage.createTask(task);
 		} catch (IOException e) {
 			return "unable to edit task";
 		}
 		
 		hasExecuted = true;
-		task = tempTask;
 		return "Task edited.";
 	}
 	
 	@Override
 	public String undo() {
 		if (hasExecuted) {
+			if (prevTask == null) {
+				return "unable to undo edit";
+			}
 			try {
-				Magical.storage.updateTask(task);
+				Magical.storage.deleteTask(task);
+				Magical.storage.createTask(prevTask);
 				return "Undo successful.";
 			} catch (IOException e) {
 				return "unable to undo edit";

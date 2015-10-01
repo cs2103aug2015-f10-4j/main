@@ -48,7 +48,7 @@ public class TagCommand extends Command {
 	}
 	
 	public String execute() {
-		Task task = Magical.ui.getLastTaskListDisplayed().get(taskID);
+		task = Magical.ui.getLastTaskListDisplayed().get(taskID);
 		Set<String> tags = task.getTags();
 		tags.add(tag);
 		task.setTags(tags);
