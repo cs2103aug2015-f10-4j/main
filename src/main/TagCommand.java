@@ -49,14 +49,13 @@ public class TagCommand extends Command {
 	}
 	
 	public String execute() {
-		task = Magical.ui.getLastTaskList().get(taskID);
+		prevTask = Magical.ui.getLastTaskList().get(taskID);
 		try {
-			prevTask = task.copy();
-			Magical.storage.deleteTask(prevTask);
+			task = prevTask.copy();
 		} catch (IOException e) {
-			// TODO Fix Magical.storage.deleteTask(prevTask) location
+			return "unable to add tag to task";
 		} catch (ClassNotFoundException e) {
-			prevTask = null;
+			return "unable to add tag to task";
 		}
 
 		Set<String> tags = task.getTags();

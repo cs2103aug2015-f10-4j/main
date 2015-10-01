@@ -92,14 +92,11 @@ public class EditCommand extends Command{
 	
 	@Override
 	public String execute() {
-		task = Magical.ui.getLastTaskList().get(taskID);
+		prevTask = Magical.ui.getLastTaskList().get(taskID);
 		try {
-			prevTask = (Task) task.clone();
-			Magical.storage.deleteTask(prevTask);
+			task = (Task) task.clone();
 		} catch (CloneNotSupportedException e1) {
-			prevTask = null;
-		} catch (IOException e) {
-			// TODO Fix Magical.storage.deleteTask(prevTask) location
+			return "unable to edit task";
 		}
 		switch (field.toLowerCase()) {
 		case "title":
