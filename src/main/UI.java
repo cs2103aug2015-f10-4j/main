@@ -3,16 +3,16 @@ package main;
 import java.util.*;
 
 public class UI {
-
-	private static final String MESSAGE_WELCOME = "*:.。.☆ Welcome to Magical! ☆.。.:*\r\n";
-	private static final String MESSAGE_HELP = "PLACEHOLDER HELP MESSAGE.\r\n";
-	private static final String MESSAGE_GOODBYE = "*:.。.☆ Farewell! ☆.。.:*\r\n";
+	private static final String endL = System.getProperty("line.separator");
+	private static final String MESSAGE_WELCOME = "*:.。.☆ Welcome to Magical! ☆.。.:*";
+	private static final String MESSAGE_HELP = "PLACEHOLDER HELP MESSAGE." + endL;
+	private static final String MESSAGE_GOODBYE = "*:.。.☆ Farewell! ☆.。.:*" + endL;
 	private static final String MESSAGE_COMMAND_PROMPT = "What would you like to do?";
 	private static final String MESSAGE_ERROR = "An error has occurred.";
 	
 	private static final String DIVIDER = "======================";
 
-	private static final String FORMAT_HEADER = DIVIDER + "\r\n%s\r\n" + DIVIDER;
+	private static final String FORMAT_HEADER = DIVIDER + endL + "%s" + endL + DIVIDER;
 	private static final String FORMAT_SHORT_TASK = "%s | Due: %s";
 	private static final String FORMAT_SHORT_EVENT = "%s on %s at %s";
 	
