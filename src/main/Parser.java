@@ -1,12 +1,22 @@
 package main;
 
 public class Parser {
-
-	private static final String[] COMMANDS = {"add", "block", "confirm", "delete", 
-			"edit", "done", "show", "date", "undo", "search", "tag", 
-			"untag", "help", "exit"};
-	private static final String MESSAGE_EXECUTE_ERROR = "Parser has not been executed";
-	private static final String MESSAGE_INVALID_COMMAND = "Invalid command";
+	private static final String CMD_ADD = "add";
+	private static final String CMD_DELETE = "delete";
+	private static final String CMD_UNDO = "undo";
+	private static final String CMD_BLOCK = "block";
+	private static final String CMD_CONFIRM = "confirm";
+	private static final String CMD_DATE = "date";
+	private static final String CMD_DONE = "done";
+	private static final String CMD_HELP = "help";
+	private static final String CMD_SEARCH = "search";
+	private static final String CMD_SHOW = "show";
+	private static final String CMD_TAG = "tag";
+	private static final String CMD_UNTAG = "untag";
+	private static final String CMD_EXIT = "exit";
+	private static final String CMD_EDIT = "edit";
+	
+	static final String MESSAGE_INVALID_COMMAND = "Invalid command";
 	
 	public static Command parse(String userInput) throws Exception{
 		if(userInput != null){
@@ -37,31 +47,31 @@ public class Parser {
 	private static Command inputValidation(String command, String args) throws Exception{
 		args = args == null ? "" : args;
 		switch (command) {
-			case "add":
+			case CMD_ADD:
 				return new AddCommand(args);
-			case "block":
+			case CMD_BLOCK:
 				return new BlockCommand(args);
-			case "edit":
+			case CMD_EDIT:
 				return new EditCommand(args);
-			case "search":
+			case CMD_SEARCH:
 				return new SearchCommand(args);
-			case "date":
+			case CMD_DATE:
 				return new DateCommand(args);
-			case "tag":
+			case CMD_TAG:
 				return new TagCommand(args);
-			case "untag":
+			case CMD_UNTAG:
 				return new UntagCommand(args);
-			case "delete":
+			case CMD_DELETE:
 				return new DelCommand(args);
-			case "undo":
+			case CMD_UNDO:
 				return new UndoCommand(args);
-			case "done":
+			case CMD_DONE:
 				return new DoneCommand(args);
-			case "show":
+			case CMD_SHOW:
 				return new ShowCommand(args);
-			case "help":
+			case CMD_HELP:
 				return new HelpCommand(args);
-			case "exit":
+			case CMD_EXIT:
 				return new ExitCommand(args);
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND);
