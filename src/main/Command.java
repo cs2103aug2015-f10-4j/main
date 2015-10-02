@@ -15,7 +15,7 @@ public class Command {
 	}
 	
 	protected boolean checkRecurrence(String recurrence) {
-		if(recurrence.equals(null)){
+		if(recurrence == null){
 			return true;
 		}
 		String r = recurrence.toLowerCase();
