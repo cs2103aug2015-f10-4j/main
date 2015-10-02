@@ -18,6 +18,8 @@ public class AddCommand extends Command{
 	private String error = "";
 	private Task task;
 	
+	private final String MESSAGE_ARGUMENT_PARAMS = "type/title/description/due date/start time/end time/recurrence";
+	
 	public AddCommand(String args) throws Exception {
 		super(args);
 		
@@ -60,7 +62,7 @@ public class AddCommand extends Command{
 			}
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			throw new Exception("\n----- Invalid arguments ---- \n" + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 	
