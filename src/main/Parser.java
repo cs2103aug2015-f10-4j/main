@@ -3,7 +3,7 @@ package main;
 public class Parser {
 
 	private static final String[] COMMANDS = {"add", "block", "confirm", "delete", 
-			"edit", "done", "show", "date", "undo", "search", "remind", "tag", 
+			"edit", "done", "show", "date", "undo", "search", "tag", 
 			"untag", "help", "exit"};
 	static final String MESSAGE_EXECUTE_ERROR = "Parser has not been executed";
 	static final String MESSAGE_INVALID_COMMAND = "Invalid command";
