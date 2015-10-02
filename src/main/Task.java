@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Task implements Serializable, Comparable<Task>, Cloneable {
 	static enum RecurrencePeriod {
-		DAILY, WEEKLY, MONTHLY, YEARLY
+		DAILY, WEEKLY, MONTHLY, YEARLY, NONE
 	}
 
 	private String type;
@@ -147,7 +147,9 @@ public class Task implements Serializable, Comparable<Task>, Cloneable {
 	}
 
 	public void setRecurrence(String str) {
-		if (str.equals("yearly")) {
+		if(str == null){
+			this.recurrence = RecurrencePeriod.NONE;
+		} else if (str.equals("yearly")) {
 			this.recurrence = RecurrencePeriod.YEARLY;
 		} else if (str.equals("monthly")) {
 			this.recurrence = RecurrencePeriod.MONTHLY;
