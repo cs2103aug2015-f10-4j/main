@@ -1,22 +1,18 @@
 package main;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Magical {
 	private static final String CONFIG_STORAGE_FILENAME = "storage.txt"; 
-
-	protected static UI ui = new UI();
-	private static Parser parser;
+	
 	protected static Storage storage;
 	protected static Stack<ArrayList<Task>> undoHistory;
 
 	public static void main(String args[]) {
 		try {
 			init();
-			UI.start();
+			startApp();
 			startREPL();
 		} catch (Exception e) {
 			UI.displayErrorMessage();
@@ -24,17 +20,41 @@ public class Magical {
 		}
 	}
 
+	private static void startApp() {
+		UI.displayWelcomeMessage();
+		ArrayList<Task> upcomingTasks = upcomingTasks();
+		UI.displayTaskList("Upcoming tasks", upcomingTasks);
+		
+	}
+
+	private static ArrayList<Task> upcomingTasks() {
+		ArrayList<Task> upcomingTasks = new ArrayList<Task>();
+		ArrayList<Task> allTasks = storage.getTasks();
+		Calendar cal = Calendar.getInstance();
+		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+		Date today = cal.getTime();
+		cal.add(Calendar.DATE, 3);
+		Date threeDaysFromToday = cal.getTime();
+		for (Task t : allTasks) {
+			if (t.getDueDate().after(today) && t.getDueDate().before(threeDaysFromToday)) {
+				upcomingTasks.add(t);
+			}
+		}
+		return upcomingTasks;
+	}
+
 	private static void startREPL() throws Exception {
 		while(true) {
 			try {
-				String userInput = ui.readInput();
-				Command command = parser.parse(userInput);
+				String userInput = UI.readInput();
+				Command command = Parser.parse(userInput);
 				ArrayList<Task> prevTaskList = listClone(storage.getTasks());
 				String message = command.execute();
+				UI.showToUser(message);
 				if (command.isUndoable()) {
 					undoHistory.push(prevTaskList);
+					UI.displayTaskList("Tasks", storage.getTasks());
 				}
-				UI.showToUser(message);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -54,7 +74,6 @@ public class Magical {
 	}
 
 	public static void init() throws IOException {
-		parser = new Parser();
 		storage = new Storage(CONFIG_STORAGE_FILENAME);
 		undoHistory = new Stack<ArrayList<Task>>();
 	}
