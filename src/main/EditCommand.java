@@ -93,7 +93,7 @@ public class EditCommand extends Command{
 	public String execute() {
 		prevTask = Magical.ui.getLastTaskList().get(taskID);
 		try {
-			task = (Task) task.clone();
+			task = (Task) prevTask.clone();
 		} catch (CloneNotSupportedException e1) {
 			return "unable to edit task";
 		}
