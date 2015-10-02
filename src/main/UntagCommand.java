@@ -48,27 +48,26 @@ public class UntagCommand extends Command {
 	}
 	
 	public String execute() {
-		task = Magical.ui.getLastTaskList().get(taskID);
+		prevTask = UI.getLastTaskList().get(taskID);
 		try {
-			prevTask = (Task) task.clone();
-			Magical.storage.deleteTask(prevTask);
-		} catch (CloneNotSupportedException e1) {
-			prevTask = null;
+			task = prevTask.copy();
 		} catch (IOException e) {
-			// TODO Fix Magical.storage.deleteTask(prevTask) location
+			return "unable to remove tag from task";
+		} catch (ClassNotFoundException e) {
+			return "unable to remove tag from task";
 		}
-		
+
 		Set<String> tags = task.getTags();
 		tags.remove(tag);
 		task.setTags(tags);
-		
+
 		try {
 			Magical.storage.deleteTask(prevTask);
 			Magical.storage.createTask(task);
 		} catch (IOException e) {
 			return "unable to remove tag from task";
 		}
-		
+
 		return tag + " removed from task";
 	}
 }
