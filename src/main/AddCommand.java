@@ -65,7 +65,7 @@ public class AddCommand extends Command{
 	}
 	
 	private boolean checkCount(){
-		if(this.count != 7 || this.count != 6){
+		if(this.count != 7 && this.count != 6){
 			return false;
 		} else {
 			return true;
