@@ -5,10 +5,10 @@ public class Parser {
 	private static final String[] COMMANDS = {"add", "block", "confirm", "delete", 
 			"edit", "done", "show", "date", "undo", "search", "tag", 
 			"untag", "help", "exit"};
-	static final String MESSAGE_EXECUTE_ERROR = "Parser has not been executed";
-	static final String MESSAGE_INVALID_COMMAND = "Invalid command";
+	private static final String MESSAGE_EXECUTE_ERROR = "Parser has not been executed";
+	private static final String MESSAGE_INVALID_COMMAND = "Invalid command";
 	
-	public Command parse(String userInput) throws Exception{
+	public static Command parse(String userInput) throws Exception{
 		if(userInput != null){
 			String trimInput = userInput.trim();
 			String command = splitCommand(trimInput);
@@ -19,12 +19,12 @@ public class Parser {
 		}
 	}
 	
-	private String splitCommand(String userInput) {
+	private static String splitCommand(String userInput) {
 		String[] toSplit = userInput.split(" ", 2);
 		return toSplit[0].toLowerCase().trim();
 	}
 
-	private String splitArgs(String userInput) {
+	private static String splitArgs(String userInput) {
 		String[] toSplit = userInput.split(" ", 2);
 		if(toSplit.length > 1){
 			return toSplit[1].trim();
@@ -34,7 +34,7 @@ public class Parser {
 	}
 	
 	//checks if command and args are valid
-	private Command inputValidation(String command, String args) throws Exception{
+	private static Command inputValidation(String command, String args) throws Exception{
 		args = args == null ? "" : args;
 		switch (command) {
 			case "add":
