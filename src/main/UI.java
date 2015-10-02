@@ -17,19 +17,15 @@ public class UI {
 	private static final String FORMAT_SHORT_EVENT = "%s on %s at %s";
 	
 	private static Scanner scanner = new Scanner(System.in);
-	private HashMap<String, Task> lastTaskList;
+	private static HashMap<String, Task> lastTaskList;
 	
-	public HashMap<String, Task> getLastTaskList() {
+	public static HashMap<String, Task> getLastTaskList() {
 		return lastTaskList;
 	}
 
 	/*
 	 * PUBLIC STATIC METHODS
 	 * */
-	
-	public static void start() {
-		displayWelcomeMessage();
-	}
 	
 	public static String readInput() {
 		showToUser(MESSAGE_COMMAND_PROMPT);
@@ -76,7 +72,7 @@ public class UI {
 		
 	}
 	
-	public void displayTaskList(String header, ArrayList<Task> taskList) {
+	public static void displayTaskList(String header, ArrayList<Task> taskList) {
 		lastTaskList = new HashMap<String, Task>();
 		displayHeader(header);
 		Iterator<Task> iterator = taskList.iterator();

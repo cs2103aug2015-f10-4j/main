@@ -86,7 +86,7 @@ public class DateCommand extends Command {
 				filteredResults.add(t);
 			}
 		}
-		Magical.ui.displayTaskList("Search results", filteredResults);
+		UI.displayTaskList("Search results", filteredResults);
 		return null;
 	}
 

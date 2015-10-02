@@ -48,7 +48,7 @@ public class TagCommand extends Command {
 	}
 	
 	public String execute() {
-		prevTask = Magical.ui.getLastTaskList().get(taskID);
+		prevTask = UI.getLastTaskList().get(taskID);
 		try {
 			task = prevTask.copy();
 		} catch (IOException e) {

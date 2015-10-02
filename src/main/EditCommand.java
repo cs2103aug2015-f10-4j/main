@@ -91,7 +91,7 @@ public class EditCommand extends Command{
 	
 	@Override
 	public String execute() {
-		prevTask = Magical.ui.getLastTaskList().get(taskID);
+		prevTask = UI.getLastTaskList().get(taskID);
 		try {
 			task = (Task) prevTask.clone();
 		} catch (CloneNotSupportedException e1) {
