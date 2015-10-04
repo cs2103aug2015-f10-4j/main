@@ -73,12 +73,38 @@ public class StorageTest extends TestCase {
 		// assertEquals(sortedList, TextBuddyFeatures.sortContents(listToTest));
 	}
 
-	public void testUpdateTask() {
+	public void testUpdateTask() throws IOException {
 		// supposed to put the updated task back into the same index
 		// create an arraylist here with the already-updated element
+		// create storage array with the old element
 		// insert the new updated task using Storage methods
 		// get the updated arraylist
 		// compare both arraylists
+		Storage testStorage = new Storage("mytasks.txt");
+		
+		testStorage.clearTaskList(); // clears previous content
+		
+		testStorage.createTask(task1);
+		testStorage.createTask(task2);
+		testStorage.createTask(event1);
+		testStorage.createTask(event2); //adding original items into Storage array
+		
+		event1.setType("event");
+		event1.setTitle("friend's birthday");
+		event1.setDescription("need to buy present");
+		event1.getStartTime();
+		event1.setRecurrence("yearly"); // updating the content of event1
+		
+		ArrayList<Task> localArray = new ArrayList<Task> ();
+		
+		localArray.add(task1);
+		localArray.add(task2);
+		localArray.add(event1); // adding the updated element into localArray
+		localArray.add(event2); // adding items into local array
+		
+		testStorage.updateTask(event1); // updating with the newly updated event1
+		ArrayList<Task> testingArray = testStorage.readTaskList();
+		assertEquals(localArray, testingArray);
 
 	}
 
