@@ -53,13 +53,9 @@ public class StorageTest extends TestCase {
 
 	// tests whether the file specified will be created when the constructor is called
 	// successfully tested
-	public void testStorageConstructor() {
-		try {
+	public void testStorageConstructor() throws IOException {
 			Storage testStorage = new Storage("mytasks.txt");
 			assertTrue(testStorage.fileExist());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void testCreateTask() {
@@ -92,10 +88,23 @@ public class StorageTest extends TestCase {
 		// compare both arraylists
 	}
 
-	public void testClearTaskList() {
+	public void testClearTaskList() throws IOException {
 		// create an empty arraylist to compare with
 		// clear arraylist using the method
 		// compare both arraylists
+		ArrayList<Task> localArray = new ArrayList<Task> (); // empty array to compare with
+		Storage testStorage = new Storage("mytasks.txt");
+		
+		testStorage.clearTaskList(); // clears previous content
+		
+		testStorage.createTask(task1);
+		testStorage.createTask(task2);
+		testStorage.createTask(event1);
+		testStorage.createTask(event2); //adding items into Storage array
+		
+		testStorage.clearTaskList();
+		ArrayList<Task> testingArray = testStorage.readTaskList();
+		assertEquals(localArray, testingArray);
 	}
 
 	public void testGetTaskPos() throws IOException {
