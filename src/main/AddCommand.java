@@ -3,6 +3,7 @@ package main;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AddCommand extends Command{
@@ -120,11 +121,24 @@ public class AddCommand extends Command{
 		task.setEndTime(Integer.parseInt(endTime));
 		
 		try {
+			String retMsg = "task added";
+			if (isClashing()) {
+				retMsg += ". Another task exists on the same date.";
+			}
 			Magical.storage.createTask(task);
+			return retMsg;
 		} catch (IOException e) {
 			return "unable to add task";
 		}
-		
-		return "task added";
+	}
+
+	private boolean isClashing() {
+		ArrayList<Task> tasks = Magical.storage.getTasks();
+		for (Task t : tasks) {
+			if (t.getDueDate().equals(task.getDueDate())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
