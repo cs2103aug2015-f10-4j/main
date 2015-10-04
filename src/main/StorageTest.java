@@ -82,10 +82,28 @@ public class StorageTest extends TestCase {
 
 	}
 
-	public void testDeleteTask() {
+	public void testDeleteTask() throws IOException {
 		// create an arraylist here to compare with
 		// delete the same task and read out the arraylist
 		// compare both arraylists
+		ArrayList<Task> localArray = new ArrayList<Task> ();
+		
+		localArray.add(task1);
+		localArray.add(task2);
+		localArray.add(event2); // adding items into local array
+		
+		Storage testStorage = new Storage("mytasks.txt");
+		
+		testStorage.clearTaskList(); // clears previous content
+		
+		testStorage.createTask(task1);
+		testStorage.createTask(task2);
+		testStorage.createTask(event1);
+		testStorage.createTask(event2); //adding items into Storage array
+		
+		testStorage.deleteTask(event1);
+		ArrayList<Task> testingArray = testStorage.readTaskList();
+		assertEquals(localArray, testingArray);
 	}
 
 	public void testClearTaskList() throws IOException {
