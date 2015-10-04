@@ -58,11 +58,30 @@ public class StorageTest extends TestCase {
 			assertTrue(testStorage.fileExist());
 	}
 
-	public void testCreateTask() {
+	public void testCreateTask() throws IOException {
 		// create an arraylist here to compare with
 		// use createTask() to update the arraylist
 		// use readTask() to read the updated arraylist
 		// compare both arraylists
+		ArrayList<Task> localArray = new ArrayList<Task> ();
+		
+		localArray.add(task1);
+		localArray.add(task2);
+		localArray.add(event1); // adding the updated element into localArray
+		localArray.add(event2); // adding items into local array
+		
+		Storage testStorage = new Storage("mytasks.txt");
+		
+		testStorage.clearTaskList(); // clears previous content
+		
+		testStorage.createTask(task1);
+		testStorage.createTask(task2);
+		testStorage.createTask(event1);
+		testStorage.createTask(event2); //adding original items into Storage array
+		
+		ArrayList<Task> testingArray = testStorage.getTasks();
+		assertEquals(localArray, testingArray);
+		
 	}
 
 	public void testGetTasks() throws IOException {
