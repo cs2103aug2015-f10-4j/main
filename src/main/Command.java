@@ -7,6 +7,7 @@ public class Command {
 	protected String args;
 	protected String[] argsArray;
 	protected int count;
+	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n"; 
 
 	public Command(String args){
 		this.args = args;

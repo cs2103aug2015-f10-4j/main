@@ -13,6 +13,8 @@ public class EditCommand extends Command{
 	private Task task;
 	private Task prevTask;
 	
+	private static final String MESSAGE_ARGUMENT_PARAMS = "edit task_id/field/value";
+	
 	public EditCommand(String args) throws Exception {
 		super(args);
 		
@@ -45,11 +47,11 @@ public class EditCommand extends Command{
 //				error += "Invalid field.\n";
 //			}
 			if (!error.equals("")) {
-				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 	

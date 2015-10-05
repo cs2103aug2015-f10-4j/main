@@ -11,6 +11,8 @@ public class UntagCommand extends Command {
 	private Task task;
 	private Task prevTask;
 	
+	private static final String MESSAGE_ARGUMENT_PARAMS = "untag task_id/tag_name";
+	
 	public UntagCommand(String args) throws Exception {
 		super(args);
 		
@@ -23,11 +25,11 @@ public class UntagCommand extends Command {
 			}
 
 			if (!error.equals("")) {
-				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 	

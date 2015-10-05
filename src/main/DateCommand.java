@@ -12,6 +12,8 @@ public class DateCommand extends Command {
 	private String error = "";
 	private Date start;
 	private Date end;
+	
+	private static final String MESSAGE_ARGUMENT_PARAMS = "date start date/end date";
 
 	public DateCommand(String args) throws Exception {
 		super(args);
@@ -46,11 +48,11 @@ public class DateCommand extends Command {
 			}
 
 			if (!error.equals("")) {
-				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 

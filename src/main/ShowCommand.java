@@ -4,6 +4,8 @@ public class ShowCommand extends Command{
 	private String taskID;
 	private String error = "";
 	
+	private static final String MESSAGE_ARGUMENT_PARAMS = "show task_id";
+	
 	public ShowCommand(String args) throws Exception{
 		super(args);
 		
@@ -13,11 +15,11 @@ public class ShowCommand extends Command{
 				error += "Task ID: " + taskID + "\n";
 			}
 			if (!error.equals("")) {
-				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}			
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 	

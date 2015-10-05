@@ -8,6 +8,8 @@ public class SearchCommand extends Command {
 	private String type;
 	private String error = "";
 	
+	private static final String MESSAGE_ARGUMENT_PARAMS = "\n1. search\n2. search query/type";
+	
 	public SearchCommand(String args) throws Exception {
 		super(args);
 		
@@ -25,11 +27,11 @@ public class SearchCommand extends Command {
 			}
 
 			if (!error.equals("")) {
-				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 	

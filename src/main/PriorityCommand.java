@@ -6,7 +6,7 @@ public class PriorityCommand extends Command{
 	private String priority;
 	private String error = "";
 	
-	private final String MESSAGE_ARGUMENT_PARAMS = "task id/priority";
+	private static final String MESSAGE_ARGUMENT_PARAMS = "set task id/priority";
 	
 	public PriorityCommand(String args) throws Exception{
 		super(args);
@@ -21,11 +21,11 @@ public class PriorityCommand extends Command{
 				error += "Priority: " + priority + "\n";
 			}
 			if (!error.equals("")) {
-				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}	
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
+			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 	

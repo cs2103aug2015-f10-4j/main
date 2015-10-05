@@ -8,6 +8,8 @@ public class DoneCommand extends Command{
 	private String error = "";
 	private Task task;
 	
+	private static final String MESSAGE_ARGUMENT_PARAMS = "done task_id";
+	
 	public DoneCommand(String args) throws Exception{
 		super(args);
 		
@@ -17,11 +19,11 @@ public class DoneCommand extends Command{
 				error += "Task ID: " + taskID + "\n";
 			}
 			if (!error.equals("")) {
-				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}			
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 	
