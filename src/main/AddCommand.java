@@ -8,7 +8,6 @@ import java.util.Arrays;
 
 public class AddCommand extends Command{
 
-	private String[] argsArray;
 	private String type;
 	private String title;
 	private String desc;

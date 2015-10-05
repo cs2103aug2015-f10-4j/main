@@ -15,6 +15,7 @@ public class Parser {
 	private static final String CMD_UNTAG = "untag";
 	private static final String CMD_EXIT = "exit";
 	private static final String CMD_EDIT = "edit";
+	private static final String CMD_PRIORITY = "set";
 	
 	static final String MESSAGE_INVALID_COMMAND = "Invalid command";
 	
@@ -73,6 +74,8 @@ public class Parser {
 				return new HelpCommand(args);
 			case CMD_EXIT:
 				return new ExitCommand(args);
+			case CMD_PRIORITY:
+				return new PriorityCommand(args);
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND);
 		}

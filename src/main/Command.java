@@ -83,6 +83,16 @@ public class Command {
 	protected boolean checkTaskID(String taskID){
 		return UI.getLastTaskList().containsKey(taskID);
 	}
+	
+	protected boolean checkPriority(String priority){
+		try {
+			int p = Integer.parseInt(priority);
+			return (p >= 1 && p <= 10);
+		} catch (Exception e){
+			return false;
+		}
+	}
+	
 	public String execute(){
 		return null;
 	}
