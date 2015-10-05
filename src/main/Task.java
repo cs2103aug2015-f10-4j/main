@@ -16,6 +16,7 @@ public class Task implements Serializable, Comparable<Task>, Cloneable {
 	private int endTime;
 	private RecurrencePeriod recurrence;
 	private Set<String> tags = new HashSet<String>();
+	private int priority;
 
 	@Override
 	public int hashCode() {
@@ -170,5 +171,13 @@ public class Task implements Serializable, Comparable<Task>, Cloneable {
 
 	public void setTags(Set<String> tags) {
 		this.tags = tags;
+	}
+	
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 }
