@@ -5,17 +5,17 @@ public class GUIController {
 	GUIModel model;
 	GUIView view;
 
-	public GUIController(GUIModel m, GUIView v) {
-		model = m;
-		view = v;
+	public GUIController(GUIModel model, GUIView view) {
+		this.model = model;
+		this.view = view;
 	}
 	
-	public void setModel(GUIModel m) {
-		model = m;
+	public void setModel(GUIModel model) {
+		this.model = model;
 	}
 	
-	public void setView(GUIView v) {
-		view = v;
+	public void setView(GUIView view) {
+		this.view = view;
 	}
 
 }

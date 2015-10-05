@@ -31,24 +31,6 @@ public class GUIView extends Application {
 	
 	public ArrayList<Task> tasksToDisplay = new ArrayList<Task>();
 	public ArrayList<Task> eventsToDisplay = new ArrayList<Task>();
-
-	// TEST
-	private void makeTestTasks() {
-		Task task1 = new Task();
-		Task task2 = new Task();
-		task1.setTitle("Get milk");
-		task1.setDueDate(new Date(115, 8, 30));
-		task2.setTitle("Do homework");
-		task2.setDueDate(new Date(115, 9, 4));
-		tasksToDisplay.add(task1);
-		tasksToDisplay.add(task2);
-		
-		Task event1 = new Task();
-		event1.setTitle("Dinner with Prof");
-		event1.setDueDate(new Date(115, 9, 3, 19, 30));
-		eventsToDisplay.add(event1);
-	}
-	
 	
 	private Label makeHeader(String text) {
 		Label header = new Label(text);
@@ -56,13 +38,15 @@ public class GUIView extends Application {
 		return header;
 	}
 	
-	private void makeVBox() {
+	private void makeVBox(boolean displayNotificationBar) {
     	vbox.setPadding(new Insets(VBOX_PADDING, VBOX_PADDING, VBOX_PADDING, VBOX_PADDING));
     	vbox.getChildren().addAll(makeHeader("To-Do"), makeTaskTable(tasksToDisplay),
     			makeHeader("Upcoming Events"), makeEventTable(eventsToDisplay), makeCommandLine(),
     			whatYouJustSaid);
 
 	}
+	
+	private void makeTableVBox(int numTables, String[] tableHeaders)
 
 	private TableView<Task> makeTaskTable(ArrayList<Task> taskList) {
 		
