@@ -11,7 +11,14 @@ public class Command {
 
 	public Command(String args){
 		this.args = args;
-		this.argsArray = args.split("/");
+		this.argsArray = args.split("(?<![\\\\])/");
+		for (int i = 0; i < argsArray.length; i++){
+			String param = argsArray[i];
+			
+			param = param.replaceAll("(?<![\\\\])\\\\", "");
+			argsArray[i] = param;
+			
+		}
 		this.count = argsArray.length;
 	}
 	
@@ -101,4 +108,12 @@ public class Command {
 	public boolean isUndoable(){
 		return true;
 	}
+	
+	/* Test
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		Command c = new Command(s.nextLine());
+		System.out.println(Arrays.toString(c.argsArray));
+	}
+	//*/
 }
