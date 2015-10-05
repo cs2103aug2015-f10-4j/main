@@ -77,7 +77,7 @@ public class Parser {
 			case CMD_PRIORITY:
 				return new PriorityCommand(args);
 			default:
-				throw new Exception(MESSAGE_INVALID_COMMAND);
+				throw new Exception(MESSAGE_INVALID_COMMAND + ": " + command);
 		}
 	}
 }
