@@ -15,15 +15,14 @@ import javafx.scene.layout.*;
 import javafx.scene.input.*;
 import javafx.stage.Stage;
 
-public class GUI extends Application {
+public class GUIView extends Application {
 	
 	private static final int VBOX_PADDING = 10;
 	private static final int DEFAULT_WINDOW_WIDTH = 600;
 	private static final int DEFAULT_WINDOW_HEIGHT = 800;
 	
 	private Label whatYouJustSaid = new Label("");
-	
-	
+
 	private TableView<Task> eventTable = new TableView<Task>();
 	
 	private VBox vbox = new VBox(VBOX_PADDING);
