@@ -48,4 +48,9 @@ public class PriorityCommand extends Command{
 			return true;
 		}
 	}
+	
+	@Override
+	public String execute(){
+		return null;
+	}
 }
