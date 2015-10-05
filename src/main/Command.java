@@ -59,14 +59,14 @@ public class Command {
 		}
 	}
 	
-	protected boolean checkFloatingTask(String date, String type){
-		if(date.equals("") && type.equals("task")){
+	protected boolean checkFloat(String time, String type){
+		if(time.equals("") && type.equals("task")){
 			return true;
 		} else {
 			return false;
 		}
 	}
-
+	
 	protected boolean checkTitle(String title) {
 		if(title.equals("")){
 			return false;
@@ -101,5 +101,4 @@ public class Command {
 	public boolean isUndoable(){
 		return true;
 	}
-	
 }

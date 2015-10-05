@@ -18,7 +18,7 @@ public class AddCommand extends Command{
 	private String error = "";
 	private Task task;
 	
-	private static final String MESSAGE_ARGUMENT_PARAMS = "add type/title/description/due date"
+	private static final String MESSAGE_ARGUMENT_PARAMS = "\nadd type/title/description/due date"
 			+ "/start time/end time/recurrence";
 	
 	public AddCommand(String args) throws Exception {
@@ -88,15 +88,15 @@ public class AddCommand extends Command{
 	}
 	
 	public boolean validDueDate(){
-		return checkDate(this.dueDate) || checkFloatingTask(this.dueDate, this.type);
+		return checkDate(this.dueDate) || checkFloat(this.dueDate, this.type);
 	}
 	
 	public boolean validStartTime(){
-		return checkTime(this.startTime);
+		return checkTime(this.startTime) || checkFloat(this.startTime, this.type);
 	}
 	
 	public boolean validEndTime(){
-		return checkTime(this.endTime);
+		return checkTime(this.endTime) || checkFloat(this.endTime, this.type);
 	}
 	
 	public boolean validRecurrence(){
