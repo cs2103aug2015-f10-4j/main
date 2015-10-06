@@ -28,8 +28,6 @@ public class UITest extends TestCase {
 		assertEquals("*:.。.☆ Welcome to Magical! ☆.。.:*" + endL, outContent.toString());
 	}
 	
-<<<<<<< HEAD
-=======
 	public static void testDisplayTaskDetails() {
 		Task myTask = new Task();
 		myTask.setTitle("Do 2103 homework");
@@ -38,7 +36,4 @@ public class UITest extends TestCase {
 		UI.displayTaskDetails(myTask);
 		String expected = "Do 2103 homework";
 	}
-	
-	
->>>>>>> master
 }
