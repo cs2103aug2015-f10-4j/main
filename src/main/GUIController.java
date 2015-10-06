@@ -2,20 +2,24 @@ package main;
 
 public class GUIController {
 	
-	GUIModel model;
-	GUIView view;
-
-	public GUIController(GUIModel model, GUIView view) {
-		this.model = model;
-		this.view = view;
+	public static GUIModel model = new GUIModel();
+	public static GUIView view = new GUIView();
+	
+	public static void setModel(GUIModel m) {
+		model = m;
 	}
 	
-	public void setModel(GUIModel model) {
-		this.model = model;
+	public static void setView(GUIView v) {
+		view = v;
 	}
 	
-	public void setView(GUIView view) {
-		this.view = view;
+	public static void start() {
+		view.taskList = model.taskList;
+		view.launch();
+	}
+	
+	public static void update() {
+		
 	}
 
 }

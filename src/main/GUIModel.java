@@ -1,26 +1,24 @@
 package main;
 
+import java.util.*;
+
 public class GUIModel {
 	
 	private boolean displayNotificationBar;
 	private String notificationMessage;
-	private String[] tableHeaders;
-	private int numTables;
 	private String errorMessage;
 	
-	public GUIModel() {
-	}
+	public ArrayList<Task> taskList = new ArrayList<Task>();
 	
-	public void setNumTables(int i) {
-		this.numTables = i;
+	public GUIModel() {
 	}
 	
 	public void setErrorMessage(String message) {
 		this.errorMessage = message;
 	}
 	
-	public void setTableHeaders(String[] headerArray) {
-		this.tableHeaders = headerArray;
+	public void setTaskList(ArrayList<Task> tList) {
+		taskList = tList;
 	}
 	
 	

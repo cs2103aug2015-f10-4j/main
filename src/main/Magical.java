@@ -21,8 +21,13 @@ public class Magical {
 	}
 
 	private static void startApp() {
+		
+		GUIController guiController = new GUIController();
+		
 		UI.displayWelcomeMessage();
 		ArrayList<Task> upcomingTasks = upcomingTasks();
+		guiController.model.taskList = upcomingTasks;
+		guiController.start();
 		UI.displayTaskList("Upcoming tasks", upcomingTasks);
 		
 	}

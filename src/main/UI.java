@@ -4,6 +4,7 @@ import java.util.*;
 
 public class UI {
 	private static final String endL = System.getProperty("line.separator");
+	
 	private static final String MESSAGE_WELCOME = "*:.。.☆ Welcome to Magical! ☆.。.:*";
 	private static final String MESSAGE_HELP = "PLACEHOLDER HELP MESSAGE." + endL;
 	private static final String MESSAGE_GOODBYE = "*:.。.☆ Farewell! ☆.。.:*" + endL;
