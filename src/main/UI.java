@@ -67,8 +67,8 @@ public class UI {
 			}
 			tagString += iterator.next();
 		}
-		showToUser("Description: " + task.getDescription() +
-				"\nDue Date: " + makeShortDate(task.getDueDate()) + "\nTags: " + tagString);
+		showToUser("Description: " + task.getDescription() + endL +
+				"Due Date: " + makeShortDate(task.getDueDate()) + endL + "Tags: " + tagString);
 		
 	}
 	
