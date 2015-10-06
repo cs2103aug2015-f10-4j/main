@@ -231,9 +231,7 @@ public class StorageTest extends TestCase {
 		
 		testStorage.writeTaskList();
 		ArrayList<Task> testingArray = testStorage.readTaskList();
-		assertEquals(localArray, testingArray);
-		
-		
+		assertEquals(localArray, testingArray);		
 	}
 	
 
