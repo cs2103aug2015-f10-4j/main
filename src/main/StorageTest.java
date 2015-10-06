@@ -166,6 +166,7 @@ public class StorageTest extends TestCase {
 		ArrayList<Task> testingArray = testStorage.readTaskList();
 		assertEquals(localArray, testingArray);
 	}
+	
 
 	public void testClearTaskList() throws IOException {
 		// create an empty arraylist to compare with
@@ -258,6 +259,8 @@ public class StorageTest extends TestCase {
 		testStorage.createTask(event2);
 		
 		ArrayList<Task> testingArray = testStorage.readTaskList();
+		// check how many items inside arraylist
+		System.out.println("size of array read from file: " + testingArray.size());
 		assertEquals(localArray, testingArray);
 		
 	}

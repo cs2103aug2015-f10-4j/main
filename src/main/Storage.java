@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
 public class Storage {
 	
@@ -91,6 +93,9 @@ public class Storage {
 	// for reading contents in the file
 	protected ArrayList<Task> readTaskList() {
 		try {
+			
+			// PROBLEM: WENT INTO EXCEPTION because of the weird String
+			
 			// FileInputStream fis = new FileInputStream(file);
 			// ObjectInputStream ois = new ObjectInputStream(fis);
 			// taskList = (ArrayList<Task>) ois.readObject();
@@ -99,15 +104,24 @@ public class Storage {
 			// FileInputStream fis = new FileInputStream(file);
 			// ObjectInputStream ois = new ObjectInputStream(fis);
 			// taskList = (ArrayList<Task>) ois.readObject();
-			FileReader fileReader = new FileReader(file);
-			BufferedReader buffered = new BufferedReader(fileReader);
-			taskList = gson.fromJson(buffered, Task.class);
+			// FileReader fileReader = new FileReader(file);
+			// BufferedReader buffered = new BufferedReader(fileReader);
+			
+			// Task[] contents = new Gson().fromJson(reader, Task[].class);
+			JsonReader reader = new JsonReader(new FileReader(file));
+			reader.setLenient(true);
+			String garbage = reader.nextString();
+			Task[] read = gson.fromJson(reader, Task[].class);
+
+			// taskList.add(read[0]);
+			// taskList = gson.fromJson(reader, new TypeToken<ArrayList<Task>>(){}.getType());
 
 			// taskList = gson.fromJson(ois, Task.class);
 			// ois.close();
 
 		} catch (Exception e) {
 			taskList = new ArrayList<Task>();
+			e.printStackTrace();
 		} 
 		return taskList;
 	}
