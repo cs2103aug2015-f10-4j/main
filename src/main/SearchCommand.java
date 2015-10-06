@@ -1,21 +1,19 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class SearchCommand extends Command {
 
-	private String[] argsArray;
 	private String query;
 	private String type;
 	private String error = "";
+	
+	private static final String MESSAGE_ARGUMENT_PARAMS = "\n1. search\n2. search query/type";
 	
 	public SearchCommand(String args) throws Exception {
 		super(args);
 		
 		if (validNumArgs()) {
-			this.argsArray = args.split("/");
 			this.query = argsArray[0].trim();
 
 			if (argsArray.length == 1) {
@@ -29,11 +27,11 @@ public class SearchCommand extends Command {
 			}
 
 			if (!error.equals("")) {
-				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 	
@@ -65,8 +63,8 @@ public class SearchCommand extends Command {
 		return null;
 	}
 	
-	public String undo() {
-		// no changes done => nothing to undo
-		return null;
+	@Override
+	public boolean isUndoable(){
+		return false;
 	}
 }

@@ -3,10 +3,11 @@ package main;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AddCommand extends Command{
 
-	private String[] argsArray;
 	private String type;
 	private String title;
 	private String desc;
@@ -15,8 +16,10 @@ public class AddCommand extends Command{
 	private String endTime;
 	private String recurrence;
 	private String error = "";
-	private boolean hasExecuted = false;
 	private Task task;
+	
+	private static final String MESSAGE_ARGUMENT_PARAMS = "\nadd type/title/description/due date"
+			+ "/start time/end time/recurrence";
 	
 	public AddCommand(String args) throws Exception {
 		super(args);
@@ -56,16 +59,16 @@ public class AddCommand extends Command{
 				error += "Recurrence: " + recurrence + "\n";
 			}
 			if (!error.equals("")) {
-				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 	
 	private boolean checkCount(){
-		if(this.count != 6){
+		if(this.count != 7 && this.count != 6){
 			return false;
 		} else {
 			return true;
@@ -85,15 +88,15 @@ public class AddCommand extends Command{
 	}
 	
 	public boolean validDueDate(){
-		return checkDate(this.dueDate) || checkFloatingTask(this.dueDate, this.type);
+		return checkDate(this.dueDate) || checkFloat(this.dueDate, this.type);
 	}
 	
 	public boolean validStartTime(){
-		return checkTime(this.startTime);
+		return checkTime(this.startTime) || checkFloat(this.startTime, this.type);
 	}
 	
 	public boolean validEndTime(){
-		return checkTime(this.endTime);
+		return checkTime(this.endTime) || checkFloat(this.endTime, this.type);
 	}
 	
 	public boolean validRecurrence(){
@@ -118,26 +121,24 @@ public class AddCommand extends Command{
 		task.setEndTime(Integer.parseInt(endTime));
 		
 		try {
+			String retMsg = "task added";
+			if (isClashing()) {
+				retMsg += ". Another task exists on the same date.";
+			}
 			Magical.storage.createTask(task);
+			return retMsg;
 		} catch (IOException e) {
 			return "unable to add task";
 		}
-		
-		hasExecuted = true;
-		return "task added";
 	}
-	
-	@Override
-	public String undo() {
-		if (hasExecuted) {
-			try {
-				Magical.storage.deleteTask(task);
-				return "task deleted";
-			} catch (IOException e) {
-				return "unable to delete task";
+
+	private boolean isClashing() {
+		ArrayList<Task> tasks = Magical.storage.getTasks();
+		for (Task t : tasks) {
+			if (t.getDueDate().equals(task.getDueDate())) {
+				return true;
 			}
-		} else {
-			return "cannot undo failed add command.";
 		}
+		return false;
 	}
 }

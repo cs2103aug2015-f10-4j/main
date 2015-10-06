@@ -5,15 +5,25 @@ import java.text.SimpleDateFormat;
 public class Command {
 
 	protected String args;
+	protected String[] argsArray;
 	protected int count;
+	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n"; 
 
 	public Command(String args){
 		this.args = args;
-		this.count = args.length() - args.replace("/", "").length();
+		this.argsArray = args.split("(?<![\\\\])/");
+		for (int i = 0; i < argsArray.length; i++){
+			String param = argsArray[i];
+			
+			param = param.replaceAll("(?<![\\\\])\\\\", "");
+			argsArray[i] = param;
+			
+		}
+		this.count = argsArray.length;
 	}
 	
 	protected boolean checkRecurrence(String recurrence) {
-		if(recurrence.equals(null)){
+		if(recurrence == null){
 			return true;
 		}
 		String r = recurrence.toLowerCase();
@@ -56,14 +66,14 @@ public class Command {
 		}
 	}
 	
-	protected boolean checkFloatingTask(String date, String type){
-		if(date.equals("") && type.equals("task")){
+	protected boolean checkFloat(String time, String type){
+		if(time.equals("") && type.equals("task")){
 			return true;
 		} else {
 			return false;
 		}
 	}
-
+	
 	protected boolean checkTitle(String title) {
 		if(title.equals("")){
 			return false;
@@ -78,13 +88,32 @@ public class Command {
 		}
 		return true;
 	}
+	protected boolean checkTaskID(String taskID){
+		return UI.getLastTaskList().containsKey(taskID);
+	}
+	
+	protected boolean checkPriority(String priority){
+		try {
+			int p = Integer.parseInt(priority);
+			return (p >= 1 && p <= 10);
+		} catch (Exception e){
+			return false;
+		}
+	}
 	
 	public String execute(){
 		return null;
 	}
 	
-	public String undo(){
-		return null;
+	public boolean isUndoable(){
+		return true;
 	}
 	
+	/* Test
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		Command c = new Command(s.nextLine());
+		System.out.println(Arrays.toString(c.argsArray));
+	}
+	//*/
 }

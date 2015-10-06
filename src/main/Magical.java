@@ -1,87 +1,80 @@
 package main;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Magical {
 	private static final String CONFIG_STORAGE_FILENAME = "storage.txt"; 
+	
+	protected static Storage storage;
+	protected static Stack<ArrayList<Task>> undoHistory;
 
-	private static final String MESSAGE_INVALID_CMD = "Invalid command given.";
-	
-	private static UI ui = new UI();
-	private static Parser parser;
-	static Storage storage;
-	static Command lastCommand;
-	
 	public static void main(String args[]) {
 		try {
 			init();
-			ui.start();
+			startApp();
 			startREPL();
 		} catch (Exception e) {
-			ui.displayErrorMessage();
+			UI.displayErrorMessage();
 			e.printStackTrace();
 		}
+	}
+
+	private static void startApp() {
+		UI.displayWelcomeMessage();
+		ArrayList<Task> upcomingTasks = upcomingTasks();
+		UI.displayTaskList("Upcoming tasks", upcomingTasks);
+		
+	}
+
+	private static ArrayList<Task> upcomingTasks() {
+		ArrayList<Task> upcomingTasks = new ArrayList<Task>();
+		ArrayList<Task> allTasks = storage.getTasks();
+		Calendar cal = Calendar.getInstance();
+		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+		Date today = cal.getTime();
+		cal.add(Calendar.DATE, 3);
+		Date threeDaysFromToday = cal.getTime();
+		for (Task t : allTasks) {
+			if (t.getDueDate().after(today) && t.getDueDate().before(threeDaysFromToday)) {
+				upcomingTasks.add(t);
+			}
+		}
+		return upcomingTasks;
 	}
 
 	private static void startREPL() throws Exception {
 		while(true) {
 			try {
-				String userInput = ui.readInput();
-				Command command = parser.parse(userInput); 
+				String userInput = UI.readInput();
+				Command command = Parser.parse(userInput);
+				ArrayList<Task> prevTaskList = listClone(storage.getTasks());
 				String message = command.execute();
-				lastCommand = command;
-				ui.showToUser(message);
+				UI.showToUser(message);
+				if (command.isUndoable()) {
+					undoHistory.push(prevTaskList);
+					UI.displayTaskList("Tasks", storage.getTasks());
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
-	public static void init() throws IOException {
-		parser = new Parser();
-		storage = new Storage(CONFIG_STORAGE_FILENAME);
-	}
-	
-	public static String executeCommand(String cmd, HashMap<String, String> args) throws Exception {
-		switch(cmd) {
-//		case "block":
-//			return block(args);
-//		case "confirm":
-//			return confirm(args);
-//		case "delete":
-//			return delete(args);
-//		case "edit":
-//			return edit(args);
-//		case "done":
-//			return done(args);
-//		case "show":
-//			return show(args);
-//		case "date":
-//			return date(args);
-//		case "undo":
-//			return undo(args);
-//		case "remind":
-//			return remind(args);
-//		case "tag":
-//			return tag(args);
-//		case "untag":
-//			return untag(args);
-//		case "help":
-//			return help();
-		case "exit":
-			return exit();
-		default:
-			return MESSAGE_INVALID_CMD;
-		}		
+
+	private static ArrayList<Task> listClone(ArrayList<Task> tasks) {
+		ArrayList<Task> newTaskList = new ArrayList<Task>(tasks.size());
+		try {
+			for(Task t : tasks) {
+				newTaskList.add(t.copy());
+			}
+			return newTaskList;
+		} catch (Exception e) {
+			return tasks;
+		}
 	}
 
-	private static String exit() {
-		ui.displayGoodbyeMessage();
-		System.exit(0);
-		return null;
+	public static void init() throws IOException {
+		storage = new Storage(CONFIG_STORAGE_FILENAME);
+		undoHistory = new Stack<ArrayList<Task>>();
 	}
-	
 }

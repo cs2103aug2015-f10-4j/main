@@ -3,35 +3,29 @@ package main;
 import java.util.*;
 
 public class UI {
-
-	private static final String MESSAGE_WELCOME = "*:.。.☆ Welcome to Magical! ☆.。.:*\r\n";
-	private static final String MESSAGE_GOODBYE = "*:.。.☆ Farewell! ☆.。.:*\r\n";
+	private static final String endL = System.getProperty("line.separator");
+	private static final String MESSAGE_WELCOME = "*:.。.☆ Welcome to Magical! ☆.。.:*";
+	private static final String MESSAGE_HELP = "PLACEHOLDER HELP MESSAGE." + endL;
+	private static final String MESSAGE_GOODBYE = "*:.。.☆ Farewell! ☆.。.:*" + endL;
 	private static final String MESSAGE_COMMAND_PROMPT = "What would you like to do?";
 	private static final String MESSAGE_ERROR = "An error has occurred.";
 	
-	private static final String MESSAGE_TASK_ADDED = "Added task: %s";
-	private static final String MESSAGE_TASK_DELETED = "Deleted task: %s";
-	
 	private static final String DIVIDER = "======================";
 
-	private static final String FORMAT_HEADER = DIVIDER + "\r\n%s\r\n" + DIVIDER;
+	private static final String FORMAT_HEADER = DIVIDER + endL + "%s" + endL + DIVIDER;
 	private static final String FORMAT_SHORT_TASK = "%s | Due: %s";
 	private static final String FORMAT_SHORT_EVENT = "%s on %s at %s";
 	
 	private static Scanner scanner = new Scanner(System.in);
-	private HashMap<String, Task> lastTaskListDisplayed;
+	private static HashMap<String, Task> lastTaskList;
 	
-	public HashMap<String, Task> getLastTaskListDisplayed() {
-		return lastTaskListDisplayed;
+	public static HashMap<String, Task> getLastTaskList() {
+		return lastTaskList;
 	}
 
 	/*
 	 * PUBLIC STATIC METHODS
 	 * */
-	
-	public static void start() {
-		displayWelcomeMessage();
-	}
 	
 	public static String readInput() {
 		showToUser(MESSAGE_COMMAND_PROMPT);
@@ -50,6 +44,10 @@ public class UI {
 		showToUser(MESSAGE_WELCOME);
 	}
 	
+	public static void displayHelpMessage() {
+		showToUser(MESSAGE_HELP);
+	}
+	
 	public static void displayGoodbyeMessage() {
 		showToUser(MESSAGE_GOODBYE);
 	}
@@ -60,13 +58,22 @@ public class UI {
 
 	public static void displayTaskDetails(Task task) {
 		displayHeader(task.getTitle());
-		showToUser("Description: " + task.getDescription() +
-				"\r\nDue Date: " + makeShortDate(task.getDueDate()) + "\r\n");
+		Set<String> taskTags = task.getTags();
+		String tagString = "";
+		if (taskTags.size() > 0) {
+			Iterator<String> iterator = taskTags.iterator();
+			for (int i = 0; i < taskTags.size() - 1; i++) {
+				tagString += iterator.next() + ", ";
+			}
+			tagString += iterator.next();
+		}
+		showToUser("Description: " + task.getDescription() + endL +
+				"Due Date: " + makeShortDate(task.getDueDate()) + endL + "Tags: " + tagString);
 		
 	}
 	
-	public void displayTaskList(String header, ArrayList<Task> taskList) {
-		lastTaskListDisplayed = new HashMap<String, Task>();
+	public static void displayTaskList(String header, ArrayList<Task> taskList) {
+		lastTaskList = new HashMap<String, Task>();
 		displayHeader(header);
 		Iterator<Task> iterator = taskList.iterator();
 		int index = 0;
@@ -74,7 +81,7 @@ public class UI {
 			index++;
 			Task nextTask = iterator.next();
 			showToUser("t" + index + ". "+ makeShortTask(nextTask));
-			lastTaskListDisplayed.put("t" + index, nextTask);
+			lastTaskList.put("t" + index, nextTask);
 		}
 		showToUser("");
 	}

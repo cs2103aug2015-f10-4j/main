@@ -3,7 +3,21 @@ package main;
 import java.io.*;
 import java.util.*;
 
-public class Task implements Serializable, Comparable<Task> {
+public class Task implements Serializable, Comparable<Task>, Cloneable {
+	static enum RecurrencePeriod {
+		DAILY, WEEKLY, MONTHLY, YEARLY, NONE
+	}
+
+	private String type;
+	private String title;
+	private String description;
+	private Date dueDate;
+	private int startTime;
+	private int endTime;
+	private RecurrencePeriod recurrence;
+	private Set<String> tags = new HashSet<String>();
+	private int priority;
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -15,6 +29,7 @@ public class Task implements Serializable, Comparable<Task> {
 		result = prime * result
 				+ ((recurrence == null) ? 0 : recurrence.hashCode());
 		result = prime * result + startTime;
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -45,6 +60,11 @@ public class Task implements Serializable, Comparable<Task> {
 			return false;
 		if (startTime != other.startTime)
 			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
 		if (title == null) {
 			if (other.title != null)
 				return false;
@@ -58,72 +78,79 @@ public class Task implements Serializable, Comparable<Task> {
 		return true;
 	}
 
-	static enum RecurrencePeriod {
-		DAILY, WEEKLY, MONTHLY, YEARLY
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
-	
-	private String type;
-	private String title;
-	private String description;
-	private Date dueDate;
-	private int startTime;
-	private int endTime;
-	private RecurrencePeriod recurrence;
-	
+
+	public Task copy() throws IOException, ClassNotFoundException {
+		Object obj = null;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream out = new ObjectOutputStream(bos);
+		out.writeObject(this);
+		out.flush();
+		out.close();
+
+		ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+		obj = in.readObject();
+		return (Task) obj;
+	}
+
 	public String getType() {
 		return type;
 	}
-	
+
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public Date getDueDate() {
 		return dueDate;
 	}
-	
+
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
-	
+
 	public int getStartTime() {
 		return startTime;
 	}
-	
+
 	public void setStartTime(int startTime) {
 		this.startTime = startTime;
 	}
-	
+
 	public int getEndTime() {
 		return endTime;
 	}
-	
+
 	public void setEndTime(int endTime) {
 		this.endTime = endTime;
 	}
-	
+
 	public RecurrencePeriod getRecurrence() {
 		return recurrence;
 	}
-	
+
 	public void setRecurrence(String str) {
-		if (str.equals("yearly")) {
+		if(str == null){
+			this.recurrence = RecurrencePeriod.NONE;
+		} else if (str.equals("yearly")) {
 			this.recurrence = RecurrencePeriod.YEARLY;
 		} else if (str.equals("monthly")) {
 			this.recurrence = RecurrencePeriod.MONTHLY;
@@ -133,8 +160,24 @@ public class Task implements Serializable, Comparable<Task> {
 			this.recurrence = RecurrencePeriod.DAILY;
 		}
 	}
-	
+
 	public int compareTo(Task task) {
 		return dueDate.compareTo(task.dueDate);
+	}
+
+	public Set<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<String> tags) {
+		this.tags = tags;
+	}
+	
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 }

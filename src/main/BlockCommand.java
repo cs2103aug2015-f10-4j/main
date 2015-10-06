@@ -18,6 +18,8 @@ public class BlockCommand extends Command{
 	private String startD;
 	private String endD;
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+	private static final String MESSAGE_ARGUMENT_PARAMS = "\n1. block type/title/description/date 1/date 2/.../date n"
+			+ "\n2. block type/title/description/start date//end date";
 	
 	public BlockCommand(String args) throws Exception {
 		super(args);
@@ -39,7 +41,7 @@ public class BlockCommand extends Command{
 				error += "No Title" + "\n";
 			}
 			if (!error.equals("")) {
-				throw new Exception("\n----- Invalid arguments ---- \n" + error);
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 			if(args.contains("//")){
 				if(argsArray.length == 6){
@@ -53,7 +55,7 @@ public class BlockCommand extends Command{
 						error += "End date: " + endD + "\n";
 					}
 					if (!error.equals("")) {
-						throw new Exception("\n----- Invalid arguments ---- \n" + error);
+						throw new Exception(MESSAGE_HEADER_INVALID + error);
 					} else {
 
 						// creates an array list of Dates within start and end
@@ -79,7 +81,7 @@ public class BlockCommand extends Command{
 					}
 				} else {
 					error += "Invalid usage of //";
-					throw new Exception("\n----- Invalid arguments ---- \n" + error);
+					throw new Exception(MESSAGE_HEADER_INVALID + error);
 				}
 			} else {
 				for(int i = 3; i < argsArray.length; i++){
@@ -94,13 +96,13 @@ public class BlockCommand extends Command{
 					}
 				}
 				if(!error.equals("")){
-					throw new Exception("\n----- Invalid arguments ---- \n" + error);
+					throw new Exception(MESSAGE_HEADER_INVALID + error);
 				}
 			}
 			System.out.println(dates);
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception("\n----- Invalid arguments ---- \n" + error);
+			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 	
@@ -136,19 +138,4 @@ public class BlockCommand extends Command{
 	public String execute(){
 		return null;
 	}
-	@Override
-	public String undo(){
-		return null;
-	}
-	
-	/*
-	public static void main(String[] args) throws Exception {
-		Parser p = new Parser();
-		//p.parse("block event/title/desc/30-09-2015//02-10-2015");
-		//p.parse("block event/title/desc/30-09-2015/02-10-2015/03-10-2015/04-10-2015");
-		p.parse("block event/title/desc/30-09-2015/02-10-2015//03-10-2015");	//throws invalid usage exception
-		//p.parse("block foobar//desc/32-09-2015/302-10-2015/03-10-2015");		//throws invalid type and title
-	}
-	//*/
-
 }
