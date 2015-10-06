@@ -1,17 +1,12 @@
 package main;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class Storage {
 	
@@ -19,8 +14,6 @@ public class Storage {
 
 	private static File file;
 	private ArrayList<Task> taskList;
-	// Gson gson = new Gson();
-	Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	public Storage (String fileName) throws IOException {
 
@@ -81,23 +74,17 @@ public class Storage {
 	protected void writeTaskList() throws IOException {
 		FileOutputStream fos = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		String jsonRepresentation = gson.toJson(taskList);
-		oos.writeObject(jsonRepresentation);
+		oos.writeObject(taskList);
 		oos.close();
 	}
 	
 	// for reading contents in the file
 	protected ArrayList<Task> readTaskList() {
 		try {
-			// FileInputStream fis = new FileInputStream(file);
-			// ObjectInputStream ois = new ObjectInputStream(fis);
-			// taskList = (ArrayList<Task>) ois.readObject();
-			FileReader fileReader = new FileReader(file);
-			BufferedReader buffered = new BufferedReader(fileReader);
-			taskList = gson.fromJson(buffered, Task.class);
-
-			// taskList = gson.fromJson(ois, Task.class);
-			// ois.close();
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			taskList = (ArrayList<Task>) ois.readObject();
+			ois.close();
 		} catch (Exception e) {
 			taskList = new ArrayList<Task>();
 		} 
