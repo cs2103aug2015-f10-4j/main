@@ -8,6 +8,8 @@ public class GUIModel {
 	private String notificationMessage;
 	private String errorMessage;
 	
+	public Task currentTask = new Task();
+	public ArrayList<Task> eventList = new ArrayList<Task>();
 	public ArrayList<Task> taskList = new ArrayList<Task>();
 	
 	public GUIModel() {

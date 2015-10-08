@@ -27,11 +27,12 @@ public class GUIView extends Application {
 	}
 	
 	private static final int VBOX_PADDING = 10;
-	private static final int DEFAULT_WINDOW_WIDTH = 600;
-	private static final int DEFAULT_WINDOW_HEIGHT = 800;
+	private static final int DEFAULT_WINDOW_WIDTH = 400;
+	private static final int DEFAULT_WINDOW_HEIGHT = 600;
 	private static final String DEFAULT_FONT = "Arial";
 	
-	private static final Font FONT_HEADER = new Font(DEFAULT_FONT, 30);
+	private static final Font FONT_HEADER = new Font(DEFAULT_FONT, 24);
+	private static final Font FONT_SUBHEADER = new Font(DEFAULT_FONT, 18);
 	private static final Font FONT_BODY = new Font(DEFAULT_FONT, 12);
 	
 	private static final Label LABEL_TODO = makeLabel("To-Do", FONT_HEADER);
@@ -50,6 +51,10 @@ public class GUIView extends Application {
 	public static ArrayList<Task> taskList = new ArrayList<Task>();
 	public static ArrayList<Task> eventList = new ArrayList<Task>();
 	public static ArrayList<Task> blockedDatesList = new ArrayList<Task>();
+	public static Task currentTask = new Task();
+	public static ViewType currentViewType;
+	
+	public String userInput;
 	
 	private static Label makeLabel(String text, Font font) {
 		Label label = new Label(text);
@@ -57,13 +62,26 @@ public class GUIView extends Application {
 		return label;
 	}
 	
-	private Label whatYouJustSaid = makeLabel("", FONT_BODY);
+	private Label errorMessage = makeLabel("", FONT_BODY);
 	
-	private void makeVBox() {
+	private void makeVBox(ViewType viewType) {
     	vbox.setPadding(new Insets(VBOX_PADDING, VBOX_PADDING, VBOX_PADDING, VBOX_PADDING));
-    	vbox.getChildren().addAll(LABEL_TODO, makeTaskTable(taskList),
-    			LABEL_EVENTS, makeEventTable(eventList), whatYouJustSaid, makeCommandLine()
-    			);
+    	switch (viewType) {
+    	case DISPLAY_ALL:
+    		vbox.getChildren().addAll(LABEL_TODO, makeTaskTable(taskList),
+        			LABEL_EVENTS, makeEventTable(eventList));
+    	case DISPLAY_ONE:
+    		vbox.getChildren().addAll(makeLabel(currentTask.getTitle(), FONT_HEADER),
+    									makeLabel("Description", FONT_SUBHEADER),
+    									makeLabel(currentTask.getDescription(), FONT_BODY),
+    									makeLabel("Due Date", FONT_SUBHEADER),
+    									makeLabel(makeDateString(currentTask.getDueDate()), FONT_BODY),
+    									makeLabel("Priority", FONT_SUBHEADER),
+    									makeLabel("" + currentTask.getPriority(), FONT_BODY),
+    									makeLabel("Tags", FONT_SUBHEADER),
+    									makeLabel(makeTagString(currentTask.getTags()), FONT_BODY));
+    	}
+    	vbox.getChildren().addAll(errorMessage, makeCommandLine());
 
 	}
 
@@ -111,10 +129,14 @@ public class GUIView extends Application {
 		TableColumn<Task, String> taskDueDateCol = new TableColumn<Task, String>("Due Date");
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
 		
+		TableColumn<Task, String> taskPriorityCol = new TableColumn<Task, String>("Priority");
+		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+		
 		ArrayList<TableColumn<Task, String>> colList = new ArrayList<TableColumn<Task, String>>();
 		colList.add(taskIdCol);
 		colList.add(taskNameCol);
 		colList.add(taskDueDateCol);
+		colList.add(taskPriorityCol);
 	
 		eventTable.getColumns().addAll(colList);
 		
@@ -132,7 +154,8 @@ public class GUIView extends Application {
 		commandLineTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 		    public void handle(KeyEvent keyEvent) {
 		        if (keyEvent.getCode() == KeyCode.ENTER)  {
-		             whatYouJustSaid.setText("You just said: "+commandLineTextField.getText());
+		        	userInput = commandLineTextField.getText();
+		        	errorMessage.setText("You just said: " + commandLineTextField.getText());
 		        }
 		    }
 		});
@@ -142,7 +165,8 @@ public class GUIView extends Application {
 	
     public void start(Stage stage) {
    
-    	makeVBox();
+    	currentViewType = ViewType.DISPLAY_ONE;
+    	makeVBox(currentViewType);
     	makeCommandLine();
 
         stage.setTitle("Magical");
@@ -150,20 +174,43 @@ public class GUIView extends Application {
         stage.show();
     }
     
+    private static final String[] DAYS_ARRAY = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    private static final String[] MONTHS_ARRAY = {"January", "February", "March", "April", "May", "June", "July",
+    										"August", "Septembers", "October", "November", "December"};
     
     public static String makeDateString(Date date) {
-    	return String.format(DATE_FORMAT, date.getDay(), date.getMonth(), date.getYear(), date.getDay());
+    	return String.format(DATE_FORMAT, date.getDate()+1, MONTHS_ARRAY[date.getMonth()], date.getYear()+1900, DAYS_ARRAY[date.getDay()]);
+    }
+    
+    public static String makeTagString(Set<String> tagSet) {
+    	Iterator<String> iterator = tagSet.iterator();
+    	String result = "";
+    	for (int i = 0; i < tagSet.size()-1; i ++) {
+    		result += iterator.next() + ", ";
+    	}
+    	result += iterator.next();
+    	return result;
     }
     
     
     public static void main(String[] args) {
     	
+    	
+    	HashSet<String> tagSet = new HashSet<String>();
+    	tagSet.add("tag1");
+    	tagSet.add("tag2");
+    	
+    	System.out.println(makeTagString(tagSet));
+    	
     	Task task1 = new Task();
     	task1.setTitle("Test task");
-    	task1.setDueDate(new Date(115, 12, 11));
+    	task1.setDescription("Task description goes here!");
+    	task1.setDueDate(new Date(114, 12, 11));
     	task1.setPriority(2);
+    	task1.setTags(tagSet);
     	
     	taskList.add(task1);
+    	currentTask = task1;
     	
         launch(args);
     }

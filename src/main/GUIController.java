@@ -5,6 +5,10 @@ public class GUIController {
 	public static GUIModel model = new GUIModel();
 	public static GUIView view = new GUIView();
 	
+	public static String oldUserInput;
+	
+	public String userInput;
+	
 	public static void setModel(GUIModel m) {
 		model = m;
 	}
@@ -18,8 +22,17 @@ public class GUIController {
 		view.launch();
 	}
 	
-	public static void update() {
-		
+	public static void updateView(GUIModel m) {
+		model = m;
+		view.taskList = model.taskList;
+		view.currentTask = model.currentTask;
+		view.eventList = model.eventList;
+	}
+	
+	public static void main(String[] args) {
+		while(view.userInput.equalsIgnoreCase(oldUserInput)) {
+			
+		}
 	}
 
 }

@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.util.*;
+import javafx.application.Application;
 
 public class Magical {
 	private static final String CONFIG_STORAGE_FILENAME = "storage.txt"; 
