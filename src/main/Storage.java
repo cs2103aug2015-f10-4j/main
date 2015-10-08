@@ -23,6 +23,7 @@ public class Storage {
 	private ArrayList<Task> taskList;
 	// Gson gson = new Gson();
 	Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	String jsonRepresentation;
 
 	
 	public Storage (String fileName) throws IOException {
@@ -84,8 +85,9 @@ public class Storage {
 	protected void writeTaskList() throws IOException {
 		FileOutputStream fos = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		String jsonRepresentation = gson.toJson(taskList);
+		jsonRepresentation = gson.toJson(taskList);
 		oos.writeObject(jsonRepresentation);
+		// System.out.print(jsonRepresentation);
 		// oos.writeObject(taskList);
 		oos.close();
 	}
@@ -112,9 +114,12 @@ public class Storage {
 			reader.setLenient(true);
 			String garbage = reader.nextString();
 			Task[] read = gson.fromJson(reader, Task[].class);
+			// String jsonTest = gson.toJson(read);
+			// System.out.println(jsonTest);
+
 
 			// taskList.add(read[0]);
-			// taskList = gson.fromJson(reader, new TypeToken<ArrayList<Task>>(){}.getType());
+			// taskList = gson.fromJson(jsonRepresentation, new TypeToken<ArrayList<Task>>(){}.getType());
 
 			// taskList = gson.fromJson(ois, Task.class);
 			// ois.close();

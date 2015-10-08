@@ -80,6 +80,7 @@ public class StorageTest extends TestCase {
 		testStorage.createTask(event2); //adding original items into Storage array
 		
 		ArrayList<Task> testingArray = testStorage.getTasks();
+		// System.out.println("size of array read from file - createTasks: " + testingArray.size());
 		assertEquals(localArray, testingArray);
 		
 	}
@@ -104,6 +105,7 @@ public class StorageTest extends TestCase {
 		testStorage.createTask(event2); //adding original items into Storage array
 		
 		ArrayList<Task> testingArray = testStorage.getTasks();
+		// System.out.println("size of array read from file - getTasks: " + testingArray.size());
 		assertEquals(localArray, testingArray);
 
 	}
@@ -139,10 +141,12 @@ public class StorageTest extends TestCase {
 		
 		testStorage.updateTask(event1); // updating with the newly updated event1
 		ArrayList<Task> testingArray = testStorage.readTaskList();
+		// System.out.println("size of array read from file - updateTask: " + testingArray.size());
 		assertEquals(localArray, testingArray);
 
 	}
 
+	
 	public void testDeleteTask() throws IOException {
 		// create an arraylist here to compare with
 		// delete the same task and read out the arraylist
@@ -164,10 +168,12 @@ public class StorageTest extends TestCase {
 		
 		testStorage.deleteTask(event1);
 		ArrayList<Task> testingArray = testStorage.readTaskList();
+		// System.out.println("size of array read from file - deleteTask " + testingArray.size());
 		assertEquals(localArray, testingArray);
 	}
 	
-
+	
+	
 	public void testClearTaskList() throws IOException {
 		// create an empty arraylist to compare with
 		// clear arraylist using the method
@@ -184,8 +190,10 @@ public class StorageTest extends TestCase {
 		
 		testStorage.clearTaskList();
 		ArrayList<Task> testingArray = testStorage.readTaskList();
+		// System.out.println("size of array read from file - clearTaskList: " + testingArray.size());
 		assertEquals(localArray, testingArray);
 	}
+	
 
 	public void testGetTaskPos() throws IOException {
 		// create an arraylist, get the index of one of the items
@@ -232,12 +240,11 @@ public class StorageTest extends TestCase {
 		
 		testStorage.writeTaskList();
 		ArrayList<Task> testingArray = testStorage.readTaskList();
+		// System.out.println("size of array read from file - writeTaskList: " + testingArray.size());
 		assertEquals(localArray, testingArray);
 		
 		
 	}
-	
-
 	
 	public void testReadTaskList() throws IOException {
 		// insert tasks and read tasks ArrayList using Storage class method
@@ -246,6 +253,13 @@ public class StorageTest extends TestCase {
 		ArrayList<Task> localArray = new ArrayList<Task> ();
 		localArray.add(task1);
 		localArray.add(task2);
+		event1.setType("event");
+		event1.setTitle("my birthday");
+		event1.setDescription("travelling to another country");
+		// event1.setDueDate(new Date());
+		event1.getStartTime();
+		// event1.setEndTime();
+		event1.setRecurrence("yearly");
 		localArray.add(event1);
 		localArray.add(event2); // adding items into local array
 		
@@ -255,12 +269,17 @@ public class StorageTest extends TestCase {
 		
 		testStorage.createTask(task1);
 		testStorage.createTask(task2);
+		event1.setType("event");
+		event1.setTitle("friend's birthday");
+		event1.setDescription("need to buy present");
+		event1.getStartTime();
+		event1.setRecurrence("yearly"); // updating the content of event1
 		testStorage.createTask(event1);
 		testStorage.createTask(event2);
 		
 		ArrayList<Task> testingArray = testStorage.readTaskList();
 		// check how many items inside arraylist
-		System.out.println("size of array read from file: " + testingArray.size());
+		// System.out.println("size of array read from file - readTaskList: " + testingArray.size());
 		assertEquals(localArray, testingArray);
 		
 	}
