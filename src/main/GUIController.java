@@ -1,9 +1,12 @@
 package main;
 
-public class GUIController {
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class GUIController extends Application {
 	
-	public static GUIModel model = new GUIModel();
-	public static GUIView view = new GUIView();
+	public static GUIModel model;
+	public static GUIView view ;
 	
 	public static String oldUserInput;
 	
@@ -17,9 +20,12 @@ public class GUIController {
 		view = v;
 	}
 	
-	public static void start() {
+	public void start(Stage view) {
+		
+	}
+	
+	private void setTaskList(GUIView view) {
 		view.taskList = model.taskList;
-		view.launch();
 	}
 	
 	public static void updateView(GUIModel m) {
@@ -30,9 +36,7 @@ public class GUIController {
 	}
 	
 	public static void main(String[] args) {
-		while(view.userInput.equalsIgnoreCase(oldUserInput)) {
-			
-		}
+		launch();
 	}
 
 }

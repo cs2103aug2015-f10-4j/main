@@ -20,7 +20,7 @@ import javafx.stage.Stage;
  * 1. DISPLAY_ALL: displays 3 tables of tasks -- to-do, events, and blocked dates
  * 2. DISPLAY_ONE: displays the full details of a particular task/event
  */
-public class GUIView extends Application {
+public class GUIView extends Stage {
 	
 	enum ViewType {
 		DISPLAY_ALL, DISPLAY_ONE
@@ -163,15 +163,13 @@ public class GUIView extends Application {
 		return commandLineTextField;
 	}
 	
-    public void start(Stage stage) {
-   
+    public void initialize() {
+    	setTitle("Magical");
+        setScene(scene);
+        
     	currentViewType = ViewType.DISPLAY_ONE;
     	makeVBox(currentViewType);
     	makeCommandLine();
-
-        stage.setTitle("Magical");
-        stage.setScene(scene);
-        stage.show();
     }
     
     private static final String[] DAYS_ARRAY = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -195,12 +193,9 @@ public class GUIView extends Application {
     
     public static void main(String[] args) {
     	
-    	
     	HashSet<String> tagSet = new HashSet<String>();
     	tagSet.add("tag1");
     	tagSet.add("tag2");
-    	
-    	System.out.println(makeTagString(tagSet));
     	
     	Task task1 = new Task();
     	task1.setTitle("Test task");
@@ -211,7 +206,6 @@ public class GUIView extends Application {
     	
     	taskList.add(task1);
     	currentTask = task1;
-    	
-        launch(args);
+
     }
 }
