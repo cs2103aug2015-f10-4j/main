@@ -36,6 +36,7 @@ public class GUIController extends Application {
 	}
 	
 	public static void main(String[] args) {
+		view = new GUIView();
 		launch();
 	}
 

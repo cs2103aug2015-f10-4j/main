@@ -20,7 +20,7 @@ import javafx.stage.Stage;
  * 1. DISPLAY_ALL: displays 3 tables of tasks -- to-do, events, and blocked dates
  * 2. DISPLAY_ONE: displays the full details of a particular task/event
  */
-public class GUIView extends Stage {
+public class GUIView extends Application {
 	
 	enum ViewType {
 		DISPLAY_ALL, DISPLAY_ONE
@@ -66,11 +66,10 @@ public class GUIView extends Stage {
 	
 	private void makeVBox(ViewType viewType) {
     	vbox.setPadding(new Insets(VBOX_PADDING, VBOX_PADDING, VBOX_PADDING, VBOX_PADDING));
-    	switch (viewType) {
-    	case DISPLAY_ALL:
+    	if (viewType == ViewType.DISPLAY_ALL) {
     		vbox.getChildren().addAll(LABEL_TODO, makeTaskTable(taskList),
         			LABEL_EVENTS, makeEventTable(eventList));
-    	case DISPLAY_ONE:
+    	} else {
     		vbox.getChildren().addAll(makeLabel(currentTask.getTitle(), FONT_HEADER),
     									makeLabel("Description", FONT_SUBHEADER),
     									makeLabel(currentTask.getDescription(), FONT_BODY),
@@ -148,7 +147,7 @@ public class GUIView extends Stage {
 	}
 	
 	private TextField makeCommandLine() {
-		TextField commandLineTextField = new TextField();
+		final TextField commandLineTextField = new TextField();
 		commandLineTextField.setPromptText("What would you like to do?");
 		
 		commandLineTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -163,13 +162,15 @@ public class GUIView extends Stage {
 		return commandLineTextField;
 	}
 	
-    public void initialize() {
-    	setTitle("Magical");
-        setScene(scene);
+    public void start(Stage stage) {
+    	stage.setTitle("Magical");
+        stage.setScene(scene);
         
-    	currentViewType = ViewType.DISPLAY_ONE;
+    	currentViewType = ViewType.DISPLAY_ALL;
     	makeVBox(currentViewType);
     	makeCommandLine();
+    	
+    	stage.show();
     }
     
     private static final String[] DAYS_ARRAY = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -206,6 +207,10 @@ public class GUIView extends Stage {
     	
     	taskList.add(task1);
     	currentTask = task1;
+    	
+    	eventList.add(task1);
+    	
+    	launch(args);
 
     }
 }
