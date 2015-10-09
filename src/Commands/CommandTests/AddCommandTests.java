@@ -40,19 +40,22 @@ public class AddCommandTests {
 	
 	@Test
 	public void testWrongType() {
-		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" + "Type: ";
+		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
+									+ "Type: %s" 
+									+ " (type should be event or task)\n";
 		try {
 			Command badType = new AddCommand("foobar/testEvent/testing/9-10-2015/0001/2359/daily");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_ARG + "foobar\n");
+			System.out.println(e.getMessage());
+			assertEquals(e.getMessage(), String.format(MESSAGE_ARG, "foobar"));
 		}
 		
 		try {
 			Command noType = new AddCommand("/testEvent/testing/9-10-2015/0001/2359/daily");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_ARG + "\n");
+			assertEquals(e.getMessage(), String.format(MESSAGE_ARG, ""));
 		}
 	} 
 	
@@ -64,6 +67,34 @@ public class AddCommandTests {
 			fail();
 		} catch (Exception e){
 			assertEquals(e.getMessage(), MESSAGE_ARG);
+		}
+	}
+	
+	@Test
+	public void testWrongDate(){
+		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
+									+ "Due date: %s"
+									+ " (Date should be dd-MM-yyyy)\n";
+		/*
+		try {
+			Command pastDate = new AddCommand("event/test/testing/9-10-2015/0001/2359/daily");
+			fail();
+		} catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+		*/
+		try {
+			Command impossibleDate = new AddCommand("event/test/testing/139-10-2015/0001/2359/daily");
+			fail();
+		} catch (Exception e){
+			System.out.println(e.getMessage());
+			assertEquals(String.format(MESSAGE_ARG, "139-10-2015"), e.getMessage());
+		}
+		try {
+			Command lettersInDate = new AddCommand("event/test/testing/9-10-2015a/0001/2359/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, "9-10-2015a"), e.getMessage());
 		}
 	}
 }
