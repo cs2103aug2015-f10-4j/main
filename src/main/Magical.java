@@ -3,12 +3,18 @@ package main;
 import java.io.IOException;
 import java.util.*;
 
+import Commands.Command;
+
 public class Magical {
 	private static final String CONFIG_STORAGE_FILENAME = "storage.txt"; 
 	
 	protected static Storage storage;
 	protected static Stack<ArrayList<Task>> undoHistory;
 
+	public static Storage getStorage(){
+		return storage;
+	}
+	
 	public static void main(String args[]) {
 		try {
 			init();
