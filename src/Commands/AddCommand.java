@@ -13,7 +13,7 @@ import main.Task;
 
 public class AddCommand extends Command{
 
-	// Command params
+	/** Command parameters **/
 	protected String type;
 	protected String title;
 	protected String desc;
@@ -30,35 +30,31 @@ public class AddCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
-			this.type = argsArray[0].trim();
-			boolean isFloat = checkFloat(argsArray[3].trim(), argsArray[4].trim(),
-										 argsArray[5].trim(), argsArray[0].trim());
-			this.title = argsArray[1].trim();
+			this.type = getType(argsArray[0].trim());
+			this.title = getTitle(argsArray[1].trim());
 			this.desc = argsArray[2].trim();
-			this.dueDate = isFloat ? null : getDate(argsArray[3].trim());
-			this.startTime = isFloat ? -1 : getTime(argsArray[4].trim());
-			this.endTime = isFloat ? -1 : getTime(argsArray[5].trim());
-			this.recurrence = getRecurrence(argsArray[6].trim());
-			/*
-			if(argsArray.length == 6){
-				recurrence = null;
-			} else {
-				recurrence = argsArray[6].trim();
-			}*/		 
+			this.dueDate = getDate(argsArray[3].trim());
+			this.startTime = getTime(argsArray[4].trim());
+			this.endTime = getTime(argsArray[5].trim());
+			this.recurrence = getRecurrence(argsArray[6].trim()); 
 		
-			if (!validType()) {
-				error += "Type: " + type + "\n";
+			boolean isFloat = checkFloat(argsArray[3].trim(), argsArray[4].trim(),
+					 argsArray[5].trim(), argsArray[0].trim());
+			boolean isTask = type == null ? false : type.equals("task");
+			
+			if (type == null) {
+				error += "Type: " + argsArray[0].trim() + "\n";
 			}
-			if (!validTitle()) {
+			if (title == null) {
 				error += "No Title" + "\n";
 			}
-			if (dueDate == null && !isFloat) {
+			if (dueDate == null ^ isFloat) {
 				error += "Due date: " + argsArray[3].trim() + "\n";
 			}
-			if (startTime == -1 && !isFloat && !type.equals("task")) {
+			if (startTime == -1 ^ isTask) {
 				error += "Start time: " + argsArray[4].trim() + "\n";
 			}
-			if (endTime == -1 && !isFloat) {
+			if (endTime == -1 ^ isFloat) {
 				error += "End time: " + argsArray[5].trim() + "\n";
 			}
 			if (recurrence == null) {
@@ -79,14 +75,6 @@ public class AddCommand extends Command{
 		} else {
 			return true;
 		}
-	}
-	
-	public boolean validType(){
-		return checkType(this.type);
-	}
-	
-	public boolean validTitle(){
-		return checkTitle(this.title);
 	}
 	
 	@Override

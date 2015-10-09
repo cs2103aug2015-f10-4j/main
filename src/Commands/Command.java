@@ -47,14 +47,17 @@ public class Command {
 		if(time.length() != 4){
 			return -1;
 		} else {
-			int hour = Integer.parseInt(time.substring(0, 2));
-			int min = Integer.parseInt(time.substring(2, 4));
-			
-			if(hour > 23 || hour < 0
-				|| min > 59 || min < 0){
+			try {
+				int hour = Integer.parseInt(time.substring(0, 2));
+				int min = Integer.parseInt(time.substring(2, 4));
+				
+				if(hour > 23 || hour < 0 || min > 59 || min < 0){
+					return -1;
+				} else {
+					return hour*1000 + min;
+				}
+			} catch(Exception e){
 				return -1;
-			} else {
-				return hour*1000 + min;
 			}
 		}
 	}
@@ -81,19 +84,19 @@ public class Command {
 		}
 	}
 	
-	protected boolean checkTitle(String title) {
+	protected String getTitle(String title) {
 		if(title.equals("")){
-			return false;
+			return null;
 		}
-		return true;
+		return title;
 	}
 
-	protected boolean checkType(String type){
+	protected String getType(String type){
 		if(!type.toLowerCase().equals("event") 
 			&& !type.toLowerCase().equals("task")){
-			return false;
+			return null;
 		}
-		return true;
+		return type;
 	}
 	protected boolean checkTaskID(String taskID){
 		return UI.getLastTaskList().containsKey(taskID);
