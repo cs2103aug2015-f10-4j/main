@@ -55,4 +55,15 @@ public class AddCommandTests {
 			assertEquals(e.getMessage(), MESSAGE_ARG + "\n");
 		}
 	} 
+	
+	@Test
+	public void testWrongTitle(){
+		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" + "No Title\n"; 
+		try {
+			Command noTitle = new AddCommand("event//testing/9-10-2015/0001/2359/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(e.getMessage(), MESSAGE_ARG);
+		}
+	}
 }
