@@ -43,16 +43,20 @@ public class AddCommand extends Command{
 			boolean isTask = type == null ? false : type.equals("task");
 			
 			if (type == null) {
-				error += "Type: " + argsArray[0].trim() + "\n";
+				error += "Type: " + argsArray[0].trim() + " (type should be event or task)\n";
 			}
 			if (title == null) {
 				error += "No Title" + "\n";
 			}
 			if (dueDate == null ^ isFloat) {
-				error += "Due date: " + argsArray[3].trim() + "\n";
+				error += "Due date: " + argsArray[3].trim() + " (Date should be dd-MM-yyyy)\n";
 			}
 			if (startTime == -1 ^ isTask) {
-				error += "Start time: " + argsArray[4].trim() + "\n";
+				if(isTask){
+					error += "Start time: " + argsArray[4].trim() + " (Task should not have start time)\n";
+				} else {
+					error += "Start time: " + argsArray[4].trim() + "\n";
+				}
 			}
 			if (endTime == -1 ^ isFloat) {
 				error += "End time: " + argsArray[5].trim() + "\n";
