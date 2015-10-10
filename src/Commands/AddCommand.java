@@ -101,7 +101,6 @@ public class AddCommand extends Command{
 		task.setDescription(desc);
 		task.setRecurrence(recurrence);
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		task.setDueDate(dueDate);
 		task.setStartTime(startTime);
 		task.setEndTime(endTime);
