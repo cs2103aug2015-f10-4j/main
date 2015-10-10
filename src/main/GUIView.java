@@ -44,15 +44,15 @@ public class GUIView extends Application {
 	
 	private TableView<Task> eventTable = new TableView<Task>();
 	
-	private VBox vbox = new VBox(VBOX_PADDING);
-	private Scene scene = new Scene(vbox, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+	private static VBox vbox = new VBox(VBOX_PADDING);
+	private static Scene scene = new Scene(vbox, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 	
 	
 	public static ArrayList<Task> taskList = new ArrayList<Task>();
 	public static ArrayList<Task> eventList = new ArrayList<Task>();
 	public static ArrayList<Task> blockedDatesList = new ArrayList<Task>();
 	public static Task currentTask = new Task();
-	public static ViewType currentViewType;
+	public static ViewType currentViewType = ViewType.DISPLAY_ALL;
 	
 	public String userInput;
 	
@@ -154,6 +154,12 @@ public class GUIView extends Application {
 		    public void handle(KeyEvent keyEvent) {
 		        if (keyEvent.getCode() == KeyCode.ENTER)  {
 		        	userInput = commandLineTextField.getText();
+		        	if (userInput == "display_one") {
+		        		currentViewType = ViewType.DISPLAY_ONE;
+		        	}
+		        	if (userInput == "display_all") {
+		        		currentViewType = ViewType.DISPLAY_ALL;
+		        	}
 		        	errorMessage.setText("You just said: " + commandLineTextField.getText());
 		        }
 		    }
@@ -165,12 +171,18 @@ public class GUIView extends Application {
     public void start(Stage stage) {
     	stage.setTitle("Magical");
         stage.setScene(scene);
-        
-    	currentViewType = ViewType.DISPLAY_ALL;
+
     	makeVBox(currentViewType);
     	makeCommandLine();
     	
     	stage.show();
+    }
+    
+    private static Stage currentStage = new Stage();
+    
+    public static void makeStage() {
+    	currentStage.setTitle("Magical");
+    	currentStage.setScene(scene);
     }
     
     private static final String[] DAYS_ARRAY = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
