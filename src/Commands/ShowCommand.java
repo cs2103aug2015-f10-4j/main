@@ -1,4 +1,7 @@
-package main;
+package Commands;
+
+import main.Task;
+import main.UI;
 
 public class ShowCommand extends Command{
 	private String taskID;

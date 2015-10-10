@@ -1,6 +1,10 @@
-package main;
+package Commands;
 
 import java.util.ArrayList;
+
+import main.Magical;
+import main.Task;
+import main.UI;
 
 public class SearchCommand extends Command {
 

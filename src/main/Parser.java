@@ -1,5 +1,21 @@
 package main;
 
+import Commands.AddCommand;
+import Commands.BlockCommand;
+import Commands.Command;
+import Commands.DateCommand;
+import Commands.DelCommand;
+import Commands.DoneCommand;
+import Commands.EditCommand;
+import Commands.ExitCommand;
+import Commands.HelpCommand;
+import Commands.PriorityCommand;
+import Commands.SearchCommand;
+import Commands.ShowCommand;
+import Commands.TagCommand;
+import Commands.UndoCommand;
+import Commands.UntagCommand;
+
 public class Parser {
 	private static final String CMD_ADD = "add";
 	private static final String CMD_DELETE = "delete";

@@ -1,8 +1,12 @@
-package main;
+package Commands;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import main.Magical;
+import main.Task;
+import main.UI;
 
 public class EditCommand extends Command{
 
@@ -19,7 +23,6 @@ public class EditCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
-			this.argsArray = args.split("/");
 			this.taskID = argsArray[0];
 			this.field = argsArray[1];
 			this.value = argsArray[2];

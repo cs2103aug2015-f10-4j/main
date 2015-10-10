@@ -1,9 +1,13 @@
-package main;
+package Commands;
 
 import java.io.IOException;
 import java.util.Set;
 
-public class UntagCommand extends Command {
+import main.Magical;
+import main.Task;
+import main.UI;
+
+public class TagCommand extends Command {
 
 	private String taskID;
 	private String tag;
@@ -11,9 +15,9 @@ public class UntagCommand extends Command {
 	private Task task;
 	private Task prevTask;
 	
-	private static final String MESSAGE_ARGUMENT_PARAMS = "untag task_id/tag_name";
+	private static final String MESSAGE_ARGUMENT_PARAMS = "\n1. tag tag_name\n2. tag task_id/tag_name";
 	
-	public UntagCommand(String args) throws Exception {
+	public TagCommand(String args) throws Exception {
 		super(args);
 		
 		if (validNumArgs()) {
@@ -54,22 +58,22 @@ public class UntagCommand extends Command {
 		try {
 			task = prevTask.copy();
 		} catch (IOException e) {
-			return "unable to remove tag from task";
+			return "unable to add tag to task";
 		} catch (ClassNotFoundException e) {
-			return "unable to remove tag from task";
+			return "unable to add tag to task";
 		}
 
 		Set<String> tags = task.getTags();
-		tags.remove(tag);
+		tags.add(tag);
 		task.setTags(tags);
 
 		try {
 			Magical.storage.deleteTask(prevTask);
 			Magical.storage.createTask(task);
 		} catch (IOException e) {
-			return "unable to remove tag from task";
+			return "unable to add tag to task";
 		}
 
-		return tag + " removed from task";
+		return tag + " added to task";
 	}
 }

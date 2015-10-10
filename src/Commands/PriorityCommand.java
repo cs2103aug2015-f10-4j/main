@@ -1,6 +1,10 @@
-package main;
+package Commands;
 
 import java.io.IOException;
+
+import main.Magical;
+import main.Task;
+import main.UI;
 
 public class PriorityCommand extends Command{
 

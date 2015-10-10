@@ -1,4 +1,4 @@
-package main;
+package Commands;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,7 +27,6 @@ public class BlockCommand extends Command{
 		
 		if(validNumArgs()){
 
-			this.argsArray = args.split("/");
 			System.out.println(Arrays.toString(argsArray));
 			
 			this.type = argsArray[0].trim();

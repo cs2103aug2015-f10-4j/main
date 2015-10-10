@@ -36,12 +36,12 @@ public class Storage {
 	}
 	
 	
-	protected void createTask(Task t) throws IOException {
+	public void createTask(Task t) throws IOException {
 		taskList.add(t);
 		writeTaskList();
 	}
 	
-	protected ArrayList<Task> getTasks() {
+	public ArrayList<Task> getTasks() {
 		return taskList;
 	}
 	

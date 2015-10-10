@@ -1,7 +1,10 @@
-package main;
+package Commands;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import main.Magical;
+import main.Task;
 
 public class UndoCommand extends Command {
 

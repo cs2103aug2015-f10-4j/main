@@ -1,7 +1,11 @@
-package main;
+package Commands;
 
 import java.io.IOException;
 import java.util.Set;
+
+import main.Magical;
+import main.Task;
+import main.UI;
 
 public class DoneCommand extends Command{
 	private String taskID;
