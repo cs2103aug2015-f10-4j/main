@@ -20,7 +20,8 @@ public class AddCommandTests {
 	
 	@Test
 	public void testWrongNumArgs(){
-		final String MESSAGE_INVALID = "\n----- Invalid arguments ---- \n" + "Use Format: "
+		final String MESSAGE_INVALID = "\n----- Invalid arguments ---- \n" 
+								+ "Number of Arguments\nUse Format: "
 				 				+"\nadd type/title/description/due date"
 				 				+ "/start time/end time/recurrence";
 		try {

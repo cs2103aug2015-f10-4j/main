@@ -1,13 +1,8 @@
 package Commands;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Scanner;
-
 import main.Magical;
 import main.Task;
 
@@ -23,7 +18,8 @@ public class AddCommand extends Command{
 	protected String recurrence;
 	private Task task;
 	
-	private static final String MESSAGE_ERROR_PARAMS = "Use Format: \nadd type/title/description/due date"
+	private static final String MESSAGE_ERROR_PARAMS = "Number of Arguments\n"
+			+ "Use Format: \nadd type/title/description/due date"
 			+ "/start time/end time/recurrence";
 	private static final String MESSAGE_ERROR_TYPE = "Type: %s (type should be event or task)\n";
 	private static final String MESSAGE_ERROR_TITLE = "No Title" + "\n";
@@ -80,8 +76,8 @@ public class AddCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
-			error += "Number of Arguments\n";
-			throw new Exception(MESSAGE_HEADER_INVALID + MESSAGE_ERROR_PARAMS);
+			error += MESSAGE_ERROR_PARAMS;
+			throw new Exception(MESSAGE_HEADER_INVALID + error);
 		}
 	}
 	
