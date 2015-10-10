@@ -23,8 +23,20 @@ public class AddCommand extends Command{
 	protected String recurrence;
 	private Task task;
 	
-	private static final String MESSAGE_ARGUMENT_PARAMS = "\nadd type/title/description/due date"
+	private static final String MESSAGE_ERROR_PARAMS = "Use Format: \nadd type/title/description/due date"
 			+ "/start time/end time/recurrence";
+	private static final String MESSAGE_ERROR_TYPE = "Type: %s (type should be event or task)\n";
+	private static final String MESSAGE_ERROR_TITLE = "No Title" + "\n";
+	private static final String MESSAGE_ERROR_DATE = "Due date: %s (Date should be dd-MM-yyyy)\n";
+	private static final String MESSAGE_ERROR_START_TASK = "Start time: %s "
+			+ "(Task should not have start time)\n";
+	private static final String MESSAGE_ERROR_START = "Start time: %s (Time should be in 24hrs format)\n";
+	private static final String MESSAGE_ERROR_END = "End time: %s (Time should be in 24hrs format)\n";
+	private static final String MESSAGE_ERROR_RECURRENCE = "Recurrence: %s" 
+			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
+	private static final String MESSAGE_TASK_ADDED = "task added";
+	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
+	private static final String MESSAGE_TASK_ERROR = "unable to add task";
 	
 	public AddCommand(String args) throws Exception {
 		super(args);
@@ -43,34 +55,33 @@ public class AddCommand extends Command{
 			boolean isTask = type == null ? false : type.equals("task");
 			
 			if (type == null) {
-				error += "Type: " + argsArray[0].trim() + " (type should be event or task)\n";
+				error += String.format(MESSAGE_ERROR_TYPE, argsArray[0].trim());
 			}
 			if (title == null) {
-				error += "No Title" + "\n";
+				error += MESSAGE_ERROR_TITLE;
 			}
 			if (dueDate == null ^ isFloat) {
-				error += "Due date: " + argsArray[3].trim() + " (Date should be dd-MM-yyyy)\n";
+				error +=  String.format(MESSAGE_ERROR_DATE, argsArray[3].trim());
 			}
 			if (startTime == -1 ^ isTask) {
 				if(isTask){
-					error += "Start time: " + argsArray[4].trim() + " (Task should not have start time)\n";
+					error += String.format(MESSAGE_ERROR_START_TASK, argsArray[4].trim()); 
 				} else {
-					error += "Start time: " + argsArray[4].trim() + " (Time should be in 24hrs format)\n";
+					error += String.format(MESSAGE_ERROR_START, argsArray[4].trim());
 				}
 			}
 			if (endTime == -1 ^ isFloat) {
-				error += "End time: " + argsArray[5].trim() + " (Time should be in 24hrs format)\n";
+				error += String.format(MESSAGE_ERROR_END, argsArray[5].trim());
 			}
 			if (recurrence == null) {
-				error += "Recurrence: " + argsArray[6].trim() 
-						+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
+				error += String.format(MESSAGE_ERROR_RECURRENCE, argsArray[6].trim()); 
 			}
 			if (!error.equals("")) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
 			error += "Number of Arguments\n";
-			throw new Exception(MESSAGE_HEADER_INVALID + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
+			throw new Exception(MESSAGE_HEADER_INVALID + MESSAGE_ERROR_PARAMS);
 		}
 	}
 	
@@ -96,14 +107,14 @@ public class AddCommand extends Command{
 		task.setEndTime(endTime);
 		
 		try {
-			String retMsg = "task added";
+			String retMsg = MESSAGE_TASK_ADDED;
 			if (isClashing()) {
-				retMsg += ". Another task exists on the same date.";
+				retMsg += MESSAGE_TASK_CLASH;
 			}
 			Magical.getStorage().createTask(task);
 			return retMsg;
 		} catch (IOException e) {
-			return "unable to add task";
+			return MESSAGE_TASK_ERROR;
 		}
 	}
 
