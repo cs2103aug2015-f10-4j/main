@@ -55,14 +55,15 @@ public class AddCommand extends Command{
 				if(isTask){
 					error += "Start time: " + argsArray[4].trim() + " (Task should not have start time)\n";
 				} else {
-					error += "Start time: " + argsArray[4].trim() + "\n";
+					error += "Start time: " + argsArray[4].trim() + " (Time should be in 24hrs format)\n";
 				}
 			}
 			if (endTime == -1 ^ isFloat) {
-				error += "End time: " + argsArray[5].trim() + "\n";
+				error += "End time: " + argsArray[5].trim() + " (Time should be in 24hrs format)\n";
 			}
 			if (recurrence == null) {
-				error += "Recurrence: " + argsArray[6].trim() + "\n";
+				error += "Recurrence: " + argsArray[6].trim() 
+						+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
 			}
 			if (!error.equals("")) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);

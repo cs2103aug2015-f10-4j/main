@@ -47,7 +47,6 @@ public class AddCommandTests {
 			Command badType = new AddCommand("foobar/testEvent/testing/9-10-2015/0001/2359/daily");
 			fail();
 		} catch (Exception e){
-			System.out.println(e.getMessage());
 			assertEquals(e.getMessage(), String.format(MESSAGE_ARG, "foobar"));
 		}
 		
@@ -71,23 +70,14 @@ public class AddCommandTests {
 	}
 	
 	@Test
-	public void testWrongDate(){
+	public void testWrongDate() throws Exception{
 		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
 									+ "Due date: %s"
 									+ " (Date should be dd-MM-yyyy)\n";
-		/*
-		try {
-			Command pastDate = new AddCommand("event/test/testing/9-10-2015/0001/2359/daily");
-			fail();
-		} catch (Exception e){
-			System.out.println(e.getMessage());
-		}
-		*/
 		try {
 			Command impossibleDate = new AddCommand("event/test/testing/139-10-2015/0001/2359/daily");
 			fail();
 		} catch (Exception e){
-			System.out.println(e.getMessage());
 			assertEquals(String.format(MESSAGE_ARG, "139-10-2015"), e.getMessage());
 		}
 		try {
@@ -96,5 +86,95 @@ public class AddCommandTests {
 		} catch (Exception e){
 			assertEquals(String.format(MESSAGE_ARG, "9-10-2015a"), e.getMessage());
 		}
+		try {
+			Command noDate = new AddCommand("event/test/testing//0001/2359/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, ""), e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testWrongStart() {
+		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
+									+ "Start time: %s"
+									+ " (Time should be in 24hrs format)\n";
+		try {
+			Command wrongStartLength = new AddCommand("event/test/testing/9-10-2015/000/2359/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, "000"), e.getMessage());
+		}
+		try {
+			Command negativeStart = new AddCommand("event/test/testing/9-10-2015/-999/2359/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, "-999"), e.getMessage());
+		}
+		try {
+			Command startExceed24h = new AddCommand("event/test/testing/9-10-2015/9999/2359/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, "9999"), e.getMessage());
+		}
+		try {
+			Command noStart = new AddCommand("event/test/testing/9-10-2015//2359/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, ""), e.getMessage());
+		}
+		try {
+			Command taskWithStart = new AddCommand("task/test/testing/9-10-2015/0000/2359/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals("\n----- Invalid arguments ---- \n" 
+					+ "Start time: 0000"
+					+ " (Task should not have start time)\n", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testWrongEnd() throws Exception {
+		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
+									+ "End time: %s"
+									+ " (Time should be in 24hrs format)\n";
+		try {
+			Command wrongEndLength = new AddCommand("event/test/testing/9-10-2015/0000/235/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, "235"), e.getMessage());
+		}
+		try {
+			Command negativeEnd = new AddCommand("event/test/testing/9-10-2015/0000/-235/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, "-235"), e.getMessage());
+		}
+		try {
+			Command endExceed24h = new AddCommand("event/test/testing/9-10-2015/0000/9999/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, "9999"), e.getMessage());
+		}
+		try {
+			Command noEnd = new AddCommand("event/test/testing/9-10-2015/0000//daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, ""), e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testRecurrence(){
+		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
+									+ "Recurrence: %s"
+									+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
+		try {
+			Command invalidRecurrence = new AddCommand("event/test/testing/9-10-2015/0000/2359/fortnightly");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ARG, "fortnightly"), e.getMessage());
+		}
+
 	}
 }
