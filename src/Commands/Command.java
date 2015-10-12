@@ -120,12 +120,4 @@ public class Command {
 	public boolean isUndoable(){
 		return true;
 	}
-	
-	/* Test
-	public static void main(String[] args) {
-		Scanner s = new Scanner(System.in);
-		Command c = new Command(s.nextLine());
-		System.out.println(Arrays.toString(c.argsArray));
-	}
-	//*/
 }
