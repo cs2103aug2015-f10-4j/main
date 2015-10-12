@@ -8,7 +8,7 @@ import Commands.Command;
 public class Magical {
 	private static final String CONFIG_STORAGE_FILENAME = "storage.txt"; 
 	
-	protected static Storage storage;
+	public static Storage storage;
 	protected static Stack<ArrayList<Task>> undoHistory;
 
 	public static Storage getStorage(){
