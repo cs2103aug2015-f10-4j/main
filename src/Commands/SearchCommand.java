@@ -20,13 +20,10 @@ public class SearchCommand extends Command {
 		if (validNumArgs()) {
 			this.query = argsArray[0].trim();
 
-			if (argsArray.length == 1) {
-				type = "";
-			} else {
-				type = argsArray[1].trim();
-			}
+			this.type = argsArray[1].trim();
+			this.type = type.equals("") ? "" : getType(type);
 
-			if (!type.equals("") && !validType()) {
+			if (type == null) {
 				error += "Type: " + type + "\n";
 			}
 
@@ -39,20 +36,12 @@ public class SearchCommand extends Command {
 		}
 	}
 	
-	private boolean checkCount() {
+	public boolean validNumArgs() {
 		if (this.count > 2) {
 			return false;
 		} else {
 			return true;
 		}
-	}
-	
-	public boolean validNumArgs() {
-		return checkCount();
-	}
-	
-	public boolean validType() {
-		return checkType(this.type);
 	}
 	
 	public String execute() {
