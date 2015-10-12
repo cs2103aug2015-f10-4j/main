@@ -53,7 +53,7 @@ public class Storage {
 		}
 	}
 	
-	protected void deleteTask(Task t) throws IOException {
+	public void deleteTask(Task t) throws IOException {
 		int pos = getTaskPos(t);
 		if (pos > -1) {
 			taskList.remove(pos);
