@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
+import main.Task;
 import main.UI;
 
 public class Command {
@@ -99,8 +100,8 @@ public class Command {
 		}
 		return type;
 	}
-	protected boolean checkTaskID(String taskID){
-		return UI.getLastTaskList().containsKey(taskID);
+	protected Task getTaskID(String taskID){
+		return UI.getLastTaskList().get(taskID);
 	}
 	
 	protected boolean checkPriority(String priority){

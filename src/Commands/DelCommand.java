@@ -8,7 +8,7 @@ import main.UI;
 
 public class DelCommand extends Command{
 	
-	private String taskID;
+	private Task taskID;
 	private String error = "";
 	private Task task;
 	
@@ -18,8 +18,8 @@ public class DelCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
-			taskID = argsArray[0];
-			if(!validTaskID()){
+			taskID = getTaskID(argsArray[0].trim());
+			if(taskID == null){
 				error += "Task ID: " + taskID + "\n";
 			}
 			if (!error.equals("")) {
@@ -31,20 +31,12 @@ public class DelCommand extends Command{
 		}
 	}
 	
-	private boolean checkCount() {
+	public boolean validNumArgs() {
 		if (this.count != 1) {
 			return false;
 		} else {
 			return true;
 		}
-	}
-	
-	public boolean validNumArgs() {
-		return checkCount();
-	}
-	
-	public boolean validTaskID() {
-		return checkTaskID(this.taskID);
 	}
 	
 	public String execute() {
