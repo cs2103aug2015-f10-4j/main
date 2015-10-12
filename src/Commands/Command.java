@@ -106,7 +106,7 @@ public class Command {
 	protected boolean checkPriority(String priority){
 		try {
 			int p = Integer.parseInt(priority);
-			return (p >= 1 && p <= 10);
+			return (p >= 0 && p <= 10);
 		} catch (Exception e){
 			return false;
 		}
