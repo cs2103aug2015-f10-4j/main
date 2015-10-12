@@ -104,12 +104,16 @@ public class Command {
 		return UI.getLastTaskList().get(taskID);
 	}
 	
-	protected boolean checkPriority(String priority){
+	protected int getPriority(String priority){
 		try {
 			int p = Integer.parseInt(priority);
-			return (p >= 0 && p <= 10);
+			if (p >= 0 && p <= 10){
+				return p;
+			} else {
+				return -1;
+			}
 		} catch (Exception e){
-			return false;
+			return -1;
 		}
 	}
 	
