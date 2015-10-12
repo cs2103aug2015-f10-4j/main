@@ -45,7 +45,7 @@ public class Storage {
 		return taskList;
 	}
 	
-	protected void updateTask(Task t) throws IOException {
+	public void updateTask(Task t) throws IOException {
 		int pos = getTaskPos(t);
 		if (pos > -1) {
 			taskList.set(pos, t);
