@@ -91,7 +91,7 @@ public class Storage {
 		return taskList;
 	}
 	
-	protected void setTaskList(ArrayList<Task> tList) throws IOException {
+	public void setTaskList(ArrayList<Task> tList) throws IOException {
 		taskList = tList;
 		writeTaskList();
 	}

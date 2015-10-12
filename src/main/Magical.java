@@ -9,7 +9,7 @@ public class Magical {
 	private static final String CONFIG_STORAGE_FILENAME = "storage.txt"; 
 	
 	public static Storage storage;
-	protected static Stack<ArrayList<Task>> undoHistory;
+	public static Stack<ArrayList<Task>> undoHistory;
 
 	public static Storage getStorage(){
 		return storage;
