@@ -9,7 +9,7 @@ import main.UI;
 
 public class UntagCommand extends Command {
 
-	private String taskID;
+	private Task taskID;
 	private String tag;
 	private String error = "";
 	private Task task;
@@ -21,10 +21,10 @@ public class UntagCommand extends Command {
 		super(args);
 		
 		if (validNumArgs()) {
-			taskID = argsArray[0].trim();
+			taskID = getTaskID(argsArray[0].trim());
 			tag = argsArray[1].trim();
 			
-			if(!validTaskID()){
+			if(taskID == null){
 				error += "Task ID: " + taskID + "\n";
 			}
 
@@ -37,20 +37,12 @@ public class UntagCommand extends Command {
 		}
 	}
 	
-	private boolean checkCount() {
+	public boolean validNumArgs() {
 		if (this.count != 2) {
 			return false;
 		} else {
 			return true;
 		}
-	}
-	
-	public boolean validNumArgs() {
-		return checkCount();
-	}
-	
-	public boolean validTaskID() {
-		return checkTaskID(this.taskID);
 	}
 	
 	public String execute() {
