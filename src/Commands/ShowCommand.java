@@ -4,7 +4,7 @@ import main.Task;
 import main.UI;
 
 public class ShowCommand extends Command{
-	private String taskID;
+	private Task taskID;
 	private String error = "";
 	
 	private static final String MESSAGE_ARGUMENT_PARAMS = "show task_id";
@@ -13,8 +13,8 @@ public class ShowCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
-			taskID = argsArray[0];
-			if(!validTaskID()){
+			taskID = getTaskID(argsArray[0].trim());
+			if(taskID == null){
 				error += "Task ID: " + taskID + "\n";
 			}
 			if (!error.equals("")) {
@@ -26,20 +26,12 @@ public class ShowCommand extends Command{
 		}
 	}
 	
-	private boolean checkCount() {
+	public boolean validNumArgs() {
 		if (this.count != 1) {
 			return false;
 		} else {
 			return true;
 		}
-	}
-	
-	public boolean validNumArgs() {
-		return checkCount();
-	}
-	
-	public boolean validTaskID(){
-		return checkTaskID(this.taskID);
 	}
 	
 	@Override
