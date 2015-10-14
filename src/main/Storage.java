@@ -10,6 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -21,9 +23,14 @@ public class Storage {
 
 	private static File file;
 	private ArrayList<Task> taskList;
+	// Gson
+	/*
 	// Gson gson = new Gson();
 	Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	String jsonRepresentation;
+	*/
+	
+	ObjectMapper mapper = new ObjectMapper();
 
 	
 	public Storage (String fileName) throws IOException {
@@ -83,13 +90,17 @@ public class Storage {
 	}
 	
 	protected void writeTaskList() throws IOException {
-		FileOutputStream fos = new FileOutputStream(file);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		// FileOutputStream fos = new FileOutputStream(file);
+		// ObjectOutputStream oos = new ObjectOutputStream(fos);
+		/*
 		jsonRepresentation = gson.toJson(taskList);
 		oos.writeObject(jsonRepresentation);
+		*/
 		// System.out.print(jsonRepresentation);
 		// oos.writeObject(taskList);
-		oos.close();
+		
+		mapper.writeValue(file, taskList);
+		// oos.close();
 	}
 	
 	// for reading contents in the file
@@ -110,12 +121,15 @@ public class Storage {
 			// BufferedReader buffered = new BufferedReader(fileReader);
 			
 			// Task[] contents = new Gson().fromJson(reader, Task[].class);
-			JsonReader reader = new JsonReader(new FileReader(file));
-			reader.setLenient(true);
-			String garbage = reader.nextString();
-			Task[] read = gson.fromJson(reader, Task[].class);
+			// JsonReader reader = new JsonReader(new FileReader(file));
+			// reader.setLenient(true);
+			// String garbage = reader.nextString();
+			// Task[] read = gson.fromJson(reader, Task[].class);
 			// String jsonTest = gson.toJson(read);
 			// System.out.println(jsonTest);
+			
+			// Map<String,Object> userData = mapper.readValue(new File("user.json"), Map.class);
+			taskList = mapper.readValue(file, new TypeReference<ArrayList<Task>>() { });
 
 
 			// taskList.add(read[0]);
