@@ -3,6 +3,7 @@ package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,7 +23,25 @@ public class Storage {
 	// private static final String MESSAGE_FILE_NOT_CREATED = "Error. File is not created successfully.";
 
 	private static File file;
+	private static String logFileName = "logFile";
 	private ArrayList<Task> taskList;
+	ObjectMapper mapper = new ObjectMapper();
+	private static File logFile = new File(logFileName);
+	FileOutputStream fos;
+	ObjectOutputStream oos;
+	
+	// for creating logFile
+	public void createLog () {
+		try {
+			fos = new FileOutputStream(logFile);
+			oos = new ObjectOutputStream(fos);
+		} catch (FileNotFoundException fnfe) {
+			System.out.println("Error: File Not Found");
+		} catch (IOException e) {
+			System.out.println("Error: Unable to write to file");
+		}
+	}
+	
 	// Gson
 	/*
 	// Gson gson = new Gson();
@@ -30,16 +49,27 @@ public class Storage {
 	String jsonRepresentation;
 	*/
 	
-	ObjectMapper mapper = new ObjectMapper();
-
-	
-	public Storage (String fileName) throws IOException {
-
+	public Storage (String fileName) {
+		createLog();
+		
+		assert fileName != null;
+		
 		file = new File(fileName);
 
 		if ( !(file.exists()) ) {
-			file.createNewFile();
+			try {
+				file.createNewFile();
+				oos.writeObject("logFile: Creating new file...");
+				// write: creating new file
+			} catch (IOException e) {
+				System.out.println("Storage IOException: File not created successfully");
+			}
 			taskList = new ArrayList<Task>();
+			try {
+				oos.writeObject("logFile: New File successfully created.");
+			} catch (IOException e) {
+				System.out.println("Storage IOException: Error writing into logFile");
+			}
 		} else {
 			readTaskList();
 		}
