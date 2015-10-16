@@ -1,5 +1,7 @@
 package Commands;
 
+import static org.junit.Assert.*;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -29,6 +31,9 @@ public class Command {
 			
 		}
 		this.count = argsArray.length;
+		for(int i = 0; i < count; i++){
+			assertNotNull(argsArray[i]);
+		}
 	}
 	
 	protected String getRecurrence(String recurrence) {

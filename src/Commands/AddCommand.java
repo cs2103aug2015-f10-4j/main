@@ -38,6 +38,7 @@ public class AddCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
+			
 			this.type = getType(argsArray[0].trim());
 			this.title = getTitle(argsArray[1].trim());
 			this.desc = argsArray[2].trim();
