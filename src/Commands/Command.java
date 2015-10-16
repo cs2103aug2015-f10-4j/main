@@ -9,7 +9,7 @@ import java.util.Date;
 import main.Task;
 import main.UI;
 
-public class Command {
+public abstract class Command {
 
 	//main variables
 	protected String args;
@@ -122,9 +122,7 @@ public class Command {
 		}
 	}
 	
-	public String execute(){
-		return null;
-	}
+	public abstract String execute();
 	
 	public boolean isUndoable(){
 		return true;
