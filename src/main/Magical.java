@@ -7,20 +7,23 @@ import javafx.application.Application;
 import Commands.Command;
 
 public class Magical {
-	private static final String CONFIG_STORAGE_FILENAME = "storage.txt"; 
-	
-	protected static Storage storage;
+	private static final String CONFIG_STORAGE_FILENAME = "storage.txt";
+
+	public static Storage storage;
 	protected static Stack<ArrayList<Task>> undoHistory;
+
+	private static GUIView view;
 
 	public static Storage getStorage(){
 		return storage;
 	}
-	
+
 	public static void main(String args[]) {
 		try {
 			init();
 			startApp();
 			startREPL();
+			UI.launch(args);
 		} catch (Exception e) {
 			UI.displayErrorMessage();
 			e.printStackTrace();
@@ -28,17 +31,12 @@ public class Magical {
 	}
 
 	private static void startApp() {
-		
-		GUIController guiController = new GUIController();
-		
 		UI.displayWelcomeMessage();
 		ArrayList<Task> upcomingTasks = upcomingTasks();
-		guiController.model.taskList = upcomingTasks;
 		UI.displayTaskList("Upcoming tasks", upcomingTasks);
-		
 	}
 
-	private static ArrayList<Task> upcomingTasks() {
+	public static ArrayList<Task> upcomingTasks() {
 		ArrayList<Task> upcomingTasks = new ArrayList<Task>();
 		ArrayList<Task> allTasks = storage.getTasks();
 		Calendar cal = Calendar.getInstance();
@@ -53,6 +51,7 @@ public class Magical {
 		}
 		return upcomingTasks;
 	}
+
 
 	private static void startREPL() throws Exception {
 		while(true) {
@@ -71,6 +70,7 @@ public class Magical {
 			}
 		}
 	}
+
 
 	private static ArrayList<Task> listClone(ArrayList<Task> tasks) {
 		ArrayList<Task> newTaskList = new ArrayList<Task>(tasks.size());

@@ -7,9 +7,8 @@ import javafx.collections.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
-import javafx.scene.input.*;
 import javafx.stage.Stage;
 
 /*
@@ -19,10 +18,12 @@ import javafx.stage.Stage;
  */
 public class GUIView extends Application {
 
+
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Magical v0.1");
 		FXMLLoader loader = new FXMLLoader();
-		Scene scene = loader.load(getClass().getResource("FXML.fxml"));
+		Parent pane = (Parent) loader.load(getClass().getResource("/main/FXML.fxml"));
+		Scene scene = new Scene(pane);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

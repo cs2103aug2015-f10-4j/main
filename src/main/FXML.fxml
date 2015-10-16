@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.collections.*?>
 
-
-<AnchorPane prefHeight="650.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane prefHeight="650.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.GUIController">
    <children>
       <VBox prefHeight="650.0" prefWidth="500.0" spacing="5.0">
          <children>
-            <Pane prefHeight="50.0" prefWidth="390.0" />
-            <Accordion prefHeight="525.0" prefWidth="490.0">
+            <Accordion prefHeight="596.0" prefWidth="490.0">
               <panes>
-                <TitledPane animated="false" text="To-Do">
+                <TitledPane text="To-Do">
                      <content>
-                        <TableView prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="taskTable" prefHeight="200.0" prefWidth="200.0">
                           <columns>
-                            <TableColumn prefWidth="40.0" text="ID" />
-                            <TableColumn prefWidth="163.0" text="Task Title" />
-                              <TableColumn prefWidth="95.0" text="Due Date" />
-                              <TableColumn prefWidth="124.0" text="Tags" />
-                              <TableColumn prefWidth="66.0" text="Priority" />
+                            <TableColumn fx:id="taskIdCol" editable="false" prefWidth="40.0" sortable="false" text="ID" />
+                            <TableColumn fx:id="taskTitleCol" prefWidth="163.0" text="Task Title" />
+                              <TableColumn fx:id="dueDateCol" prefWidth="95.0" text="Due Date" />
+                              <TableColumn fx:id="tagsCol" prefWidth="124.0" text="Tags" />
+                              <TableColumn fx:id="priorityCol" prefWidth="66.0" text="Priority" />
                           </columns>
                         </TableView>
                      </content>
                   </TitledPane>
-                <TitledPane animated="false" text="Upcoming Events">
+                <TitledPane text="Upcoming Events">
                      <content>
                         <TableView prefHeight="200.0" prefWidth="200.0">
                           <columns>
@@ -49,8 +48,8 @@
                   </TitledPane>
               </panes>
             </Accordion>
-            <Label text="Error Message" />
-            <TextField />
+            <Label fx:id="errorMessage" />
+            <TextField fx:id="commandLineField" onKeyPressed="#handleEnterPressed" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
