@@ -45,8 +45,9 @@ public class GUIController {
 		task1.setPriority(1);
 		ArrayList<Task> tList = new ArrayList<Task>();
 		tList.add(task1);
+
+
 		taskTable.setItems(FXCollections.observableArrayList(task1));
-		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("taskTitle"));
 	}
 
 	@FXML
