@@ -26,6 +26,7 @@ public class BlockCommandTests {
 				+ "\n2. block type/title/description/start date//end date";
 		try {
 			Command lessArgs = new BlockCommand("event/testEvent/testing");
+			fail();
 		} catch (Exception e) {
 			assertEquals(MESSAGE_INVALID, e.getMessage());
 		}		
@@ -36,12 +37,50 @@ public class BlockCommandTests {
 			assertEquals(e.getMessage(), MESSAGE_INVALID);
 		}
 	}
+	
+	@Test
+	public void testWrongType() {
+		final String MESSAGE_INVALID = "\n----- Invalid arguments ---- \n" 
+									+ "Type: %s" 
+									+ " (type should be event or task)\n";
+		try {
+			Command badType = new BlockCommand("foobar/testEvent/testing/9-10-2015/29-10-2015");
+			fail();
+		} catch (Exception e){
+			assertEquals(e.getMessage(), String.format(MESSAGE_INVALID, "foobar"));
+		}
+		
+		try {
+			Command noType = new BlockCommand("/testEvent/testing/9-10-2015/29-10-2015");
+			fail();
+		} catch (Exception e){
+			assertEquals(e.getMessage(), String.format(MESSAGE_INVALID, ""));
+		}
+	} 
+	
 	@Test
 	public void testWrongStart() {
+		final String MESSAGE_INVALID = "\n----- Invalid arguments ---- \n" 
+				+ "Date: %s (Date should be dd-MM-yyyy)\n";
+
 		try {
-			Command event = new BlockCommand("event/testEvent/testing/9-10-2015/9-10-2015");
+			Command impossibleDate = new BlockCommand("event/testEvent/testing/229-10-2015/9-10-2015");
+			fail();
 		} catch (Exception e){
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
+			assertEquals(e.getMessage(), String.format(MESSAGE_INVALID, "229-10-2015"));
+		}
+		try {
+			Command lettersInDate = new BlockCommand("event/test/testing/9-10-2015a/29-10-2015");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_INVALID, "9-10-2015a"), e.getMessage());
+		}
+		try {
+			Command noDate = new AddCommand("event/test/testing//29-10-2015");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_INVALID, ""), e.getMessage());
 		}
 	}
 

@@ -30,7 +30,6 @@ public class EditCommand extends Command{
 			if (taskID == null) {
 				error += "Task ID: " + taskID + "\n";
 			}
-		
 			if (field.equalsIgnoreCase("title") && (getTitle(value) != null)) {
 				error += "No Title" + "\n";
 			}
