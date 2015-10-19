@@ -85,7 +85,7 @@ public class AddCommand extends Command{
 			assertNotNull(type);
 			if(type.equals("event")){
 				dueDate = addTime(dueDate, startTime);
-			} else if(type.equals("task")){
+			} else if(type.equals("task") && !isFloat){
 				dueDate = addTime(dueDate, endTime);
 			}
 		} else {
