@@ -3,6 +3,7 @@ package Commands;
 import static org.junit.Assert.*;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import main.Task;
@@ -61,7 +62,7 @@ public abstract class Command {
 				if(hour > 23 || hour < 0 || min > 59 || min < 0){
 					return -1;
 				} else {
-					return hour*1000 + min;
+					return hour*100 + min;
 				}
 			} catch(Exception e){
 				return -1;
@@ -120,6 +121,15 @@ public abstract class Command {
 		} catch (Exception e){
 			return -1;
 		}
+	}
+	
+	protected Date addTime(Date date, int time){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, time/100);
+		cal.set(Calendar.MINUTE, time%100);
+		cal.set(Calendar.SECOND, 0);
+		return cal.getTime();
 	}
 	
 	public abstract String execute();
