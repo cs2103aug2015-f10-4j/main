@@ -1,5 +1,10 @@
 package Commands;
 
+import static org.junit.Assert.*;
+import com.joestelmach.natty.*;
+
+import java.util.List;
+import java.util.Map;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,6 +80,13 @@ public class AddCommand extends Command{
 			}
 			if (!error.equals("")) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
+			}
+			
+			assertNotNull(type);
+			if(type.equals("event")){
+				dueDate = addTime(dueDate, startTime);
+			} else if(type.equals("task")){
+				dueDate = addTime(dueDate, endTime);
 			}
 		} else {
 			error += MESSAGE_ERROR_PARAMS;
