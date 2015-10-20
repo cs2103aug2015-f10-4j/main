@@ -5,6 +5,10 @@ import static org.junit.Assert.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import com.joestelmach.natty.DateGroup;
+import com.joestelmach.natty.Parser;
 
 import main.Task;
 import main.UI;
@@ -15,20 +19,32 @@ public abstract class Command {
 	protected String args;
 	protected String[] argsArray;
 	protected int count;
+	protected boolean isFlexi;
 	
 	//messaging params
 	protected String error = "";
 	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n"; 
 
 	public Command(String args){
+		
 		this.args = args;
-		this.argsArray = args.split("(?<![\\\\])/", -1);
-		for (int i = 0; i < argsArray.length; i++){
-			String param = argsArray[i];
+		
+		isFlexi = !args.contains("/") || !args.replace("\\/", "").contains("/");
+		if(!isFlexi){
+			this.argsArray = args.split("(?<![\\\\])/", -1);
+			for (int i = 0; i < argsArray.length; i++){
+				String param = argsArray[i];
+				
+				param = param.replaceAll("(?<![\\\\])\\\\", "");
+				argsArray[i] = param;
+				
+			}
 			
-			param = param.replaceAll("(?<![\\\\])\\\\", "");
-			argsArray[i] = param;
-			
+		} else {
+			this.argsArray = args.split("(?<=\\s)by(?=\\s)|(?<=\\s)at(?=\\s)", -1);
+			for(int i = 0; i < argsArray.length; i++){
+				argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", "");
+			}
 		}
 		this.count = argsArray.length;
 		
@@ -130,6 +146,27 @@ public abstract class Command {
 		cal.set(Calendar.MINUTE, time%100);
 		cal.set(Calendar.SECOND, 0);
 		return cal.getTime();
+	}
+	
+	protected Calendar dateToCal(Date d) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(d);
+		return cal;
+	}
+
+	protected Date flexiParse(Calendar cal) {
+		Parser p = new Parser();
+		List<DateGroup> date = p.parse((cal.get(Calendar.MONTH)+1) 
+				+ "-" + cal.get(Calendar.DAY_OF_MONTH)
+				+ "-" + cal.get(Calendar.YEAR)
+				+ " " + argsArray[2]);
+		return date.get(0).getDates().get(0);
+	}
+	
+	protected Date flexiParse(String dueDate) {
+		Parser p = new Parser();
+		List<DateGroup> date = p.parse(dueDate);
+		return date.get(0).getDates().get(0);
 	}
 	
 	public abstract String execute();
