@@ -42,7 +42,7 @@ public class Magical {
 		cal.add(Calendar.DATE, 3);
 		Date threeDaysFromToday = cal.getTime();
 		for (Task t : allTasks) {
-			if (t.getDueDate().after(today) && t.getDueDate().before(threeDaysFromToday)) {
+			if (t.getDueDate() != null && t.getDueDate().after(today) && t.getDueDate().before(threeDaysFromToday)) {
 				upcomingTasks.add(t);
 			}
 		}
