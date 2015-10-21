@@ -67,8 +67,9 @@ public class UI {
 			}
 			tagString += iterator.next();
 		}
+		String dueDate = (task.getDueDate() == null) ? "N.A." : makeShortDate(task.getDueDate()); 
 		showToUser("Description: " + task.getDescription() + endL +
-				"Due Date: " + makeShortDate(task.getDueDate()) + endL + "Tags: " + tagString);
+				"Due Date: " + dueDate + endL + "Tags: " + tagString);
 		
 	}
 	
