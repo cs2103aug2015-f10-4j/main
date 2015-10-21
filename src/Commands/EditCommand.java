@@ -10,7 +10,6 @@ import main.UI;
 
 public class EditCommand extends Command{
 
-	private Task taskID;
 	private String field;
 	private String value;
 	private String error = "";
@@ -23,26 +22,26 @@ public class EditCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
-			this.taskID = getTaskID(argsArray[0].trim());
+			this.task = getTaskByID(argsArray[0].trim());
 			this.field = argsArray[1].trim();
 			this.value = argsArray[2].trim();
 			
-			if (taskID == null) {
-				error += "Task ID: " + taskID + "\n";
+			if (task == null) {
+				error += "Task ID: " + argsArray[0] + "\n";
 			}
-			if (field.equalsIgnoreCase("title") && (getTitle(value) != null)) {
+			if (field.equalsIgnoreCase("title") && (getTitle(value) == null)) {
 				error += "No Title" + "\n";
 			}
-			else if (field.equalsIgnoreCase("due date") && (getDate(value) != null)) {
+			else if (field.equalsIgnoreCase("due date") && (getDate(value) == null)) {
 				error += "Due date: " + value + "\n";
 			}
-			else if (field.equalsIgnoreCase("start time") && (getTime(value) != -1)) {
+			else if (field.equalsIgnoreCase("start time") && (getTime(value) == -1)) {
 				error += "Start time: " + value + "\n";
 			}
-			else if (field.equalsIgnoreCase("end time") && (getTime(value) != -1)) {
+			else if (field.equalsIgnoreCase("end time") && (getTime(value) == -1)) {
 				error += "End time: " + value + "\n";
 			}
-			else if (field.equalsIgnoreCase("recurrence") && (getRecurrence(value) != null)) {
+			else if (field.equalsIgnoreCase("recurrence") && (getRecurrence(value) == null)) {
 				error += "Recurrence: " + value + "\n";
 			}
 //			else {
@@ -67,7 +66,7 @@ public class EditCommand extends Command{
 	
 	@Override
 	public String execute() {
-		prevTask = UI.getLastTaskList().get(taskID);
+		prevTask = task;
 		try {
 			task = (Task) prevTask.clone();
 		} catch (CloneNotSupportedException e1) {
