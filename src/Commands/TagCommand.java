@@ -9,10 +9,9 @@ import main.UI;
 
 public class TagCommand extends Command {
 
-	private Task taskID;
+	private Task task;
 	private String tag;
 	private String error = "";
-	private Task task;
 	private Task prevTask;
 	
 	private static final String MESSAGE_ARGUMENT_PARAMS = "\n1. tag tag_name\n2. tag task_id/tag_name";
@@ -21,11 +20,11 @@ public class TagCommand extends Command {
 		super(args);
 		
 		if (validNumArgs()) {
-			taskID = getTaskID(argsArray[0].trim());
+			task = getTaskByID(argsArray[0].trim());
 			tag = argsArray[1].trim();
 			
-			if(taskID == null){
-				error += "Task ID: " + taskID + "\n";
+			if(task == null){
+				error += "Task ID: " + argsArray[0] + "\n";
 			}
 
 			if (!error.equals("")) {
@@ -46,7 +45,7 @@ public class TagCommand extends Command {
 	}
 	
 	public String execute() {
-		prevTask = UI.getLastTaskList().get(taskID);
+		prevTask = task;
 		try {
 			task = prevTask.copy();
 		} catch (IOException e) {

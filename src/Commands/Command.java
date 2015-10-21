@@ -122,7 +122,8 @@ public abstract class Command {
 		}
 		return type;
 	}
-	protected Task getTaskID(String taskID){
+	
+	protected Task getTaskByID(String taskID){
 		return UI.getLastTaskList().get(taskID);
 	}
 	

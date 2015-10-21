@@ -8,7 +8,6 @@ import main.Task;
 import main.UI;
 
 public class DoneCommand extends Command{
-	private Task taskID;
 	private String error = "";
 	private Task task;
 	
@@ -18,9 +17,9 @@ public class DoneCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
-			taskID = getTaskID(argsArray[0].trim());
-			if(taskID == null){
-				error += "Task ID: " + taskID + "\n";
+			task = getTaskByID(argsArray[0].trim());
+			if(task == null){
+				error += "Task ID: " + argsArray[0] + "\n";
 			}
 			if (!error.equals("")) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
@@ -40,7 +39,6 @@ public class DoneCommand extends Command{
 	}
 	
 	public String execute() {
-		Task task = UI.getLastTaskList().get(taskID);
 		Set<String> tags = task.getTags();
 		tags.add("done");
 		task.setTags(tags);

@@ -4,7 +4,7 @@ import main.Task;
 import main.UI;
 
 public class ShowCommand extends Command{
-	private Task taskID;
+	private Task task;
 	private String error = "";
 	
 	private static final String MESSAGE_ARGUMENT_PARAMS = "show task_id";
@@ -13,9 +13,9 @@ public class ShowCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
-			taskID = getTaskID(argsArray[0].trim());
-			if(taskID == null){
-				error += "Task ID: " + taskID + "\n";
+			task = getTaskByID(argsArray[0].trim());
+			if(task == null){
+				error += "Task ID: " + argsArray[0] + "\n";
 			}
 			if (!error.equals("")) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
@@ -36,7 +36,6 @@ public class ShowCommand extends Command{
 	
 	@Override
 	public String execute() {
-		Task task = UI.getLastTaskList().get(taskID);
 		UI.displayTaskDetails(task);
 		return null;
 	}

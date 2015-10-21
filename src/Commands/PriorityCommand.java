@@ -8,10 +8,9 @@ import main.UI;
 
 public class PriorityCommand extends Command{
 
-	private Task taskID;
+	private Task task;
 	private int priority;
 	private String error = "";
-	private Task task;
 	private Task prevTask;
 	
 	private static final String MESSAGE_ARGUMENT_PARAMS = "set task id/priority";
@@ -20,10 +19,10 @@ public class PriorityCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
-			taskID = getTaskID(argsArray[0].trim());
+			task = getTaskByID(argsArray[0].trim());
 			priority = getPriority(argsArray[1].trim());
-			if(taskID == null){
-				error += "Task ID: " + taskID + "\n";
+			if(task == null){
+				error += "Task ID: " + argsArray[0] + "\n";
 			}
 			if(priority == -1){
 				error += "Priority: " + priority + "\n";
@@ -47,7 +46,7 @@ public class PriorityCommand extends Command{
 	
 	@Override
 	public String execute() {
-		prevTask = UI.getLastTaskList().get(taskID);
+		prevTask = task;
 		try {
 			task = (Task) prevTask.clone();
 			task.setPriority(priority);
