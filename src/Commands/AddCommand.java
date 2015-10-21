@@ -26,7 +26,7 @@ public class AddCommand extends Command{
 	protected boolean isFloat;
 	protected boolean isTask;
 	private Task task;
-	
+
 	private static final String MESSAGE_ERROR_PARAMS = "Number of Arguments\n"
 			+ "Use Format: \nadd type/title/description/due date"
 			+ "/start time/end time/recurrence";
@@ -38,31 +38,31 @@ public class AddCommand extends Command{
 			+ "(Task should not have start time)\n";
 	private static final String MESSAGE_ERROR_START = "Start time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_ERROR_END = "End time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_ERROR_RECURRENCE = "Recurrence: %s" 
+	private static final String MESSAGE_ERROR_RECURRENCE = "Recurrence: %s"
 			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
 	private static final String MESSAGE_TASK_ADDED = "task added";
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
 	private static final String MESSAGE_TASK_ERROR = "unable to add task";
-	
-	
+
+
 	public AddCommand(String args) throws Exception {
 		super(args);
-		
+
 		if(!isFlexi){
 			if(validNumArgs()){
-				
+
 				this.type = getType(argsArray[0].trim());
 				this.title = getTitle(argsArray[1].trim());
 				this.desc = argsArray[2].trim();
 				this.dueDate = getDate(argsArray[3].trim());
 				this.startTime = getTime(argsArray[4].trim());
 				this.endTime = getTime(argsArray[5].trim());
-				this.recurrence = getRecurrence(argsArray[6].trim()); 
-			
+				this.recurrence = getRecurrence(argsArray[6].trim());
+
 				isFloat = checkFloat(argsArray[3].trim(), argsArray[4].trim(),
 						 argsArray[5].trim(), argsArray[0].trim());
 				isTask = type == null ? false : type.equals("task");
-				
+
 				if (type == null) {
 					error += String.format(MESSAGE_ERROR_TYPE, argsArray[0].trim());
 				}
@@ -74,7 +74,7 @@ public class AddCommand extends Command{
 				}
 				if (startTime == -1 ^ isTask) {
 					if(isTask){
-						error += String.format(MESSAGE_ERROR_START_TASK, argsArray[4].trim()); 
+						error += String.format(MESSAGE_ERROR_START_TASK, argsArray[4].trim());
 					} else {
 						error += String.format(MESSAGE_ERROR_START, argsArray[4].trim());
 					}
@@ -83,13 +83,13 @@ public class AddCommand extends Command{
 					error += String.format(MESSAGE_ERROR_END, argsArray[5].trim());
 				}
 				if (recurrence == null) {
-					error += String.format(MESSAGE_ERROR_RECURRENCE, argsArray[6].trim()); 
+					error += String.format(MESSAGE_ERROR_RECURRENCE, argsArray[6].trim());
 				}
 				if (!error.equals("")) {
 					throw new Exception(MESSAGE_HEADER_INVALID + error);
 				}
-				
-				assertNotNull(type);
+
+				//assertNotNull(type);
 				if(type.equals("event")){
 					dueDate = addTime(dueDate, startTime);
 				} else if(type.equals("task") && !isFloat){
@@ -133,7 +133,7 @@ public class AddCommand extends Command{
 			}
 		}
 	}
-	
+
 	public boolean validNumArgs(){
 		if(this.count != 7){
 			return false;
@@ -141,7 +141,7 @@ public class AddCommand extends Command{
 			return true;
 		}
 	}
-	
+
 	@Override
 	public String execute() {
 		task = new Task();
@@ -149,11 +149,11 @@ public class AddCommand extends Command{
 		task.setTitle(title);
 		task.setDescription(desc);
 		task.setRecurrence(recurrence);
-		
+
 		task.setDueDate(dueDate);
 		task.setStartTime(startTime);
 		task.setEndTime(endTime);
-		
+
 		try {
 			String retMsg = MESSAGE_TASK_ADDED;
 			if (isClashing()) {
@@ -175,12 +175,12 @@ public class AddCommand extends Command{
 		}
 		return false;
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		//AddCommand a = new AddCommand("wash my butt by 1st January at 12pm");
 		//AddCommand b = new AddCommand("pass \\by the river \\at St.George by 1st January at 12pm");
 		//AddCommand c = new AddCommand("smack him by 12-01-1993 at 1pm");
 		//AddCommand d = new AddCommand("");
-		AddCommand e = new AddCommand("eat chocolate"); 
+		AddCommand e = new AddCommand("eat chocolate");
 	}
 }

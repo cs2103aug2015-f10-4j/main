@@ -6,15 +6,15 @@ import java.util.*;
 import Commands.Command;
 
 public class Magical {
-	private static final String CONFIG_STORAGE_FILENAME = "storage.txt"; 
-	
+	private static final String CONFIG_STORAGE_FILENAME = "storage.txt";
+
 	public static Storage storage;
 	public static Stack<ArrayList<Task>> undoHistory;
 
 	public static Storage getStorage(){
 		return storage;
 	}
-	
+
 	public static void main(String args[]) {
 		try {
 			init();
@@ -30,7 +30,7 @@ public class Magical {
 		UI.displayWelcomeMessage();
 		ArrayList<Task> upcomingTasks = upcomingTasks();
 		UI.displayTaskList("Upcoming tasks", upcomingTasks);
-		
+
 	}
 
 	private static ArrayList<Task> upcomingTasks() {
@@ -47,6 +47,12 @@ public class Magical {
 			}
 		}
 		return upcomingTasks;
+	}
+
+	public static String parseCommand(String userInput) throws Exception{
+		Command command = Parser.parse(userInput);
+		String message = command.execute();
+		return message;
 	}
 
 	private static void startREPL() throws Exception {
