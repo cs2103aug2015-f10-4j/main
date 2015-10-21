@@ -4,7 +4,7 @@ import java.util.*;
 
 public class GUIModel {
 
-	private boolean displayNotificationBar;
+	private boolean displayNotificationBar = false;
 	private String notificationMessage;
 	private String errorMessage;
 	
@@ -17,17 +17,6 @@ public class GUIModel {
 	public Task currentTask;
 	public ArrayList<Task> eventList = new ArrayList<Task>();
 	public ArrayList<Task> taskList = new ArrayList<Task>();
-
-	public static Magical magical;
-
-	public static void init() throws Exception {
-		magical = new Magical();
-		magical.init();
-	}
-
-	public void initialize() {
-		taskList = magical.upcomingTasks();
-	}
 
 	public void setErrofrMessage(String message) {
 		this.errorMessage = message;

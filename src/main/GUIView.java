@@ -22,27 +22,18 @@ import javafx.stage.Stage;
  */
 public class GUIView extends Application {
 
-	@FXML private TableView<Task> taskTable;
-	@FXML private TableColumn<Task, String> taskIdCol;
-	@FXML private static TableColumn<Task, String> taskTitleCol;
 
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Magical v0.1");
 		FXMLLoader loader = new FXMLLoader();
-		Parent pane = (Parent) loader.load(getClass().getResource("/main/FXML.fxml"));
+		loader.setLocation(getClass().getResource("/main/FXML.fxml"));
+		Parent pane = (Parent) loader.load();
 		Scene scene = new Scene(pane);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-	
-	public static void initialize() {
-		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("taskTitle"));
-	}
-
 
     public static void main(String[] args) {
-    	//initialize();
     	launch(args);
-
     }
 }

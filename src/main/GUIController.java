@@ -21,42 +21,39 @@ import javafx.util.Callback;
 
 import java.util.*;
 
+import Commands.Command;
 import main.GUIModel.TaskView;
 
 public class GUIController {
 
 	@FXML private TextField commandLineField;
-	@FXML private Label errorMessage;
+	@FXML private Label messageLabel;
 	@FXML private TableView<Task> taskTable;
 	@FXML private TableColumn<Task, String> taskIdCol;
 	@FXML private TableColumn<Task, String> taskTitleCol;
 
-	public static GUIModel model;
 	
-	
-	public String userInput;
+	public static void initialize() {
 
-	public void initialize() {
-		model = new GUIModel();
-		assert(model.currentTaskView == TaskView.DISPLAY_ALL);
-		Task task1 = new Task();
-		task1.setTitle("Do CS2103 homework");
-		task1.setDueDate(new Date(115, 11, 11));
-		task1.setPriority(1);
-		ArrayList<Task> tList = new ArrayList<Task>();
-		tList.add(task1);
-
-
-		taskTable.setItems(FXCollections.observableArrayList(task1));
 	}
-
+	
 	@FXML
-	public void handleEnterPressed(KeyEvent event) {
+	public void enterPressed(KeyEvent event) throws Exception {
 		if (event.getCode() == KeyCode.ENTER) {
 			String userCommand = commandLineField.getText();
-			errorMessage.setText(userCommand);
+			try {
+				Command command = Magical.parseInput(userCommand);
+				String message = command.execute();
+				messageLabel.setText(message);
+			}
+			catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+			
 		}
 	}
+	
 
 
 
