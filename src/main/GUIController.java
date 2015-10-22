@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,7 +16,8 @@ public class GUIController {
 
 	@FXML private TableView<Task> taskTable;
 	@FXML private TableColumn<Task, String> taskTitleCol;
-
+	@FXML private TableColumn<Task, String> taskDueDateCol;
+	@FXML private TableColumn<Task, String> taskPriorityCol;
 	@FXML private Label messageLabel;
 	@FXML private TextField commandLineField;
 
@@ -23,7 +25,9 @@ public class GUIController {
 		Magical.init();
 		GUIModel.init();
 		taskTable.setItems(FXCollections.observableArrayList(GUIModel.taskList));
-		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("taskTitle"));
+		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
+		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 	}
 
 	@FXML
@@ -32,6 +36,8 @@ public class GUIController {
 			String userInput = commandLineField.getText();
 			String message = Magical.parseCommand(userInput);
 			messageLabel.setText(message);
+			ArrayList<Task> newTaskList = Magical.getStorage().readTaskList();
+			taskTable.setItems(FXCollections.observableArrayList(newTaskList));
 		}
 	}
 

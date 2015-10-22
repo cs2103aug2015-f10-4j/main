@@ -16,7 +16,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="taskTable" prefHeight="445.0" prefWidth="790.0">
+                              <TableView fx:id="taskTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="445.0" prefWidth="790.0">
                                 <columns>
                                   <TableColumn fx:id="taskIDCol" prefWidth="65.0" text="ID" />
                                   <TableColumn fx:id="taskTitleCol" prefWidth="469.0" text="Task Title" />
@@ -25,16 +25,6 @@
                                 </columns>
                               </TableView>
                            </children></AnchorPane>
-                  </content>
-                </TitledPane>
-                <TitledPane expanded="false" text="untitled 2">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </TitledPane>
-                <TitledPane expanded="false" text="untitled 3">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                   </content>
                 </TitledPane>
               </panes>
