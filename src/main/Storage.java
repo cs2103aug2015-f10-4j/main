@@ -179,6 +179,7 @@ public class Storage {
 			taskList = mapper.readValue(file, new TypeReference<ArrayList<Task>>() { });
 			
 			//debug
+			/*
 			int size = taskList.size();
 			System.out.println("new");
 			for (int i = 0; i < size; i++) {
@@ -188,6 +189,7 @@ public class Storage {
 				System.out.println(taskList.get(i).getDueDate());
 				System.out.println();
 			}
+			*/
 
 
 			// taskList.add(read[0]);
