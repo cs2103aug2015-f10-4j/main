@@ -88,7 +88,7 @@ public abstract class Command {
 
 	protected Date getDate(String date)  {
 		if(date.matches("^\\d+\\-\\d+\\-\\d+")){
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
 			dateFormat.setLenient(false);
 			try {
 				return dateFormat.parse(date);
