@@ -18,6 +18,7 @@ public class GUIController {
 	@FXML private TableColumn<Task, String> taskTitleCol;
 	@FXML private TableColumn<Task, String> taskDueDateCol;
 	@FXML private TableColumn<Task, String> taskPriorityCol;
+	@FXML private TableColumn<Task, String> taskTagsCol;
 	@FXML private Label messageLabel;
 	@FXML private TextField commandLineField;
 
@@ -26,6 +27,7 @@ public class GUIController {
 		GUIModel.init();
 		taskTable.setItems(FXCollections.observableArrayList(GUIModel.taskList));
 		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+		taskTagsCol.setCellValueFactory(new PropertyValueFactory<Task, String>("tags"));
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 	}
