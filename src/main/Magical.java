@@ -33,7 +33,7 @@ public class Magical {
 
 	}
 
-	private static ArrayList<Task> upcomingTasks() {
+	public static ArrayList<Task> upcomingTasks() {
 		ArrayList<Task> upcomingTasks = new ArrayList<Task>();
 		ArrayList<Task> allTasks = storage.getTasks();
 		Calendar cal = Calendar.getInstance();
