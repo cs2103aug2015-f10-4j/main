@@ -12,6 +12,7 @@ import com.joestelmach.natty.Parser;
 
 import main.Task;
 import main.UI;
+import main.GUIModel;
 
 public abstract class Command {
 
@@ -20,26 +21,26 @@ public abstract class Command {
 	protected String[] argsArray;
 	protected int count;
 	protected boolean isFlexi;
-	
+
 	//messaging params
 	protected String error = "";
-	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n"; 
+	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n";
 
 	public Command(String args){
-		
+
 		this.args = args;
-		
+
 		isFlexi = !args.contains("/") || !args.replace("\\/", "").contains("/");
 		if(!isFlexi){
 			this.argsArray = args.split("(?<![\\\\])/", -1);
 			for (int i = 0; i < argsArray.length; i++){
 				String param = argsArray[i];
-				
+
 				param = param.replaceAll("(?<![\\\\])\\\\", "");
 				argsArray[i] = param;
-				
+
 			}
-			
+
 		} else {
 			this.argsArray = args.split("(?<=\\s)by(?=\\s)|(?<=\\s)at(?=\\s)", -1);
 			for(int i = 0; i < argsArray.length; i++){
@@ -47,18 +48,18 @@ public abstract class Command {
 			}
 		}
 		this.count = argsArray.length;
-		
+
 		for(int i = 0; i < count; i++){
-			assertNotNull(argsArray[i]);
+			//assertNotNull(argsArray[i]);
 		}
 	}
-	
+
 	protected String getRecurrence(String recurrence) {
 		if(recurrence.equals("")){
 			return recurrence;
 		}
 		String r = recurrence.toLowerCase();
-		if (!r.equals("daily") 
+		if (!r.equals("daily")
 				&& !r.equals("weekly")
 				&& !r.equals("monthly")
 				&& !r.equals("yearly")) {
@@ -74,7 +75,7 @@ public abstract class Command {
 			try {
 				int hour = Integer.parseInt(time.substring(0, 2));
 				int min = Integer.parseInt(time.substring(2, 4));
-				
+
 				if(hour > 23 || hour < 0 || min > 59 || min < 0){
 					return -1;
 				} else {
@@ -99,7 +100,7 @@ public abstract class Command {
 			return null;
 		}
 	}
-	
+
 	protected boolean checkFloat(String dueDate, String startTime, String endTime, String type){
 		if(dueDate.equals("") && startTime.equals("") && endTime.equals("") && type.equals("task")){
 			return true;
@@ -107,7 +108,7 @@ public abstract class Command {
 			return false;
 		}
 	}
-	
+
 	protected String getTitle(String title) {
 		if(title.equals("")){
 			return null;
@@ -116,17 +117,23 @@ public abstract class Command {
 	}
 
 	protected String getType(String type){
-		if(!type.toLowerCase().equals("event") 
+		if(!type.toLowerCase().equals("event")
 			&& !type.toLowerCase().equals("task")){
 			return null;
 		}
 		return type;
 	}
-	
+
 	protected Task getTaskByID(String taskID){
-		return UI.getLastTaskList().get(taskID);
+		String type = taskID.substring(0, 1);
+		Integer index = Integer.parseInt(taskID.substring(1)) - 1;
+		if (type.equalsIgnoreCase("t")) {
+			return GUIModel.taskList.get(index);
+		} else {
+			return GUIModel.eventList.get(index);
+		}
 	}
-	
+
 	protected int getPriority(String priority){
 		try {
 			int p = Integer.parseInt(priority);
@@ -139,7 +146,7 @@ public abstract class Command {
 			return -1;
 		}
 	}
-	
+
 	protected Date addTime(Date date, int time){
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
@@ -148,7 +155,7 @@ public abstract class Command {
 		cal.set(Calendar.SECOND, 0);
 		return cal.getTime();
 	}
-	
+
 	protected Calendar dateToCal(Date d) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(d);
@@ -157,21 +164,21 @@ public abstract class Command {
 
 	protected Date flexiParse(Calendar cal) {
 		Parser p = new Parser();
-		List<DateGroup> date = p.parse((cal.get(Calendar.MONTH)+1) 
+		List<DateGroup> date = p.parse((cal.get(Calendar.MONTH)+1)
 				+ "-" + cal.get(Calendar.DAY_OF_MONTH)
 				+ "-" + cal.get(Calendar.YEAR)
 				+ " " + argsArray[2]);
 		return date.get(0).getDates().get(0);
 	}
-	
+
 	protected Date flexiParse(String dueDate) {
 		Parser p = new Parser();
 		List<DateGroup> date = p.parse(dueDate);
 		return date.get(0).getDates().get(0);
 	}
-	
+
 	public abstract String execute();
-	
+
 	public boolean isUndoable(){
 		return true;
 	}

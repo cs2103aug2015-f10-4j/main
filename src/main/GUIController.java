@@ -2,7 +2,6 @@ package main;
 
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -15,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 public class GUIController {
 
 	@FXML private TableView<Task> taskTable;
+	@FXML private TableColumn<Task, String> taskIndexCol;
 	@FXML private TableColumn<Task, String> taskTitleCol;
 	@FXML private TableColumn<Task, String> taskDueDateCol;
 	@FXML private TableColumn<Task, String> taskPriorityCol;
@@ -37,7 +37,8 @@ public class GUIController {
 			String message = Magical.parseCommand(userInput);
 			messageLabel.setText(message);
 			ArrayList<Task> newTaskList = Magical.getStorage().readTaskList();
-			taskTable.setItems(FXCollections.observableArrayList(newTaskList));
+			GUIModel.setTaskList(newTaskList);
+			taskTable.setItems(GUIModel.getTaskList());
 		}
 	}
 

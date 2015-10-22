@@ -18,10 +18,10 @@
                            <children>
                               <TableView fx:id="taskTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="445.0" prefWidth="790.0">
                                 <columns>
-                                  <TableColumn fx:id="taskIDCol" prefWidth="65.0" text="ID" />
-                                  <TableColumn fx:id="taskTitleCol" prefWidth="469.0" text="Task Title" />
-                                    <TableColumn fx:id="taskDueDateCol" minWidth="0.0" prefWidth="159.0" text="Due Date" />
-                                    <TableColumn fx:id="taskPriorityCol" maxWidth="346.0" prefWidth="96.0" text="Priority" />
+                                  <TableColumn fx:id="taskIDCol" prefWidth="46.0" sortable="false" text="ID" />
+                                  <TableColumn fx:id="taskTitleCol" prefWidth="467.0" text="Task Title" />
+                                    <TableColumn fx:id="taskDueDateCol" minWidth="0.0" prefWidth="195.0" text="Due Date" />
+                                    <TableColumn fx:id="taskPriorityCol" maxWidth="75.0" minWidth="72.0" prefWidth="72.0" text="Priority" />
                                 </columns>
                               </TableView>
                            </children></AnchorPane>
