@@ -77,6 +77,21 @@ public class Task implements Comparable<Task>, Cloneable {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+
+		// sb.append(type).append(title).append(description).append(dueDate).append(
+		//		startTime).append(endTime).append(recurrence).append(priority);
+		// System.out.println("RECUR: " + recurrence.name());
+		// sb.append(type).append(title).append(description).append(recurrence.name().toString());
+		
+		sb.append(type).append(title).append(description);
+		// System.out.println("HELLO: " + sb); // debug
+		
+		return sb.toString();
+	}
 
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
