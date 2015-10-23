@@ -41,6 +41,7 @@ public class GUIController {
 			ArrayList<Task> newTaskList = Magical.getStorage().readTaskList();
 			GUIModel.setTaskList(newTaskList);
 			taskTable.setItems(GUIModel.getTaskList());
+			commandLineField.clear();
 		}
 	}
 
