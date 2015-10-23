@@ -94,10 +94,7 @@ public class StorageTest extends TestCase {
 
 	@Test
 	public void testCreateTask() throws IOException {
-		// create an arraylist here to compare with
-		// use createTask() to update the arraylist
-		// use readTask() to read the updated arraylist
-		// compare both arraylists
+
 		ArrayList<Task> localArray = new ArrayList<Task> ();
 		createLocalArray(localArray);
 		
@@ -113,16 +110,12 @@ public class StorageTest extends TestCase {
 
 	@Test
 	public void testGetTasks() throws IOException {
-		// create an arraylist here to compare with
-		// add the same tasks into storage and read out the arraylist
-		ArrayList<Task> localArray = new ArrayList<Task> ();
-		
+
+		ArrayList<Task> localArray = new ArrayList<Task> ();	
 		createLocalArray(localArray);
 		
 		Storage testStorage = new Storage("mytasks.txt");
-		
 		testStorage.clearTaskList(); // clears previous content
-		
 		creatingTasks(testStorage);
 		
 		ArrayList<Task> testingArray = testStorage.getTasks();
@@ -133,16 +126,9 @@ public class StorageTest extends TestCase {
 
 	@Test
 	public void testUpdateTask() throws IOException {
-		// supposed to put the updated task back into the same index
-		// create an arraylist here with the already-updated element
-		// create storage array with the old element
-		// insert the new updated task using Storage methods
-		// get the updated arraylist
-		// compare both arraylists
+
 		Storage testStorage = new Storage("mytasks.txt");
-		
-		testStorage.clearTaskList(); // clears previous content
-		
+		testStorage.clearTaskList(); // clears previous content	
 		creatingTasks(testStorage);
 		
 		event1.setType("event");
@@ -151,7 +137,6 @@ public class StorageTest extends TestCase {
 		event1.setRecurrence("yearly"); // updating the content of event1
 		
 		ArrayList<Task> localArray = new ArrayList<Task> ();
-		
 		createLocalArray(localArray);
 		
 		testStorage.updateTask(event1); // updating with the newly updated event1
@@ -162,18 +147,13 @@ public class StorageTest extends TestCase {
 	
 	@Test
 	public void testDeleteTask() throws IOException {
-		// create an arraylist here to compare with
-		// delete the same task and read out the arraylist
-		// compare both arraylists
-		ArrayList<Task> localArray = new ArrayList<Task> ();
 		
+		ArrayList<Task> localArray = new ArrayList<Task> ();
 		createLocalArray(localArray);
 		localArray.remove(2);
 		
-		Storage testStorage = new Storage("mytasks.txt");
-		
-		testStorage.clearTaskList(); // clears previous content
-		
+		Storage testStorage = new Storage("mytasks.txt");	
+		testStorage.clearTaskList(); // clears previous content	
 		creatingTasks(testStorage);
 		
 		testStorage.deleteTask(event1);
@@ -185,14 +165,11 @@ public class StorageTest extends TestCase {
 	
 	@Test
 	public void testClearTaskList() throws IOException {
-		// create an empty arraylist to compare with
-		// clear arraylist using the method
-		// compare both arraylists
+
 		ArrayList<Task> localArray = new ArrayList<Task> (); // empty array to compare with
-		Storage testStorage = new Storage("mytasks.txt");
 		
-		testStorage.clearTaskList(); // clears previous content
-		
+		Storage testStorage = new Storage("mytasks.txt");	
+		testStorage.clearTaskList(); // clears previous content	
 		creatingTasks(testStorage);
 		
 		testStorage.clearTaskList();
@@ -204,16 +181,12 @@ public class StorageTest extends TestCase {
 
 	@Test
 	public void testGetTaskPos() throws IOException {
-		// create an arraylist, get the index of one of the items
-		// using Storage method, get the index of the same items
-		// compare if the indexes are the same
+		
 		ArrayList<Task> localArray = new ArrayList<Task> ();
 		createLocalArray(localArray);
 		
-		Storage testStorage = new Storage("mytasks.txt");
-		
-		testStorage.clearTaskList(); // clears previous content
-		
+		Storage testStorage = new Storage("mytasks.txt");	
+		testStorage.clearTaskList(); // clears previous content	
 		creatingTasks(testStorage);
 		
 		int taskPos = testStorage.getTaskPos(event1);
@@ -223,16 +196,12 @@ public class StorageTest extends TestCase {
 
 	@Test
 	public void testWriteTaskList() throws IOException {
-		// write into the file using Storage methods
-		// read out the arraylist from the Storage methods
-		// compare if both arraylists are the same
+
 		ArrayList<Task> localArray = new ArrayList<Task> ();
 		createLocalArray(localArray);
 		
 		Storage testStorage = new Storage("mytasks.txt");
-		
 		testStorage.clearTaskList(); // clears previous content
-		
 		creatingTasks(testStorage);
 		
 		testStorage.writeTaskList();
@@ -245,23 +214,16 @@ public class StorageTest extends TestCase {
 	
 	@Test
 	public void testReadTaskList() throws IOException {
-		// insert tasks and read tasks ArrayList using Storage class method
-		// create an arraylist here to compare with
-		// compare both arraylists
+
 		ArrayList<Task> localArray = new ArrayList<Task> ();
 		createLocalArray(localArray);
 		
 		Storage testStorage = new Storage("mytasks.txt");
-		
 		testStorage.clearTaskList(); // clears previous content
-		
 		creatingTasks(testStorage);
 		
 		ArrayList<Task> testingArray = testStorage.readTaskList();
-		
 		assertEquals(localArray.toString(), testingArray.toString());
-		
-		
 	}
 	
 }
