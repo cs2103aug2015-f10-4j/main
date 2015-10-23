@@ -15,7 +15,6 @@ import junit.framework.TestCase;
 
 public class StorageTest extends TestCase {
 
-	// create task 1
 	Task task1 = new Task();
 	Task event1 = new Task();
 	Task task2 = new Task();
@@ -61,6 +60,7 @@ public class StorageTest extends TestCase {
 	}
 	
 	/******************* HELPER METHODS *******************/
+	
 	// creates localArray by adding default tasks to test against
 	private void createLocalArray(ArrayList<Task> localArray) {
 		localArray.add(task1);
@@ -80,11 +80,13 @@ public class StorageTest extends TestCase {
 		} catch (IOException e) {
 			// print exception
 		}
-		
 	}
+	/******************* END OF HELPER METHODS *******************/
 
+	/******************* UNIT TEST CASES *******************/
 	// tests whether the file specified will be created when the constructor is called
 	// successfully tested
+	@Test
 	public void testStorageConstructor() throws IOException {
 			Storage testStorage = new Storage("mytasks.txt");
 			assertTrue(testStorage.fileExist());
