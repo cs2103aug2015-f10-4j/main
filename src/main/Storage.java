@@ -33,11 +33,6 @@ public class Storage {
 	private ArrayList<Task> taskList;
 	ObjectMapper mapper = new ObjectMapper();
 	
-	// private static File logFile = new File(logFileName);
-	// FileOutputStream fos;
-	// ObjectOutputStream oos;
-	// FileWriter logFile;
-	
 	// for logging for Week 9 tutorial
 	private static FileHandler handler;
 	private static Logger logger;
@@ -60,14 +55,9 @@ public class Storage {
 			System.out.println("Error: Unable to write to file");
 		}
 	}
-	
-	// Gson
 	/*
-	// Gson gson = new Gson();
-	Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	String jsonRepresentation;
-	*/
-	
+	 * 
+	 */
 	public Storage (String fileName) {
 		// createLog();
 		
@@ -136,68 +126,17 @@ public class Storage {
 	}
 	
 	protected void writeTaskList() throws IOException {
-		// FileOutputStream fos = new FileOutputStream(file);
-		// ObjectOutputStream oos = new ObjectOutputStream(fos);
-		/*
-		jsonRepresentation = gson.toJson(taskList);
-		oos.writeObject(jsonRepresentation);
-		*/
-		// System.out.print(jsonRepresentation);
-		// oos.writeObject(taskList);
-		
+
 		mapper.writeValue(file, taskList);
-		// oos.close();
+
 	}
 	
 	// for reading contents in the file
 	protected ArrayList<Task> readTaskList() {
 		try {
-			
-			// PROBLEM: WENT INTO EXCEPTION because of the weird String
-			
-			// FileInputStream fis = new FileInputStream(file);
-			// ObjectInputStream ois = new ObjectInputStream(fis);
-			// taskList = (ArrayList<Task>) ois.readObject();
-			// ois.close();
-			
-			// FileInputStream fis = new FileInputStream(file);
-			// ObjectInputStream ois = new ObjectInputStream(fis);
-			// taskList = (ArrayList<Task>) ois.readObject();
-			
-			// FileReader fileReader = new FileReader(file);
-			// BufferedReader buffered = new BufferedReader(fileReader);
-			
-			// Task[] contents = new Gson().fromJson(reader, Task[].class);
-			// JsonReader reader = new JsonReader(new FileReader(file));
-			// reader.setLenient(true);
-			// String garbage = reader.nextString();
-			// Task[] read = gson.fromJson(reader, Task[].class);
-			// String jsonTest = gson.toJson(read);
-			// System.out.println(jsonTest);
-			
-			// Map<String,Object> userData = mapper.readValue(new File("user.json"), Map.class);
+				
 			taskList = mapper.readValue(file, new TypeReference<ArrayList<Task>>() { });
 			
-			//debug
-			/*
-			int size = taskList.size();
-			System.out.println("new");
-			for (int i = 0; i < size; i++) {
-				System.out.println(taskList.get(i).getType());
-				System.out.println(taskList.get(i).getTitle());
-				System.out.println(taskList.get(i).getDescription());
-				System.out.println(taskList.get(i).getDueDate());
-				System.out.println();
-			}
-			*/
-
-
-			// taskList.add(read[0]);
-			// taskList = gson.fromJson(jsonRepresentation, new TypeToken<ArrayList<Task>>(){}.getType());
-
-			// taskList = gson.fromJson(ois, Task.class);
-			// ois.close();
-
 		} catch (Exception e) {
 			taskList = new ArrayList<Task>();
 			e.printStackTrace();
