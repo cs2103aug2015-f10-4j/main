@@ -19,7 +19,7 @@
                            <children>
                               <TableView fx:id="taskTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="497.0" prefWidth="790.0">
                                 <columns>
-                                  <TableColumn fx:id="taskIDCol" prefWidth="46.0" sortable="false" text="ID" />
+                                  <TableColumn fx:id="taskIDCol" prefWidth="46.0" sortable="false" text="ID" visible="false" />
                                     <TableColumn fx:id="taskTitleCol" prefWidth="276.0" text="Task Title" />
                                     <TableColumn fx:id="taskDueDateCol" maxWidth="257.0" minWidth="0.0" prefWidth="119.0" text="Due Date" />
                                   <TableColumn fx:id="taskTagsCol" prefWidth="217.0" text="Tags" />
