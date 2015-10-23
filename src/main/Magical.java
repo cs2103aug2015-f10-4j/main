@@ -51,7 +51,11 @@ public class Magical {
 
 	public static String parseCommand(String userInput) throws Exception{
 		Command command = Parser.parse(userInput);
+		ArrayList<Task> prevTaskList = listClone(storage.getTasks());
 		String message = command.execute();
+		if (command.isUndoable()) {
+			undoHistory.push(prevTaskList);
+		}
 		return message;
 	}
 
