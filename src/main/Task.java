@@ -3,11 +3,7 @@ package main;
 import java.io.*;
 import java.util.*;
 
-public class Task implements Serializable, Comparable<Task>, Cloneable {
-	static enum RecurrencePeriod {
-		DAILY, WEEKLY, MONTHLY, YEARLY, NONE
-	}
-
+public class Task implements Comparable<Task>, Cloneable {
 	private String type;
 	private String title;
 	private String description;
@@ -146,19 +142,9 @@ public class Task implements Serializable, Comparable<Task>, Cloneable {
 	public RecurrencePeriod getRecurrence() {
 		return recurrence;
 	}
-
-	public void setRecurrence(String str) {
-		if(str == null){
-			this.recurrence = RecurrencePeriod.NONE;
-		} else if (str.equals("yearly")) {
-			this.recurrence = RecurrencePeriod.YEARLY;
-		} else if (str.equals("monthly")) {
-			this.recurrence = RecurrencePeriod.MONTHLY;
-		} else if (str.equals("weekly")) {
-			this.recurrence = RecurrencePeriod.WEEKLY;
-		} else if (str.equals("daily")) {
-			this.recurrence = RecurrencePeriod.DAILY;
-		}
+	
+	public void setRecurrence(RecurrencePeriod recurrence) {
+		this.recurrence = recurrence;
 	}
 
 	public int compareTo(Task task) {

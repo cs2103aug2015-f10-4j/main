@@ -1,26 +1,77 @@
 package main;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.XMLFormatter;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Storage {
 	
 	// private static final String MESSAGE_FILE_NOT_CREATED = "Error. File is not created successfully.";
 
 	private static File file;
-	private ArrayList<Task> taskList;
+	private static String logFileName = "logFile.txt";
+	private ArrayList<Task> taskList = new ArrayList<Task>();
+	ObjectMapper mapper = new ObjectMapper();
 	
-	public Storage (String fileName) throws IOException {
+	// for logging for Week 9 tutorial - may be implementing permanently in future versions
+	private static FileHandler handler;
+	private static Logger logger;
 
+	/*
+	// for creating logFile
+	public void createLog () {
+		try {
+			logger = Logger.getLogger(Storage.class.getName());
+			logger.setUseParentHandlers(false); // to prevent logger from writing into console
+			handler = new FileHandler(logFileName, true);
+			// handler.setFormatter(new SimpleFormatter());
+			handler.setFormatter(new XMLFormatter());
+			logger.addHandler(handler);
+			logger.setLevel(Level.SEVERE);
+			
+		} catch (FileNotFoundException fnfe) {
+			System.out.println("Error: File Not Found");
+		} catch (IOException e) {
+			System.out.println("Error: Unable to write to file");
+		}
+	}
+	*/
+	
+	public Storage (String fileName) {
+		
+		// createLog();
+		
+		assert fileName != null;
+		
 		file = new File(fileName);
 
 		if ( !(file.exists()) ) {
-			file.createNewFile();
+			try {
+				//file.createNewFile();
+				// logger.info("logFile: Creating new file...");
+				writeTaskList();
+			} catch (IOException e) {
+				// logger.info("Storage IOException: File not created successfully");
+				System.out.println("Storage IOException: File not created successfully");
+				// logger.severe("Severe message");
+				return;
+			}
 			taskList = new ArrayList<Task>();
 		} else {
 			readTaskList();
@@ -72,21 +123,19 @@ public class Storage {
 	}
 	
 	protected void writeTaskList() throws IOException {
-		FileOutputStream fos = new FileOutputStream(file);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(taskList);
-		oos.close();
+		
+		mapper.writeValue(file, taskList);
 	}
 	
 	// for reading contents in the file
 	protected ArrayList<Task> readTaskList() {
 		try {
-			FileInputStream fis = new FileInputStream(file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			taskList = (ArrayList<Task>) ois.readObject();
-			ois.close();
+			
+			taskList = mapper.readValue(file, new TypeReference<ArrayList<Task>>() { });
+
 		} catch (Exception e) {
 			taskList = new ArrayList<Task>();
+			e.printStackTrace();
 		} 
 		return taskList;
 	}
