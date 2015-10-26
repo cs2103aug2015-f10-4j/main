@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import main.Magical;
+import main.RecurrencePeriod;
 import main.Task;
 import main.UI;
 
@@ -94,7 +95,7 @@ public class EditCommand extends Command{
 			task.setEndTime(Integer.parseInt(value));
 			break;
 		case "recurrence":
-			task.setRecurrence(value);
+			task.setRecurrence(RecurrencePeriod.toRecurrence(value));
 			break;
 		default:
 			return "Unable to edit task.";
