@@ -9,7 +9,8 @@ public class Magical {
 	private static final String CONFIG_STORAGE_FILENAME = "storage.txt";
 
 	public static Storage storage;
-	public static Stack<ArrayList<Task>> undoHistory;
+	public static Stack<ArrayList<Task>> undoListHistory;
+	public static Stack<ArrayList<Task>> undoDoneListHistory;
 
 	public static Storage getStorage(){
 		return storage;
@@ -28,34 +29,17 @@ public class Magical {
 
 	private static void startApp() {
 		UI.displayWelcomeMessage();
-		ArrayList<Task> upcomingTasks = upcomingTasks();
-		UI.displayTaskList("Upcoming tasks", upcomingTasks);
-
-	}
-
-	public static ArrayList<Task> upcomingTasks() {
-		ArrayList<Task> upcomingTasks = new ArrayList<Task>();
-		ArrayList<Task> allTasks = storage.getTasks();
-		Calendar cal = Calendar.getInstance();
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
-		Date today = cal.getTime();
-		cal.add(Calendar.DATE, 3);
-		Date threeDaysFromToday = cal.getTime();
-		for (Task t : allTasks) {
-			if (t.getDueDate() != null && t.getDueDate().after(today) && t.getDueDate().before(threeDaysFromToday)) {
-				upcomingTasks.add(t);
-			}
-		}
-		return upcomingTasks;
 	}
 
 	public static String parseCommand(String userInput) throws Exception{
 		Command command = Parser.parse(userInput);
-		ArrayList<Task> prevTaskList = listClone(storage.getTasks());
-		String message = command.execute();
 		if (command.isUndoable()) {
-			undoHistory.push(prevTaskList);
+			ArrayList<Task> prevList = listClone(storage.getTasks());
+//			ArrayList<Task> prevDoneList = listClone(storage.getDoneList());
+			undoListHistory.push(prevList);
+//			undoDoneListHistory.push(prevDoneList);
 		}
+		String message = command.execute();
 		return message;
 	}
 
@@ -68,7 +52,7 @@ public class Magical {
 				String message = command.execute();
 				UI.showToUser(message);
 				if (command.isUndoable()) {
-					undoHistory.push(prevTaskList);
+					undoListHistory.push(prevTaskList);
 					UI.displayTaskList("Tasks", storage.getTasks());
 				}
 			} catch (Exception e) {
@@ -91,6 +75,7 @@ public class Magical {
 
 	public static void init() throws IOException {
 		storage = new Storage(CONFIG_STORAGE_FILENAME);
-		undoHistory = new Stack<ArrayList<Task>>();
+		undoListHistory = new Stack<ArrayList<Task>>();
+		undoDoneListHistory = new Stack<ArrayList<Task>>();
 	}
 }
