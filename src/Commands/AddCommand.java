@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import main.Magical;
+import main.RecurrencePeriod;
 import main.Task;
 
 public class AddCommand extends Command{
@@ -22,7 +23,8 @@ public class AddCommand extends Command{
 	protected Date dueDate;
 	protected int startTime;
 	protected int endTime;
-	protected String recurrence;
+	//protected String recurrence;
+	protected RecurrencePeriod recurrence;
 	protected boolean isFloat;
 	protected boolean isTask;
 	private Task task;
@@ -57,7 +59,7 @@ public class AddCommand extends Command{
 				this.dueDate = getDate(argsArray[3].trim());
 				this.startTime = getTime(argsArray[4].trim());
 				this.endTime = getTime(argsArray[5].trim());
-				this.recurrence = getRecurrence(argsArray[6].trim());
+				this.recurrence = RecurrencePeriod.toRecurrence(argsArray[6].trim());
 
 				isFloat = checkFloat(argsArray[3].trim(), argsArray[4].trim(),
 						 argsArray[5].trim(), argsArray[0].trim());
@@ -106,7 +108,7 @@ public class AddCommand extends Command{
 				isTask = true;
 				this.title = argsArray[0];
 				this.desc = "";
-				this.recurrence = "";
+				this.recurrence = RecurrencePeriod.NONE;
 				this.startTime = -1;
 				if(argsArray.length == 1){
 					this.dueDate = null;

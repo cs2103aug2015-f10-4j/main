@@ -54,6 +54,7 @@ public class Storage {
 	*/
 	
 	public Storage (String fileName) {
+		
 		// createLog();
 		
 		assert fileName != null;

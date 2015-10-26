@@ -29,7 +29,7 @@ public class StorageTest extends TestCase {
 		task1.setDueDate(createDateObjects(1992, 3, 17, 15, 9, 17));
 		task1.setStartTime(900);
 		task1.setEndTime(2200);
-		task1.setRecurrence("weekly");
+		task1.setRecurrence(RecurrencePeriod.WEEKLY);
 		task1.setPriority(1);
 		
 		task2.setType("task");
@@ -38,7 +38,7 @@ public class StorageTest extends TestCase {
 		task2.setDueDate(createDateObjects(1993, 10, 12, 3, 8, 16));
 		task2.setStartTime(800);
 		task2.setEndTime(2000);
-		task2.setRecurrence("daily");
+		task2.setRecurrence(RecurrencePeriod.DAILY);
 		task2.setPriority(2);
 		
 		event1.setType("event");
@@ -47,7 +47,7 @@ public class StorageTest extends TestCase {
 		event1.setDueDate(createDateObjects(1988, 2, 16, 8, 18, 58));
 		event1.setStartTime(700);
 		event1.setEndTime(1800);
-		event1.setRecurrence("yearly");
+		event1.setRecurrence(RecurrencePeriod.YEARLY);
 		event1.setPriority(3);
 		
 		event2.setType("event");
@@ -56,7 +56,7 @@ public class StorageTest extends TestCase {
 		event2.setDueDate(createDateObjects(1988, 8, 18, 3, 19, 16));
 		event2.setStartTime(500);
 		event2.setEndTime(1400);
-		event2.setRecurrence("weekly");
+		event2.setRecurrence(RecurrencePeriod.DAILY);
 		event2.setPriority(4);
 	}
 	
@@ -151,7 +151,7 @@ public class StorageTest extends TestCase {
 		event1.setType("event");
 		event1.setTitle("friend's birthday");
 		event1.setDescription("need to buy present");
-		event1.setRecurrence("yearly"); // updating the content of event1
+		event1.setRecurrence(RecurrencePeriod.YEARLY); // updating the content of event1
 		
 		ArrayList<Task> localArray = new ArrayList<Task> ();
 		createLocalArray(localArray);
@@ -240,7 +240,15 @@ public class StorageTest extends TestCase {
 		creatingTasks(testStorage);
 		
 		ArrayList<Task> testingArray = testStorage.readTaskList();
-		assertEquals(localArray.toString(), testingArray.toString());
+		for (int i = 0; i < testingArray.size(); i++) {
+			Task local = localArray.get(i);
+			Task test = testingArray.get(i);
+			
+			System.out.println("local: " + local.getRecurrence());
+			System.out.println("test: " + test.getRecurrence());
+		}
+		System.out.println();
+		assertEquals(localArray, testingArray);
 	}
 	
 }
