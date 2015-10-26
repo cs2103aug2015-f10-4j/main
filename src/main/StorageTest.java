@@ -121,7 +121,7 @@ public class StorageTest extends TestCase {
 		
 		ArrayList<Task> testingArray = testStorage.getTasks();
 		// System.out.println("size of array read from file - createTasks: " + testingArray.size());
-		assertEquals(localArray.toString(), testingArray.toString());
+		assertEquals(localArray, testingArray);
 		
 	}
 
@@ -159,7 +159,7 @@ public class StorageTest extends TestCase {
 		testStorage.updateTask(event1); // updating with the newly updated event1
 		ArrayList<Task> testingArray = testStorage.readTaskList();
 		// System.out.println("size of array read from file - updateTask: " + testingArray.size());
-		assertEquals(localArray.toString(), testingArray.toString());
+		assertEquals(localArray, testingArray);
 	}
 	
 	@Test
@@ -176,7 +176,7 @@ public class StorageTest extends TestCase {
 		testStorage.deleteTask(event1);
 		ArrayList<Task> testingArray = testStorage.readTaskList();
 		// System.out.println("size of array read from file - deleteTask " + testingArray.size());
-		assertEquals(localArray.toString(), testingArray.toString());
+		assertEquals(localArray, testingArray);
 	}
 	
 	
@@ -192,7 +192,7 @@ public class StorageTest extends TestCase {
 		testStorage.clearTaskList();
 		ArrayList<Task> testingArray = testStorage.readTaskList();
 		// System.out.println("size of array read from file - clearTaskList: " + testingArray.size());
-		assertEquals(localArray.toString(), testingArray.toString());
+		assertEquals(localArray, testingArray);
 	}
 	
 
@@ -224,7 +224,7 @@ public class StorageTest extends TestCase {
 		testStorage.writeTaskList();
 		ArrayList<Task> testingArray = testStorage.readTaskList();
 		// System.out.println("size of array read from file - writeTaskList: " + testingArray.size());
-		assertEquals(localArray.toString(), testingArray.toString());
+		assertEquals(localArray, testingArray);
 		
 		
 	}
@@ -240,14 +240,7 @@ public class StorageTest extends TestCase {
 		creatingTasks(testStorage);
 		
 		ArrayList<Task> testingArray = testStorage.readTaskList();
-		for (int i = 0; i < testingArray.size(); i++) {
-			Task local = localArray.get(i);
-			Task test = testingArray.get(i);
-			
-			System.out.println("local: " + local.getRecurrence());
-			System.out.println("test: " + test.getRecurrence());
-		}
-		System.out.println();
+
 		assertEquals(localArray, testingArray);
 	}
 	

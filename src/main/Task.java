@@ -13,7 +13,6 @@ public class Task implements Comparable<Task>, Cloneable {
 	private RecurrencePeriod recurrence;
 	private Set<String> tags = new HashSet<String>();
 	private int priority;
-	private int lalalalalala = 0 ;
 
 	@Override
 	public int hashCode() {
@@ -74,21 +73,6 @@ public class Task implements Comparable<Task>, Cloneable {
 			return false;
 		return true;
 	}
-	
-	//@Override
-	/*public String toString() {
-		StringBuilder sb = new StringBuilder();
-
-		// sb.append(type).append(title).append(description).append(dueDate).append(
-		// 		startTime).append(endTime).append(recurrence).append(priority);
-		// System.out.println("RECUR: " + recurrence.name());
-		// sb.append(type).append(title).append(description).append(recurrence.name().toString());
-		
-		sb.append(type).append(title).append(description);
-		// System.out.println("HELLO: " + sb); // debug
-		
-		return sb.toString();
-	}*/
 
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -158,20 +142,6 @@ public class Task implements Comparable<Task>, Cloneable {
 	public RecurrencePeriod getRecurrence() {
 		return recurrence;
 	}
-
-	/*public void setRecurrence(String str) {
-		if(str == null){
-			this.recurrence = RecurrencePeriod.NONE;
-		} else if (str.equals("yearly")) {
-			this.recurrence = RecurrencePeriod.YEARLY;
-		} else if (str.equals("monthly")) {
-			this.recurrence = RecurrencePeriod.MONTHLY;
-		} else if (str.equals("weekly")) {
-			this.recurrence = RecurrencePeriod.WEEKLY;
-		} else if (str.equals("daily")) {
-			this.recurrence = RecurrencePeriod.DAILY;
-		}
-	}*/
 	
 	public void setRecurrence(RecurrencePeriod recurrence) {
 		this.recurrence = recurrence;
