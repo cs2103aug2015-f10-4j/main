@@ -35,7 +35,7 @@ public class AddCommandTests {
 			Command noArgs = new AddCommand("");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_INVALID);
+			assertEquals(e.getMessage(), "\n----- Invalid arguments ---- \n" + "Use format: add <title> by <date> at <time>");
 		}
 	}
 	
@@ -176,6 +176,5 @@ public class AddCommandTests {
 		} catch (Exception e){
 			assertEquals(String.format(MESSAGE_ARG, "fortnightly"), e.getMessage());
 		}
-
 	}
 }
