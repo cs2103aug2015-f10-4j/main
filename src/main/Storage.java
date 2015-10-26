@@ -19,10 +19,6 @@ import java.util.logging.XMLFormatter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 
 public class Storage {
 	
@@ -30,7 +26,7 @@ public class Storage {
 
 	private static File file;
 	private static String logFileName = "logFile.txt";
-	private ArrayList<Task> taskList;
+	private ArrayList<Task> taskList = new ArrayList<Task>();
 	ObjectMapper mapper = new ObjectMapper();
 	
 	// for logging for Week 9 tutorial - may be implementing permanently in future versions
@@ -66,8 +62,9 @@ public class Storage {
 
 		if ( !(file.exists()) ) {
 			try {
-				file.createNewFile();
+				//file.createNewFile();
 				// logger.info("logFile: Creating new file...");
+				writeTaskList();
 			} catch (IOException e) {
 				// logger.info("Storage IOException: File not created successfully");
 				System.out.println("Storage IOException: File not created successfully");
