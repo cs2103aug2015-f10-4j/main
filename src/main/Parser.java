@@ -7,6 +7,7 @@ import Commands.DateCommand;
 import Commands.DelCommand;
 import Commands.DoneCommand;
 import Commands.EditCommand;
+import Commands.EventCommand;
 import Commands.ExitCommand;
 import Commands.HelpCommand;
 import Commands.PriorityCommand;
@@ -32,6 +33,7 @@ public class Parser {
 	private static final String CMD_EXIT = "exit";
 	private static final String CMD_EDIT = "edit";
 	private static final String CMD_PRIORITY = "set";
+	private static final String CMD_EVENT = "event";
 	
 	static final String MESSAGE_INVALID_COMMAND = "Invalid command";
 	
@@ -92,6 +94,8 @@ public class Parser {
 				return new ExitCommand(args);
 			case CMD_PRIORITY:
 				return new PriorityCommand(args);
+			case CMD_EVENT:
+				return new EventCommand(args);
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND + ": " + command);
 		}

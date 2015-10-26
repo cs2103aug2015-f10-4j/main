@@ -69,16 +69,14 @@ public class EditCommand extends Command{
 	public String execute() {
 		prevTask = task;
 		try {
-			task = (Task) prevTask.clone();
-		} catch (CloneNotSupportedException e1) {
+			task = prevTask.copy();
+		} catch (ClassNotFoundException | IOException e1) {
 			return "unable to edit task";
 		}
+		
 		switch (field.toLowerCase()) {
 		case "title":
 			task.setTitle(value);
-			break;
-		case "desc":
-			task.setDescription(value);
 			break;
 		case "due date":
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

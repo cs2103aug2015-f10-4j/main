@@ -13,9 +13,15 @@ import com.joestelmach.natty.Parser;
 import main.Task;
 import main.UI;
 import main.GUIModel;
+import main.RecurrencePeriod;
 
 public abstract class Command {
 
+	private static final String RECUR_YEARLY = "yearly";
+	private static final String RECUR_MONTHLY = "monthly";
+	private static final String RECUR_WEEKLY = "weekly";
+	private static final String RECUR_DAILY = "daily";
+	private static final String STRING_EMPTY = "";
 	//main variables
 	protected String args;
 	protected String[] argsArray;
@@ -23,13 +29,14 @@ public abstract class Command {
 	protected boolean isFlexi;
 
 	//messaging params
-	protected String error = "";
+	protected String error = STRING_EMPTY;
 	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n";
 
 	public Command(String args){
 
 		this.args = args;
 
+		/*
 		isFlexi = !args.contains("/") || !args.replace("\\/", "").contains("/");
 		if(!isFlexi){
 			this.argsArray = args.split("(?<![\\\\])/", -1);
@@ -51,21 +58,25 @@ public abstract class Command {
 
 		for(int i = 0; i < count; i++){
 			//assertNotNull(argsArray[i]);
-		}
+		}*/
 	}
 
-	protected String getRecurrence(String recurrence) {
-		if(recurrence.equals("")){
-			return recurrence;
-		}
+	protected RecurrencePeriod getRecurrence(String recurrence) {
 		String r = recurrence.toLowerCase();
-		if (!r.equals("daily")
-				&& !r.equals("weekly")
-				&& !r.equals("monthly")
-				&& !r.equals("yearly")) {
-			return null;
+		switch (r) {
+			case STRING_EMPTY:
+				return RecurrencePeriod.NONE;
+			case RECUR_DAILY:
+				return RecurrencePeriod.DAILY;
+			case RECUR_WEEKLY:
+				return RecurrencePeriod.WEEKLY;
+			case RECUR_MONTHLY:
+				return RecurrencePeriod.MONTHLY;
+			case RECUR_YEARLY:
+				return RecurrencePeriod.YEARLY;
+			default:
+				return null;
 		}
-		return recurrence;
 	}
 
 	protected int getTime(String time) {
@@ -101,8 +112,8 @@ public abstract class Command {
 		}
 	}
 
-	protected boolean checkFloat(String dueDate, String startTime, String endTime, String type){
-		if(dueDate.equals("") && startTime.equals("") && endTime.equals("") && type.equals("task")){
+	protected boolean checkFloat(String dueDate, String endTime){
+		if(dueDate.equals(STRING_EMPTY) && endTime.equals(STRING_EMPTY)){
 			return true;
 		} else {
 			return false;
@@ -110,7 +121,7 @@ public abstract class Command {
 	}
 
 	protected String getTitle(String title) {
-		if(title.equals("")){
+		if(title.equals(STRING_EMPTY)){
 			return null;
 		}
 		return title;
@@ -178,6 +189,7 @@ public abstract class Command {
 	}
 
 	public abstract String execute();
+	public abstract boolean validNumArgs();
 
 	public boolean isUndoable(){
 		return true;

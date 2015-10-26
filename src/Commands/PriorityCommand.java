@@ -36,7 +36,7 @@ public class PriorityCommand extends Command{
 		}
 	}
 
-	private boolean validNumArgs() {
+	public boolean validNumArgs() {
 		if(this.count != 2){
 			return false;
 		} else {
@@ -48,11 +48,12 @@ public class PriorityCommand extends Command{
 	public String execute() {
 		prevTask = task;
 		try {
-			task = (Task) prevTask.clone();
+			task = prevTask.copy();
 			task.setPriority(priority);
-		} catch (CloneNotSupportedException e1) {
+		} catch (ClassNotFoundException | IOException e) {
 			return "unable to change priority";
 		}
+		
 		try {
 			Magical.storage.deleteTask(prevTask);
 			Magical.storage.createTask(task);

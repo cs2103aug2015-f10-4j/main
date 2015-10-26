@@ -17,4 +17,9 @@ public class HelpCommand extends Command {
 	public boolean isUndoable() {
 		return false;
 	}
+
+	@Override
+	public boolean validNumArgs() {
+		return true;
+	}
 }

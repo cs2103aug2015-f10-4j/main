@@ -10,7 +10,6 @@ import main.UI;
 public class DoneCommand extends Command{
 	private String error = "";
 	private Task task;
-	private Task prevTask;
 	
 	private static final String MESSAGE_ARGUMENT_PARAMS = "done task_id";
 	
@@ -40,22 +39,9 @@ public class DoneCommand extends Command{
 	}
 	
 	public String execute() {
-		prevTask = task;
 		try {
-			task = prevTask.copy();
-		} catch (IOException e) {
-			return "unable to add tag to task";
-		} catch (ClassNotFoundException e) {
-			return "unable to add tag to task";
-		}
-
-		Set<String> tags = task.getTags();
-		tags.add("done");
-		task.setTags(tags);
-
-		try {
-			Magical.storage.deleteTask(prevTask);
-			Magical.storage.createTask(task);
+			Magical.storage.deleteTask(task);
+			Magical.storage.createTaskDone(task);
 		} catch (IOException e) {
 			return "unable to archive task";
 		}

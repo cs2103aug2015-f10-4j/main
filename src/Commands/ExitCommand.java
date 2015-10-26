@@ -1,7 +1,5 @@
 package Commands;
 
-import main.UI;
-
 public class ExitCommand extends Command {
 	
 	public ExitCommand(String args) throws Exception {
@@ -9,8 +7,12 @@ public class ExitCommand extends Command {
 	}
 	
 	public String execute() {
-		UI.displayGoodbyeMessage();
 		System.exit(0);
 		return null;
+	}
+
+	@Override
+	public boolean validNumArgs() {
+		return true;
 	}
 }

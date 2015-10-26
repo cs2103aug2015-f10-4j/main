@@ -51,7 +51,7 @@ public class SearchCommand extends Command {
 		if(count == 2){
 			ArrayList<Task> filteredResults = new ArrayList<Task>();
 			for (Task t : results) {
-				if ((t.getTitle().contains(query) || t.getDescription().contains(query)) && t.getType().contains(type)) {
+				if ((t.getTitle().contains(query) || t.getType().contains(type))) {
 					filteredResults.add(t);
 				}
 			}
