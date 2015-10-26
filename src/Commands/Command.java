@@ -21,7 +21,7 @@ public abstract class Command {
 	private static final String RECUR_MONTHLY = "monthly";
 	private static final String RECUR_WEEKLY = "weekly";
 	private static final String RECUR_DAILY = "daily";
-	private static final String EMPTY = "";
+	private static final String STRING_EMPTY = "";
 	//main variables
 	protected String args;
 	protected String[] argsArray;
@@ -29,7 +29,7 @@ public abstract class Command {
 	protected boolean isFlexi;
 
 	//messaging params
-	protected String error = EMPTY;
+	protected String error = STRING_EMPTY;
 	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n";
 
 	public Command(String args){
@@ -64,7 +64,7 @@ public abstract class Command {
 	protected RecurrencePeriod getRecurrence(String recurrence) {
 		String r = recurrence.toLowerCase();
 		switch (r) {
-			case EMPTY:
+			case STRING_EMPTY:
 				return RecurrencePeriod.NONE;
 			case RECUR_DAILY:
 				return RecurrencePeriod.DAILY;
@@ -113,7 +113,7 @@ public abstract class Command {
 	}
 
 	protected boolean checkFloat(String dueDate, String endTime){
-		if(dueDate.equals(EMPTY) && endTime.equals(EMPTY)){
+		if(dueDate.equals(STRING_EMPTY) && endTime.equals(STRING_EMPTY)){
 			return true;
 		} else {
 			return false;
@@ -121,7 +121,7 @@ public abstract class Command {
 	}
 
 	protected String getTitle(String title) {
-		if(title.equals(EMPTY)){
+		if(title.equals(STRING_EMPTY)){
 			return null;
 		}
 		return title;
@@ -189,6 +189,7 @@ public abstract class Command {
 	}
 
 	public abstract String execute();
+	public abstract boolean validNumArgs();
 
 	public boolean isUndoable(){
 		return true;
