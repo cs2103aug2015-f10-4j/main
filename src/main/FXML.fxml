@@ -31,17 +31,17 @@
                   <Font name="System Bold" size="15.0" />
                </font>
           </TitledPane>
-            <TitledPane fx:id="toDoPane1" collapsible="false" layoutX="15.0" layoutY="15.0" prefHeight="557.0" prefWidth="790.0" text="Done">
+            <TitledPane fx:id="donePane" collapsible="false" layoutX="15.0" layoutY="15.0" prefHeight="557.0" prefWidth="790.0" text="Done">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="taskTable1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="497.0" prefWidth="790.0">
+                        <TableView fx:id="doneTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="497.0" prefWidth="790.0">
                            <columns>
-                              <TableColumn fx:id="taskIDCol1" prefWidth="46.0" sortable="false" text="ID" visible="false" />
-                              <TableColumn fx:id="taskTitleCol1" prefWidth="276.0" text="Task Title" />
-                              <TableColumn fx:id="taskDueDateCol1" maxWidth="257.0" minWidth="0.0" prefWidth="119.0" text="Due Date" />
-                              <TableColumn fx:id="taskTagsCol1" prefWidth="217.0" text="Tags" />
-                              <TableColumn fx:id="taskPriorityCol1" maxWidth="203.0" minWidth="0.0" prefWidth="116.0" text="Priority" />
+                              <TableColumn fx:id="doneIDCol" prefWidth="46.0" sortable="false" text="ID" />
+                              <TableColumn fx:id="doneTitleCol" prefWidth="276.0" text="Task Title" />
+                              <TableColumn fx:id="doneDueDateCol" maxWidth="257.0" minWidth="0.0" prefWidth="119.0" text="Due Date" />
+                              <TableColumn fx:id="doneTagsCol" prefWidth="217.0" text="Tags" />
+                              <TableColumn fx:id="donePriorityCol" maxWidth="203.0" minWidth="0.0" prefWidth="116.0" text="Priority" />
                            </columns>
                         </TableView>
                      </children>
