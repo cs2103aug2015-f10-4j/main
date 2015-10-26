@@ -1,13 +1,8 @@
 package Commands;
 
 import static org.junit.Assert.*;
-import com.joestelmach.natty.*;
-
-import java.util.List;
-import java.util.Map;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import main.Magical;
@@ -79,7 +74,6 @@ public class AddCommand extends Command{
 			for(int i = 0; i < argsArray.length; i++){
 				argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", "");
 			}
-			System.out.println(Arrays.toString(argsArray));
 		}
 		this.count = argsArray.length;
 
