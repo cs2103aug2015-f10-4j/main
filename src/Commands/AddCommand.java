@@ -18,7 +18,6 @@ public class AddCommand extends Command{
 	//protected String recurrence;
 	protected RecurrencePeriod recurrence;
 	protected boolean isFloat;
-	protected boolean isTask;
 	private Task task;
 
 	private static final String MESSAGE_ERROR_PARAMS = "Number of Arguments\n"
@@ -32,39 +31,27 @@ public class AddCommand extends Command{
 	private static final String MESSAGE_TASK_ADDED = "task added";
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
 	private static final String MESSAGE_TASK_ERROR = "unable to add task";
-
+	
+	private static final String STRING_EMPTY = "";
 
 	public AddCommand(String args) throws Exception {
 		super(args);
 		
-		isFlexi = !args.contains("/") || !args.replace("\\/", "").contains("/");
+		isFlexi = !args.contains("/") || !args.replace("\\/", STRING_EMPTY).contains("/");
 		if(!isFlexi){
 			this.argsArray = args.split("(?<![\\\\])/", -1);
 			for (int i = 0; i < argsArray.length; i++){
 				String param = argsArray[i];
 
-				param = param.replaceAll("(?<![\\\\])\\\\", "");
+				param = param.replaceAll("(?<![\\\\])\\\\", STRING_EMPTY);
 				argsArray[i] = param;
 
 			}
 
 		} else {
-			String type = args.split(" ", 2)[0];
-			String temp[];
-			if(type.equals("task") || type.equals("event")){
-				temp = args.split(" ", 2)[1].split("(?<=\\s)by(?=\\s)|(?<=\\s)at(?=\\s)|(?<=\\s)on(?=\\s)", -1);
-				this.argsArray = new String[1+temp.length];
-				argsArray[0] = type;
-				System.arraycopy(temp, 0, argsArray, 1, temp.length);
-			} else {
-				temp = args.split("(?<=\\s)by(?=\\s)|(?<=\\s)at(?=\\s)|(?<=\\s)on(?=\\s)", -1);
-				this.argsArray = new String[1+temp.length];
-				argsArray[0] = "task";
-				System.arraycopy(temp, 0, argsArray, 1, temp.length);
-			}
-			
+			this.argsArray = args.split("(?<=\\s)by(?=\\s)|(?<=\\s)at(?=\\s)", -1);
 			for(int i = 0; i < argsArray.length; i++){
-				argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", "");
+				argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY);
 			}
 		}
 		this.count = argsArray.length;
@@ -87,15 +74,15 @@ public class AddCommand extends Command{
 					error += MESSAGE_ERROR_TITLE;
 				}
 				if (dueDate == null ^ isFloat) {
-					error +=  String.format(MESSAGE_ERROR_DATE, argsArray[3].trim());
+					error +=  String.format(MESSAGE_ERROR_DATE, argsArray[1].trim());
 				}
 				if (endTime == -1 ^ isFloat) {
-					error += String.format(MESSAGE_ERROR_END, argsArray[5].trim());
+					error += String.format(MESSAGE_ERROR_END, argsArray[2].trim());
 				}
 				if (recurrence == null) {
-					error += String.format(MESSAGE_ERROR_RECURRENCE, argsArray[6].trim());
+					error += String.format(MESSAGE_ERROR_RECURRENCE, argsArray[3].trim());
 				}
-				if (!error.equals("")) {
+				if (!error.equals(STRING_EMPTY)) {
 					throw new Exception(MESSAGE_HEADER_INVALID + error);
 				}
 
@@ -107,7 +94,7 @@ public class AddCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
-			if(!argsArray[0].equals("") && argsArray.length <= 3){
+			if(!argsArray[0].equals(STRING_EMPTY) && argsArray.length <= 3){
 
 				this.title = argsArray[0];
 				this.recurrence = RecurrencePeriod.NONE;
@@ -183,6 +170,6 @@ public class AddCommand extends Command{
 		//AddCommand b = new AddCommand("pass \\by the river \\at St.George by 1st January at 12pm");
 		//AddCommand c = new AddCommand("smack him by 12-01-1993 at 1pm");
 		//AddCommand d = new AddCommand("");
-		AddCommand e = new AddCommand("eat chocolate");
+		AddCommand e = new AddCommand("hihihihi");
 	}
 }
