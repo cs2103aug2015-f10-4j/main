@@ -14,13 +14,23 @@ public class UndoCommand extends Command {
 
 	@Override
 	public String execute() {
-		if (Magical.undoHistory.size() > 0) {
-			ArrayList<Task> lastTaskList = Magical.undoHistory.pop();
+		if (Magical.undoListHistory.size() > 0) {
+			ArrayList<Task> lastTaskList = Magical.undoListHistory.pop();
 			try {
 				Magical.storage.setTaskList(lastTaskList);
+				if (Magical.undoDoneListHistory.size() > 0) {
+					ArrayList<Task> lastTaskDoneList = Magical.undoDoneListHistory.pop();
+					try {
+						Magical.storage.setTaskList(lastTaskDoneList);
+						return "undo successful";
+					} catch (IOException e) {
+						Magical.undoDoneListHistory.push(lastTaskDoneList);
+						return "unable to undo";
+					}
+				}
 				return "undo successful";
 			} catch (IOException e) {
-				Magical.undoHistory.push(lastTaskList);
+				Magical.undoListHistory.push(lastTaskList);
 				return "unable to undo";
 			}
 		}
@@ -30,5 +40,10 @@ public class UndoCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return false;
+	}
+
+	@Override
+	public boolean validNumArgs() {
+		return true;
 	}
 }
