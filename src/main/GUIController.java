@@ -7,12 +7,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class GUIController {
 
+	@FXML private TitledPane toDoPane;
 	@FXML private TableView<Task> taskTable;
 	@FXML private TableColumn<Task, String> taskIndexCol;
 	@FXML private TableColumn<Task, String> taskTitleCol;
