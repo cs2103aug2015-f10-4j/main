@@ -20,8 +20,8 @@ public abstract class Command {
 	private static final String RECUR_YEARLY = "yearly";
 	private static final String RECUR_MONTHLY = "monthly";
 	private static final String RECUR_WEEKLY = "weekly";
-	private static final String RECUR_NONE = "";
 	private static final String RECUR_DAILY = "daily";
+	private static final String EMPTY = "";
 	//main variables
 	protected String args;
 	protected String[] argsArray;
@@ -29,7 +29,7 @@ public abstract class Command {
 	protected boolean isFlexi;
 
 	//messaging params
-	protected String error = RECUR_NONE;
+	protected String error = EMPTY;
 	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n";
 
 	public Command(String args){
@@ -64,7 +64,7 @@ public abstract class Command {
 	protected RecurrencePeriod getRecurrence(String recurrence) {
 		String r = recurrence.toLowerCase();
 		switch (r) {
-			case RECUR_NONE:
+			case EMPTY:
 				return RecurrencePeriod.NONE;
 			case RECUR_DAILY:
 				return RecurrencePeriod.DAILY;
@@ -112,8 +112,8 @@ public abstract class Command {
 		}
 	}
 
-	protected boolean checkFloat(String dueDate, String startTime, String endTime, String type){
-		if(dueDate.equals(RECUR_NONE) && startTime.equals(RECUR_NONE) && endTime.equals(RECUR_NONE) && type.equals("task")){
+	protected boolean checkFloat(String dueDate, String endTime){
+		if(dueDate.equals(EMPTY) && endTime.equals(EMPTY)){
 			return true;
 		} else {
 			return false;
@@ -121,7 +121,7 @@ public abstract class Command {
 	}
 
 	protected String getTitle(String title) {
-		if(title.equals(RECUR_NONE)){
+		if(title.equals(EMPTY)){
 			return null;
 		}
 		return title;
