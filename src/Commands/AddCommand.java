@@ -49,6 +49,43 @@ public class AddCommand extends Command{
 
 	public AddCommand(String args) throws Exception {
 		super(args);
+		
+		isFlexi = !args.contains("/") || !args.replace("\\/", "").contains("/");
+		if(!isFlexi){
+			this.argsArray = args.split("(?<![\\\\])/", -1);
+			for (int i = 0; i < argsArray.length; i++){
+				String param = argsArray[i];
+
+				param = param.replaceAll("(?<![\\\\])\\\\", "");
+				argsArray[i] = param;
+
+			}
+
+		} else {
+			String type = args.split(" ", 2)[0];
+			String temp[];
+			if(type.equals("task") || type.equals("event")){
+				temp = args.split(" ", 2)[1].split("(?<=\\s)by(?=\\s)|(?<=\\s)at(?=\\s)|(?<=\\s)on(?=\\s)", -1);
+				this.argsArray = new String[1+temp.length];
+				argsArray[0] = type;
+				System.arraycopy(temp, 0, argsArray, 1, temp.length);
+			} else {
+				temp = args.split("(?<=\\s)by(?=\\s)|(?<=\\s)at(?=\\s)|(?<=\\s)on(?=\\s)", -1);
+				this.argsArray = new String[1+temp.length];
+				argsArray[0] = "task";
+				System.arraycopy(temp, 0, argsArray, 1, temp.length);
+			}
+			
+			for(int i = 0; i < argsArray.length; i++){
+				argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", "");
+			}
+			System.out.println(Arrays.toString(argsArray));
+		}
+		this.count = argsArray.length;
+
+		for(int i = 0; i < count; i++){
+			assertNotNull(argsArray[i]);
+		}
 
 		if(!isFlexi){
 			if(validNumArgs()){
@@ -59,7 +96,7 @@ public class AddCommand extends Command{
 				this.dueDate = getDate(argsArray[3].trim());
 				this.startTime = getTime(argsArray[4].trim());
 				this.endTime = getTime(argsArray[5].trim());
-				this.recurrence = RecurrencePeriod.toRecurrence(argsArray[6].trim());
+				this.recurrence = getRecurrence(argsArray[6].trim());
 
 				isFloat = checkFloat(argsArray[3].trim(), argsArray[4].trim(),
 						 argsArray[5].trim(), argsArray[0].trim());
@@ -102,27 +139,27 @@ public class AddCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
-			if(!argsArray[0].equals("") && argsArray.length <= 3){
-				//System.out.println(Arrays.toString(argsArray));
-				this.type = "task";
+			if(!argsArray[1].equals("") && argsArray.length <= 4){
+
+				this.type = argsArray[0];
 				isTask = true;
-				this.title = argsArray[0];
+				this.title = argsArray[1];
 				this.desc = "";
 				this.recurrence = RecurrencePeriod.NONE;
 				this.startTime = -1;
-				if(argsArray.length == 1){
+				if(argsArray.length == 2){
 					this.dueDate = null;
 					this.endTime = -1;
 					isFloat = true;
 				} else {
-					this.dueDate = getDate(argsArray[1]);
+					this.dueDate = getDate(argsArray[2]);
 					if(dueDate == null){
-						if(argsArray.length == 2){
-							dueDate = flexiParse(argsArray[1]);
+						if(argsArray.length == 3){
+							dueDate = flexiParse(argsArray[2] + " 11.59.59pm");
 						} else {
-							dueDate = flexiParse(argsArray[1] + " " + argsArray[2]);
+							dueDate = flexiParse(argsArray[2] + " " + argsArray[3]);
 						}
-					} else if(argsArray.length == 3){
+					} else if(argsArray.length == 4){
 						Calendar cal = dateToCal(dueDate);
 						dueDate = flexiParse(cal);
 					}
@@ -135,7 +172,7 @@ public class AddCommand extends Command{
 			}
 		}
 	}
-
+	
 	public boolean validNumArgs(){
 		if(this.count != 7){
 			return false;
