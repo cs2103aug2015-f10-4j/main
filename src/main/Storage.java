@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -32,6 +33,9 @@ public class Storage {
 	// for logging for Week 9 tutorial - may be implementing permanently in future versions
 	private static FileHandler handler;
 	private static Logger logger;
+	
+	private static SimpleDateFormat dateFormat = 
+			new SimpleDateFormat("dd MMM yyyy");
 
 	/*
 	// for creating logFile
@@ -60,6 +64,7 @@ public class Storage {
 		assert fileName != null;
 		
 		file = new File(fileName);
+		mapper.setDateFormat(dateFormat);
 
 		if ( !(file.exists()) ) {
 			try {
