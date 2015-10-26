@@ -158,7 +158,7 @@ public class AddCommand extends Command{
 	private boolean isClashing() {
 		ArrayList<Task> tasks = Magical.getStorage().getTasks();
 		for (Task t : tasks) {
-			if (t.getDueDate().equals(task.getDueDate())) {
+			if (t.getDueDate() != null && t.getDueDate().equals(task.getDueDate())) {
 				return true;
 			}
 		}
