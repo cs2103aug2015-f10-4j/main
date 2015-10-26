@@ -2,7 +2,6 @@ package Commands;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
