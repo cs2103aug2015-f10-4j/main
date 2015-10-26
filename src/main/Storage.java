@@ -1,21 +1,8 @@
 package main;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-import java.util.logging.XMLFormatter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,56 +12,27 @@ public class Storage {
 	// private static final String MESSAGE_FILE_NOT_CREATED = "Error. File is not created successfully.";
 
 	private static File file;
-	private static String logFileName = "logFile.txt";
-	private ArrayList<Task> taskList = new ArrayList<Task>();
+	private ArrayList<Task> taskList;
+	private ArrayList<Task> taskDoneList;
+	private ArrayList<Task>[] lists;
 	ObjectMapper mapper = new ObjectMapper();
 	
-	// for logging for Week 9 tutorial - may be implementing permanently in future versions
-	private static FileHandler handler;
-	private static Logger logger;
-
-	/*
-	// for creating logFile
-	public void createLog () {
-		try {
-			logger = Logger.getLogger(Storage.class.getName());
-			logger.setUseParentHandlers(false); // to prevent logger from writing into console
-			handler = new FileHandler(logFileName, true);
-			// handler.setFormatter(new SimpleFormatter());
-			handler.setFormatter(new XMLFormatter());
-			logger.addHandler(handler);
-			logger.setLevel(Level.SEVERE);
-			
-		} catch (FileNotFoundException fnfe) {
-			System.out.println("Error: File Not Found");
-		} catch (IOException e) {
-			System.out.println("Error: Unable to write to file");
-		}
-	}
-	*/
-	
 	public Storage (String fileName) {
-		
-		// createLog();
-		
 		assert fileName != null;
 		
 		file = new File(fileName);
 
 		if ( !(file.exists()) ) {
 			try {
-				//file.createNewFile();
-				// logger.info("logFile: Creating new file...");
 				writeTaskList();
 			} catch (IOException e) {
-				// logger.info("Storage IOException: File not created successfully");
 				System.out.println("Storage IOException: File not created successfully");
-				// logger.severe("Severe message");
 				return;
 			}
 			taskList = new ArrayList<Task>();
+			taskDoneList = new ArrayList<Task>();
 		} else {
-			readTaskList();
+			readLists();
 		}
 	}
 	
@@ -82,8 +40,9 @@ public class Storage {
 		if (file.exists()) {
 			return true;
 		}
-		else
+		else {
 			return false;
+		}
 	}
 	
 	
@@ -92,14 +51,31 @@ public class Storage {
 		writeTaskList();
 	}
 	
+	public void createTaskDone(Task t) throws IOException {
+		taskDoneList.add(t);
+		writeTaskList();
+	}
+	
 	public ArrayList<Task> getTasks() {
 		return taskList;
+	}
+	
+	public ArrayList<Task> getTasksDone() {
+		return taskDoneList;
 	}
 	
 	public void updateTask(Task t) throws IOException {
 		int pos = getTaskPos(t);
 		if (pos > -1) {
 			taskList.set(pos, t);
+			writeTaskList();
+		}
+	}
+	
+	public void updateTaskDone(Task t) throws IOException {
+		int pos = getTaskPos(t);
+		if (pos > -1) {
+			taskDoneList.set(pos, t);
 			writeTaskList();
 		}
 	}
@@ -112,9 +88,22 @@ public class Storage {
 		}
 	}
 	
+	public void deleteTaskDone(Task t) throws IOException {
+		int pos = getTaskPos(t);
+		if (pos > -1) {
+			taskDoneList.remove(pos);
+			writeTaskList();
+		}
+	}
+	
 	// for clearing
 	protected void clearTaskList() throws IOException {
 		taskList = new ArrayList<Task>();
+		writeTaskList();
+	}
+	
+	protected void clearTaskDoneList() throws IOException {
+		taskDoneList = new ArrayList<Task>();
 		writeTaskList();
 	}
 	
@@ -122,26 +111,37 @@ public class Storage {
 		return taskList.indexOf(t);
 	}
 	
+	protected int getTaskDonePos(Task t) {
+		return taskDoneList.indexOf(t);
+	}
+	
 	protected void writeTaskList() throws IOException {
-		
-		mapper.writeValue(file, taskList);
+		lists[0] = taskList;
+		lists[1] = taskDoneList;
+		mapper.writeValue(file, lists);
 	}
 	
 	// for reading contents in the file
-	protected ArrayList<Task> readTaskList() {
+	protected void readLists() {
 		try {
-			
-			taskList = mapper.readValue(file, new TypeReference<ArrayList<Task>>() { });
-
+			lists = mapper.readValue(file, new TypeReference<ArrayList<Task>[]>() { });
+			taskList = lists[0];
+			taskDoneList = lists[1];
 		} catch (Exception e) {
 			taskList = new ArrayList<Task>();
+			taskDoneList = new ArrayList<Task>();
 			e.printStackTrace();
 		} 
-		return taskList;
+		return;
 	}
 	
 	public void setTaskList(ArrayList<Task> tList) throws IOException {
 		taskList = tList;
+		writeTaskList();
+	}
+	
+	public void setTaskDoneList(ArrayList<Task> tList) throws IOException {
+		taskDoneList = tList;
 		writeTaskList();
 	}
 }
