@@ -83,7 +83,7 @@ public class Task implements Comparable<Task>, Cloneable {
 		StringBuilder sb = new StringBuilder();
 
 		// sb.append(type).append(title).append(description).append(dueDate).append(
-		//		startTime).append(endTime).append(recurrence).append(priority);
+		// 		startTime).append(endTime).append(recurrence).append(priority);
 		// System.out.println("RECUR: " + recurrence.name());
 		// sb.append(type).append(title).append(description).append(recurrence.name().toString());
 		

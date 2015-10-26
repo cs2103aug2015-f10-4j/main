@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Before;
@@ -25,36 +26,36 @@ public class StorageTest extends TestCase {
 		task1.setType("task");
 		task1.setTitle("help mum buy groceries");
 		task1.setDescription("apples, pears");
-		// task1.setDueDate(new Date());
-		// task1.setStartTime(900);
-		// task1.setEndTime(2200);
+		task1.setDueDate(createDateObjects(1992, 3, 17, 15, 9, 17));
+		task1.setStartTime(900);
+		task1.setEndTime(2200);
 		task1.setRecurrence("weekly");
 		task1.setPriority(1);
 		
 		task2.setType("task");
 		task2.setTitle("study for midterms");
 		task2.setDescription("sigh");
-		// task2.setDueDate(new Date());
-		// task2.setStartTime(800);
-		// task2.setEndTime(2000);
+		task2.setDueDate(createDateObjects(1993, 10, 12, 3, 8, 16));
+		task2.setStartTime(800);
+		task2.setEndTime(2000);
 		task2.setRecurrence("daily");
 		task2.setPriority(2);
 		
 		event1.setType("event");
 		event1.setTitle("my birthday");
 		event1.setDescription("travelling to another country");
-		// event1.setDueDate(new Date());
-		// event1.setStartTime(700);
-		// event1.setEndTime(1800);
+		event1.setDueDate(createDateObjects(1988, 2, 16, 8, 18, 58));
+		event1.setStartTime(700);
+		event1.setEndTime(1800);
 		event1.setRecurrence("yearly");
 		event1.setPriority(3);
 		
 		event2.setType("event");
 		event2.setTitle("eat dinner at utown");
 		event2.setDescription("apples, pears");
-		// event2.setDueDate(new Date());
-		// event2.setStartTime(500);
-		// event2.setEndTime(1400);
+		event2.setDueDate(createDateObjects(1988, 8, 18, 3, 19, 16));
+		event2.setStartTime(500);
+		event2.setEndTime(1400);
 		event2.setRecurrence("weekly");
 		event2.setPriority(4);
 	}
@@ -81,6 +82,22 @@ public class StorageTest extends TestCase {
 			// print exception
 		}
 	}
+	
+	// creates localArray by adding default tasks to test against
+	private Date createDateObjects(int year, int month, int day, int hour, int min, int sec) {
+		Calendar date = Calendar.getInstance();
+		date.clear();
+			
+		date.set(Calendar.YEAR, year);
+		date.set(Calendar.MONTH, month);
+		date.set(Calendar.DATE, day);
+		date.set(Calendar.HOUR_OF_DAY, hour);
+		date.set(Calendar.MINUTE, min);
+		date.set(Calendar.SECOND, sec);
+			
+		return date.getTime();
+	}
+		
 	/******************* END OF HELPER METHODS *******************/
 
 	/******************* UNIT TEST CASES *******************/
