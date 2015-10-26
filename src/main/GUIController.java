@@ -34,6 +34,8 @@ public class GUIController {
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 	}
 
+
+
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {
 		if (event.getCode() == KeyCode.ENTER) {
