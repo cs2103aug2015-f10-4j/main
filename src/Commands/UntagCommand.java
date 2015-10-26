@@ -1,14 +1,17 @@
-package main;
+package Commands;
 
 import java.io.IOException;
 import java.util.Set;
 
+import main.Magical;
+import main.Task;
+import main.UI;
+
 public class UntagCommand extends Command {
 
-	private String taskID;
+	private Task task;
 	private String tag;
 	private String error = "";
-	private Task task;
 	private Task prevTask;
 	
 	private static final String MESSAGE_ARGUMENT_PARAMS = "untag task_id/tag_name";
@@ -17,11 +20,11 @@ public class UntagCommand extends Command {
 		super(args);
 		
 		if (validNumArgs()) {
-			taskID = argsArray[0].trim();
+			task = getTaskByID(argsArray[0].trim());
 			tag = argsArray[1].trim();
 			
-			if(!validTaskID()){
-				error += "Task ID: " + taskID + "\n";
+			if(task == null){
+				error += "Task ID: " + argsArray[0] + "\n";
 			}
 
 			if (!error.equals("")) {
@@ -33,7 +36,7 @@ public class UntagCommand extends Command {
 		}
 	}
 	
-	private boolean checkCount() {
+	public boolean validNumArgs() {
 		if (this.count != 2) {
 			return false;
 		} else {
@@ -41,16 +44,8 @@ public class UntagCommand extends Command {
 		}
 	}
 	
-	public boolean validNumArgs() {
-		return checkCount();
-	}
-	
-	public boolean validTaskID() {
-		return checkTaskID(this.taskID);
-	}
-	
 	public String execute() {
-		prevTask = UI.getLastTaskList().get(taskID);
+		prevTask = task;
 		try {
 			task = prevTask.copy();
 		} catch (IOException e) {

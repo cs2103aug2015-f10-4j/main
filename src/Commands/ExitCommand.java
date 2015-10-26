@@ -1,4 +1,6 @@
-package main;
+package Commands;
+
+import main.UI;
 
 public class ExitCommand extends Command {
 	

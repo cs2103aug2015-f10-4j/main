@@ -3,11 +3,17 @@ package main;
 import java.io.IOException;
 import java.util.*;
 
+import Commands.Command;
+
 public class Magical {
-	private static final String CONFIG_STORAGE_FILENAME = "storage.txt"; 
-	
-	protected static Storage storage;
-	protected static Stack<ArrayList<Task>> undoHistory;
+	private static final String CONFIG_STORAGE_FILENAME = "storage.txt";
+
+	public static Storage storage;
+	public static Stack<ArrayList<Task>> undoHistory;
+
+	public static Storage getStorage(){
+		return storage;
+	}
 
 	public static void main(String args[]) {
 		try {
@@ -24,10 +30,10 @@ public class Magical {
 		UI.displayWelcomeMessage();
 		ArrayList<Task> upcomingTasks = upcomingTasks();
 		UI.displayTaskList("Upcoming tasks", upcomingTasks);
-		
+
 	}
 
-	private static ArrayList<Task> upcomingTasks() {
+	public static ArrayList<Task> upcomingTasks() {
 		ArrayList<Task> upcomingTasks = new ArrayList<Task>();
 		ArrayList<Task> allTasks = storage.getTasks();
 		Calendar cal = Calendar.getInstance();
@@ -36,11 +42,21 @@ public class Magical {
 		cal.add(Calendar.DATE, 3);
 		Date threeDaysFromToday = cal.getTime();
 		for (Task t : allTasks) {
-			if (t.getDueDate().after(today) && t.getDueDate().before(threeDaysFromToday)) {
+			if (t.getDueDate() != null && t.getDueDate().after(today) && t.getDueDate().before(threeDaysFromToday)) {
 				upcomingTasks.add(t);
 			}
 		}
 		return upcomingTasks;
+	}
+
+	public static String parseCommand(String userInput) throws Exception{
+		Command command = Parser.parse(userInput);
+		ArrayList<Task> prevTaskList = listClone(storage.getTasks());
+		String message = command.execute();
+		if (command.isUndoable()) {
+			undoHistory.push(prevTaskList);
+		}
+		return message;
 	}
 
 	private static void startREPL() throws Exception {

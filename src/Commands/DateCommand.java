@@ -1,17 +1,17 @@
-package main;
+package Commands;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import main.Magical;
+import main.Task;
+import main.UI;
+
 public class DateCommand extends Command {
 
-	private String startDate;
-	private String endDate;
+	private Date startDate;
+	private Date endDate;
 	private String error = "";
-	private Date start;
-	private Date end;
 	
 	private static final String MESSAGE_ARGUMENT_PARAMS = "date start date/end date";
 
@@ -19,30 +19,20 @@ public class DateCommand extends Command {
 		super(args);
 
 		if (validNumArgs()) {
-			startDate = argsArray[0].trim();
-
-			if (argsArray.length == 1) {
-				endDate = "";
-			} else {
-				endDate = argsArray[1].trim();
-			}
-
-			if (!startDate.equals("") && !validStartDate()) {
+			String start = argsArray[0].trim();
+			String end = argsArray[1].trim();
+			
+			startDate = start.equals("") ? new Date(Long.MIN_VALUE) : getDate(start);
+			endDate = end.equals("") ? new Date(Long.MAX_VALUE) : getDate(end);
+			
+			if (startDate == null) {
 				error += "Start date: " + startDate + "\n";
 			}
 
-			if (!endDate.equals("") && !validEndDate()) {
+			if (endDate == null) {
 				error += "End date: " + endDate + "\n";
 			}
 			
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-			try {
-				start = startDate.equals("") ? new Date(Long.MIN_VALUE) : dateFormat.parse(startDate);
-				end = endDate.equals("") ? new Date(Long.MAX_VALUE) : dateFormat.parse(endDate); 
-			} catch (ParseException e) {
-				error += "Unable to parse dates\n";
-			}
-
 			if (!validDateRange()) {
 				error += "End date greater than start date";
 			}
@@ -56,7 +46,7 @@ public class DateCommand extends Command {
 		}
 	}
 
-	private boolean checkCount() {
+	public boolean validNumArgs() {
 		if (this.count > 2) {
 			return false;
 		} else {
@@ -64,27 +54,15 @@ public class DateCommand extends Command {
 		}
 	}
 
-	public boolean validNumArgs() {
-		return checkCount();
-	}
-
-	public boolean validStartDate() {
-		return checkDate(this.startDate);
-	}
-
-	public boolean validEndDate() {
-		return checkDate(this.endDate);
-	}
-
 	public boolean validDateRange() {
-		return end.after(start);
+		return endDate.after(startDate);
 	}
 
 	public String execute() {
 		ArrayList<Task> results = Magical.storage.getTasks();
 		ArrayList<Task> filteredResults = new ArrayList<Task>();
 		for (Task t : results) {
-			if (t.getDueDate().compareTo(start) >= 0 && t.getDueDate().compareTo(end) <= 0) {
+			if (t.getDueDate().compareTo(startDate) >= 0 && t.getDueDate().compareTo(endDate) <= 0) {
 				filteredResults.add(t);
 			}
 		}

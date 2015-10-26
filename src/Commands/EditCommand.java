@@ -1,12 +1,15 @@
-package main;
+package Commands;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import main.Magical;
+import main.Task;
+import main.UI;
+
 public class EditCommand extends Command{
 
-	private String taskID;
 	private String field;
 	private String value;
 	private String error = "";
@@ -19,28 +22,26 @@ public class EditCommand extends Command{
 		super(args);
 		
 		if(validNumArgs()){
-			this.argsArray = args.split("/");
-			this.taskID = argsArray[0];
-			this.field = argsArray[1];
-			this.value = argsArray[2];
+			this.task = getTaskByID(argsArray[0].trim());
+			this.field = argsArray[1].trim();
+			this.value = argsArray[2].trim();
 			
-			if (!validTaskID()) {
-				error += "Task ID: " + taskID + "\n";
+			if (task == null) {
+				error += "Task ID: " + argsArray[0] + "\n";
 			}
-		
-			if (field.equalsIgnoreCase("title") && !validTitle()) {
+			if (field.equalsIgnoreCase("title") && (getTitle(value) == null)) {
 				error += "No Title" + "\n";
 			}
-			else if (field.equalsIgnoreCase("due date") && !validDueDate()) {
+			else if (field.equalsIgnoreCase("due date") && (getDate(value) == null)) {
 				error += "Due date: " + value + "\n";
 			}
-			else if (field.equalsIgnoreCase("start time") && !validStartTime()) {
+			else if (field.equalsIgnoreCase("start time") && (getTime(value) == -1)) {
 				error += "Start time: " + value + "\n";
 			}
-			else if (field.equalsIgnoreCase("end time") && !validEndTime()) {
+			else if (field.equalsIgnoreCase("end time") && (getTime(value) == -1)) {
 				error += "End time: " + value + "\n";
 			}
-			else if (field.equalsIgnoreCase("recurrence") && !validRecurrence()) {
+			else if (field.equalsIgnoreCase("recurrence") && (getRecurrence(value) == null)) {
 				error += "Recurrence: " + value + "\n";
 			}
 //			else {
@@ -54,8 +55,8 @@ public class EditCommand extends Command{
 			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
-	
-	private boolean checkCount(){
+
+	public boolean validNumArgs(){
 		if(this.count != 3){
 			return false;
 		} else {
@@ -63,37 +64,9 @@ public class EditCommand extends Command{
 		}
 	}
 	
-	public boolean validNumArgs(){
-		return checkCount();
-	}
-	
-	public boolean validTaskID(){
-		return checkTaskID(this.taskID);
-	}
-	
-	public boolean validTitle(){
-		return checkTitle(this.value);
-	}
-	
-	public boolean validDueDate(){
-		return checkDate(this.value);
-	}
-	
-	public boolean validStartTime(){
-		return checkTime(this.value);
-	}
-	
-	public boolean validEndTime(){
-		return checkTime(this.value);
-	}
-	
-	public boolean validRecurrence(){
-		return checkRecurrence(this.value);
-	}
-	
 	@Override
 	public String execute() {
-		prevTask = UI.getLastTaskList().get(taskID);
+		prevTask = task;
 		try {
 			task = (Task) prevTask.clone();
 		} catch (CloneNotSupportedException e1) {

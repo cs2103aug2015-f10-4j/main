@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="mainPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.GUIController">
+   <children>
+      <VBox fillWidth="false" prefHeight="600.0" prefWidth="800.0" spacing="5.0">
+         <children>
+            <Accordion prefHeight="735.0" prefWidth="985.0">
+              <panes>
+                <TitledPane prefHeight="557.0" prefWidth="790.0" text="To-Do">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="taskTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="497.0" prefWidth="790.0">
+                                <columns>
+                                  <TableColumn fx:id="taskIDCol" prefWidth="46.0" sortable="false" text="ID" visible="false" />
+                                    <TableColumn fx:id="taskTitleCol" prefWidth="276.0" text="Task Title" />
+                                    <TableColumn fx:id="taskDueDateCol" maxWidth="257.0" minWidth="0.0" prefWidth="119.0" text="Due Date" />
+                                  <TableColumn fx:id="taskTagsCol" prefWidth="217.0" text="Tags" />
+                                    <TableColumn fx:id="taskPriorityCol" maxWidth="203.0" minWidth="0.0" prefWidth="116.0" text="Priority" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
+                  </content>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                </TitledPane>
+              </panes>
+            </Accordion>
+            <Label fx:id="messageLabel" prefHeight="21.0" prefWidth="1000.0" />
+            <TextField fx:id="commandLineField" onKeyPressed="#onEnterPressed" prefWidth="800.0" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

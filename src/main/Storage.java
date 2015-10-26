@@ -89,16 +89,16 @@ public class Storage {
 	}
 	
 	
-	protected void createTask(Task t) throws IOException {
+	public void createTask(Task t) throws IOException {
 		taskList.add(t);
 		writeTaskList();
 	}
 	
-	protected ArrayList<Task> getTasks() {
+	public ArrayList<Task> getTasks() {
 		return taskList;
 	}
 	
-	protected void updateTask(Task t) throws IOException {
+	public void updateTask(Task t) throws IOException {
 		int pos = getTaskPos(t);
 		if (pos > -1) {
 			taskList.set(pos, t);
@@ -106,7 +106,7 @@ public class Storage {
 		}
 	}
 	
-	protected void deleteTask(Task t) throws IOException {
+	public void deleteTask(Task t) throws IOException {
 		int pos = getTaskPos(t);
 		if (pos > -1) {
 			taskList.remove(pos);
@@ -142,7 +142,7 @@ public class Storage {
 		return taskList;
 	}
 	
-	protected void setTaskList(ArrayList<Task> tList) throws IOException {
+	public void setTaskList(ArrayList<Task> tList) throws IOException {
 		taskList = tList;
 		writeTaskList();
 	}
