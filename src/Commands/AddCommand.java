@@ -12,11 +12,8 @@ import main.Task;
 public class AddCommand extends Command{
 
 	/** Command parameters **/
-	protected String type;
 	protected String title;
-	protected String desc;
 	protected Date dueDate;
-	protected int startTime;
 	protected int endTime;
 	//protected String recurrence;
 	protected RecurrencePeriod recurrence;
@@ -25,15 +22,10 @@ public class AddCommand extends Command{
 	private Task task;
 
 	private static final String MESSAGE_ERROR_PARAMS = "Number of Arguments\n"
-			+ "Use Format: \nadd type/title/description/due date"
-			+ "/start time/end time/recurrence";
+			+ "Use Format: \nadd title/due date/end time/recurrence";
 	private static final String MESSAGE_ERROR_FLEXI = "Use format: add <title> by <date> at <time>";
-	private static final String MESSAGE_ERROR_TYPE = "Type: %s (type should be event or task)\n";
 	private static final String MESSAGE_ERROR_TITLE = "No Title" + "\n";
 	private static final String MESSAGE_ERROR_DATE = "Due date: %s (Date should be dd-MM-yyyy)\n";
-	private static final String MESSAGE_ERROR_START_TASK = "Start time: %s "
-			+ "(Task should not have start time)\n";
-	private static final String MESSAGE_ERROR_START = "Start time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_ERROR_END = "End time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_ERROR_RECURRENCE = "Recurrence: %s"
 			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
@@ -84,33 +76,18 @@ public class AddCommand extends Command{
 		if(!isFlexi){
 			if(validNumArgs()){
 
-				this.type = getType(argsArray[0].trim());
-				this.title = getTitle(argsArray[1].trim());
-				this.desc = argsArray[2].trim();
-				this.dueDate = getDate(argsArray[3].trim());
-				this.startTime = getTime(argsArray[4].trim());
-				this.endTime = getTime(argsArray[5].trim());
-				this.recurrence = getRecurrence(argsArray[6].trim());
+				this.title = getTitle(argsArray[0].trim());
+				this.dueDate = getDate(argsArray[1].trim());
+				this.endTime = getTime(argsArray[2].trim());
+				this.recurrence = getRecurrence(argsArray[3].trim());
 
-				isFloat = checkFloat(argsArray[3].trim(), argsArray[4].trim(),
-						 argsArray[5].trim(), argsArray[0].trim());
-				isTask = type == null ? false : type.equals("task");
+				isFloat = checkFloat(argsArray[2].trim(), argsArray[3].trim());
 
-				if (type == null) {
-					error += String.format(MESSAGE_ERROR_TYPE, argsArray[0].trim());
-				}
 				if (title == null) {
 					error += MESSAGE_ERROR_TITLE;
 				}
 				if (dueDate == null ^ isFloat) {
 					error +=  String.format(MESSAGE_ERROR_DATE, argsArray[3].trim());
-				}
-				if (startTime == -1 ^ isTask) {
-					if(isTask){
-						error += String.format(MESSAGE_ERROR_START_TASK, argsArray[4].trim());
-					} else {
-						error += String.format(MESSAGE_ERROR_START, argsArray[4].trim());
-					}
 				}
 				if (endTime == -1 ^ isFloat) {
 					error += String.format(MESSAGE_ERROR_END, argsArray[5].trim());
@@ -122,10 +99,7 @@ public class AddCommand extends Command{
 					throw new Exception(MESSAGE_HEADER_INVALID + error);
 				}
 
-				//assertNotNull(type);
-				if(type.equals("event")){
-					dueDate = addTime(dueDate, startTime);
-				} else if(type.equals("task") && !isFloat){
+				if(!isFloat){
 					dueDate = addTime(dueDate, endTime);
 				}
 			} else {
@@ -133,27 +107,23 @@ public class AddCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
-			if(!argsArray[1].equals("") && argsArray.length <= 4){
+			if(!argsArray[0].equals("") && argsArray.length <= 3){
 
-				this.type = argsArray[0];
-				isTask = true;
-				this.title = argsArray[1];
-				this.desc = "";
+				this.title = argsArray[0];
 				this.recurrence = RecurrencePeriod.NONE;
-				this.startTime = -1;
-				if(argsArray.length == 2){
+				if(argsArray.length == 1){
 					this.dueDate = null;
 					this.endTime = -1;
 					isFloat = true;
 				} else {
-					this.dueDate = getDate(argsArray[2]);
+					this.dueDate = getDate(argsArray[1]);
 					if(dueDate == null){
-						if(argsArray.length == 3){
-							dueDate = flexiParse(argsArray[2] + " 11.59.59pm");
+						if(argsArray.length == 2){
+							dueDate = flexiParse(argsArray[1] + " 11.59.59pm");
 						} else {
-							dueDate = flexiParse(argsArray[2] + " " + argsArray[3]);
+							dueDate = flexiParse(argsArray[1] + " " + argsArray[2]);
 						}
-					} else if(argsArray.length == 4){
+					} else if(argsArray.length == 3){
 						Calendar cal = dateToCal(dueDate);
 						dueDate = flexiParse(cal);
 					}
@@ -168,7 +138,7 @@ public class AddCommand extends Command{
 	}
 	
 	public boolean validNumArgs(){
-		if(this.count != 7){
+		if(this.count != 4){
 			return false;
 		} else {
 			return true;
@@ -178,13 +148,12 @@ public class AddCommand extends Command{
 	@Override
 	public String execute() {
 		task = new Task();
-		task.setType(type);
+		task.setType("task");
 		task.setTitle(title);
-		task.setDescription(desc);
 		task.setRecurrence(recurrence);
 
 		task.setDueDate(dueDate);
-		task.setStartTime(startTime);
+		task.setStartTime(-1);
 		task.setEndTime(endTime);
 
 		try {
