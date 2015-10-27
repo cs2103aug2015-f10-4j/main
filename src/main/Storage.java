@@ -123,7 +123,7 @@ public class Storage {
 	protected void writeTaskList() throws IOException {
 		lists[0] = taskList;
 		lists[1] = taskDoneList;
-		mapper.writeValue(file, lists);
+		mapper.writerWithDefaultPrettyPrinter().writeValue(file, lists);
 	}
 	
 	// for reading contents in the file
