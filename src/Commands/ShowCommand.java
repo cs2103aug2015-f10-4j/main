@@ -43,7 +43,23 @@ public class ShowCommand extends Command{
 	
 	@Override
 	public String execute() {
-		//Needs to be redone
+		switch (type){
+			case "all":
+				//Do something
+				break;
+			case "event":
+				//Do something
+				break;
+			case "task":
+				//Do something
+				break;
+			case "tag":
+				//Do something
+				break;
+			default:
+				//Do something
+				break;
+		}
 		return null;
 	}
 	
