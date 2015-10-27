@@ -1,6 +1,7 @@
 package Commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.Magical;
 import main.Task;
@@ -10,42 +11,26 @@ public class SearchCommand extends Command {
 
 	private String query;
 	private String type;
-	private String error = "";
+	private String error = STRING_EMPTY;
 	
-	private static final String MESSAGE_ARGUMENT_PARAMS = "\n1. search\n2. search query/type";
+	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
+			+ "Use Format:\n"
+			+ "1. search\n"
+			+ "2. search <query>";
 	
 	public SearchCommand(String args) throws Exception {
 		super(args);
 		
-		if (validNumArgs()) {
-			if(count == 2){
-				this.query = argsArray[0].trim();
-				
-				this.type = argsArray[1].trim();
-				this.type = type.equals("") ? "" : getType(type);
-	
-				if (type == null) {
-					error += "Type: " + type + "\n";
-				}
-	
-				if (!error.equals("")) {
-					throw new Exception(MESSAGE_HEADER_INVALID + error);
-				}
-			}
-		} else {
-			error += "Number of Arguments\n";
-			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
-		}
+		this.argsArray = args.split("", 1);
+		this.count = argsArray.length;
+		this.query = args.trim();			
 	}
 	
 	public boolean validNumArgs() {
-		if (this.count > 2) {
-			return false;
-		} else {
-			return true;
-		}
+		return true;
 	}
 	
+	//needs to be re-written
 	public String execute() {
 		ArrayList<Task> results = Magical.storage.getTasks();
 		if(count == 2){
@@ -65,5 +50,10 @@ public class SearchCommand extends Command {
 	@Override
 	public boolean isUndoable(){
 		return false;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		//SearchCommand s = new SearchCommand("asasd asdhfnasfd");
+		//SearchCommand s = new SearchCommand(" ");
 	}
 }
