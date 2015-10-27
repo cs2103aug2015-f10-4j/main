@@ -2,6 +2,7 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -24,6 +25,10 @@ public class Storage {
 
 		if ( !(file.exists()) ) {
 			try {
+				taskList = new ArrayList<Task>();
+				taskDoneList = new ArrayList<Task>();
+				ArrayList<ArrayList<Task>> tempLists = new ArrayList<ArrayList<Task>>(2);
+				lists =  (ArrayList<Task>[]) tempLists.toArray((ArrayList<Task>[]) Array.newInstance(taskList.getClass(), 2));				
 				writeTaskList();
 			} catch (IOException e) {
 				System.out.println("Storage IOException: File not created successfully");

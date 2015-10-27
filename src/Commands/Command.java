@@ -140,8 +140,10 @@ public abstract class Command {
 		Integer index = Integer.parseInt(taskID.substring(1)) - 1;
 		if (type.equalsIgnoreCase("t")) {
 			return GUIModel.taskList.get(index);
+		} else if (type.equalsIgnoreCase("d")) {
+			return GUIModel.doneList.get(index);
 		} else {
-			return GUIModel.eventList.get(index);
+			return null;
 		}
 	}
 

@@ -88,7 +88,7 @@ public class GUIController {
 			String userInput = commandLineField.getText();
 			String message = Magical.parseCommand(userInput);
 			messageLabel.setText(message);
-			ArrayList<Task> newTaskList = Magical.getStorage().readTaskList();
+			ArrayList<Task> newTaskList = Magical.getStorage().getTasks();
 			GUIModel.setTaskList(newTaskList);
 			taskTable.setItems(GUIModel.getTaskList());
 			commandLineField.clear();
