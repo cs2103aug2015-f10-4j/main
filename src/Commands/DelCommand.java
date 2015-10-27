@@ -11,7 +11,8 @@ public class DelCommand extends Command{
 	private String error = STRING_EMPTY;
 	private Task task;
 
-	private static final String MESSAGE_ARGUMENT_PARAMS = "delete <task_id>";
+	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
+			+"Use Format: delete <task_id>";
 	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 
 	public DelCommand(String args) throws Exception{
@@ -31,8 +32,8 @@ public class DelCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
-			error += "Number of Arguments\n";
-			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
+			error += MESSAGE_INVALID_PARAMS;
+			throw new Exception(MESSAGE_HEADER_INVALID + error);
 		}
 	}
 

@@ -18,7 +18,8 @@ public class EditCommand extends Command{
 	private Task task;
 	private Task prevTask;
 	
-	private static final String MESSAGE_ARGUMENT_PARAMS = "edit <task_id> <field> <value>";
+	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
+			+ "Use Format: edit <task_id> <field> <value>";
 	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 	private static final String MESSAGE_INVALID_FIELD = "Field: %s\n";
 	private static final String MESSAGE_INVALID_TITLE = "No Title\n";
@@ -65,8 +66,8 @@ public class EditCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
-			error += "Number of Arguments\n";
-			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
+			error += MESSAGE_INVALID_PARAMS;
+			throw new Exception(MESSAGE_HEADER_INVALID + error);
 		}
 	}
 

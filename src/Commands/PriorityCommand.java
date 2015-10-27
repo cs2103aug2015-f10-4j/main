@@ -13,7 +13,8 @@ public class PriorityCommand extends Command{
 	private String error = STRING_EMPTY;
 	private Task prevTask;
 	
-	private static final String MESSAGE_ARGUMENT_PARAMS = "set <task id> <priority>";
+	private static final String MESSAGE_ARGUMENT_PARAMS = "Number of Arguments\n"
+			+ "Use Format: set <task id> <priority>";
 	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 	private static final String MESSAGE_INVALID_PRIORITY = "Priority: %s\n";
 	
@@ -37,8 +38,8 @@ public class PriorityCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}	
 		} else {
-			error += "Number of Arguments\n";
-			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
+			error += MESSAGE_ARGUMENT_PARAMS;
+			throw new Exception(MESSAGE_HEADER_INVALID + error);
 		}
 	}
 

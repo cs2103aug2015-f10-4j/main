@@ -11,7 +11,8 @@ public class DoneCommand extends Command{
 	private String error = STRING_EMPTY;
 	private Task task;
 	
-	private static final String MESSAGE_ARGUMENT_PARAMS = "done <task_id>";
+	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
+			+ "Use Format: done <task_id>";
 	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 	
 	public DoneCommand(String args) throws Exception{
@@ -30,8 +31,8 @@ public class DoneCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}			
 		} else {
-			error += "Number of Arguments\n";
-			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
+			error += MESSAGE_INVALID_PARAMS;
+			throw new Exception(MESSAGE_HEADER_INVALID + error);
 		}
 	}
 	
