@@ -8,18 +8,23 @@ import main.Task;
 import main.UI;
 
 public class DoneCommand extends Command{
-	private String error = "";
+	private String error = STRING_EMPTY;
 	private Task task;
 	
-	private static final String MESSAGE_ARGUMENT_PARAMS = "done task_id";
+	private static final String MESSAGE_ARGUMENT_PARAMS = "done <task_id>";
+	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 	
 	public DoneCommand(String args) throws Exception{
 		super(args);
 		
+		this.argsArray = args.split(" ", -1);
+		this.count = argsArray.length;
+		
 		if(validNumArgs()){
 			task = getTaskByID(argsArray[0].trim());
+			
 			if(task == null){
-				error += "Task ID: " + argsArray[0] + "\n";
+				error += String.format(MESSAGE_INVALID_ID, argsArray[0].trim());
 			}
 			if (!error.equals("")) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);

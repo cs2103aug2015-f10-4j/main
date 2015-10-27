@@ -21,6 +21,7 @@ public class DelCommand extends Command{
 
 		if(validNumArgs()){
 			task = getTaskByID(argsArray[0].trim());
+			
 			if(task == null){
 				error += String.format(MESSAGE_INVALID_ID, argsArray[0].trim());
 			}
