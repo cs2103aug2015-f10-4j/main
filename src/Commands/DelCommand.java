@@ -1,6 +1,7 @@
 package Commands;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import main.Magical;
 import main.Task;
@@ -16,10 +17,11 @@ public class DelCommand extends Command{
 	public DelCommand(String args) throws Exception{
 		super(args);
 		
-		this.argsArray = args.split(" ", -1);
+		this.argsArray = args.split("", 1);
 		this.count = argsArray.length;
-
+		
 		if(validNumArgs()){
+			
 			task = getTaskByID(argsArray[0].trim());
 			
 			if(task == null){
@@ -49,5 +51,9 @@ public class DelCommand extends Command{
 		} catch (IOException e) {
 			return "unable to delete task";
 		}
+	}
+	
+	public static void main(String[] args) throws Exception {
+		DelCommand d = new DelCommand("t1 asfasdg");
 	}
 }

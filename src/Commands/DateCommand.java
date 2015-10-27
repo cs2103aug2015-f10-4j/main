@@ -20,11 +20,9 @@ public class DateCommand extends Command {
 	public DateCommand(String args) throws Exception {
 		super(args);
 		
-		this.argsArray = args.split(" ", -1);
+		this.argsArray = args.split(" ", 2);
 		this.count = argsArray.length;
 
-		System.out.println(Arrays.toString(argsArray));
-		
 		if (validNumArgs()) {
 			String start = argsArray[0].trim();
 			String end = count == 2 ? argsArray[1].trim() : STRING_EMPTY;
