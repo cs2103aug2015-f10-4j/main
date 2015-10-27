@@ -18,7 +18,7 @@ public abstract class Command {
 	private static final String RECUR_MONTHLY = "monthly";
 	private static final String RECUR_WEEKLY = "weekly";
 	private static final String RECUR_DAILY = "daily";
-	private static final String STRING_EMPTY = "";
+	protected static final String STRING_EMPTY = "";
 	//main variables
 	protected String args;
 	protected String[] argsArray;

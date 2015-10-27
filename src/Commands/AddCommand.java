@@ -31,8 +31,6 @@ public class AddCommand extends Command{
 	private static final String MESSAGE_TASK_ADDED = "task added";
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
 	private static final String MESSAGE_TASK_ERROR = "unable to add task";
-	
-	private static final String STRING_EMPTY = "";
 
 	public AddCommand(String args) throws Exception {
 		super(args);

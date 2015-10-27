@@ -16,7 +16,6 @@ public class DateCommand extends Command {
 
 	private static final String MESSAGE_ARGUMENT_PARAMS = "date <start date> <end date>";
 	private static final String MESSAGE_ERROR_DATE = "%s date: %s (Date should be dd-MM-yyyy)\n";
-	private static final String STRING_EMPTY = "";
 
 	public DateCommand(String args) throws Exception {
 		super(args);

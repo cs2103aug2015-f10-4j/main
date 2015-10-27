@@ -34,8 +34,6 @@ public class EventCommand extends Command{
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
 	private static final String MESSAGE_TASK_ERROR = "unable to add event";
 	
-	private static final String STRING_EMPTY = "";
-	
 	public EventCommand(String args) throws Exception {
 		super(args);
 		
