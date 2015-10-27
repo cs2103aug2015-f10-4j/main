@@ -23,7 +23,7 @@ public class AddCommand extends Command{
 	private static final String MESSAGE_ERROR_PARAMS = "Number of Arguments\n"
 			+ "Use Format: \nadd title/due date/end time/recurrence";
 	private static final String MESSAGE_ERROR_FLEXI = "Use format: add <title> by <date> at <time>";
-	private static final String MESSAGE_ERROR_TITLE = "No Title" + "\n";
+	private static final String MESSAGE_ERROR_TITLE = "No Title\n";
 	private static final String MESSAGE_ERROR_DATE = "Due date: %s (Date should be dd-MM-yyyy)\n";
 	private static final String MESSAGE_ERROR_END = "End time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_ERROR_RECURRENCE = "Recurrence: %s"

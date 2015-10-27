@@ -17,7 +17,7 @@ public class DoneCommand extends Command{
 	public DoneCommand(String args) throws Exception{
 		super(args);
 		
-		this.argsArray = args.split("", 1);
+		this.argsArray = args.split(STRING_EMPTY, 1);
 		this.count = argsArray.length;
 		
 		if(validNumArgs()){
