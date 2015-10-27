@@ -1,7 +1,5 @@
 package Commands;
 
-import static org.junit.Assert.*;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,7 +9,6 @@ import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
 import main.Task;
-import main.UI;
 import main.GUIModel;
 import main.RecurrencePeriod;
 
