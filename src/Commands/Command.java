@@ -134,7 +134,12 @@ public abstract class Command {
 
 	protected Task getTaskByID(String taskID){
 		String type = taskID.substring(0, 1);
-		Integer index = Integer.parseInt(taskID.substring(1)) - 1;
+		Integer index;
+		try {
+			index = Integer.parseInt(taskID.substring(1)) - 1;
+		} catch (Exception e){
+			return null;
+		}
 		if (type.equalsIgnoreCase("t")) {
 			return GUIModel.taskList.get(index);
 		} else {
