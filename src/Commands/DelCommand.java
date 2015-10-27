@@ -54,6 +54,6 @@ public class DelCommand extends Command{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		DelCommand d = new DelCommand("t1 asfasdg");
+		DelCommand d = new DelCommand("t1");
 	}
 }
