@@ -15,7 +15,7 @@ public class DateCommand extends Command {
 	private Date endDate;
 
 	private static final String MESSAGE_ARGUMENT_PARAMS = "date <start date> <end date>";
-	private static final String MESSAGE_ERROR_DATE = "%s date: %s (Date should be dd-MM-yyyy)\n";
+	private static final String MESSAGE_INVALID_DATE = "%s date: %s (Date should be dd-MM-yyyy)\n";
 
 	public DateCommand(String args) throws Exception {
 		super(args);
@@ -32,11 +32,11 @@ public class DateCommand extends Command {
 			
 			
 			if (startDate == null) {
-				error += String.format(MESSAGE_ERROR_DATE, "Start", start);
+				error += String.format(MESSAGE_INVALID_DATE, "Start", start);
 			}
 
 			if (endDate == null) {
-				error += String.format(MESSAGE_ERROR_DATE, "End", end);
+				error += String.format(MESSAGE_INVALID_DATE, "End", end);
 			} 
 
 			if (startDate != null && endDate != null && validDateRange()) {

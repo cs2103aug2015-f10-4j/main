@@ -20,13 +20,13 @@ public class AddCommand extends Command{
 	protected boolean isFloat;
 	private Task task;
 
-	private static final String MESSAGE_ERROR_PARAMS = "Number of Arguments\n"
+	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: \nadd title/due date/end time/recurrence";
-	private static final String MESSAGE_ERROR_FLEXI = "Use format: add <title> by <date> at <time>";
-	private static final String MESSAGE_ERROR_TITLE = "No Title\n";
-	private static final String MESSAGE_ERROR_DATE = "Due date: %s (Date should be dd-MM-yyyy)\n";
-	private static final String MESSAGE_ERROR_END = "End time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_ERROR_RECURRENCE = "Recurrence: %s"
+	private static final String MESSAGE_INVALID_FLEXI = "Use format: add <title> by <date> at <time>";
+	private static final String MESSAGE_INVALID_TITLE = "No Title\n";
+	private static final String MESSAGE_INVALID_DATE = "Due date: %s (Date should be dd-MM-yyyy)\n";
+	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
+	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
 			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
 	private static final String MESSAGE_TASK_ADDED = "task added";
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
@@ -69,16 +69,16 @@ public class AddCommand extends Command{
 				isFloat = checkFloat(argsArray[2].trim(), argsArray[3].trim());
 
 				if (title == null) {
-					error += MESSAGE_ERROR_TITLE;
+					error += MESSAGE_INVALID_TITLE;
 				}
 				if (dueDate == null ^ isFloat) {
-					error +=  String.format(MESSAGE_ERROR_DATE, argsArray[1].trim());
+					error +=  String.format(MESSAGE_INVALID_DATE, argsArray[1].trim());
 				}
 				if (endTime == -1 ^ isFloat) {
-					error += String.format(MESSAGE_ERROR_END, argsArray[2].trim());
+					error += String.format(MESSAGE_INVALID_END, argsArray[2].trim());
 				}
 				if (recurrence == null) {
-					error += String.format(MESSAGE_ERROR_RECURRENCE, argsArray[3].trim());
+					error += String.format(MESSAGE_INVALID_RECURRENCE, argsArray[3].trim());
 				}
 				if (!error.equals(STRING_EMPTY)) {
 					throw new Exception(MESSAGE_HEADER_INVALID + error);
@@ -88,7 +88,7 @@ public class AddCommand extends Command{
 					dueDate = addTime(dueDate, endTime);
 				}
 			} else {
-				error += MESSAGE_ERROR_PARAMS;
+				error += MESSAGE_INVALID_PARAMS;
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
@@ -116,7 +116,7 @@ public class AddCommand extends Command{
 					this.endTime = cal.get(Calendar.HOUR_OF_DAY)*100 + cal.get(Calendar.MINUTE);
 				}
 			} else {
-				error += MESSAGE_ERROR_FLEXI;
+				error += MESSAGE_INVALID_FLEXI;
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		}

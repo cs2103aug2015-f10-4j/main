@@ -20,15 +20,15 @@ public class EventCommand extends Command{
 	protected RecurrencePeriod recurrence;
 	private Task task;
 	
-	private static final String MESSAGE_ERROR_PARAMS = "Number of Arguments\n"
+	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: \nevent title/event date/start time/end time/recurrence";
-	private static final String MESSAGE_ERROR_FLEXI = "Use format: event <title> on <date> from "
+	private static final String MESSAGE_INVALID_FLEXI = "Use format: event <title> on <date> from "
 			+ "<start time> to <end time>";
-	private static final String MESSAGE_ERROR_TITLE = "No Title" + "\n";
-	private static final String MESSAGE_ERROR_DATE = "Event date: %s (Date should be dd-MM-yyyy)\n";
-	private static final String MESSAGE_ERROR_START = "Start time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_ERROR_END = "End time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_ERROR_RECURRENCE = "Recurrence: %s"
+	private static final String MESSAGE_INVALID_TITLE = "No Title" + "\n";
+	private static final String MESSAGE_INVALID_DATE = "Event date: %s (Date should be dd-MM-yyyy)\n";
+	private static final String MESSAGE_INVALID_START = "Start time: %s (Time should be in 24hrs format)\n";
+	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
+	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
 			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
 	private static final String MESSAGE_TASK_ADDED = "event added";
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
@@ -68,19 +68,19 @@ public class EventCommand extends Command{
 				this.recurrence = getRecurrence(argsArray[4].trim());
 
 				if (title == null) {
-					error += MESSAGE_ERROR_TITLE;
+					error += MESSAGE_INVALID_TITLE;
 				}
 				if (dateStart == null || dateEnd == null) {
-					error +=  String.format(MESSAGE_ERROR_DATE, argsArray[1].trim());
+					error +=  String.format(MESSAGE_INVALID_DATE, argsArray[1].trim());
 				}
 				if (startTime == -1) {
-					error += String.format(MESSAGE_ERROR_START, argsArray[2].trim());
+					error += String.format(MESSAGE_INVALID_START, argsArray[2].trim());
 				}
 				if (endTime == -1) {
-					error += String.format(MESSAGE_ERROR_END, argsArray[3].trim());
+					error += String.format(MESSAGE_INVALID_END, argsArray[3].trim());
 				}
 				if (recurrence == null) {
-					error += String.format(MESSAGE_ERROR_RECURRENCE, argsArray[4].trim());
+					error += String.format(MESSAGE_INVALID_RECURRENCE, argsArray[4].trim());
 				}
 				if (!error.equals(STRING_EMPTY)) {
 					throw new Exception(MESSAGE_HEADER_INVALID + error);
@@ -89,7 +89,7 @@ public class EventCommand extends Command{
 				dateStart = addTime(dateStart, startTime);
 				dateEnd = addTime(dateEnd, endTime);
 			} else {
-				error += MESSAGE_ERROR_PARAMS;
+				error += MESSAGE_INVALID_PARAMS;
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
@@ -143,7 +143,7 @@ public class EventCommand extends Command{
 					cal = dateToCal(dateEnd);
 					this.endTime = cal.get(Calendar.HOUR_OF_DAY)*100 + cal.get(Calendar.MINUTE);
 			} else {
-				error += MESSAGE_ERROR_FLEXI;
+				error += MESSAGE_INVALID_FLEXI;
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		}

@@ -21,11 +21,11 @@ public class EditCommand extends Command{
 	private static final String MESSAGE_ARGUMENT_PARAMS = "edit <task_id> <field> <value>";
 	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 	private static final String MESSAGE_INVALID_FIELD = "Field: %s\n";
-	private static final String MESSAGE_ERROR_TITLE = "No Title\n";
-	private static final String MESSAGE_ERROR_DATE = "Date: %s (Date should be dd-MM-yyyy)\n";
-	private static final String MESSAGE_ERROR_START = "Start time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_ERROR_END = "End time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_ERROR_RECURRENCE = "Recurrence: %s"
+	private static final String MESSAGE_INVALID_TITLE = "No Title\n";
+	private static final String MESSAGE_INVALID_DATE = "Date: %s (Date should be dd-MM-yyyy)\n";
+	private static final String MESSAGE_INVALID_START = "Start time: %s (Time should be in 24hrs format)\n";
+	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
+	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
 			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
 	
 	public EditCommand(String args) throws Exception {
@@ -46,17 +46,17 @@ public class EditCommand extends Command{
 			}
 			
 			if (field.equalsIgnoreCase("title") && (getTitle(value) == null)) {
-				error += MESSAGE_ERROR_TITLE;
+				error += MESSAGE_INVALID_TITLE;
 			} else if (field.equalsIgnoreCase("date") && (getDate(value) == null)) {
-				error +=  String.format(MESSAGE_ERROR_DATE, value);
+				error +=  String.format(MESSAGE_INVALID_DATE, value);
 			} else if (field.equalsIgnoreCase("start time") && (getTime(value) == -1)) {
 				//NOTE: Shouldn't be able to edit this for tasks
-				error += String.format(MESSAGE_ERROR_START, value);
+				error += String.format(MESSAGE_INVALID_START, value);
 			} else if (field.equalsIgnoreCase("end time") && (getTime(value) == -1)) {
 				//NOTE: Shouldn't be able to edit this for floating tasks
-				error += String.format(MESSAGE_ERROR_END, value);
+				error += String.format(MESSAGE_INVALID_END, value);
 			} else if (field.equalsIgnoreCase("recurrence") && (getRecurrence(value) == null)) {
-				error += String.format(MESSAGE_ERROR_RECURRENCE, value);
+				error += String.format(MESSAGE_INVALID_RECURRENCE, value);
 			} else {
 				error += String.format(MESSAGE_INVALID_FIELD, field);
 			}
