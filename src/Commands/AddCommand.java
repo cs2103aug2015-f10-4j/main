@@ -3,6 +3,7 @@ package Commands;
 import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import main.Magical;
@@ -168,6 +169,6 @@ public class AddCommand extends Command{
 		//AddCommand b = new AddCommand("pass \\by the river \\at St.George by 1st January at 12pm");
 		//AddCommand c = new AddCommand("smack him by 12-01-1993 at 1pm");
 		//AddCommand d = new AddCommand("");
-		AddCommand e = new AddCommand("hihihihi");
+		AddCommand e = new AddCommand("hihihihi by hi at hi");
 	}
 }
