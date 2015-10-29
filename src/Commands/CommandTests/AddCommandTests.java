@@ -9,23 +9,46 @@ import Commands.Command;
 
 public class AddCommandTests {
 
+	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n";
+	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
+			+ "Use Format: \nadd title/due date/end time/recurrence";
+	private static final String MESSAGE_INVALID_FLEXI = "Use format: add <title> by <date> at <time>";
+	private static final String MESSAGE_INVALID_TITLE = "No Title\n";
+	private static final String MESSAGE_INVALID_DATE = "Due date: %s (Date should be dd-MM-yyyy)\n";
+	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
+	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
+			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
+	private static final String MESSAGE_TASK_ADDED = "task added";
+	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
+	private static final String MESSAGE_TASK_ERROR = "unable to add task";
+	
 	// Arguments format: type/title/description/due date/start time/end time/recurrence
 	@Test
 	public void testNormalInputs() throws Exception {
-		Command event = new AddCommand("event/testEvent/testing/9-10-2015/0001/2359/daily");
-		Command task = new AddCommand("task/testTask/testing/9-10-2015//2359/weekly");
-		Command floatTask = new AddCommand("task/testFloat/testing////monthly");
-		Command noRecurrence = new AddCommand("event/testEvent/testing/9-10-2015/0001/2359/");
+		Command task = new AddCommand("testTask/9-10-2015/2359/weekly");
+		Command floatTask = new AddCommand("testFloat///monthly");
+		Command noRecurrence = new AddCommand("testTask/9-10-2015/2359/");
 	}
 	
 	@Test
 	public void testWrongNumArgs(){
-		final String MESSAGE_INVALID = "\n----- Invalid arguments ---- \n" 
-								+ "Number of Arguments\nUse Format: "
-				 				+"\nadd type/title/description/due date"
-				 				+ "/start time/end time/recurrence";
+		final String MESSAGE_INVALID = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_PARAMS;
 		try {
-			Command sixArgs = new AddCommand("event/testing/9-10-2015/0001/2359/daily");
+			Command moreArgs = new AddCommand("/testing/9-10-2015/0001/2359/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(e.getMessage(), MESSAGE_INVALID);
+		}
+
+		try {
+			Command flexiMoreArgs = new AddCommand("event/testing/9-10-2015/0001/2359/daily");
+			fail();
+		} catch (Exception e){
+			assertEquals(e.getMessage(), MESSAGE_INVALID);
+		}
+		
+		try {
+			Command lessArgs = new AddCommand("event/2359/daily");
 			fail();
 		} catch (Exception e){
 			assertEquals(e.getMessage(), MESSAGE_INVALID);
@@ -35,7 +58,7 @@ public class AddCommandTests {
 			Command noArgs = new AddCommand("");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), "\n----- Invalid arguments ---- \n" + "Use format: add <title> by <date> at <time>");
+			assertEquals(e.getMessage(), MESSAGE_HEADER_INVALID + MESSAGE_INVALID_FLEXI);
 		}
 	}
 	
