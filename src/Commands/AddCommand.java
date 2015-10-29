@@ -48,6 +48,7 @@ public class AddCommand extends Command{
 			}
 
 		} else {
+			args = " "+args;
 			this.argsArray = args.split("(?<=\\s)by(?=\\s)|(?<=\\s)at(?=\\s)", -1);
 			for(int i = 0; i < argsArray.length; i++){
 				argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY);
@@ -67,15 +68,15 @@ public class AddCommand extends Command{
 				this.endTime = getTime(argsArray[2].trim());
 				this.recurrence = getRecurrence(argsArray[3].trim());
 
-				isFloat = checkFloat(argsArray[2].trim(), argsArray[3].trim());
-
+				isFloat = checkFloat(argsArray[1].trim(), argsArray[2].trim());
+				
 				if (title == null) {
 					error += MESSAGE_INVALID_TITLE;
 				}
-				if (dueDate == null ^ isFloat) {
+				if (dueDate == null && !isFloat) {
 					error +=  String.format(MESSAGE_INVALID_DATE, argsArray[1].trim());
 				}
-				if (endTime == -1 ^ isFloat) {
+				if (endTime == -1 && !isFloat) {
 					error += String.format(MESSAGE_INVALID_END, argsArray[2].trim());
 				}
 				if (recurrence == null) {
@@ -93,9 +94,9 @@ public class AddCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
-			if(!argsArray[0].equals(STRING_EMPTY) && argsArray.length <= 3){
-
-				this.title = argsArray[0];
+			this.title = getTitle(argsArray[0].trim());
+			if(title != null && argsArray.length <= 3){
+				
 				this.recurrence = RecurrencePeriod.NONE;
 				if(argsArray.length == 1){
 					this.dueDate = null;
