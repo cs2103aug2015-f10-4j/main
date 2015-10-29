@@ -23,6 +23,7 @@ public class DateCommand extends Command {
 		super(args);
 		
 		this.argsArray = args.split(" ", 2);
+		System.out.println(Arrays.toString(argsArray));
 		this.count = argsArray.length;
 
 		if (validNumArgs()) {
@@ -41,7 +42,7 @@ public class DateCommand extends Command {
 				error += String.format(MESSAGE_INVALID_DATE, "End", end);
 			} 
 
-			if (startDate != null && endDate != null && validDateRange()) {
+			if (startDate != null && endDate != null && !validDateRange()) {
 				error += "End date is earlier than start date";
 			}
 
@@ -92,7 +93,7 @@ public class DateCommand extends Command {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		//DateCommand d = new DateCommand("29-01-93");
+		//DateCommand d = new DateCommand("");
 		//DateCommand d = new DateCommand("29-01-93 28-01-92");
 		//DateCommand d = new DateCommand("29-01-93 28-01-94");
 		//DateCommand d = new DateCommand("29-01-93 28-01-9a2");
