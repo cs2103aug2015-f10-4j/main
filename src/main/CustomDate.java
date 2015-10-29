@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class CustomDate extends Date {
@@ -17,8 +18,10 @@ public class CustomDate extends Date {
 
 	@Override
 	public String toString() {
-		String day = dayArray[getDay()];
-		String month = monthArray[getMonth()];
-		return String.format(DATE_FORMAT, getDate(), month, getYear()+1900, day);
+		Calendar c = Calendar.getInstance();
+		c.setTime(this);
+		String day = dayArray[c.get(Calendar.DAY_OF_WEEK)];
+		String month = monthArray[c.get(Calendar.MONTH)];
+		return String.format(DATE_FORMAT, c.get(Calendar.DAY_OF_MONTH), month, c.get(Calendar.YEAR), day);
 	}
 }
