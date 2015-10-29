@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 
 import main.GUIModel;
 import main.Magical;
@@ -36,9 +37,11 @@ public class EditCommand extends Command{
 	public EditCommand(String args) throws Exception {
 		super(args);
 		
+		args = args + " ";
 		this.argsArray = args.split("(?<!end|start)\\s(?!time)", 3);
 		this.count = argsArray.length;
-		
+		//System.out.println(Arrays.toString(argsArray));
+
 		if(validNumArgs()){
 			this.task = getTaskByID(argsArray[0].trim());
 			this.field = argsArray[1].trim();
@@ -57,19 +60,26 @@ public class EditCommand extends Command{
 			} else if (field.equalsIgnoreCase("date")) {
 				if(value.equals("") && isTask){
 					toFloat = true;
-				} else if (getDate(value) == null){
-					error +=  String.format(MESSAGE_INVALID_DATE, value);
-				}
+				} //else if (getDate(value) == null){
+					//error +=  String.format(MESSAGE_INVALID_DATE, value);
+					//flexi commands may be null but also supports rubbish though
+				//}
 			} else if (field.equalsIgnoreCase("start time")) {
 				if(isTask){
 					error += MESSAGE_INVALID_TASK_START;
-				} else if(getTime(value) == -1){
+				} else if (value.equals(STRING_EMPTY)){
 					error += String.format(MESSAGE_INVALID_START, value);
 				}
+				//else if(getTime(value) == -1){
+					//error += String.format(MESSAGE_INVALID_START, value);
+				//}
 			} else if (field.equalsIgnoreCase("end time")) {
-				if(getTime(value) == -1){
+				if (value.equals(STRING_EMPTY)){
 					error += String.format(MESSAGE_INVALID_END, value);
 				}
+				//if(getTime(value) == -1){
+					//error += String.format(MESSAGE_INVALID_END, value);
+				//}
 			} else if (field.equalsIgnoreCase("recurrence")) {
 				if(getRecurrence(value) == null){
 					error += String.format(MESSAGE_INVALID_RECURRENCE, value);
@@ -112,14 +122,31 @@ public class EditCommand extends Command{
 				if(task.getEndTime() == -1){
 					task.setEndTime(0000);
 				}
-				task.setDueDate(addTime(getDate(value), task.getEndTime()));
+				if(getDate(value) == null){
+					task.setDueDate(addTime(flexiParse(value), task.getEndTime()));
+				} else {
+					task.setDueDate(addTime(getDate(value), task.getEndTime()));
+				}
 			}
 			break;
 		case "start time":
-			task.setStartTime(Integer.parseInt(value));
+			if(getTime(value) == -1){
+				Calendar c = Calendar.getInstance();
+				c.setTime(flexiParse(value));
+				task.setStartTime(c.get(Calendar.HOUR_OF_DAY)*100 + c.get(Calendar.MINUTE));
+			} else {
+				task.setStartTime(getTime(value));
+			}
 			break;
 		case "end time":
-			task.setEndTime(Integer.parseInt(value));
+			if(getTime(value) == -1){
+				Calendar c = Calendar.getInstance();
+				System.out.println(value);
+				c.setTime(flexiParse(value));
+				task.setEndTime(c.get(Calendar.HOUR_OF_DAY)*100 + c.get(Calendar.MINUTE));
+			} else {
+				task.setEndTime(getTime(value));
+			}
 			if(task.getDueDate() == null){
 				task.setDueDate(addTime(flexiParse("today"), task.getEndTime()));
 			} else {
