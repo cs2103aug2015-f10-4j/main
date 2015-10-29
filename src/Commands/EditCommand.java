@@ -97,6 +97,9 @@ public class EditCommand extends Command{
 			task.setTitle(value);
 			break;
 		case "date":
+			if(task.getEndTime() == -1){
+				task.setEndTime(0000);
+			}
 			task.setDueDate(addTime(getDate(value), task.getEndTime()));
 			break;
 		case "start time":
@@ -104,7 +107,11 @@ public class EditCommand extends Command{
 			break;
 		case "end time":
 			task.setEndTime(Integer.parseInt(value));
-			task.setDueDate(addTime(task.getDueDate(), Integer.parseInt(value)));
+			if(task.getDueDate() == null){
+				task.setDueDate(addTime(flexiParse("today"), task.getEndTime()));
+			} else {
+				task.setDueDate(addTime(task.getDueDate(), task.getEndTime()));
+			}
 			break;
 		case "recurrence":
 			task.setRecurrence(RecurrencePeriod.toRecurrence(value));
