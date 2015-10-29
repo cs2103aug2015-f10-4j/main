@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 public class GUIView extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
+
 		primaryStage.setTitle("Magical v0.2");
 		Pane myPane = (Pane) FXMLLoader.load(getClass().getResource("/main/FXML.fxml"))	;
 		Scene myScene = new Scene(myPane);
