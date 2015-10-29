@@ -11,28 +11,33 @@ public class TagCommand extends Command {
 
 	private Task task;
 	private String tag;
-	private String error = "";
+	private String error = STRING_EMPTY;
 	private Task prevTask;
 	
-	private static final String MESSAGE_ARGUMENT_PARAMS = "\n1. tag tag_name\n2. tag task_id/tag_name";
+	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
+			+ "Use Format: tag <task_id> <tag name>";
+	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 	
 	public TagCommand(String args) throws Exception {
 		super(args);
+		
+		this.argsArray = args.split(" ", 2);
+		this.count = argsArray.length;
 		
 		if (validNumArgs()) {
 			task = getTaskByID(argsArray[0].trim());
 			tag = argsArray[1].trim();
 			
 			if(task == null){
-				error += "Task ID: " + argsArray[0] + "\n";
+				error += String.format(MESSAGE_INVALID_ID, argsArray[0].trim());
 			}
 
-			if (!error.equals("")) {
+			if (!error.equals(STRING_EMPTY)) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
-			error += "Number of Arguments\n";
-			throw new Exception(MESSAGE_HEADER_INVALID + error + "Use Format: " + MESSAGE_ARGUMENT_PARAMS);
+			error += MESSAGE_INVALID_PARAMS;
+			throw new Exception(MESSAGE_HEADER_INVALID + error);
 		}
 	}
 
@@ -44,6 +49,7 @@ public class TagCommand extends Command {
 		}
 	}
 	
+	//Need to modify
 	public String execute() {
 		prevTask = task;
 		try {
@@ -66,5 +72,10 @@ public class TagCommand extends Command {
 		}
 
 		return tag + " added to task";
+	}
+	
+	public static void main(String[] args) throws Exception {
+		//TagCommand t = new TagCommand("lalaa");
+		TagCommand t = new TagCommand("t1 adsgasg");
 	}
 }

@@ -1,7 +1,5 @@
 package Commands;
 
-import static org.junit.Assert.*;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,7 +9,6 @@ import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
 import main.Task;
-import main.UI;
 import main.GUIModel;
 import main.RecurrencePeriod;
 
@@ -21,7 +18,7 @@ public abstract class Command {
 	private static final String RECUR_MONTHLY = "monthly";
 	private static final String RECUR_WEEKLY = "weekly";
 	private static final String RECUR_DAILY = "daily";
-	private static final String STRING_EMPTY = "";
+	protected static final String STRING_EMPTY = "";
 	//main variables
 	protected String args;
 	protected String[] argsArray;
@@ -137,7 +134,12 @@ public abstract class Command {
 
 	protected Task getTaskByID(String taskID){
 		String type = taskID.substring(0, 1);
-		Integer index = Integer.parseInt(taskID.substring(1)) - 1;
+		Integer index;
+		try {
+			index = Integer.parseInt(taskID.substring(1)) - 1;
+		} catch (Exception e){
+			return null;
+		}
 		if (type.equalsIgnoreCase("t")) {
 			return GUIModel.taskList.get(index);
 		} else if (type.equalsIgnoreCase("d")) {
