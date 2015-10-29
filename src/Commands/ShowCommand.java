@@ -1,7 +1,12 @@
 package Commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
+import main.GUIModel;
+import main.Magical;
 import main.Task;
 import main.UI;
 
@@ -15,7 +20,7 @@ public class ShowCommand extends Command{
 			+ "Use Format:\n"
 			+ "1. show\n"
 			+ "2. show <type>\n"
-			+ "3. show <tag 1> <tag 2> ...";
+			+ "3. show tag <tag 1> <tag 2> ...";
 	
 	public ShowCommand(String args) throws Exception{
 		super(args);
@@ -43,24 +48,58 @@ public class ShowCommand extends Command{
 	
 	@Override
 	public String execute() {
-		switch (type){
+		ArrayList<Task> taskList = Magical.storage.getTasks();
+		ArrayList<Task> taskDoneList = Magical.storage.getTasksDone();
+		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
+		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
+		switch (type) {
 			case "all":
-				//Do something
+				filteredTaskList = taskList;
+				filteredTaskDoneList = taskDoneList;
 				break;
 			case "event":
-				//Do something
+				for (Task t : taskList) {
+					if (t.getType().equals("event")) {
+						filteredTaskList.add(t);
+					}
+				}
+				for (Task t : taskDoneList) {
+					if (t.getType().equals("event")) {
+						filteredTaskDoneList.add(t);
+					}
+				}
 				break;
 			case "task":
-				//Do something
+				for (Task t : taskList) {
+					if (t.getType().equals("task")) {
+						filteredTaskList.add(t);
+					}
+				}
+				for (Task t : taskDoneList) {
+					if (t.getType().equals("task")) {
+						filteredTaskDoneList.add(t);
+					}
+				}
 				break;
 			case "tag":
-				//Do something
+				Set<String> queryTags = new HashSet<String>(Arrays.asList(tags));
+				for (Task t : taskList) {
+					if (t.getTags().containsAll(queryTags)) {
+						filteredTaskList.add(t);
+					}
+				}
+				for (Task t : taskDoneList) {
+					if (t.getTags().containsAll(queryTags)) {
+						filteredTaskDoneList.add(t);
+					}
+				}
 				break;
 			default:
-				//Do something
 				break;
 		}
-		return null;
+		GUIModel.setTaskList(filteredTaskList);
+		GUIModel.setDoneList(filteredTaskDoneList);
+		return "show successful";
 	}
 	
 	@Override
