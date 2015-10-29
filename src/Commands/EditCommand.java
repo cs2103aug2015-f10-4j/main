@@ -1,8 +1,6 @@
 package Commands;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -10,7 +8,6 @@ import main.GUIModel;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Task;
-import main.UI;
 
 public class EditCommand extends Command{
 
