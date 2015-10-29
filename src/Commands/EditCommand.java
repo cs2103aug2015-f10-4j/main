@@ -97,12 +97,7 @@ public class EditCommand extends Command{
 			task.setTitle(value);
 			break;
 		case "date":
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
-			try {
-				task.setDueDate(addTime(dateFormat.parse(value), task.getEndTime()));
-			} catch (ParseException e) {
-				return "unable to parse due date";
-			}
+			task.setDueDate(addTime(getDate(value), task.getEndTime()));
 			break;
 		case "start time":
 			task.setStartTime(Integer.parseInt(value));
