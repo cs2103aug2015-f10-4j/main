@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import main.GUIModel;
 import main.Magical;
 import main.Task;
 import main.UI;
@@ -66,15 +67,23 @@ public class DateCommand extends Command {
 	}
 
 	public String execute() {
-		ArrayList<Task> results = Magical.storage.getTasks();
-		ArrayList<Task> filteredResults = new ArrayList<Task>();
-		for (Task t : results) {
-			if (t.getDueDate().compareTo(startDate) >= 0 && t.getDueDate().compareTo(endDate) <= 0) {
-				filteredResults.add(t);
+		ArrayList<Task> taskList = Magical.storage.getTasks();
+		ArrayList<Task> taskDoneList = Magical.storage.getTasksDone();
+		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
+		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
+		for (Task t : taskList) {
+			if (t.getDueDate() != null && t.getDueDate().compareTo(startDate) >= 0 && t.getDueDate().compareTo(endDate) <= 0) {
+				filteredTaskList.add(t);
 			}
 		}
-		UI.displayTaskList("Search results", filteredResults);
-		return null;
+		for (Task t : taskDoneList) {
+			if (t.getDueDate() != null && t.getDueDate().compareTo(startDate) >= 0 && t.getDueDate().compareTo(endDate) <= 0) {
+				filteredTaskDoneList.add(t);
+			}
+		}
+		GUIModel.setTaskList(filteredTaskList);
+		GUIModel.setDoneList(filteredTaskDoneList);
+		return "date command successful";
 	}
 
 	@Override
