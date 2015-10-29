@@ -105,8 +105,8 @@ public class Task implements Comparable<Task>, Cloneable {
 		return dueDate;
 	}
 
-	public void setDueDate(CustomDate dueDate) {
-		this.dueDate = dueDate;
+	public void setDueDate(Date dueDate) {
+		this.dueDate = (CustomDate) dueDate;
 	}
 
 	public int getStartTime() {
