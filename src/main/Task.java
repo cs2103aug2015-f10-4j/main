@@ -12,18 +12,22 @@ public class Task implements Comparable<Task>, Cloneable {
 	private RecurrencePeriod recurrence;
 	private Set<String> tags = new HashSet<String>();
 	private int priority;
-
-	public Task copy() throws IOException, ClassNotFoundException {
-		Object obj = null;
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutputStream out = new ObjectOutputStream(bos);
-		out.writeObject(this);
-		out.flush();
-		out.close();
-
-		ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
-		obj = in.readObject();
-		return (Task) obj;
+	
+	public Task copy(){
+			Task copyTask = new Task();
+			copyTask.setType(this.type);
+			copyTask.setTitle(this.title);
+			copyTask.setDueDate(this.dueDate);
+			copyTask.setStartTime(this.startTime);
+			copyTask.setEndTime(this.endTime);
+			copyTask.setRecurrence(this.recurrence);
+			Set<String> copyTags = new HashSet<String>();
+			for (String tag : this.tags) {
+				copyTags.add(tag);
+			}
+			copyTask.setTags(copyTags);
+			copyTask.setPriority(this.priority);
+			return copyTask;
 	}
 
 	public String getType() {
@@ -124,7 +128,7 @@ public class Task implements Comparable<Task>, Cloneable {
 	public RecurrencePeriod getRecurrence() {
 		return recurrence;
 	}
-
+	
 	public void setRecurrence(RecurrencePeriod recurrence) {
 		this.recurrence = recurrence;
 	}
@@ -140,7 +144,7 @@ public class Task implements Comparable<Task>, Cloneable {
 	public void setTags(Set<String> tags) {
 		this.tags = tags;
 	}
-
+	
 	public int getPriority() {
 		return priority;
 	}

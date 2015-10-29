@@ -22,179 +22,134 @@ public class AddCommandTests {
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
 	private static final String MESSAGE_TASK_ERROR = "unable to add task";
 	
-	// Arguments format: type/title/description/due date/start time/end time/recurrence
+	final String MESSAGE_ERROR_FLEXI = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_FLEXI;
 	@Test
 	public void testNormalInputs() throws Exception {
 		Command task = new AddCommand("testTask/9-10-2015/2359/weekly");
 		Command floatTask = new AddCommand("testFloat///monthly");
 		Command noRecurrence = new AddCommand("testTask/9-10-2015/2359/");
+		Command flexiTask1 = new AddCommand("testFlexi by 1st January at 12pm");
+		Command flexiTask2 = new AddCommand("testFlexi by 21-12-15 at 1234");
+		Command flexifloat = new AddCommand("testFlexi");
+		Command flexiDateOnly = new AddCommand("testFlexi by 21-12-15");
+		Command flexiTimeOnly = new AddCommand("testFlexi at 1234");
+		Command reverseDateTime = new AddCommand("testFlexi at 12pm by 1st January");
 	}
 	
 	@Test
 	public void testWrongNumArgs(){
-		final String MESSAGE_INVALID = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_PARAMS;
+		final String MESSAGE_ERROR = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_PARAMS;
+		
 		try {
-			Command moreArgs = new AddCommand("/testing/9-10-2015/0001/2359/daily");
+			AddCommand moreArgs = new AddCommand("testTask/9-10-2015/0000/2359/weekly");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_INVALID);
+			assertEquals(e.getMessage(), MESSAGE_ERROR);
 		}
 
 		try {
-			Command flexiMoreArgs = new AddCommand("event/testing/9-10-2015/0001/2359/daily");
+			AddCommand flexiMoreArgs = new AddCommand("testFlexi by 1st January at 12pm at 2pm");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_INVALID);
+			assertEquals(e.getMessage(), MESSAGE_ERROR_FLEXI);
 		}
 		
 		try {
-			Command lessArgs = new AddCommand("event/2359/daily");
+			AddCommand lessArgs = new AddCommand("testFlexi/2359/daily");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_INVALID);
+			assertEquals(e.getMessage(), MESSAGE_ERROR);
 		}
 		
+		/** flexi with less args is okay */
+		
 		try {
-			Command noArgs = new AddCommand("");
+			AddCommand noArgs = new AddCommand("");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_HEADER_INVALID + MESSAGE_INVALID_FLEXI);
+			assertEquals(e.getMessage(), MESSAGE_ERROR_FLEXI);
 		}
 	}
-	
-	@Test
-	public void testWrongType() {
-		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
-									+ "Type: %s" 
-									+ " (type should be event or task)\n";
-		try {
-			Command badType = new AddCommand("foobar/testEvent/testing/9-10-2015/0001/2359/daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(e.getMessage(), String.format(MESSAGE_ARG, "foobar"));
-		}
-		
-		try {
-			Command noType = new AddCommand("/testEvent/testing/9-10-2015/0001/2359/daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(e.getMessage(), String.format(MESSAGE_ARG, ""));
-		}
-	} 
 	
 	@Test
 	public void testWrongTitle(){
-		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" + "No Title\n"; 
+		final String MESSAGE_ERROR = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_TITLE;
 		try {
-			Command noTitle = new AddCommand("event//testing/9-10-2015/0001/2359/daily");
+			AddCommand noTitle = new AddCommand("/9-10-2015/2359/weekly");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_ARG);
+			assertEquals(e.getMessage(), MESSAGE_ERROR);
+		}
+		try {
+			AddCommand flexiNoTitle = new AddCommand("by 1st January at 12pm");
+			fail();
+		} catch (Exception e){
+			assertEquals(e.getMessage(), MESSAGE_ERROR_FLEXI);
 		}
 	}
 	
 	@Test
+	//NATTY PARSER ALLOWS NONSENSE FOR DATE PARSING
 	public void testWrongDate() throws Exception{
-		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
-									+ "Due date: %s"
-									+ " (Date should be dd-MM-yyyy)\n";
+		final String MESSAGE_ERROR = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATE;
+		
 		try {
-			Command impossibleDate = new AddCommand("event/test/testing/139-10-2015/0001/2359/daily");
+			AddCommand impossibleDate = new AddCommand("testTask/99-10-2015/2359/weekly");
 			fail();
 		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, "139-10-2015"), e.getMessage());
+			assertEquals(String.format(MESSAGE_ERROR, "99-10-2015"), e.getMessage());
+		}
+		
+		try {
+			AddCommand lettersInDate = new AddCommand("testTask/9-10-2015a/2359/weekly");
+			fail();
+		} catch (Exception e){
+			assertEquals(String.format(MESSAGE_ERROR, "9-10-2015a"), e.getMessage());
 		}
 		try {
-			Command lettersInDate = new AddCommand("event/test/testing/9-10-2015a/0001/2359/daily");
+			AddCommand noDate = new AddCommand("testTask//2359/weekly");
 			fail();
 		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, "9-10-2015a"), e.getMessage());
-		}
-		try {
-			Command noDate = new AddCommand("event/test/testing//0001/2359/daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, ""), e.getMessage());
-		}
-	}
-	
-	@Test
-	public void testWrongStart() {
-		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
-									+ "Start time: %s"
-									+ " (Time should be in 24hrs format)\n";
-		try {
-			Command wrongStartLength = new AddCommand("event/test/testing/9-10-2015/000/2359/daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, "000"), e.getMessage());
-		}
-		try {
-			Command negativeStart = new AddCommand("event/test/testing/9-10-2015/-999/2359/daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, "-999"), e.getMessage());
-		}
-		try {
-			Command startExceed24h = new AddCommand("event/test/testing/9-10-2015/9999/2359/daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, "9999"), e.getMessage());
-		}
-		try {
-			Command noStart = new AddCommand("event/test/testing/9-10-2015//2359/daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, ""), e.getMessage());
-		}
-		try {
-			Command taskWithStart = new AddCommand("task/test/testing/9-10-2015/0000/2359/daily");
-			fail();
-		} catch (Exception e){
-			assertEquals("\n----- Invalid arguments ---- \n" 
-					+ "Start time: 0000"
-					+ " (Task should not have start time)\n", e.getMessage());
+			assertEquals(String.format(MESSAGE_ERROR, ""), e.getMessage());
 		}
 	}
 	
 	@Test
+	//NATTY PARSER ALLOWS NONSENSE FOR TIME PARSING
 	public void testWrongEnd() throws Exception {
-		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
-									+ "End time: %s"
-									+ " (Time should be in 24hrs format)\n";
+		final String MESSAGE_ERROR = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_END;
+		
 		try {
-			Command wrongEndLength = new AddCommand("event/test/testing/9-10-2015/0000/235/daily");
+			AddCommand wrongEndLength = new AddCommand("testTask/9-10-2015/235/daily");
 			fail();
 		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, "235"), e.getMessage());
+			assertEquals(String.format(MESSAGE_ERROR, "235"), e.getMessage());
 		}
 		try {
-			Command negativeEnd = new AddCommand("event/test/testing/9-10-2015/0000/-235/daily");
+			AddCommand negativeEnd = new AddCommand("testTask/9-10-2015/-2345/daily");
 			fail();
 		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, "-235"), e.getMessage());
+			assertEquals(String.format(MESSAGE_ERROR, "-2345"), e.getMessage());
 		}
 		try {
-			Command endExceed24h = new AddCommand("event/test/testing/9-10-2015/0000/9999/daily");
+			AddCommand endExceed24h = new AddCommand("testTask/9-10-2015/9999/daily");
 			fail();
 		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, "9999"), e.getMessage());
+			assertEquals(String.format(MESSAGE_ERROR, "9999"), e.getMessage());
 		}
 		try {
-			Command noEnd = new AddCommand("event/test/testing/9-10-2015/0000//daily");
+			AddCommand noEnd = new AddCommand("testTask/9-10-2015//daily");
 			fail();
 		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, ""), e.getMessage());
+			assertEquals(String.format(MESSAGE_ERROR, ""), e.getMessage());
 		}
 	}
 	
 	@Test
 	public void testRecurrence(){
-		final String MESSAGE_ARG = "\n----- Invalid arguments ---- \n" 
-									+ "Recurrence: %s"
-									+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
+		final String MESSAGE_ARG = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_RECURRENCE;
 		try {
-			Command invalidRecurrence = new AddCommand("event/test/testing/9-10-2015/0000/2359/fortnightly");
+			AddCommand invalidRecurrence = new AddCommand("testTask/9-10-2015/1200/fortnightly");
 			fail();
 		} catch (Exception e){
 			assertEquals(String.format(MESSAGE_ARG, "fortnightly"), e.getMessage());
