@@ -29,7 +29,7 @@ public class GUIController {
 	@FXML private TableColumn<Task, String> taskDueDateCol;
 	@FXML private TableColumn<Task, String> taskPriorityCol;
 	@FXML private TableColumn<Task, String> taskTagsCol;
-	@FXML private TableColumn<Task, String> doneIndexCol;
+	@FXML private TableColumn<Task, String> doneIDCol;
 	@FXML private TableColumn<Task, String> doneTitleCol;
 	@FXML private TableColumn<Task, String> doneDueDateCol;
 	@FXML private TableColumn<Task, String> donePriorityCol;
@@ -56,6 +56,8 @@ public class GUIController {
 		taskTagsCol.setCellValueFactory(new PropertyValueFactory<Task, String>("tags"));
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+
+
 		doneTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
 		doneTagsCol.setCellValueFactory(new PropertyValueFactory<Task, String>("tags"));
 		doneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));

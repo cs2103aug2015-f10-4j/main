@@ -15,7 +15,7 @@ public class Storage {
 	private static File file;
 	private ArrayList<Task> taskList;
 	private ArrayList<Task> taskDoneList;
-	private ArrayList<ArrayList<Task>> lists;
+	private ArrayList<Task>[] lists;
 	ObjectMapper mapper = new ObjectMapper();
 
 	public Storage (String fileName) {
@@ -25,14 +25,10 @@ public class Storage {
 
 		if ( !(file.exists()) ) {
 			try {
-<<<<<<< HEAD
-				lists = new ArrayList<ArrayList<Task>>();
-=======
 				taskList = new ArrayList<Task>();
 				taskDoneList = new ArrayList<Task>();
 				ArrayList<ArrayList<Task>> tempLists = new ArrayList<ArrayList<Task>>(2);
-				lists =  (ArrayList<Task>[]) tempLists.toArray((ArrayList<Task>[]) Array.newInstance(taskList.getClass(), 2));				
->>>>>>> 4b1b14cfc7ce5e177207912cbaad6d60d0f20a71
+				lists =  (ArrayList<Task>[]) tempLists.toArray((ArrayList<Task>[]) Array.newInstance(taskList.getClass(), 2));
 				writeTaskList();
 			} catch (IOException e) {
 				System.out.println("Storage IOException: File not created successfully");
@@ -125,23 +121,17 @@ public class Storage {
 	}
 
 	protected void writeTaskList() throws IOException {
-<<<<<<< HEAD
-		lists.add(0, taskList);
-		lists.add(1, taskDoneList);
-		mapper.writeValue(file, lists);
-=======
 		lists[0] = taskList;
 		lists[1] = taskDoneList;
 		mapper.writerWithDefaultPrettyPrinter().writeValue(file, lists);
->>>>>>> 4b1b14cfc7ce5e177207912cbaad6d60d0f20a71
 	}
 
 	// for reading contents in the file
 	protected void readLists() {
 		try {
 			lists = mapper.readValue(file, new TypeReference<ArrayList<Task>[]>() { });
-			taskList = lists.get(0);
-			taskDoneList = lists.get(1);
+			taskList = lists[0];
+			taskDoneList = lists[1];
 		} catch (Exception e) {
 			taskList = new ArrayList<Task>();
 			taskDoneList = new ArrayList<Task>();
