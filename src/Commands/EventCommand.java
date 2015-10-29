@@ -2,9 +2,13 @@ package Commands;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import main.GUIModel;
+import main.Magical;
 import main.RecurrencePeriod;
 import main.Task;
 
@@ -30,9 +34,9 @@ public class EventCommand extends Command{
 	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
 			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
-	private static final String MESSAGE_TASK_ADDED = "event added";
-	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
-	private static final String MESSAGE_TASK_ERROR = "unable to add event";
+	private static final String MESSAGE_EVENT_ADDED = "event added";
+	private static final String MESSAGE_EVENT_CLASH = ". Another event exists on the same date.";
+	private static final String MESSAGE_EVENT_ERROR = "unable to add event";
 	
 	public EventCommand(String args) throws Exception {
 		super(args);
@@ -159,8 +163,37 @@ public class EventCommand extends Command{
 
 	@Override
 	public String execute() {
-		// TODO Auto-generated method stub
-		return null;
+		task = new Task();
+		task.setType("event");
+		task.setTitle(title);
+		task.setRecurrence(recurrence);
+		task.setDueDate(dateStart);
+		task.setStartTime(startTime);
+		task.setEndTime(endTime);
+
+		try {
+			String retMsg = MESSAGE_EVENT_ADDED;
+			if (isClashing()) {
+				retMsg += MESSAGE_EVENT_CLASH;
+			}
+			Magical.getStorage().createTask(task);
+			return retMsg;
+		} catch (IOException e) {
+			return MESSAGE_EVENT_ERROR;
+		} finally {
+			GUIModel.setTaskList(Magical.storage.getTasks());
+			GUIModel.setDoneList(Magical.storage.getTasksDone());
+		}
+	}
+
+	private boolean isClashing() {
+		ArrayList<Task> tasks = Magical.getStorage().getTasks();
+		for (Task t : tasks) {
+			if (t.getDueDate().equals(task.getDueDate())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static void main(String[] args) throws Exception {
