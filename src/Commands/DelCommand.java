@@ -3,6 +3,7 @@ package Commands;
 import java.io.IOException;
 import java.util.Arrays;
 
+import main.GUIModel;
 import main.Magical;
 import main.Task;
 
@@ -51,6 +52,9 @@ public class DelCommand extends Command{
 			return "task deleted";
 		} catch (IOException e) {
 			return "unable to delete task";
+		} finally {
+			GUIModel.setTaskList(Magical.storage.getTasks());
+			GUIModel.setDoneList(Magical.storage.getTasksDone());
 		}
 	}
 	

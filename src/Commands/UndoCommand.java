@@ -3,6 +3,7 @@ package Commands;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import main.GUIModel;
 import main.Magical;
 import main.Task;
 
@@ -32,6 +33,9 @@ public class UndoCommand extends Command {
 			} catch (IOException e) {
 				Magical.undoListHistory.push(lastTaskList);
 				return "unable to undo";
+			} finally {
+				GUIModel.setTaskList(Magical.storage.getTasks());
+				GUIModel.setDoneList(Magical.storage.getTasksDone());
 			}
 		}
 		return "nothing to undo";

@@ -3,6 +3,7 @@ package Commands;
 import java.io.IOException;
 import java.util.Set;
 
+import main.GUIModel;
 import main.Magical;
 import main.Task;
 import main.UI;
@@ -63,6 +64,9 @@ public class UntagCommand extends Command {
 			Magical.storage.createTask(task);
 		} catch (IOException e) {
 			return "unable to remove tag from task";
+		} finally {
+			GUIModel.setTaskList(Magical.storage.getTasks());
+			GUIModel.setDoneList(Magical.storage.getTasksDone());
 		}
 
 		return tag + " removed from task";

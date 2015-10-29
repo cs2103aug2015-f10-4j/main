@@ -2,6 +2,7 @@ package Commands;
 
 import java.io.IOException;
 
+import main.GUIModel;
 import main.Magical;
 import main.Task;
 import main.UI;
@@ -62,6 +63,9 @@ public class PriorityCommand extends Command{
 			Magical.storage.createTask(task);
 		} catch (IOException e) {
 			return "unable to change priority";
+		} finally {
+			GUIModel.setTaskList(Magical.storage.getTasks());
+			GUIModel.setDoneList(Magical.storage.getTasksDone());
 		}
 		
 		return "Priority updated.";

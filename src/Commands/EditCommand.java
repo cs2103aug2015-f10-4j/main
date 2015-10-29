@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
+import main.GUIModel;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Task;
@@ -125,6 +126,9 @@ public class EditCommand extends Command{
 			Magical.storage.createTask(task);
 		} catch (IOException e) {
 			return "unable to edit task";
+		} finally {
+			GUIModel.setTaskList(Magical.storage.getTasks());
+			GUIModel.setDoneList(Magical.storage.getTasksDone());
 		}
 		
 		return "Task edited.";

@@ -1,11 +1,14 @@
 package Commands;
 
 import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+
+import main.GUIModel;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Task;
@@ -152,6 +155,9 @@ public class AddCommand extends Command{
 			return retMsg;
 		} catch (IOException e) {
 			return MESSAGE_TASK_ERROR;
+		} finally {
+			GUIModel.setTaskList(Magical.storage.getTasks());
+			GUIModel.setDoneList(Magical.storage.getTasksDone());
 		}
 	}
 

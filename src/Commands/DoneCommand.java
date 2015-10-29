@@ -3,6 +3,7 @@ package Commands;
 import java.io.IOException;
 import java.util.Set;
 
+import main.GUIModel;
 import main.Magical;
 import main.Task;
 import main.UI;
@@ -50,6 +51,9 @@ public class DoneCommand extends Command{
 			Magical.storage.createTaskDone(task);
 		} catch (IOException e) {
 			return "unable to archive task";
+		} finally {
+			GUIModel.setTaskList(Magical.storage.getTasks());
+			GUIModel.setDoneList(Magical.storage.getTasksDone());
 		}
 
 		return "task archived";
