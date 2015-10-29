@@ -6,13 +6,13 @@ import java.util.*;
 public class Task implements Comparable<Task>, Cloneable {
 	private String type;
 	private String title;
-	private Date dueDate;
+	private CustomDate dueDate;
 	private int startTime;
 	private int endTime;
 	private RecurrencePeriod recurrence;
 	private Set<String> tags = new HashSet<String>();
 	private int priority;
-	
+
 	public Task copy() throws IOException, ClassNotFoundException {
 		Object obj = null;
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -101,7 +101,7 @@ public class Task implements Comparable<Task>, Cloneable {
 		return dueDate;
 	}
 
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(CustomDate dueDate) {
 		this.dueDate = dueDate;
 	}
 
@@ -124,7 +124,7 @@ public class Task implements Comparable<Task>, Cloneable {
 	public RecurrencePeriod getRecurrence() {
 		return recurrence;
 	}
-	
+
 	public void setRecurrence(RecurrencePeriod recurrence) {
 		this.recurrence = recurrence;
 	}
@@ -140,7 +140,7 @@ public class Task implements Comparable<Task>, Cloneable {
 	public void setTags(Set<String> tags) {
 		this.tags = tags;
 	}
-	
+
 	public int getPriority() {
 		return priority;
 	}
