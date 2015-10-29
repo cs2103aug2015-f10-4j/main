@@ -67,15 +67,15 @@ public class AddCommand extends Command{
 				this.endTime = getTime(argsArray[2].trim());
 				this.recurrence = getRecurrence(argsArray[3].trim());
 
-				isFloat = checkFloat(argsArray[2].trim(), argsArray[3].trim());
-
+				isFloat = checkFloat(argsArray[1].trim(), argsArray[2].trim());
+				
 				if (title == null) {
 					error += MESSAGE_INVALID_TITLE;
 				}
-				if (dueDate == null ^ isFloat) {
+				if (dueDate == null && !isFloat) {
 					error +=  String.format(MESSAGE_INVALID_DATE, argsArray[1].trim());
 				}
-				if (endTime == -1 ^ isFloat) {
+				if (endTime == -1 && !isFloat) {
 					error += String.format(MESSAGE_INVALID_END, argsArray[2].trim());
 				}
 				if (recurrence == null) {
