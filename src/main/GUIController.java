@@ -116,8 +116,11 @@ public class GUIController {
 			String message = Magical.parseCommand(userInput);
 			messageLabel.setText(message);
 			ArrayList<Task> newTaskList = Magical.getStorage().getTasks();
+			ArrayList<Task> newDoneList = Magical.getStorage().getTasksDone();
+			GUIModel.setDoneList(newDoneList);
 			GUIModel.setTaskList(newTaskList);
 			taskTable.setItems(GUIModel.getTaskList());
+			doneTable.setItems(GUIModel.getDoneList());
 			commandLineField.clear();
 		}
 	}
