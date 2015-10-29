@@ -1,6 +1,8 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +31,7 @@ public class GUIModel {
 	public static void init() {
 		taskList = FXCollections.observableArrayList(Magical.getStorage().getTasks());
 		doneList = FXCollections.observableArrayList(Magical.getStorage().getTasksDone());
+
 	}
 
 }
