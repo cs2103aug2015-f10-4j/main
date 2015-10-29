@@ -35,8 +35,6 @@ public class EditCommand extends Command{
 		this.argsArray = args.split(" ", 3);
 		this.count = argsArray.length;
 		
-		System.out.println(Arrays.toString(argsArray));
-		
 		if(validNumArgs()){
 			this.task = getTaskByID(argsArray[0].trim());
 			this.field = argsArray[1].trim();
@@ -46,18 +44,28 @@ public class EditCommand extends Command{
 				error += String.format(MESSAGE_INVALID_ID, argsArray[0].trim());
 			}
 			
-			if (field.equalsIgnoreCase("title") && (getTitle(value) == null)) {
-				error += MESSAGE_INVALID_TITLE;
-			} else if (field.equalsIgnoreCase("date") && (getDate(value) == null)) {
-				error +=  String.format(MESSAGE_INVALID_DATE, value);
-			} else if (field.equalsIgnoreCase("start time") && (getTime(value) == -1)) {
+			if (field.equalsIgnoreCase("title")) {
+				if (getTitle(value) == null){
+					error += MESSAGE_INVALID_TITLE;
+				}
+			} else if (field.equalsIgnoreCase("date")) {
+				if (getDate(value) == null){
+					error +=  String.format(MESSAGE_INVALID_DATE, value);
+				}
+			} else if (field.equalsIgnoreCase("start time")) {
+				if(getTime(value) == -1){
+					error += String.format(MESSAGE_INVALID_START, value);
+				}
 				//NOTE: Shouldn't be able to edit this for tasks
-				error += String.format(MESSAGE_INVALID_START, value);
-			} else if (field.equalsIgnoreCase("end time") && (getTime(value) == -1)) {
+			} else if (field.equalsIgnoreCase("end time")) {
+				if(getTime(value) == -1){
+					error += String.format(MESSAGE_INVALID_END, value);
+				}
 				//NOTE: Shouldn't be able to edit this for floating tasks
-				error += String.format(MESSAGE_INVALID_END, value);
-			} else if (field.equalsIgnoreCase("recurrence") && (getRecurrence(value) == null)) {
-				error += String.format(MESSAGE_INVALID_RECURRENCE, value);
+			} else if (field.equalsIgnoreCase("recurrence")) {
+				if(getRecurrence(value) == null){
+					error += String.format(MESSAGE_INVALID_RECURRENCE, value);
+				}
 			} else {
 				error += String.format(MESSAGE_INVALID_FIELD, field);
 			}
@@ -124,6 +132,6 @@ public class EditCommand extends Command{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		EditCommand e = new EditCommand("t1 date aihfaf");
+		//EditCommand e = new EditCommand("t1 title asfas");
 	}
 }
