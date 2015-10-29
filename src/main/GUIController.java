@@ -67,7 +67,7 @@ public class GUIController {
 			if (!tagSet.isEmpty()) {
 				Iterator<String> iterator = tagSet.iterator();
 				while (iterator.hasNext()) {
-					result += iterator.next() + ",";
+					result += iterator.next() + ", ";
 				}
 				result = result.substring(0, result.lastIndexOf(","));
 			}
@@ -87,7 +87,22 @@ public class GUIController {
 		});
 
 		doneTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
-		doneTagsCol.setCellValueFactory(new PropertyValueFactory<Task, String>("tags"));
+
+		doneTagsCol.setCellValueFactory(col -> {
+			SimpleStringProperty finalResult = new SimpleStringProperty();
+			String result = "";
+			Set<String> tagSet = col.getValue().getTags();
+			if (!tagSet.isEmpty()) {
+				Iterator<String> iterator = tagSet.iterator();
+				while (iterator.hasNext()) {
+					result += iterator.next() + ", ";
+				}
+				result = result.substring(0, result.lastIndexOf(","));
+			}
+			finalResult.setValue(result);
+			return finalResult;
+		});
+
 		doneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
 		donePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 	}
