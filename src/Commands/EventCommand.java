@@ -136,8 +136,13 @@ public class EventCommand extends Command{
 						dateStart = flexiParse(argsArray[dateIndex] + " " + argsArray[startIndex]);
 						dateEnd = flexiParse(argsArray[dateIndex] + " " + argsArray[endIndex]);
 					} else {
-						tempDate = dateStart.toString();
-						tempDate = tempDate.replace("00:00:00 SGT ", STRING_EMPTY);
+						Calendar c = Calendar.getInstance();
+						c.setTime(dateStart);
+						
+						tempDate = c.get(Calendar.MONTH) + "-" 
+										+ c.get(Calendar.DAY_OF_MONTH) + "-" 
+										+ c.get(Calendar.YEAR);
+
 						dateStart = flexiParse(tempDate + " " + argsArray[startIndex]);
 						dateEnd = flexiParse(tempDate + " " + argsArray[endIndex]);
 					}
