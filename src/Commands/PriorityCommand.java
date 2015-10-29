@@ -55,6 +55,7 @@ public class PriorityCommand extends Command{
 	public String execute() {
 		prevTask = task;
 		task = prevTask.copy();
+		task.setPriority(priority);
 		
 		try {
 			Magical.storage.deleteTask(prevTask);
