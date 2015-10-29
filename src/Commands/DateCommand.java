@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import main.GUIModel;
 import main.Magical;
 import main.Task;
 import main.UI;
@@ -22,6 +23,7 @@ public class DateCommand extends Command {
 		super(args);
 		
 		this.argsArray = args.split(" ", 2);
+		System.out.println(Arrays.toString(argsArray));
 		this.count = argsArray.length;
 
 		if (validNumArgs()) {
@@ -40,7 +42,7 @@ public class DateCommand extends Command {
 				error += String.format(MESSAGE_INVALID_DATE, "End", end);
 			} 
 
-			if (startDate != null && endDate != null && validDateRange()) {
+			if (startDate != null && endDate != null && !validDateRange()) {
 				error += "End date is earlier than start date";
 			}
 
@@ -66,15 +68,23 @@ public class DateCommand extends Command {
 	}
 
 	public String execute() {
-		ArrayList<Task> results = Magical.storage.getTasks();
-		ArrayList<Task> filteredResults = new ArrayList<Task>();
-		for (Task t : results) {
-			if (t.getDueDate().compareTo(startDate) >= 0 && t.getDueDate().compareTo(endDate) <= 0) {
-				filteredResults.add(t);
+		ArrayList<Task> taskList = Magical.storage.getTasks();
+		ArrayList<Task> taskDoneList = Magical.storage.getTasksDone();
+		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
+		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
+		for (Task t : taskList) {
+			if (t.getDueDate() != null && t.getDueDate().compareTo(startDate) >= 0 && t.getDueDate().compareTo(endDate) <= 0) {
+				filteredTaskList.add(t);
 			}
 		}
-		UI.displayTaskList("Search results", filteredResults);
-		return null;
+		for (Task t : taskDoneList) {
+			if (t.getDueDate() != null && t.getDueDate().compareTo(startDate) >= 0 && t.getDueDate().compareTo(endDate) <= 0) {
+				filteredTaskDoneList.add(t);
+			}
+		}
+		GUIModel.setTaskList(filteredTaskList);
+		GUIModel.setDoneList(filteredTaskDoneList);
+		return "date command successful";
 	}
 
 	@Override
@@ -83,7 +93,7 @@ public class DateCommand extends Command {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		//DateCommand d = new DateCommand("29-01-93");
+		//DateCommand d = new DateCommand("");
 		//DateCommand d = new DateCommand("29-01-93 28-01-92");
 		//DateCommand d = new DateCommand("29-01-93 28-01-94");
 		//DateCommand d = new DateCommand("29-01-93 28-01-9a2");
