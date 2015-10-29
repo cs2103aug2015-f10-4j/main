@@ -1,9 +1,13 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -42,22 +46,45 @@ public class GUIController {
 		Magical.init();
 		GUIModel.init();
 		taskTable.setItems(FXCollections.observableArrayList(GUIModel.taskList));
-
+		doneTable.setItems(FXCollections.observableArrayList(GUIModel.doneList));
 
 		taskIDCol.setCellFactory(col -> {
 		    TableCell<Task, String> cell = new TableCell<>();
 		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
 		        .then("")
-		        .otherwise(cell.indexProperty().asString()));
+		        .otherwise(Bindings.concat("t", cell.indexProperty().add(1).asString())));
 		    return cell ;
 		});
 
 		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
-		taskTagsCol.setCellValueFactory(new PropertyValueFactory<Task, String>("tags"));
+
+		//taskTagsCol.setCellValueFactory(new PropertyValueFactory<Task, St>("tags"));
+
+		taskTagsCol.setCellValueFactory(col -> {
+			SimpleStringProperty finalResult = new SimpleStringProperty();
+			String result = "";
+			Set<String> tagSet = col.getValue().getTags();
+			if (!tagSet.isEmpty()) {
+				Iterator<String> iterator = tagSet.iterator();
+				while (iterator.hasNext()) {
+					result += iterator.next() + ",";
+				}
+				result = result.substring(0, result.lastIndexOf(","));
+			}
+			finalResult.setValue(result);
+			return finalResult;
+		});
+
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 
-
+		doneIDCol.setCellFactory(col -> {
+		    TableCell<Task, String> cell = new TableCell<>();
+		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
+		        .then("")
+		        .otherwise(Bindings.concat("d", cell.indexProperty().add(1).asString())));
+		    return cell ;
+		});
 		doneTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
 		doneTagsCol.setCellValueFactory(new PropertyValueFactory<Task, String>("tags"));
 		doneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
