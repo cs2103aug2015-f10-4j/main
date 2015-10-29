@@ -18,6 +18,8 @@ public class EditCommand extends Command{
 	private String error = STRING_EMPTY;
 	private Task task;
 	private Task prevTask;
+	private boolean toFloat;
+	private boolean isTask;
 	
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: edit <task_id> <field> <value>";
@@ -29,6 +31,7 @@ public class EditCommand extends Command{
 	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
 			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
+	private static final String MESSAGE_INVALID_TASK_START = "Task cannot have start time";
 	
 	public EditCommand(String args) throws Exception {
 		super(args);
@@ -43,26 +46,30 @@ public class EditCommand extends Command{
 			
 			if (task == null) {
 				error += String.format(MESSAGE_INVALID_ID, argsArray[0].trim());
+				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 			
+			isTask = task.getType().equals("task");
 			if (field.equalsIgnoreCase("title")) {
 				if (getTitle(value) == null){
 					error += MESSAGE_INVALID_TITLE;
 				}
 			} else if (field.equalsIgnoreCase("date")) {
-				if (getDate(value) == null){
+				if(value.equals("") && isTask){
+					toFloat = true;
+				} else if (getDate(value) == null){
 					error +=  String.format(MESSAGE_INVALID_DATE, value);
 				}
 			} else if (field.equalsIgnoreCase("start time")) {
-				if(getTime(value) == -1){
+				if(isTask){
+					error += MESSAGE_INVALID_TASK_START;
+				} else if(getTime(value) == -1){
 					error += String.format(MESSAGE_INVALID_START, value);
 				}
-				//NOTE: Shouldn't be able to edit this for tasks
 			} else if (field.equalsIgnoreCase("end time")) {
 				if(getTime(value) == -1){
 					error += String.format(MESSAGE_INVALID_END, value);
 				}
-				//NOTE: Shouldn't be able to edit this for floating tasks
 			} else if (field.equalsIgnoreCase("recurrence")) {
 				if(getRecurrence(value) == null){
 					error += String.format(MESSAGE_INVALID_RECURRENCE, value);
@@ -98,10 +105,15 @@ public class EditCommand extends Command{
 			task.setTitle(value);
 			break;
 		case "date":
-			if(task.getEndTime() == -1){
-				task.setEndTime(0000);
+			if(toFloat){
+				task.setDueDate(null);
+				task.setEndTime(-1);
+			} else {
+				if(task.getEndTime() == -1){
+					task.setEndTime(0000);
+				}
+				task.setDueDate(addTime(getDate(value), task.getEndTime()));
 			}
-			task.setDueDate(addTime(getDate(value), task.getEndTime()));
 			break;
 		case "start time":
 			task.setStartTime(Integer.parseInt(value));
