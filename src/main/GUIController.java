@@ -1,9 +1,12 @@
 package main;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 import java.util.Set;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,6 +48,7 @@ public class GUIController {
 
 		Magical.init();
 		GUIModel.init();
+
 		taskTable.setItems(FXCollections.observableArrayList(GUIModel.taskList));
 		doneTable.setItems(FXCollections.observableArrayList(GUIModel.doneList));
 
@@ -105,7 +109,14 @@ public class GUIController {
 
 		doneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
 		donePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+
+		commandLineField.requestFocus();
+
 	}
+
+
+
+
 
 
 

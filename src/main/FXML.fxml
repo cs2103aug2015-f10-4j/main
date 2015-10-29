@@ -11,17 +11,17 @@
    <children>
       <VBox fillWidth="false" prefHeight="600.0" prefWidth="800.0" spacing="5.0">
          <children>
-          <TitledPane fx:id="toDoPane" collapsible="false" prefHeight="557.0" prefWidth="790.0" text="To-Do">
+          <TitledPane fx:id="toDoPane" collapsible="false" focusTraversable="false" prefHeight="557.0" prefWidth="790.0" text="To-Do">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TableView fx:id="taskTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="497.0" prefWidth="790.0">
                           <columns>
-                            <TableColumn fx:id="taskIDCol" prefWidth="46.0" sortable="false" text="ID" />
+                            <TableColumn fx:id="taskIDCol" prefWidth="46.0" resizable="false" sortable="false" text="ID" />
                               <TableColumn fx:id="taskTitleCol" prefWidth="276.0" text="Task Title" />
                               <TableColumn fx:id="taskDueDateCol" maxWidth="257.0" minWidth="0.0" prefWidth="119.0" text="Due Date" />
                             <TableColumn fx:id="taskTagsCol" prefWidth="217.0" text="Tags" />
-                              <TableColumn fx:id="taskPriorityCol" maxWidth="203.0" minWidth="0.0" prefWidth="116.0" text="Priority" />
+                              <TableColumn fx:id="taskPriorityCol" maxWidth="203.0" minWidth="0.0" prefWidth="116.0" resizable="false" text="Priority" />
                           </columns>
                         </TableView>
                      </children>
@@ -31,13 +31,13 @@
                   <Font name="System Bold" size="15.0" />
                </font>
           </TitledPane>
-            <TitledPane fx:id="donePane" collapsible="false" layoutX="15.0" layoutY="15.0" prefHeight="557.0" prefWidth="790.0" text="Done">
+            <TitledPane fx:id="donePane" collapsible="false" focusTraversable="false" layoutX="15.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="533.0" prefWidth="790.0" text="Done">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="230.0" prefWidth="784.0">
                      <children>
-                        <TableView fx:id="doneTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="497.0" prefWidth="790.0">
+                        <TableView fx:id="doneTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="790.0">
                            <columns>
-                              <TableColumn fx:id="doneIDCol" prefWidth="46.0" sortable="false" text="ID" />
+                              <TableColumn fx:id="doneIDCol" prefWidth="46.0" resizable="false" sortable="false" text="ID" />
                               <TableColumn fx:id="doneTitleCol" prefWidth="276.0" text="Task Title" />
                               <TableColumn fx:id="doneDueDateCol" maxWidth="257.0" minWidth="0.0" prefWidth="119.0" text="Due Date" />
                               <TableColumn fx:id="doneTagsCol" prefWidth="217.0" text="Tags" />
@@ -51,7 +51,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </TitledPane>
-            <Label fx:id="messageLabel" prefHeight="21.0" prefWidth="1000.0" />
+            <Label fx:id="messageLabel" focusTraversable="false" prefHeight="21.0" prefWidth="1000.0" />
             <TextField fx:id="commandLineField" onKeyPressed="#onEnterPressed" prefWidth="800.0" />
          </children>
          <padding>

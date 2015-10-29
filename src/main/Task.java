@@ -6,13 +6,13 @@ import java.util.*;
 public class Task implements Comparable<Task>, Cloneable {
 	private String type;
 	private String title;
-	private CustomDate dueDate;
+	private Date dueDate;
 	private int startTime;
 	private int endTime;
 	private RecurrencePeriod recurrence;
 	private Set<String> tags = new HashSet<String>();
 	private int priority;
-	
+
 	public Task copy(){
 			Task copyTask = new Task();
 			copyTask.setType(this.type);
@@ -106,7 +106,7 @@ public class Task implements Comparable<Task>, Cloneable {
 	}
 
 	public void setDueDate(Date dueDate) {
-		this.dueDate = (CustomDate) dueDate;
+		this.dueDate = dueDate;
 	}
 
 	public int getStartTime() {
@@ -128,7 +128,7 @@ public class Task implements Comparable<Task>, Cloneable {
 	public RecurrencePeriod getRecurrence() {
 		return recurrence;
 	}
-	
+
 	public void setRecurrence(RecurrencePeriod recurrence) {
 		this.recurrence = recurrence;
 	}
@@ -144,7 +144,7 @@ public class Task implements Comparable<Task>, Cloneable {
 	public void setTags(Set<String> tags) {
 		this.tags = tags;
 	}
-	
+
 	public int getPriority() {
 		return priority;
 	}
