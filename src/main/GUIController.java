@@ -83,8 +83,9 @@ public class GUIController {
 		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
 		        .then("")
 		        .otherwise(Bindings.concat("d", cell.indexProperty().add(1).asString())));
-		    return cell ;
+		    return cell;
 		});
+
 		doneTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
 		doneTagsCol.setCellValueFactory(new PropertyValueFactory<Task, String>("tags"));
 		doneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
