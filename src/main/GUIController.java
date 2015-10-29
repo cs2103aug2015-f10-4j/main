@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,7 +24,7 @@ public class GUIController {
 	@FXML private TitledPane toDoPane;
 	@FXML private TableView<Task> taskTable;
 	@FXML private TableView<Task> doneTable;
-	@FXML private TableColumn<Task, String> taskIndexCol;
+	@FXML private TableColumn<Task, String> taskIDCol;
 	@FXML private TableColumn<Task, String> taskTitleCol;
 	@FXML private TableColumn<Task, String> taskDueDateCol;
 	@FXML private TableColumn<Task, String> taskPriorityCol;
@@ -42,34 +43,15 @@ public class GUIController {
 		GUIModel.init();
 		taskTable.setItems(FXCollections.observableArrayList(GUIModel.taskList));
 
-		/*TableCell<Task, String> indexCell = new TableCell<Task, String>() {
-			@Override
-			protected void updateItem(String item, boolean empty) {
-	            super.updateItem(item, empty);
 
-	            setText(getIndex()+"");
-	        }
-		};
-		Callback<TableColumn<Task, String>, TableCell<Task, String>> cb =
-				new Callback<TableColumn<Task, String>, TableCell<Task, String>>(){
-					@Override
-					public TableCell<Task, String> call(TableColumn<Task, String> col) {
-						TableCell<Task, String> cell = new TableCell<Task, String>() {
-							@Override
-							protected void updateItem(String item, boolean empty) {
-								super.updateItem(item, empty);
-								if (item == null) {
-									setText("");
-								} else {
-									setText(getIndex()+"");
-								}
-							}
-						};
-						return cell;
-					}
-		};
+		taskIDCol.setCellFactory(col -> {
+		    TableCell<Task, String> cell = new TableCell<>();
+		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
+		        .then("")
+		        .otherwise(cell.indexProperty().asString()));
+		    return cell ;
+		});
 
-		taskIndexCol.setCellFactory(cb);*/
 		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
 		taskTagsCol.setCellValueFactory(new PropertyValueFactory<Task, String>("tags"));
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
@@ -88,7 +70,7 @@ public class GUIController {
 			String userInput = commandLineField.getText();
 			String message = Magical.parseCommand(userInput);
 			messageLabel.setText(message);
-			ArrayList<Task> newTaskList = Magical.getStorage().readTaskList();
+			ArrayList<Task> newTaskList = Magical.getStorage().getTasks();
 			GUIModel.setTaskList(newTaskList);
 			taskTable.setItems(GUIModel.getTaskList());
 			commandLineField.clear();
