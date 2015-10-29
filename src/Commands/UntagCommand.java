@@ -52,14 +52,8 @@ public class UntagCommand extends Command {
 	//Need to modify
 	public String execute() {
 		prevTask = task;
-		try {
-			task = prevTask.copy();
-		} catch (IOException e) {
-			return "unable to remove tag from task";
-		} catch (ClassNotFoundException e) {
-			return "unable to remove tag from task";
-		}
-
+		task = prevTask.copy();
+		
 		Set<String> tags = task.getTags();
 		tags.remove(tag);
 		task.setTags(tags);
