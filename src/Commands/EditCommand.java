@@ -32,7 +32,7 @@ public class EditCommand extends Command{
 	public EditCommand(String args) throws Exception {
 		super(args);
 		
-		this.argsArray = args.split(" ", 3);
+		this.argsArray = args.split("(?<!end|start)\\s(?!time)", 3);
 		this.count = argsArray.length;
 		
 		if(validNumArgs()){
@@ -97,18 +97,14 @@ public class EditCommand extends Command{
 			task.setTitle(value);
 			break;
 		case "date":
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-			try {
-				task.setDueDate(dateFormat.parse(value));
-			} catch (ParseException e) {
-				return "unable to parse due date";
-			}
+			task.setDueDate(addTime(getDate(value), task.getEndTime()));
 			break;
 		case "start time":
 			task.setStartTime(Integer.parseInt(value));
 			break;
 		case "end time":
 			task.setEndTime(Integer.parseInt(value));
+			task.setDueDate(addTime(task.getDueDate(), Integer.parseInt(value)));
 			break;
 		case "recurrence":
 			task.setRecurrence(RecurrencePeriod.toRecurrence(value));
@@ -128,6 +124,7 @@ public class EditCommand extends Command{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		//EditCommand e = new EditCommand("t1 title asfas");
+		//EditCommand e = new EditCommand("t1 end time asfas");
+		EditCommand e1 = new EditCommand("t1 start time asfas");
 	}
 }
