@@ -52,14 +52,8 @@ public class TagCommand extends Command {
 	//Need to modify
 	public String execute() {
 		prevTask = task;
-		try {
-			task = prevTask.copy();
-		} catch (IOException e) {
-			return "unable to add tag to task";
-		} catch (ClassNotFoundException e) {
-			return "unable to add tag to task";
-		}
-
+		task = prevTask.copy();
+		
 		Set<String> tags = task.getTags();
 		tags.add(tag);
 		task.setTags(tags);

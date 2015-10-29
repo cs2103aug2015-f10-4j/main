@@ -54,12 +54,7 @@ public class PriorityCommand extends Command{
 	@Override
 	public String execute() {
 		prevTask = task;
-		try {
-			task = prevTask.copy();
-			task.setPriority(priority);
-		} catch (ClassNotFoundException | IOException e) {
-			return "unable to change priority";
-		}
+		task = prevTask.copy();
 		
 		try {
 			Magical.storage.deleteTask(prevTask);

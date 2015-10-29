@@ -82,11 +82,7 @@ public class EditCommand extends Command{
 	@Override
 	public String execute() {
 		prevTask = task;
-		try {
-			task = prevTask.copy();
-		} catch (ClassNotFoundException | IOException e1) {
-			return "unable to edit task";
-		}
+		task = prevTask.copy();
 		
 		switch (field.toLowerCase()) {
 		case "title":
