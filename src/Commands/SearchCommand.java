@@ -59,7 +59,7 @@ public class SearchCommand extends Command {
 	}
 
 	public static void main(String[] args) throws Exception {
-		//SearchCommand s = new SearchCommand("asasd asdhfnasfd");
-		//SearchCommand s = new SearchCommand(" ");
+//		SearchCommand s = new SearchCommand("asasd asdhfnasfd");
+//		SearchCommand s = new SearchCommand(" ");
 	}
 }

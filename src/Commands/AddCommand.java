@@ -172,10 +172,10 @@ public class AddCommand extends Command{
 	}
 
 	public static void main(String[] args) throws Exception {
-		//AddCommand a = new AddCommand("wash my butt by 1st January at 12pm");
-		//AddCommand b = new AddCommand("pass \\by the river \\at St.George by 1st January at 12pm");
-		//AddCommand c = new AddCommand("smack him by 12-01-1993 at 1pm");
-		//AddCommand d = new AddCommand("");
-		AddCommand e = new AddCommand("hihihihi by hi at hi");
+//		AddCommand a = new AddCommand("wash my butt by 1st January at 12pm");
+//		AddCommand b = new AddCommand("pass \\by the river \\at St.George by 1st January at 12pm");
+//		AddCommand c = new AddCommand("smack him by 12-01-1993 at 1pm");
+//		AddCommand d = new AddCommand("");
+//		AddCommand e = new AddCommand("hihihihi by hi at hi");
 	}
 }

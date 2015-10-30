@@ -24,7 +24,6 @@ public class EditCommand extends Command{
 	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 	private static final String MESSAGE_INVALID_FIELD = "Field: %s\n";
 	private static final String MESSAGE_INVALID_TITLE = "No Title\n";
-	private static final String MESSAGE_INVALID_DATE = "Date: %s (Date should be dd-MM-yyyy)\n";
 	private static final String MESSAGE_INVALID_START = "Start time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
@@ -40,7 +39,6 @@ public class EditCommand extends Command{
 		for(int i = 0; i < argsArray.length; i++){
 			argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY);
 		}
-		//System.out.println(Arrays.toString(argsArray));
 
 		if(validNumArgs()){
 			this.task = getTaskByID(argsArray[0].trim());

@@ -93,10 +93,10 @@ public class DateCommand extends Command {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		//DateCommand d = new DateCommand("");
-		//DateCommand d = new DateCommand("29-01-93 28-01-92");
-		//DateCommand d = new DateCommand("29-01-93 28-01-94");
-		//DateCommand d = new DateCommand("29-01-93 28-01-9a2");
-		//DateCommand d = new DateCommand("2a9-01-93 28-01-92");
+//		DateCommand d = new DateCommand("");
+//		DateCommand d = new DateCommand("29-01-93 28-01-92");
+//		DateCommand d = new DateCommand("29-01-93 28-01-94");
+//		DateCommand d = new DateCommand("29-01-93 28-01-9a2");
+//		DateCommand d = new DateCommand("2a9-01-93 28-01-92");
 	}
 }

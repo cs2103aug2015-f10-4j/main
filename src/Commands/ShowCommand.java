@@ -108,8 +108,8 @@ public class ShowCommand extends Command{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		//ShowCommand s = new ShowCommand("");
-		//ShowCommand s = new ShowCommand("event");
-		ShowCommand s = new ShowCommand("food work play");
+//		ShowCommand s = new ShowCommand("");
+//		ShowCommand s = new ShowCommand("event");
+//		ShowCommand s = new ShowCommand("food work play");
 	}
 }
