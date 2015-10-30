@@ -22,7 +22,7 @@ public class DateCommand extends Command {
 	public DateCommand(String args) throws Exception {
 		super(args);
 		
-		this.argsArray = args.split(" ", 2);
+		this.argsArray = args.split("(?<!next)\\s", 2);
 		System.out.println(Arrays.toString(argsArray));
 		this.count = argsArray.length;
 
@@ -35,11 +35,13 @@ public class DateCommand extends Command {
 			
 			
 			if (startDate == null) {
-				error += String.format(MESSAGE_INVALID_DATE, "Start", start);
+				startDate = flexiParse(start);
+				//error += String.format(MESSAGE_INVALID_DATE, "Start", start);
 			}
 
 			if (endDate == null) {
-				error += String.format(MESSAGE_INVALID_DATE, "End", end);
+				endDate = flexiParse(end);
+				//error += String.format(MESSAGE_INVALID_DATE, "End", end);
 			} 
 
 			if (startDate != null && endDate != null && !validDateRange()) {
