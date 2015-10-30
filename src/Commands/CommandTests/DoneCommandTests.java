@@ -14,11 +14,11 @@ import Commands.DoneCommand;
 import main.GUIModel;
 import main.Task;
 
-public class DelCommandTests {
+public class DoneCommandTests {
 
 	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n";
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+"Use Format: delete <task_id>";
+			+ "Use Format: done <task_id>";
 	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 
 	@Before
@@ -33,47 +33,43 @@ public class DelCommandTests {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		Command deleteTask = new DelCommand("t1");
-		Command deleteTaskAgain = new DelCommand("t1");
-		Command deleteNextTask = new DelCommand("t2");
-		Command deleteLastTask = new DelCommand("t7");
-		Command delDone = new DelCommand("d1");
-		Command delDoneAgain = new DelCommand("d1");
-		Command delNextDone = new DelCommand("d2");
-		Command delLastDone = new DelCommand("d7");
+		DoneCommand doneTask = new DoneCommand("t1");
+		DoneCommand doneTaskAgain = new DoneCommand("t1");
+		DoneCommand doneNextTask = new DoneCommand("t2");
+		DoneCommand doneLastTask = new DoneCommand("t7");
 	}
 
 	@Test
 	public void testWrongNumArgs() {
 		try {
-			Command noArgs = new DelCommand("");
+			DoneCommand noArgs = new DoneCommand("");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 		try {
-			Command moreArgs = new DelCommand("t1 t2 t3 t4 t5 t6");
+			DoneCommand tooManyArgs = new DoneCommand("t1 t2");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 	}
 
 	@Test
-	public void testInvalidId() {
+	public void testInvalidID() {
 		final String ERROR_MESSAGE = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_ID;
 		try {
-			Command wrongLetter = new DelCommand("a1");
+			DoneCommand invalidID = new DoneCommand("t11");
+		} catch (Exception e) {
+			assertEquals(String.format(ERROR_MESSAGE, "t11"), e.getMessage());
+		}
+		try {
+			DoneCommand noLetter = new DoneCommand("1");
+		} catch (Exception e) {
+			assertEquals(String.format(ERROR_MESSAGE, "1"), e.getMessage());
+		}
+		try {
+			DoneCommand wrongLetter = new DoneCommand("a1");
 		} catch (Exception e) {
 			assertEquals(String.format(ERROR_MESSAGE, "a1"), e.getMessage());
-		}
-		try {
-			DoneCommand invalidID = new DoneCommand("t100");
-		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "t100"), e.getMessage());
-		}
-		try {
-			Command tooLong = new DelCommand("abcdefghijklmnop");
-		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "abcdefghijklmnop"), e.getMessage());
 		}
 		try {
 			Command tooShort = new DelCommand("a");
@@ -81,9 +77,9 @@ public class DelCommandTests {
 			assertEquals(String.format(ERROR_MESSAGE, "a"), e.getMessage());
 		}
 		try {
-			Command justNumber = new DelCommand("1");
+			Command youCantDoneADone = new DelCommand("d1");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "1"), e.getMessage());
+			assertEquals(String.format(ERROR_MESSAGE, "d1"), e.getMessage());
 		}
 	}
 
