@@ -37,6 +37,9 @@ public class EditCommand extends Command{
 		args = args + " ";
 		this.argsArray = args.split("(?<!end|start)\\s(?!time)", 3);
 		this.count = argsArray.length;
+		for(int i = 0; i < argsArray.length; i++){
+			argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY);
+		}
 		//System.out.println(Arrays.toString(argsArray));
 
 		if(validNumArgs()){
