@@ -32,7 +32,7 @@ public class ShowCommand extends Command{
 		
 		if(type.equals("")){
 			this.type = "all";
-		} else if(!type.equalsIgnoreCase("event")||!type.equalsIgnoreCase("task")){
+		} else if(!type.equalsIgnoreCase("event")&&!type.equalsIgnoreCase("task")){
 			this.type = "tag";
 			this.tags = this.argsArray;
 		}
