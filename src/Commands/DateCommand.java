@@ -17,7 +17,6 @@ public class DateCommand extends Command {
 
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: date <start date> <end date>";
-	private static final String MESSAGE_INVALID_DATE = "%s date: %s (Date should be dd-MM-yyyy)\n";
 
 	public DateCommand(String args) throws Exception {
 		super(args);
@@ -36,12 +35,10 @@ public class DateCommand extends Command {
 			
 			if (startDate == null) {
 				startDate = flexiParse(start);
-				//error += String.format(MESSAGE_INVALID_DATE, "Start", start);
 			}
 
 			if (endDate == null) {
 				endDate = flexiParse(end);
-				//error += String.format(MESSAGE_INVALID_DATE, "End", end);
 			} 
 
 			if (startDate != null && endDate != null && !validDateRange()) {
