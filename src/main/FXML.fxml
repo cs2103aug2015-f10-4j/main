@@ -41,7 +41,7 @@
                               <TableColumn fx:id="doneTitleCol" prefWidth="276.0" text="Task Title" />
                               <TableColumn fx:id="doneDueDateCol" maxWidth="257.0" minWidth="0.0" prefWidth="119.0" text="Due Date" />
                               <TableColumn fx:id="doneTagsCol" prefWidth="217.0" text="Tags" />
-                              <TableColumn fx:id="donePriorityCol" maxWidth="203.0" minWidth="0.0" prefWidth="116.0" text="Priority" />
+                              <TableColumn fx:id="donePriorityCol" maxWidth="203.0" minWidth="0.0" prefWidth="116.0" resizable="false" text="Priority" />
                            </columns>
                         </TableView>
                      </children>
