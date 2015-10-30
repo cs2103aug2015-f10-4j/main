@@ -6,8 +6,8 @@ import java.util.Date;
 
 import main.GUIModel;
 import main.Magical;
+import main.Storage;
 import main.Task;
-import main.UI;
 
 public class DateCommand extends Command {
 
@@ -68,8 +68,8 @@ public class DateCommand extends Command {
 	}
 
 	public String execute() {
-		ArrayList<Task> taskList = Magical.storage.getTasks();
-		ArrayList<Task> taskDoneList = Magical.storage.getTasksDone();
+		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
+		ArrayList<Task> taskDoneList = Magical.storage.getList(Storage.TASKS_DONE_INDEX);
 		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
 		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
 		for (Task t : taskList) {

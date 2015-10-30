@@ -1,12 +1,11 @@
 package Commands;
 
 import java.io.IOException;
-import java.util.Set;
 
 import main.GUIModel;
 import main.Magical;
+import main.Storage;
 import main.Task;
-import main.UI;
 
 public class DoneCommand extends Command{
 	private String error = STRING_EMPTY;
@@ -47,13 +46,15 @@ public class DoneCommand extends Command{
 	
 	public String execute() {
 		try {
-			Magical.storage.deleteTask(task);
-			Magical.storage.createTaskDone(task);
+			int listIndex = Storage.getListIndex(argsArray[0]);
+			int complementListIndex = Storage.getComplementListIndex(listIndex);
+			Magical.storage.delete(listIndex, task);
+			Magical.storage.create(complementListIndex, task);
 		} catch (IOException e) {
 			return "unable to archive task";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getTasks());
-			GUIModel.setDoneList(Magical.storage.getTasksDone());
+			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
+			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 
 		return "task archived";

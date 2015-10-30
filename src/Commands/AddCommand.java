@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 import main.GUIModel;
 import main.Magical;
 import main.RecurrencePeriod;
+import main.Storage;
 import main.Task;
 
 public class AddCommand extends Command{
@@ -151,18 +151,18 @@ public class AddCommand extends Command{
 			if (isClashing()) {
 				retMsg += MESSAGE_TASK_CLASH;
 			}
-			Magical.getStorage().createTask(task);
+			Magical.storage.create(Storage.TASKS_INDEX, task);
 			return retMsg;
 		} catch (IOException e) {
 			return MESSAGE_TASK_ERROR;
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getTasks());
-			GUIModel.setDoneList(Magical.storage.getTasksDone());
+			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
+			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 	}
 
 	private boolean isClashing() {
-		ArrayList<Task> tasks = Magical.getStorage().getTasks();
+		ArrayList<Task> tasks = Magical.storage.getList(Storage.TASKS_INDEX);
 		for (Task t : tasks) {
 			if (t.getDueDate() != null && t.getDueDate().equals(task.getDueDate())) {
 				return true;

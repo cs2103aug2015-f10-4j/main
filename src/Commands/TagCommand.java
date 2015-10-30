@@ -5,8 +5,8 @@ import java.util.Set;
 
 import main.GUIModel;
 import main.Magical;
+import main.Storage;
 import main.Task;
-import main.UI;
 
 public class TagCommand extends Command {
 
@@ -60,20 +60,21 @@ public class TagCommand extends Command {
 		task.setTags(tags);
 
 		try {
-			Magical.storage.deleteTask(prevTask);
-			Magical.storage.createTask(task);
+			int listIndex = Storage.getListIndex(argsArray[0]);
+			Magical.storage.delete(listIndex, prevTask);
+			Magical.storage.create(listIndex, task);
 		} catch (IOException e) {
 			return "unable to add tag to task";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getTasks());
-			GUIModel.setDoneList(Magical.storage.getTasksDone());
+			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
+			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 
 		return tag + " added to task";
 	}
 	
 	public static void main(String[] args) throws Exception {
-		//TagCommand t = new TagCommand("lalaa");
-		TagCommand t = new TagCommand("t1 adsgasg");
+//		TagCommand t = new TagCommand("lalaa");
+//		TagCommand t = new TagCommand("t1 adsgasg");
 	}
 }

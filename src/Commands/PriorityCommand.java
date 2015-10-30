@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import main.GUIModel;
 import main.Magical;
+import main.Storage;
 import main.Task;
-import main.UI;
 
 public class PriorityCommand extends Command{
 
@@ -59,13 +59,14 @@ public class PriorityCommand extends Command{
 		task.setPriority(priority);
 		
 		try {
-			Magical.storage.deleteTask(prevTask);
-			Magical.storage.createTask(task);
+			int listIndex = Storage.getListIndex(argsArray[0]);
+			Magical.storage.delete(listIndex, prevTask);
+			Magical.storage.create(listIndex, task);
 		} catch (IOException e) {
 			return "unable to change priority";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getTasks());
-			GUIModel.setDoneList(Magical.storage.getTasksDone());
+			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
+			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 		
 		return "Priority updated.";

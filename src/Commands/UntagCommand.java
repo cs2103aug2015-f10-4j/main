@@ -5,8 +5,8 @@ import java.util.Set;
 
 import main.GUIModel;
 import main.Magical;
+import main.Storage;
 import main.Task;
-import main.UI;
 
 public class UntagCommand extends Command {
 
@@ -60,13 +60,14 @@ public class UntagCommand extends Command {
 		task.setTags(tags);
 
 		try {
-			Magical.storage.deleteTask(prevTask);
-			Magical.storage.createTask(task);
+			int listIndex = Storage.getListIndex(argsArray[0]);
+			Magical.storage.delete(listIndex, prevTask);
+			Magical.storage.create(listIndex, task);
 		} catch (IOException e) {
 			return "unable to remove tag from task";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getTasks());
-			GUIModel.setDoneList(Magical.storage.getTasksDone());
+			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
+			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 
 		return tag + " removed from task";

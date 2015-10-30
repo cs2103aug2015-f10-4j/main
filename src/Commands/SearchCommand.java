@@ -1,14 +1,11 @@
 package Commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import main.GUIModel;
 import main.Magical;
+import main.Storage;
 import main.Task;
-import main.UI;
 
 public class SearchCommand extends Command {
 
@@ -35,8 +32,8 @@ public class SearchCommand extends Command {
 
 	//needs to be re-written
 	public String execute() {
-		ArrayList<Task> taskList = Magical.storage.getTasks();
-		ArrayList<Task> taskDoneList = Magical.storage.getTasksDone();
+		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
+		ArrayList<Task> taskDoneList = Magical.storage.getList(Storage.TASKS_DONE_INDEX);
 		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
 		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
 

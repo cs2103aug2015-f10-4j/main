@@ -2,8 +2,8 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,11 +11,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Storage {
 
 	// private static final String MESSAGE_FILE_NOT_CREATED = "Error. File is not created successfully.";
+	public static final int NUM_LISTS = 4;
+	public static final int TASKS_INDEX = 0;
+	public static final int TASKS_DONE_INDEX = 1;
+	public static final int EVENTS_INDEX = 2;
+	public static final int EVENTS_DONE_INDEX = 3;
 
 	private static File file;
-	private ArrayList<Task> taskList;
-	private ArrayList<Task> taskDoneList;
-	private ArrayList<Task>[] lists;
+	private List<ArrayList<Task>> lists;
 	ObjectMapper mapper = new ObjectMapper();
 
 	public Storage (String fileName) {
@@ -24,18 +27,16 @@ public class Storage {
 		file = new File(fileName);
 
 		if ( !(file.exists()) ) {
+			lists = new ArrayList<ArrayList<Task>>(NUM_LISTS);
+			for (int i = 0; i < NUM_LISTS; i++) {
+				lists.add(new ArrayList<Task>());
+			}
 			try {
-				taskList = new ArrayList<Task>();
-				taskDoneList = new ArrayList<Task>();
-				ArrayList<ArrayList<Task>> tempLists = new ArrayList<ArrayList<Task>>(2);
-				lists =  (ArrayList<Task>[]) tempLists.toArray((ArrayList<Task>[]) Array.newInstance(taskList.getClass(), 2));
-				writeTaskList();
+				writeLists();
 			} catch (IOException e) {
 				System.out.println("Storage IOException: File not created successfully");
 				return;
 			}
-			taskList = new ArrayList<Task>();
-			taskDoneList = new ArrayList<Task>();
 		} else {
 			readLists();
 		}
@@ -50,103 +51,88 @@ public class Storage {
 		}
 	}
 
-
-	public void createTask(Task t) throws IOException {
-		taskList.add(t);
-		writeTaskList();
+	public static int getListIndex(String id) {
+		switch(id.charAt(0)) {
+		case 't':
+			return TASKS_INDEX;
+		case 'd':
+			return TASKS_DONE_INDEX;
+		case 'e':
+			return EVENTS_INDEX;
+		case 'p':
+			return EVENTS_DONE_INDEX;
+		default:
+			return -1;
+		}
 	}
-
-	public void createTaskDone(Task t) throws IOException {
-		taskDoneList.add(t);
-		writeTaskList();
+	
+	public static int getComplementListIndex(int index) {
+		switch(index) {
+		case TASKS_INDEX:
+			return TASKS_DONE_INDEX;
+		case TASKS_DONE_INDEX:
+			return TASKS_INDEX;
+		case EVENTS_INDEX:
+			return EVENTS_DONE_INDEX;
+		case EVENTS_DONE_INDEX:
+			return EVENTS_INDEX;
+		default:
+			return -1;
+		}
 	}
-
-	public ArrayList<Task> getTasks() {
-		return taskList;
+	
+	public void create(int listIndex, Task t) throws IOException {
+		lists.get(listIndex).add(t);
+		writeLists();
 	}
-
-	public ArrayList<Task> getTasksDone() {
-		return taskDoneList;
+	
+	public ArrayList<Task> getList(int listIndex) {
+		return lists.get(listIndex);
 	}
-
-	public void updateTask(Task t) throws IOException {
-		int pos = getTaskPos(t);
+	
+	public void update(int listIndex, Task t) throws IOException {
+		int pos = getPos(listIndex, t);
 		if (pos > -1) {
-			taskList.set(pos, t);
-			writeTaskList();
+			lists.get(listIndex).set(pos, t);
+			writeLists();
+		}
+	}
+	
+	public void delete(int listIndex, Task t) throws IOException {
+		int pos = getPos(listIndex, t);
+		if (pos > -1) {
+			lists.get(listIndex).remove(pos);
+			writeLists();
 		}
 	}
 
-	public void updateTaskDone(Task t) throws IOException {
-		int pos = getTaskPos(t);
-		if (pos > -1) {
-			taskDoneList.set(pos, t);
-			writeTaskList();
-		}
+	protected void clear(int listIndex) throws IOException {
+		lists.set(listIndex, new ArrayList<Task>());
+		writeLists();
+	}
+	
+	protected int getPos(int listIndex, Task t) {
+		return lists.get(listIndex).indexOf(t);
+	}
+	
+	public void setList(int listIndex, ArrayList<Task> list) throws IOException {
+		lists.set(listIndex, list);
+		writeLists();
 	}
 
-	public void deleteTask(Task t) throws IOException {
-		int pos = getTaskPos(t);
-		if (pos > -1) {
-			taskList.remove(pos);
-			writeTaskList();
-		}
-	}
-
-	public void deleteTaskDone(Task t) throws IOException {
-		int pos = getTaskPos(t);
-		if (pos > -1) {
-			taskDoneList.remove(pos);
-			writeTaskList();
-		}
-	}
-
-	// for clearing
-	protected void clearTaskList() throws IOException {
-		taskList = new ArrayList<Task>();
-		writeTaskList();
-	}
-
-	protected void clearTaskDoneList() throws IOException {
-		taskDoneList = new ArrayList<Task>();
-		writeTaskList();
-	}
-
-	protected int getTaskPos(Task t) {
-		return taskList.indexOf(t);
-	}
-
-	protected int getTaskDonePos(Task t) {
-		return taskDoneList.indexOf(t);
-	}
-
-	protected void writeTaskList() throws IOException {
-		lists[0] = taskList;
-		lists[1] = taskDoneList;
+	protected void writeLists() throws IOException {
 		mapper.writerWithDefaultPrettyPrinter().writeValue(file, lists);
 	}
 
-	// for reading contents in the file
 	protected void readLists() {
 		try {
-			lists = mapper.readValue(file, new TypeReference<ArrayList<Task>[]>() { });
-			taskList = lists[0];
-			taskDoneList = lists[1];
+			lists = mapper.readValue(file, new TypeReference<List<ArrayList<Task>>>() { });
 		} catch (Exception e) {
-			taskList = new ArrayList<Task>();
-			taskDoneList = new ArrayList<Task>();
-			e.printStackTrace();
+			lists = new ArrayList<ArrayList<Task>>(NUM_LISTS);
+			for (int i = 0; i < NUM_LISTS; i++) {
+				lists.add(new ArrayList<Task>());
+			}
 		}
 		return;
-	}
-
-	public void setTaskList(ArrayList<Task> tList) throws IOException {
-		taskList = tList;
-		writeTaskList();
-	}
-
-	public void setTaskDoneList(ArrayList<Task> tList) throws IOException {
-		taskDoneList = tList;
-		writeTaskList();
 	}
 }

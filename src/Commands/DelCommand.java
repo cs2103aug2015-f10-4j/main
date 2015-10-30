@@ -1,10 +1,10 @@
 package Commands;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import main.GUIModel;
 import main.Magical;
+import main.Storage;
 import main.Task;
 
 public class DelCommand extends Command{
@@ -48,17 +48,18 @@ public class DelCommand extends Command{
 
 	public String execute() {
 		try {
-			Magical.storage.deleteTask(task);
+			int listIndex = Storage.getListIndex(argsArray[0]);
+			Magical.storage.delete(listIndex, task);
 			return "task deleted";
 		} catch (IOException e) {
 			return "unable to delete task";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getTasks());
-			GUIModel.setDoneList(Magical.storage.getTasksDone());
+			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
+			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 	}
 	
 	public static void main(String[] args) throws Exception {
-		DelCommand d = new DelCommand("t1");
+//		DelCommand d = new DelCommand("t1");
 	}
 }

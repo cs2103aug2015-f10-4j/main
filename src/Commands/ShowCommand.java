@@ -7,8 +7,8 @@ import java.util.Set;
 
 import main.GUIModel;
 import main.Magical;
+import main.Storage;
 import main.Task;
-import main.UI;
 
 public class ShowCommand extends Command{
 
@@ -48,8 +48,8 @@ public class ShowCommand extends Command{
 	
 	@Override
 	public String execute() {
-		ArrayList<Task> taskList = Magical.storage.getTasks();
-		ArrayList<Task> taskDoneList = Magical.storage.getTasksDone();
+		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
+		ArrayList<Task> taskDoneList = Magical.storage.getList(Storage.TASKS_DONE_INDEX);
 		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
 		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
 		switch (type) {

@@ -10,6 +10,7 @@ import java.util.Date;
 import main.GUIModel;
 import main.Magical;
 import main.RecurrencePeriod;
+import main.Storage;
 import main.Task;
 
 public class EventCommand extends Command{
@@ -181,18 +182,18 @@ public class EventCommand extends Command{
 			if (isClashing()) {
 				retMsg += MESSAGE_EVENT_CLASH;
 			}
-			Magical.getStorage().createTask(task);
+			Magical.getStorage().create(Storage.EVENTS_INDEX, task);
 			return retMsg;
 		} catch (IOException e) {
 			return MESSAGE_EVENT_ERROR;
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getTasks());
-			GUIModel.setDoneList(Magical.storage.getTasksDone());
+			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
+			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 	}
 
 	private boolean isClashing() {
-		ArrayList<Task> tasks = Magical.getStorage().getTasks();
+		ArrayList<Task> tasks = Magical.storage.getList(Storage.EVENTS_INDEX);
 		for (Task t : tasks) {
 			if (t.getDueDate().equals(task.getDueDate())) {
 				return true;
