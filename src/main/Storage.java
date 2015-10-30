@@ -2,6 +2,7 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +21,14 @@ public class Storage {
 	private static File file;
 	private List<ArrayList<Task>> lists;
 	ObjectMapper mapper = new ObjectMapper();
+	private static SimpleDateFormat dateFormat = 
+			new SimpleDateFormat("dd MMM yyyy");
 
 	public Storage (String fileName) {
 		assert fileName != null;
 
 		file = new File(fileName);
+		mapper.setDateFormat(dateFormat);
 
 		if ( !(file.exists()) ) {
 			lists = new ArrayList<ArrayList<Task>>(NUM_LISTS);
