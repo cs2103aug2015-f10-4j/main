@@ -31,7 +31,6 @@ public class UITest extends TestCase {
 	public static void testDisplayTaskDetails() {
 		Task myTask = new Task();
 		myTask.setTitle("Do 2103 homework");
-		myTask.setDescription("Finish writing test cases for Magical");
 		myTask.setDueDate(new Date(115, 8, 30));
 		UI.displayTaskDetails(myTask);
 		String expected = "Do 2103 homework";
