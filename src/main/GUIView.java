@@ -8,9 +8,12 @@ import javafx.stage.Stage;
 
 public class GUIView extends Application {
 
+	private static final String TITLE_FORMAT = "Magical v%s";
+	private static final String VERSION_NUMBER = "0.3";
+
 	public void start(Stage primaryStage) throws Exception {
 
-		primaryStage.setTitle("Magical v0.3");
+		primaryStage.setTitle(String.format(TITLE_FORMAT, VERSION_NUMBER));
 		Pane myPane = (Pane) FXMLLoader.load(getClass().getResource("/main/FXML.fxml"))	;
 		Scene myScene = new Scene(myPane);
 		primaryStage.setScene(myScene);

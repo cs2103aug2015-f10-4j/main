@@ -1,30 +1,22 @@
 package main;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.util.Callback;
 
 public class GUIController {
 
@@ -61,8 +53,6 @@ public class GUIController {
 		});
 
 		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
-
-		//taskTagsCol.setCellValueFactory(new PropertyValueFactory<Task, St>("tags"));
 
 		taskTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
@@ -110,7 +100,11 @@ public class GUIController {
 		doneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
 		donePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 
-		commandLineField.requestFocus();
+		Platform.runLater(new Runnable() {
+		    public void run() {
+		        commandLineField.requestFocus();
+		    }
+		});
 
 	}
 
