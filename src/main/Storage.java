@@ -30,21 +30,24 @@ public class Storage {
 			new SimpleDateFormat("dd MMM yyyy");
 
 
-	// write fileName from Logic into settings file
+	// right now because of the way storage is called in Magical.java,
+	// if the fileName stored into the settings file is a custom filepath
+	// it will get overwritten back into the default filepath
+	// instead of the custom filepath specified by user upon relaunching the program
 	public Storage (String fileName) {
 		assert fileName != null;
 		
 		PrintWriter toFile = null;
 		try {
-			toFile = new PrintWriter(SETTINGS_FILE_NAME);
+			toFile = new PrintWriter(SETTINGS_FILE_NAME); // create settings file
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		
 		if ( !fileName.equals(DEFAULT_FILE_NAME) ) {
-			toFile.println(fileName);
+			toFile.println(fileName); 	// write custom filepath into settings file
 		} else {
-			toFile.println(DEFAULT_FILE_NAME);
+			toFile.println(DEFAULT_FILE_NAME); // write default filepath into settings file
 		}
 		toFile.close();
 		
@@ -61,8 +64,8 @@ public class Storage {
 		try {
 			fileData = new Scanner(new File(SETTINGS_FILE_NAME));
 		    while(fileData.hasNextLine()){
-		        String line = fileData.nextLine();
-		        line = line.trim();
+		        fileName = fileData.nextLine(); // read filepath back from settings file
+		        fileName = fileName.trim();
 		    }
 
 		    fileData.close(); // close file
