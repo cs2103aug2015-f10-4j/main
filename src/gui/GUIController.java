@@ -1,4 +1,4 @@
-package main;
+package gui;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -12,11 +12,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import main.Magical;
+import main.Task;
 
 public class GUIController {
 
@@ -35,6 +38,7 @@ public class GUIController {
 	@FXML private TableColumn<Task, String> doneTagsCol;
 	@FXML private Label messageLabel;
 	@FXML private TextField commandLineField;
+	@FXML private TextArea helpTextArea;
 
 	public void initialize() throws Exception {
 
@@ -107,11 +111,6 @@ public class GUIController {
 		});
 
 	}
-
-
-
-
-
 
 
 	@FXML

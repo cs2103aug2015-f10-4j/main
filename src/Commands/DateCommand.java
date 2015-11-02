@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-import main.GUIModel;
+import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Task;

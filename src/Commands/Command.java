@@ -8,8 +8,8 @@ import java.util.List;
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
+import gui.GUIModel;
 import main.Task;
-import main.GUIModel;
 import main.RecurrencePeriod;
 
 public abstract class Command {
@@ -192,7 +192,7 @@ public abstract class Command {
 		return date.get(0).getDates().get(0);
 	}
 
-	public abstract String execute();
+	public abstract String execute() throws Exception;
 	public abstract boolean validNumArgs();
 
 	public boolean isUndoable(){

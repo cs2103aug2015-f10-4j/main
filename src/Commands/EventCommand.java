@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import main.GUIModel;
+import gui.GUIModel;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Storage;

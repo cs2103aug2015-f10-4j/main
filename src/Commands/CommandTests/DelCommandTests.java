@@ -11,7 +11,7 @@ import org.junit.Test;
 import Commands.Command;
 import Commands.DelCommand;
 import Commands.DoneCommand;
-import main.GUIModel;
+import gui.GUIModel;
 import main.Task;
 
 public class DelCommandTests {

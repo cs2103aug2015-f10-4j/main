@@ -1,18 +1,18 @@
 package Commands;
 
+import gui.GUIView;
 import main.UI;
 
 public class HelpCommand extends Command {
-	
+
 	public HelpCommand(String args) throws Exception {
 		super(args);
 	}
-	
-	public String execute() {
-		UI.displayHelpMessage();
+
+	public String execute() throws Exception {
 		return null;
 	}
-	
+
 	@Override
 	public boolean isUndoable() {
 		return false;

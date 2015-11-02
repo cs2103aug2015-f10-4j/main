@@ -3,7 +3,7 @@ package Commands;
 import java.io.IOException;
 import java.util.Calendar;
 
-import main.GUIModel;
+import gui.GUIModel;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Storage;

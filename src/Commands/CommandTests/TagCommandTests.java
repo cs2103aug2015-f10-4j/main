@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import main.GUIModel;
 import main.Task;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import Commands.TagCommand;
+import gui.GUIModel;
 import Commands.Command;
 
 public class TagCommandTests {

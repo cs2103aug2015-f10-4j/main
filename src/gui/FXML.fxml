@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="mainPane" prefHeight="719.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.GUIController">
+<AnchorPane fx:id="mainPane" prefHeight="719.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
    <children>
       <VBox fillWidth="false" prefHeight="719.0" prefWidth="1026.0" spacing="5.0">
          <children>
