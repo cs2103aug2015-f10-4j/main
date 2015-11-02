@@ -9,8 +9,7 @@ public class Magical {
 	private static final String CONFIG_STORAGE_FILENAME = "storage.txt";
 
 	public static Storage storage;
-	public static Stack<ArrayList<Task>> undoListHistory;
-	public static Stack<ArrayList<Task>> undoDoneListHistory;
+	public static List<Stack<ArrayList<Task>>> undoLists = new ArrayList<Stack<ArrayList<Task>>>(Storage.NUM_LISTS);
 
 	public static Storage getStorage(){
 		return storage;
@@ -34,10 +33,7 @@ public class Magical {
 	public static String parseCommand(String userInput) throws Exception{
 		Command command = Parser.parse(userInput);
 		if (command.isUndoable()) {
-			ArrayList<Task> prevList = listClone(storage.getTasks());
-//			ArrayList<Task> prevDoneList = listClone(storage.getDoneList());
-			undoListHistory.push(prevList);
-//			undoDoneListHistory.push(prevDoneList);
+			pushUndoLayer();
 		}
 		String message = command.execute();
 		return message;
@@ -48,26 +44,37 @@ public class Magical {
 			try {
 				String userInput = UI.readInput();
 				Command command = Parser.parse(userInput);
-				ArrayList<Task> prevTaskList = listClone(storage.getTasks());
+				ArrayList<Task> prevTaskList = listClone(storage.getList(Storage.TASKS_INDEX));
 				String message = command.execute();
 				UI.showToUser(message);
 				if (command.isUndoable()) {
-					undoListHistory.push(prevTaskList);
-					UI.displayTaskList("Tasks", storage.getTasks());
+					undoLists.get(Storage.TASKS_INDEX).push(prevTaskList);
+					UI.displayTaskList("Tasks", storage.getList(Storage.TASKS_INDEX));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
+	
+	private static void pushUndoLayer() {
+		ArrayList<Task> prevTasksList = listClone(storage.getList(Storage.TASKS_INDEX));
+		ArrayList<Task> prevTasksDoneList = listClone(storage.getList(Storage.TASKS_DONE_INDEX));
+		ArrayList<Task> prevEventsList = listClone(storage.getList(Storage.EVENTS_INDEX));
+		ArrayList<Task> prevEventsDoneList = listClone(storage.getList(Storage.EVENTS_DONE_INDEX));
+		undoLists.get(Storage.TASKS_INDEX).push(prevTasksList);
+		undoLists.get(Storage.TASKS_DONE_INDEX).push(prevTasksDoneList);
+		undoLists.get(Storage.EVENTS_INDEX).push(prevEventsList);
+		undoLists.get(Storage.EVENTS_DONE_INDEX).push(prevEventsDoneList);
+	}
 
 	private static ArrayList<Task> listClone(ArrayList<Task> tasks) {
-		ArrayList<Task> newTaskList = new ArrayList<Task>(tasks.size());
+		ArrayList<Task> newList = new ArrayList<Task>(tasks.size());
 		try {
 			for(Task t : tasks) {
-				newTaskList.add(t.copy());
+				newList.add(t.copy());
 			}
-			return newTaskList;
+			return newList;
 		} catch (Exception e) {
 			return tasks;
 		}
@@ -75,7 +82,8 @@ public class Magical {
 
 	public static void init() throws IOException {
 		storage = new Storage(CONFIG_STORAGE_FILENAME);
-		undoListHistory = new Stack<ArrayList<Task>>();
-		undoDoneListHistory = new Stack<ArrayList<Task>>();
+		for (int i = 0; i < Storage.NUM_LISTS; i++) {
+			undoLists.add(new Stack<ArrayList<Task>>());
+		}
 	}
 }

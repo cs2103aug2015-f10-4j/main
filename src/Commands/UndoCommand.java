@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import main.GUIModel;
 import main.Magical;
+import main.Storage;
 import main.Task;
 
 public class UndoCommand extends Command {
@@ -15,30 +16,27 @@ public class UndoCommand extends Command {
 
 	@Override
 	public String execute() {
-		if (Magical.undoListHistory.size() > 0) {
-			ArrayList<Task> lastTaskList = Magical.undoListHistory.pop();
-			try {
-				Magical.storage.setTaskList(lastTaskList);
-				if (Magical.undoDoneListHistory.size() > 0) {
-					ArrayList<Task> lastTaskDoneList = Magical.undoDoneListHistory.pop();
-					try {
-						Magical.storage.setTaskList(lastTaskDoneList);
-						return "undo successful";
-					} catch (IOException e) {
-						Magical.undoDoneListHistory.push(lastTaskDoneList);
-						return "unable to undo";
-					}
-				}
-				return "undo successful";
-			} catch (IOException e) {
-				Magical.undoListHistory.push(lastTaskList);
-				return "unable to undo";
-			} finally {
-				GUIModel.setTaskList(Magical.storage.getTasks());
-				GUIModel.setDoneList(Magical.storage.getTasksDone());
-			}
+		int undoLayersSize = Magical.undoLists.get(0).size();
+		if (undoLayersSize <= 0) {
+			return "nothing to undo";
 		}
-		return "nothing to undo";
+
+		try {
+			ArrayList<Task> lastTasksList = Magical.undoLists.get(Storage.TASKS_INDEX).pop();
+			ArrayList<Task> lastTasksDoneList = Magical.undoLists.get(Storage.TASKS_DONE_INDEX).pop();
+			ArrayList<Task> lastEventsList = Magical.undoLists.get(Storage.EVENTS_INDEX).pop();
+			ArrayList<Task> lastEventsDoneList = Magical.undoLists.get(Storage.EVENTS_DONE_INDEX).pop();
+			Magical.storage.setList(Storage.TASKS_INDEX, lastTasksList);
+			Magical.storage.setList(Storage.TASKS_DONE_INDEX, lastTasksDoneList);
+			Magical.storage.setList(Storage.EVENTS_INDEX, lastEventsList);
+			Magical.storage.setList(Storage.EVENTS_DONE_INDEX, lastEventsDoneList);
+			return "undo successful";
+		} catch (IOException e) {
+			return "unable to undo";
+		} finally {
+				GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
+				GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+		}
 	}
 
 	@Override

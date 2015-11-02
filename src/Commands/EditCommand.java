@@ -1,13 +1,13 @@
 package Commands;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 import main.GUIModel;
 import main.Magical;
 import main.RecurrencePeriod;
+import main.Storage;
 import main.Task;
 
 public class EditCommand extends Command{
@@ -43,7 +43,6 @@ public class EditCommand extends Command{
 		for(int i = 0; i < argsArray.length; i++){
 			argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY);
 		}
-		//System.out.println(Arrays.toString(argsArray));
 
 		if(validNumArgs()){
 			this.task = getTaskByID(argsArray[0].trim());
@@ -174,13 +173,14 @@ public class EditCommand extends Command{
 		}
 		
 		try {
-			Magical.storage.deleteTask(prevTask);
-			Magical.storage.createTask(task);
+			int listIndex = Storage.getListIndex(argsArray[0]);
+			Magical.storage.delete(listIndex, prevTask);
+			Magical.storage.create(listIndex, task);
 		} catch (IOException e) {
 			return "unable to edit task";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getTasks());
-			GUIModel.setDoneList(Magical.storage.getTasksDone());
+			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
+			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 		
 		return "Task edited.";
