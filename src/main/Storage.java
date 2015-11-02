@@ -1,10 +1,13 @@
 package main;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +20,8 @@ public class Storage {
 	public static final int TASKS_DONE_INDEX = 1;
 	public static final int EVENTS_INDEX = 2;
 	public static final int EVENTS_DONE_INDEX = 3;
+	private static final String DEFAULT_FILE_NAME = "storage.txt";
+	private static final String SETTINGS_FILE_NAME = "settings.txt";
 
 	private static File file;
 	private List<ArrayList<Task>> lists;
@@ -24,8 +29,52 @@ public class Storage {
 	private static SimpleDateFormat dateFormat = 
 			new SimpleDateFormat("dd MMM yyyy");
 
+
+	// write fileName from Logic into settings file
 	public Storage (String fileName) {
 		assert fileName != null;
+		
+		PrintWriter toFile = null;
+		try {
+			toFile = new PrintWriter(SETTINGS_FILE_NAME);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		if ( !fileName.equals(DEFAULT_FILE_NAME) ) {
+			toFile.println(fileName);
+		} else {
+			toFile.println(DEFAULT_FILE_NAME);
+		}
+		toFile.close();
+		
+		initFile();
+		
+	}
+	
+	// returns String of fileName read
+	private String readFileSettings() {
+		
+		String fileName = DEFAULT_FILE_NAME;
+		Scanner fileData;
+		
+		try {
+			fileData = new Scanner(new File(SETTINGS_FILE_NAME));
+		    while(fileData.hasNextLine()){
+		        String line = fileData.nextLine();
+		        line = line.trim();
+		    }
+
+		    fileData.close(); // close file
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return fileName;
+	}
+	
+	private void initFile() {
+		
+		String fileName = readFileSettings();
 
 		file = new File(fileName);
 		mapper.setDateFormat(dateFormat);
