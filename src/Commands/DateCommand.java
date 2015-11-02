@@ -23,25 +23,30 @@ public class DateCommand extends Command {
 		super(args);
 		
 		this.argsArray = args.split("(?<!next)\\s", 2);
-		System.out.println(Arrays.toString(argsArray));
 		this.count = argsArray.length;
 
 		if (validNumArgs()) {
 			String start = argsArray[0].trim();
 			String end = count == 2 ? argsArray[1].trim() : STRING_EMPTY;
 			
-			startDate = start.equals(STRING_EMPTY) ? new Date(Long.MIN_VALUE) : getDate(start);
-			endDate = end.equals(STRING_EMPTY) ? new Date(Long.MAX_VALUE) : getDate(end);
-			
+			if(!needsFlexi(start)){
+				startDate = start.equals(STRING_EMPTY) ? new Date(Long.MIN_VALUE) : getDate(start);	
+			} else {
+				startDate = flexiParse(start);
+			}
+
+			if(end.isEmpty() || !needsFlexi(end)){
+				endDate = end.equals(STRING_EMPTY) ? new Date(Long.MAX_VALUE) : getDate(end);
+			} else {
+				endDate = flexiParse(end);
+			}
 			
 			if (startDate == null) {
-				startDate = flexiParse(start);
-				//error += String.format(MESSAGE_INVALID_DATE, "Start", start);
+				error += String.format(MESSAGE_INVALID_DATE, "Start", start);
 			}
 
 			if (endDate == null) {
-				endDate = flexiParse(end);
-				//error += String.format(MESSAGE_INVALID_DATE, "End", end);
+				error += String.format(MESSAGE_INVALID_DATE, "End", end);
 			} 
 
 			if (startDate != null && endDate != null && !validDateRange()) {
@@ -96,6 +101,7 @@ public class DateCommand extends Command {
 	
 	public static void main(String[] args) throws Exception {
 		//DateCommand d = new DateCommand("");
+		//DateCommand d = new DateCommand("29-01-93");
 		//DateCommand d = new DateCommand("29-01-93 28-01-92");
 		//DateCommand d = new DateCommand("29-01-93 28-01-94");
 		//DateCommand d = new DateCommand("29-01-93 28-01-9a2");
