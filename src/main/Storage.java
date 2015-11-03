@@ -1,12 +1,17 @@
 package main;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -20,59 +25,54 @@ public class Storage {
 	public static final int TASKS_DONE_INDEX = 1;
 	public static final int EVENTS_INDEX = 2;
 	public static final int EVENTS_DONE_INDEX = 3;
-	private static final String DEFAULT_FILE_NAME = "storage.txt";
-	private static final String SETTINGS_FILE_NAME = "settings.txt";
-
+	private static final String DEFAULT_FILE_PATH = "storage.txt";
+	private static final String SETTINGS_FILE_NAME = "settings.properties";
 	private static File file;
 	private List<ArrayList<Task>> lists;
 	ObjectMapper mapper = new ObjectMapper();
 	private static SimpleDateFormat dateFormat = 
 			new SimpleDateFormat("dd MMM yyyy");
 
-
-	// right now because of the way storage is called in Magical.java,
-	// if the fileName stored into the settings file is a custom filepath
-	// it will get overwritten back into the default filepath
-	// instead of the custom filepath specified by user upon relaunching the program
 	public Storage (String fileName) {
-		assert fileName != null;
 		
-		PrintWriter toFile = null;
-		try {
-			toFile = new PrintWriter(SETTINGS_FILE_NAME); // create settings file
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		Properties prop = new Properties();
+		OutputStream output = null;
 		
-		if ( !fileName.equals(DEFAULT_FILE_NAME) ) {
-			toFile.println(fileName); 	// write custom filepath into settings file
+		String storedFilePath = readFileSettings();
+		if (storedFilePath == null) {
+			try {
+				output = new FileOutputStream(SETTINGS_FILE_NAME);
+				prop.setProperty("filePath", DEFAULT_FILE_PATH);
+				prop.store(output, null); // save properties to project root folder
+				initFile();
+
+			} catch (IOException io) {
+				io.printStackTrace();
+			}
 		} else {
-			toFile.println(DEFAULT_FILE_NAME); // write default filepath into settings file
+			initFile();
 		}
-		toFile.close();
-		
-		initFile();
-		
+
 	}
 	
 	// returns String of fileName read
 	private String readFileSettings() {
 		
-		String fileName = DEFAULT_FILE_NAME;
-		Scanner fileData;
-		
-		try {
-			fileData = new Scanner(new File(SETTINGS_FILE_NAME));
-		    while(fileData.hasNextLine()){
-		        fileName = fileData.nextLine(); // read filepath back from settings file
-		        fileName = fileName.trim();
-		    }
+		Properties prop = new Properties();
+		InputStream input = null;
+		String filePath = DEFAULT_FILE_PATH;
 
-		    fileData.close(); // close file
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		try {
+
+			input = new FileInputStream(SETTINGS_FILE_NAME);
+			prop.load(input);
+			filePath = prop.getProperty("filePath");
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
-		return fileName;
+		
+		return filePath;
 	}
 	
 	private void initFile() {
