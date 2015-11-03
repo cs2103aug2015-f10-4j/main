@@ -10,6 +10,7 @@ public class HelpCommand extends Command {
 	}
 
 	public String execute() throws Exception {
+		gui.GUIModel.showHelpWindow = true;
 		return null;
 	}
 

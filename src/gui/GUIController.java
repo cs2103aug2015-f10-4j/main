@@ -8,6 +8,8 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -18,6 +20,8 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import main.Magical;
 import main.Task;
 
@@ -42,7 +46,7 @@ public class GUIController {
 
 	public void initialize() throws Exception {
 
-		Magical.init();
+		main.Magical.init();
 		GUIModel.init();
 
 		taskTable.setItems(FXCollections.observableArrayList(GUIModel.taskList));
@@ -122,6 +126,15 @@ public class GUIController {
 			taskTable.setItems(GUIModel.getTaskList());
 			doneTable.setItems(GUIModel.getDoneList());
 			commandLineField.clear();
+		}
+		if (GUIModel.showHelpWindow) {
+			Stage helpStage = new Stage();
+			helpStage.setTitle("Help");
+			Pane myPane = (Pane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
+			Scene myScene = new Scene(myPane);
+			helpStage.setScene(myScene);
+			helpStage.show();
+			GUIModel.showHelpWindow = false;
 		}
 	}
 
