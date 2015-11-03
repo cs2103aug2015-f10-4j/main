@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,15 +25,13 @@ public class AddCommand extends Command{
 	private Task task;
 
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+ "Use Format: \n"
-			+ "add <title> <due date> <end time> <recurrence>";
-//	private static final String MESSAGE_INVALID_FLEXI = "Use format: add <title> by <date> at <time>";
+			+ "Use Format: \nadd title/due date/end time/recurrence";
+	private static final String MESSAGE_INVALID_FLEXI = "Use format: add <title> by <date> at <time>";
 	private static final String MESSAGE_INVALID_TITLE = "No Title\n";
 	private static final String MESSAGE_INVALID_DATE = "Due date: %s (Date should be dd-MM-yyyy)\n";
 	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
-			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty)\n";
-	private static final String MESSAGE_INVALID_RECURRENCE_FLOAT = "Floating tasks cannot have recurrence";
+			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
 	private static final String MESSAGE_TASK_ADDED = "task added";
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
 	private static final String MESSAGE_TASK_ERROR = "unable to add task";
@@ -42,7 +39,6 @@ public class AddCommand extends Command{
 	public AddCommand(String args) throws Exception {
 		super(args);
 		
-		/*
 		isFlexi = !args.contains("/") || !args.replace("\\/", STRING_EMPTY).contains("/");
 		if(!isFlexi){
 			this.argsArray = args.split("(?<![\\\\])/", -1);
@@ -62,48 +58,11 @@ public class AddCommand extends Command{
 			}
 		}
 		this.count = argsArray.length;
-		for(int i = 0; i < count; i++){
-			assertNotNull(argsArray[i]);
-		}
-		//*/
-		this.argsArray = reverseSplit(args, 4);
-		this.count = argsArray.length;
-		this.isFloat = false;
-		
-		System.out.println(Arrays.toString(argsArray));
 
 		for(int i = 0; i < count; i++){
 			assertNotNull(argsArray[i]);
 		}
 
-		if(validNumArgs()){
-			this.title = getTitle(argsArray[0].trim());
-			if(count == 1){
-				this.dueDate = null;
-				this.endTime = -1;
-				this.recurrence = getRecurrence("");
-				isFloat = true;
-			} else if (count == 2){
-				String param2 = argsArray[1].trim();
-				Object value2;
-				if((value2 = getRecurrence(param2)) != null){
-					error += MESSAGE_INVALID_RECURRENCE_FLOAT;
-				} else {
-					param2 = swapMonthDay(param2);
-					System.out.println(param2);
-				}
-			} else if (count == 4){
-				isFloat = checkFloat(argsArray[1].trim(), argsArray[2].trim());
-				this.dueDate = getDate(argsArray[1].trim());
-				this.endTime = getTime(argsArray[2].trim());
-				this.recurrence = getRecurrence(argsArray[3].trim());
-			}
-		} else{
-			error += MESSAGE_INVALID_PARAMS;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
-		}
-
-		/*
 		if(!isFlexi){
 			if(validNumArgs()){
 
@@ -166,11 +125,10 @@ public class AddCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		}
-		//*/
 	}
 	
 	public boolean validNumArgs(){
-		if(this.count > 4 || this.count < 1){
+		if(this.count != 4){
 			return false;
 		} else {
 			return true;
@@ -214,11 +172,10 @@ public class AddCommand extends Command{
 	}
 
 	public static void main(String[] args) throws Exception {
-//		AddCommand a = new AddCommand("wash my butt 24 Jan 12pm daily");
+//		AddCommand a = new AddCommand("wash my butt by 1st January at 12pm");
 //		AddCommand b = new AddCommand("pass \\by the river \\at St.George by 1st January at 12pm");
 //		AddCommand c = new AddCommand("smack him by 12-01-1993 at 1pm");
 //		AddCommand d = new AddCommand("");
 //		AddCommand e = new AddCommand("hihihihi by hi at hi");
-		AddCommand f = new AddCommand("asd fa 24/02 12pm fvbh");
 	}
 }

@@ -1,9 +1,7 @@
 package Commands;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -38,25 +36,14 @@ public abstract class Command {
 
 	protected String swapMonthDay(String date){
 		String[] splitDate;
-		String swappedDate = date;
+		String swappedDate = null;
 		//checking is date is dd/mm/yy or dd/mm
-		if(date.contains("/") && date.contains("-")){
-			return null;
-		}
-		if(date.contains("/")){
+		if(date.contains("/") && !date.contains("-")){
 			splitDate = date.split("/",3);
 			if(splitDate.length == 2){
 				swappedDate = splitDate[1] + "/" + splitDate[0];
 			} else if (splitDate.length == 3){
 				swappedDate = splitDate[1] + "/" + splitDate[0] + "/" + splitDate[2];
-			}
-		}
-		if(date.contains("-")){
-			splitDate = date.split("-",3);
-			if(splitDate.length == 2){
-				swappedDate = splitDate[1] + "-" + splitDate[0];
-			} else if (splitDate.length == 3){
-				swappedDate = splitDate[1] + "-" + splitDate[0] + "-" + splitDate[2];
 			}
 		}
 		return swappedDate;
@@ -220,20 +207,7 @@ public abstract class Command {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		System.out.println(reverseSplit("ausd bfa sbf adfinaisdg asdhgiasigdn", 3));
-		//Command c = new DateCommand("");
-		//c.flexiParse("audgsf");
-	}
-	
-	public static List<String> reverseSplit(String args, int max){
-		args = new StringBuilder(args).reverse().toString();
-		String[] temp = args.split("\\s(?!ts1)(?!dn2)(?!dr3)(?!ht[0-9]+)(?![0-9])"
-				+ "|(?<=[0-9])\\s(?=[0-9])", max);
-		for(int i = 0; i < temp.length; i++){
-			temp[i] = new StringBuilder(temp[i]).reverse().toString();
-		}
-		List<String> tempList = Arrays.asList(temp);
-		Collections.reverse(tempList);
-		return tempList;
+		Command c = new DateCommand("");
+		c.flexiParse("audgsf");
 	}
 }
