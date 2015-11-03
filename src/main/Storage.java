@@ -75,6 +75,59 @@ public class Storage {
 		return filePath;
 	}
 	
+	// method for Logic to call should the user want to change filePath
+	// will be stored in settings.properties file
+	protected void changeFilePath(String newFilePath) {
+		
+		Properties prop = new Properties();
+		OutputStream output = null;
+		
+		String oldFilePath = readFileSettings();
+		try {
+			output = new FileOutputStream(SETTINGS_FILE_NAME);
+			prop.setProperty("filePath", newFilePath);
+			prop.store(output, null); // save properties to project root folder
+			moveFile(oldFilePath, newFilePath);
+
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
+	}
+	
+	private void moveFile(String oldFilePath, String newFilePath) {
+		
+		InputStream inStream = null;
+		OutputStream outStream = null;
+			
+	    	try{
+	    		
+	    	    File oldFile =new File(oldFilePath);
+	    	    File newFile =new File(newFilePath);
+	    		
+	    	    inStream = new FileInputStream(oldFile);
+	    	    outStream = new FileOutputStream(newFile);
+	        	
+	    	    byte[] buffer = new byte[1024];
+	    		
+	    	    int length;
+	    	    //copy the file content in bytes 
+	    	    while ((length = inStream.read(buffer)) > 0){
+	    	  
+	    	    	outStream.write(buffer, 0, length);
+	    	 
+	    	    }
+	    	 
+	    	    inStream.close();
+	    	    outStream.close();
+	    	    
+	    	    oldFile.delete(); //delete the original file
+	    	    file = newFile;
+	    	    
+	    	}catch(IOException e){
+	    	    e.printStackTrace();
+	    	}
+	}
+	
 	private void initFile() {
 		
 		String fileName = readFileSettings();
