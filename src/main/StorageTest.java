@@ -103,7 +103,7 @@ public class StorageTest extends TestCase {
 	// successfully tested
 	@Test
 	public void testStorageConstructor() throws IOException {
-			Storage testStorage = new Storage("storage.txt");
+			Storage testStorage = new Storage();
 			assertTrue(testStorage.fileExist());
 	}
 	
