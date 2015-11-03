@@ -44,7 +44,7 @@ public class GUIController {
 	@FXML private TextField commandLineField;
 	@FXML private TextArea helpTextArea;
 
-	public void initialize() throws Exception {
+	private void initialize() throws Exception {
 
 		main.Magical.init();
 		GUIModel.init();
