@@ -33,7 +33,7 @@ public class Storage {
 	private static SimpleDateFormat dateFormat = 
 			new SimpleDateFormat("dd MMM yyyy");
 
-	public Storage (String fileName) {
+	public Storage () {
 		
 		Properties prop = new Properties();
 		OutputStream output = null;
