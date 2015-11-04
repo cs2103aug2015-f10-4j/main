@@ -2,7 +2,6 @@ package main;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +27,6 @@ public class Storage {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + SETTINGS_FILE_NAME;
 	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
-	
 	
 	private List<ArrayList<Task>> lists;
 	ObjectMapper mapper = new ObjectMapper();
