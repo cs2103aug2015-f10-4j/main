@@ -9,11 +9,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import main.CustomDate;
-import main.GUIModel;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Storage;
 import main.Task;
+import gui.GUIModel;
 
 public class EventCommand extends Command{
 

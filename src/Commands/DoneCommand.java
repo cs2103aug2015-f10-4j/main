@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import main.GUIModel;
+import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Task;

@@ -12,9 +12,9 @@ import com.joestelmach.natty.Parser;
 import com.mdimension.jchronic.Chronic;
 import com.mdimension.jchronic.utils.Span;
 
+import gui.GUIModel;
 import main.Task;
 import main.CustomDate;
-import main.GUIModel;
 import main.RecurrencePeriod;
 
 public abstract class Command {
@@ -197,7 +197,7 @@ public abstract class Command {
 		}
 	}
 
-	public abstract String execute();
+	public abstract String execute() throws Exception;
 	public abstract boolean validNumArgs();
 
 	public boolean isUndoable(){

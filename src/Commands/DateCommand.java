@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.Date;
 
 import main.CustomDate;
-import main.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Task;
+import gui.GUIModel;
 
 public class DateCommand extends Command {
 

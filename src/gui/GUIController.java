@@ -1,30 +1,30 @@
-package main;
+package gui;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.util.Callback;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import main.Magical;
+import main.Task;
 
 public class GUIController {
 
@@ -43,14 +43,19 @@ public class GUIController {
 	@FXML private TableColumn<Task, String> doneTagsCol;
 	@FXML private Label messageLabel;
 	@FXML private TextField commandLineField;
+	@FXML private TextArea helpTextArea;
 
 	public void initialize() throws Exception {
 
-		Magical.init();
+		main.Magical.init();
 		GUIModel.init();
 
 		taskTable.setItems(FXCollections.observableArrayList(GUIModel.taskList));
 		doneTable.setItems(FXCollections.observableArrayList(GUIModel.doneList));
+
+		/*
+		 * TASK TABLE
+		 */
 
 		taskIDCol.setCellFactory(col -> {
 		    TableCell<Task, String> cell = new TableCell<>();
@@ -61,8 +66,6 @@ public class GUIController {
 		});
 
 		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
-
-		//taskTagsCol.setCellValueFactory(new PropertyValueFactory<Task, St>("tags"));
 
 		taskTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
@@ -81,6 +84,16 @@ public class GUIController {
 
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+
+		/*
+		 * EVENT TABLE
+		 */
+
+
+
+		/*
+		 * DONE TASKS TABLE
+		 */
 
 		doneIDCol.setCellFactory(col -> {
 		    TableCell<Task, String> cell = new TableCell<>();
@@ -110,25 +123,42 @@ public class GUIController {
 		doneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
 		donePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 
-		commandLineField.requestFocus();
+		Platform.runLater(new Runnable() {
+			@Override
+		    public void run() {
+		        commandLineField.requestFocus();
+		    }
+		});
 
 	}
-
-
-
-
-
 
 
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {
 		if (event.getCode() == KeyCode.ENTER) {
 			String userInput = commandLineField.getText();
-			String message = Magical.parseCommand(userInput);
-			messageLabel.setText(message);
-			taskTable.setItems(GUIModel.getTaskList());
-			doneTable.setItems(GUIModel.getDoneList());
-			commandLineField.clear();
+//			try {
+				messageLabel.setTextFill(Color.web("#0000ff"));
+				String message = main.Magical.parseCommand(userInput);
+				messageLabel.setText(message);
+				taskTable.setItems(GUIModel.getTaskList());
+				doneTable.setItems(GUIModel.getDoneList());
+				commandLineField.clear();
+//			} catch (Exception e) {
+//				messageLabel.setTextFill(Color.web("#ff0000"));
+//				System.out.println(e.getMessage());
+//				messageLabel.setText(e.getMessage());
+//			}
+
+		}
+		if (GUIModel.showHelpWindow) {
+			Stage helpStage = new Stage();
+			helpStage.setTitle("Help");
+			Pane myPane = (Pane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
+			Scene myScene = new Scene(myPane);
+			helpStage.setScene(myScene);
+			helpStage.show();
+			GUIModel.showHelpWindow = false;
 		}
 	}
 

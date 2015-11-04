@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import main.GUIModel;
+import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Task;

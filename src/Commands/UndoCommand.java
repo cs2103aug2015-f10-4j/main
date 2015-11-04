@@ -3,7 +3,7 @@ package Commands;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import main.GUIModel;
+import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Task;
