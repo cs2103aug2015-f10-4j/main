@@ -29,9 +29,12 @@ public class CustomDate {
 		return String.format(DATE_FORMAT, cal.get(Calendar.DAY_OF_MONTH), month, cal.get(Calendar.YEAR), day);
 	}
 	
-	public String getDate(){
+	public String getDateString(){
 		String dateString = getDay() + "/" + getMonth() + "/" + getYear();
 		return dateString;
+	}
+	public Date getDate(){
+		return this.date;
 	}
 	
 	public int getYear(){
@@ -84,5 +87,12 @@ public class CustomDate {
 			default:
 				break;
 		}
+		this.date = cal.getTime();
+	}
+	
+	public void setTime(int time){
+		cal.set(Calendar.HOUR_OF_DAY, time/100);
+		cal.set(Calendar.MINUTE, time%100);
+		cal.set(Calendar.SECOND, 0);
 	}
 }
