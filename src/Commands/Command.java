@@ -1,14 +1,17 @@
 package Commands;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
+import com.mdimension.jchronic.Chronic;
+import com.mdimension.jchronic.utils.Span;
 
 import main.Task;
+import main.CustomDate;
 import main.GUIModel;
 import main.RecurrencePeriod;
 
@@ -21,7 +24,7 @@ public abstract class Command {
 	protected static final String STRING_EMPTY = "";
 	//main variables
 	protected String args;
-	protected String[] argsArray;
+	protected ArrayList<String> argsArray;
 	protected int count;
 	protected boolean isFlexi;
 
@@ -86,17 +89,12 @@ public abstract class Command {
 		}
 	}
 
-	protected Date getDate(String date)  {
-		if(date.matches("^\\d+\\-\\d+\\-\\d+")){
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
-			dateFormat.setLenient(false);
-			try {
-				return dateFormat.parse(date);
-			} catch (Exception e){
-				return null;
-			}
-		} else {
+	protected CustomDate getDate(String date)  {
+		Span s = Chronic.parse(date);
+		if(s == null){
 			return null;
+		} else {
+			return new CustomDate(s.getBeginCalendar().getTime());
 		}
 	}
 
@@ -181,7 +179,7 @@ public abstract class Command {
 		List<DateGroup> date = p.parse((cal.get(Calendar.MONTH)+1)
 				+ "-" + cal.get(Calendar.DAY_OF_MONTH)
 				+ "-" + cal.get(Calendar.YEAR)
-				+ " " + argsArray[2]);
+				+ " " + argsArray.get(2));
 		if(date.isEmpty()){
 			return null;
 		} else {
@@ -207,7 +205,11 @@ public abstract class Command {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Command c = new DateCommand("");
-		c.flexiParse("audgsf");
+		//Command c = new DateCommand("");
+		//c.flexiParse("audgsf");
+		Span s = Chronic.parse("");
+		System.out.println(s);
+		System.out.println(s.getBeginCalendar().getTime());
+		System.out.println(s.getEndCalendar().toString());
 	}
 }
