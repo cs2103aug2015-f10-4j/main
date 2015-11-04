@@ -9,15 +9,15 @@ import main.Magical;
 import main.Storage;
 import main.Task;
 
-public class DoneCommand extends Command{
+public class UndoneCommand extends Command{
 	private String error = STRING_EMPTY;
 	private Task task;
 	
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+ "Use Format: done <task_id>";
+			+ "Use Format: undone <task_id>";
 	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 	
-	public DoneCommand(String args) throws Exception{
+	public UndoneCommand(String args) throws Exception{
 		super(args);
 		
 		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(STRING_EMPTY, 1)));
@@ -28,8 +28,8 @@ public class DoneCommand extends Command{
 			
 			if(task == null){
 				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
-			} else if (argsArray.get(0).trim().contains("d") || argsArray.get(0).trim().contains("p")){
-				error += "Done tasks cannot be done!";
+			} else if (argsArray.get(0).trim().contains("t") || argsArray.get(0).trim().contains("e")){
+				error += "Undone tasks cannot be undone!";
 			}
 			if (!error.equals("")) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
@@ -55,13 +55,13 @@ public class DoneCommand extends Command{
 			Magical.storage.delete(listIndex, task);
 			Magical.storage.create(complementListIndex, task);
 		} catch (IOException e) {
-			return "unable to archive task";
+			return "unable to un-archive task";
 		} finally {
 			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
 			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 
-		return "task archived";
+		return "task un-archived";
 	}
 }
 
