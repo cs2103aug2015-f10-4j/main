@@ -28,6 +28,8 @@ public class DoneCommand extends Command{
 			
 			if(task == null){
 				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
+			} else if (argsArray.get(0).trim().contains("d")){
+				error += "Done tasks cannot be done!";
 			}
 			if (!error.equals("")) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
