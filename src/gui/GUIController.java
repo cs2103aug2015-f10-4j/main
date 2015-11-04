@@ -146,7 +146,6 @@ public class GUIController {
 				commandLineField.clear();
 			} catch (Exception e) {
 				messageLabel.setTextFill(Color.web("#ff0000"));
-				System.out.println(e.getMessage());
 				messageLabel.setText(e.getMessage());
 			}
 
