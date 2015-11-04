@@ -27,41 +27,28 @@ public class Storage {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + SETTINGS_FILE_NAME;
 	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
-	
+
 	private List<ArrayList<Task>> lists;
 	ObjectMapper mapper = new ObjectMapper();
-	private static SimpleDateFormat dateFormat = 
-			new SimpleDateFormat("dd MMM yyyy");
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
-	private static File defaultPropertiesFile = new File(SETTINGS_FILE_PATH);
 	private static File file =  new File(DEFAULT_FILE_PATH);
-	
-	public Storage () {
-		
-		Properties prop = new Properties();
-		OutputStream output = null;
-		
-		createFolder();
-		
-		String storedFilePath = readFileSettings();
-		System.out.println(storedFilePath);
-		if (storedFilePath == null) { // if properties file is empty, create properties file
-			try {
-				output = new FileOutputStream(SETTINGS_FILE_PATH);
-				prop.setProperty("filePath", DEFAULT_FILE_PATH);
-				prop.store(output, null); // save properties to project root folder
-				initFile();
 
-			} catch (IOException io) {
-				io.printStackTrace();
-			}
+	public Storage () {
+
+		createFolder();
+
+		String storedFilePath = readFileSettings();
+		if (storedFilePath == null) { // if properties file is empty, create properties file
+			writeToProperties(DEFAULT_FILE_PATH);
+			initFile();
 		} else {
 			file = new File(storedFilePath);
 			initFile();
 		}
 
 	}
-	
+
 	private static boolean createFolder() {
 		try {
 			if (!newFolder.exists()) {
@@ -73,10 +60,10 @@ public class Storage {
 		}
 		return true;
 	}
-	
+
 	// returns String of filePath read
 	private String readFileSettings() {
-		
+
 		Properties prop = new Properties();
 		InputStream input = null;
 		String filePath = DEFAULT_FILE_PATH;
@@ -89,34 +76,39 @@ public class Storage {
 		} catch (IOException ex) {
 			return null;
 		}
-		
+
 		return filePath;
 	}
-	
+
 	// method for Logic to call should the user want to change filePath
 	// will be stored in settings.properties file
 	protected void changeFilePath(String newFilePath) {
-		
+
+		String oldFilePath = readFileSettings();
+
+		moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
+
+		// save new properties to project root folder
+		newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
+		writeToProperties(newFilePath);
+
+		moveFile(oldFilePath, newFilePath);
+	}
+
+	private void writeToProperties (String filePath) {
 		Properties prop = new Properties();
 		OutputStream output = null;
-		
-		String oldFilePath = readFileSettings();
+
 		try {
 			output = new FileOutputStream(SETTINGS_FILE_PATH);
-			moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
-			
-			// save new properties to project root folder
-			newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
-			prop.setProperty("filePath", newFilePath);
-			prop.store(output, null);
-			
-			moveFile(oldFilePath, newFilePath);
+			prop.setProperty("filePath", filePath);
+			prop.store(output, null); // save properties to project root folder
 
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
 	}
-	
+
 	private void moveFolder(String newFilePath) {
 		File file = new File(newFilePath);
 
@@ -125,39 +117,39 @@ public class Storage {
 			file.mkdir();
 		}
 	}
-	
+
 	private void moveFile(String oldFilePath, String newFilePath) {
-		
+
 		InputStream inStream = null;
 		OutputStream outStream = null;
-			
-	    	try{
-	    		
-	    	    File oldFile =new File(oldFilePath);
-	    	    File newFile =new File(newFilePath);
-	    		
-	    	    inStream = new FileInputStream(oldFile);
-	    	    outStream = new FileOutputStream(newFile);
-	        	
-	    	    byte[] buffer = new byte[1024];
-	    		
-	    	    int length;
 
-	    	    while ((length = inStream.read(buffer)) > 0){
-	    	    	outStream.write(buffer, 0, length); // copy file contents over
-	    	    }
-	    	 
-	    	    inStream.close();
-	    	    outStream.close();
-	    	    
-	    	    oldFile.delete(); //delete the original file
-	    	    file = newFile;
-	    	    
-	    	}catch(IOException e){
-	    	    e.printStackTrace();
-	    	}
+		try{
+
+			File oldFile =new File(oldFilePath);
+			File newFile =new File(newFilePath);
+
+			inStream = new FileInputStream(oldFile);
+			outStream = new FileOutputStream(newFile);
+
+			byte[] buffer = new byte[1024];
+
+			int length;
+
+			while ((length = inStream.read(buffer)) > 0){
+				outStream.write(buffer, 0, length); // copy file contents over
+			}
+
+			inStream.close();
+			outStream.close();
+
+			oldFile.delete(); //delete the original file
+			file = newFile;
+
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
-	
+
 	private void initFile() {
 
 		mapper.setDateFormat(dateFormat);
@@ -201,7 +193,7 @@ public class Storage {
 			return -1;
 		}
 	}
-	
+
 	public static int getComplementListIndex(int index) {
 		switch(index) {
 		case TASKS_INDEX:
@@ -216,16 +208,16 @@ public class Storage {
 			return -1;
 		}
 	}
-	
+
 	public void create(int listIndex, Task t) throws IOException {
 		lists.get(listIndex).add(t);
 		writeLists();
 	}
-	
+
 	public ArrayList<Task> getList(int listIndex) {
 		return lists.get(listIndex);
 	}
-	
+
 	public void update(int listIndex, Task t) throws IOException {
 		int pos = getPos(listIndex, t);
 		if (pos > -1) {
@@ -233,7 +225,7 @@ public class Storage {
 			writeLists();
 		}
 	}
-	
+
 	public void delete(int listIndex, Task t) throws IOException {
 		int pos = getPos(listIndex, t);
 		if (pos > -1) {
@@ -246,11 +238,11 @@ public class Storage {
 		lists.set(listIndex, new ArrayList<Task>());
 		writeLists();
 	}
-	
+
 	protected int getPos(int listIndex, Task t) {
 		return lists.get(listIndex).indexOf(t);
 	}
-	
+
 	public void setList(int listIndex, ArrayList<Task> list) throws IOException {
 		lists.set(listIndex, list);
 		writeLists();
