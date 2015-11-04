@@ -1,6 +1,7 @@
 package Commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.GUIModel;
 import main.Magical;
@@ -21,8 +22,8 @@ public class SearchCommand extends Command {
 	public SearchCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = args.split("", 1);
-		this.count = argsArray.length;
+		this.argsArray = new ArrayList<String>(Arrays.asList(args.split("", 1)));
+		this.count = argsArray.size();
 		this.query = args.trim();			
 	}
 
