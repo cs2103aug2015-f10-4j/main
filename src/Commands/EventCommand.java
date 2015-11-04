@@ -225,13 +225,13 @@ public class EventCommand extends Command{
 			if (isClashing()) {
 				retMsg += MESSAGE_EVENT_CLASH;
 			}
-			Magical.getStorage().create(Storage.EVENTS_INDEX, task);
+			Magical.storage.create(Storage.EVENTS_INDEX, task);
 			return retMsg;
 		} catch (IOException e) {
 			return MESSAGE_EVENT_ERROR;
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
+			GUIModel.setEventDoneList(Magical.storage.getList(Storage.EVENTS_DONE_INDEX));
 		}
 	}
 

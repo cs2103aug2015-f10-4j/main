@@ -33,7 +33,7 @@ public class ShowCommand extends Command{
 		
 		if(type.equals("")){
 			this.type = "all";
-		} else if(!type.equalsIgnoreCase("event")&&!type.equalsIgnoreCase("task")){
+		} else if(!type.equalsIgnoreCase("events")&&!type.equalsIgnoreCase("tasks")){
 			this.type = "tag";
 			this.tags = this.argsArray;
 		}
@@ -64,12 +64,12 @@ public class ShowCommand extends Command{
 				filteredEventList = eventList;
 				filteredEventDoneList = eventDoneList;
 				break;
-			case "event":
+			case "events":
 				filteredEventList = eventList;
 				filteredEventDoneList = eventDoneList;
 				GUIModel.setCurrentTab("events");
 				break;
-			case "task":
+			case "tasks":
 				filteredTaskList = taskList;
 				filteredTaskDoneList = taskDoneList;
 				GUIModel.setCurrentTab("tasks");
