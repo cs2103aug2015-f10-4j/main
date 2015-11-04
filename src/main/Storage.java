@@ -7,12 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Scanner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,8 +23,6 @@ public class Storage {
 	public static final int TASKS_DONE_INDEX = 1;
 	public static final int EVENTS_INDEX = 2;
 	public static final int EVENTS_DONE_INDEX = 3;
-	// private static final String DEFAULT_FILE_PATH = "storage.txt";
-	
 	private static final String DEFAULT_FILE_DIRECTORY = "magical";
 	private static final String DEFAULT_FILE_NAME = "storage.txt";
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
@@ -122,12 +118,9 @@ public class Storage {
 	
 	private void moveFolder(String newFilePath) {
 		File file = new File(newFilePath);
-		
-		// System.out.println(file.exists());
-		
+
 		if (!file.exists()) {
 			file = new File(newFilePath);
-			// System.out.println(file.getPath());
 			file.mkdir();
 		}
 	}
