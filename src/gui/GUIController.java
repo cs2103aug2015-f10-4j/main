@@ -245,8 +245,8 @@ public class GUIController {
 				messageLabel.setTextFill(Color.web("#ff0000"));
 				messageLabel.setText(e.getMessage());
 			}
-
 		}
+		switchToTab(GUIModel.getCurrentTab());
 		if (GUIModel.showHelpWindow) {
 			Stage helpStage = new Stage();
 			helpStage.setTitle("Help");

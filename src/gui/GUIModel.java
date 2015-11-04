@@ -22,11 +22,25 @@ public class GUIModel {
 
 	public static boolean showHelpWindow = false;
 
+	public static String currentTab = "tasks";
 
 	public static ObservableList<Task> taskList;
 	public static ObservableList<Task> taskDoneList;
 	public static ObservableList<Task> eventList;
 	public static ObservableList<Task> eventDoneList;
+
+	public static void setCurrentTab(String type) {
+		if (type == "tasks") {
+			currentTab = type;
+		}
+		else if (type == "events") {
+			currentTab = type;
+		}
+	}
+
+	public static String getCurrentTab() {
+		return currentTab;
+	}
 
 	public static ObservableList<Task> getTaskList() {
 		return taskList;
