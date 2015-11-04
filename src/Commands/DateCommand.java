@@ -91,8 +91,12 @@ public class DateCommand extends Command {
 	public String execute() {
 		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
 		ArrayList<Task> taskDoneList = Magical.storage.getList(Storage.TASKS_DONE_INDEX);
+		ArrayList<Task> eventList = Magical.storage.getList(Storage.EVENTS_INDEX);
+		ArrayList<Task> eventDoneList = Magical.storage.getList(Storage.EVENTS_DONE_INDEX);
 		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
 		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
+		ArrayList<Task> filteredEventList = new ArrayList<Task>();
+		ArrayList<Task> filteredEventDoneList = new ArrayList<Task>();
 		for (Task t : taskList) {
 			if (t.getDueDate() != null && t.getDueDate().compareTo(startDate) >= 0 && t.getDueDate().compareTo(endDate) <= 0) {
 				filteredTaskList.add(t);
@@ -103,8 +107,20 @@ public class DateCommand extends Command {
 				filteredTaskDoneList.add(t);
 			}
 		}
+		for (Task t : eventList) {
+			if (t.getDueDate() != null && t.getDueDate().compareTo(startDate) >= 0 && t.getDueDate().compareTo(endDate) <= 0) {
+				filteredEventList.add(t);
+			}
+		}
+		for (Task t : eventDoneList) {
+			if (t.getDueDate() != null && t.getDueDate().compareTo(startDate) >= 0 && t.getDueDate().compareTo(endDate) <= 0) {
+				filteredEventDoneList.add(t);
+			}
+		}
 		GUIModel.setTaskList(filteredTaskList);
 		GUIModel.setTaskDoneList(filteredTaskDoneList);
+		GUIModel.setEventList(filteredEventList);
+		GUIModel.setEventDoneList(filteredEventDoneList);
 		return "date command successful";
 	}
 

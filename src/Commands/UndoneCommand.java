@@ -59,6 +59,8 @@ public class UndoneCommand extends Command{
 		} finally {
 			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
 			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
+			GUIModel.setEventDoneList(Magical.storage.getList(Storage.EVENTS_DONE_INDEX));
 		}
 
 		return "task un-archived";

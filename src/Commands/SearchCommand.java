@@ -32,8 +32,12 @@ public class SearchCommand extends Command {
 	public String execute() {
 		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
 		ArrayList<Task> taskDoneList = Magical.storage.getList(Storage.TASKS_DONE_INDEX);
+		ArrayList<Task> eventList = Magical.storage.getList(Storage.EVENTS_INDEX);
+		ArrayList<Task> eventDoneList = Magical.storage.getList(Storage.EVENTS_DONE_INDEX);
 		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
 		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
+		ArrayList<Task> filteredEventList = new ArrayList<Task>();
+		ArrayList<Task> filteredEventDoneList = new ArrayList<Task>();
 
 		for (Task t : taskList) {
 			if (t.getTitle().contains(query)) {
@@ -45,9 +49,21 @@ public class SearchCommand extends Command {
 				filteredTaskDoneList.add(t);
 			}
 		}
+		for (Task t : eventList) {
+			if (t.getTitle().contains(query)) {
+				filteredTaskList.add(t);
+			}
+		}
+		for (Task t : eventDoneList) {
+			if (t.getTitle().contains(query)) {
+				filteredTaskDoneList.add(t);
+			}
+		}
 
 		GUIModel.setTaskList(filteredTaskList);
 		GUIModel.setTaskDoneList(filteredTaskDoneList);
+		GUIModel.setEventList(filteredEventList);
+		GUIModel.setEventDoneList(filteredEventDoneList);
 		return "search successful";
 	}
 

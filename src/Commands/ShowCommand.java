@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import gui.GUIController;
 import gui.GUIModel;
 import main.Magical;
 import main.Storage;
@@ -50,36 +51,28 @@ public class ShowCommand extends Command{
 	public String execute() {
 		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
 		ArrayList<Task> taskDoneList = Magical.storage.getList(Storage.TASKS_DONE_INDEX);
+		ArrayList<Task> eventList = Magical.storage.getList(Storage.EVENTS_INDEX);
+		ArrayList<Task> eventDoneList = Magical.storage.getList(Storage.EVENTS_DONE_INDEX);
 		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
 		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
+		ArrayList<Task> filteredEventList = new ArrayList<Task>();
+		ArrayList<Task> filteredEventDoneList = new ArrayList<Task>();
 		switch (type) {
 			case "all":
 				filteredTaskList = taskList;
 				filteredTaskDoneList = taskDoneList;
+				filteredEventList = eventList;
+				filteredEventDoneList = eventDoneList;
 				break;
 			case "event":
-				for (Task t : taskList) {
-					if (t.getType().equals("event")) {
-						filteredTaskList.add(t);
-					}
-				}
-				for (Task t : taskDoneList) {
-					if (t.getType().equals("event")) {
-						filteredTaskDoneList.add(t);
-					}
-				}
+				filteredEventList = eventList;
+				filteredEventDoneList = eventDoneList;
+				GUIModel.setCurrentTab("events");
 				break;
 			case "task":
-				for (Task t : taskList) {
-					if (t.getType().equals("task")) {
-						filteredTaskList.add(t);
-					}
-				}
-				for (Task t : taskDoneList) {
-					if (t.getType().equals("task")) {
-						filteredTaskDoneList.add(t);
-					}
-				}
+				filteredTaskList = taskList;
+				filteredTaskDoneList = taskDoneList;
+				GUIModel.setCurrentTab("tasks");
 				break;
 			case "tag":
 				Set<String> queryTags = new HashSet<String>(tags);
@@ -93,12 +86,24 @@ public class ShowCommand extends Command{
 						filteredTaskDoneList.add(t);
 					}
 				}
+				for (Task t : eventList) {
+					if (t.getTags().containsAll(queryTags)) {
+						filteredEventList.add(t);
+					}
+				}
+				for (Task t : eventDoneList) {
+					if (t.getTags().containsAll(queryTags)) {
+						filteredEventDoneList.add(t);
+					}
+				}
 				break;
 			default:
 				break;
 		}
 		GUIModel.setTaskList(filteredTaskList);
 		GUIModel.setTaskDoneList(filteredTaskDoneList);
+		GUIModel.setEventList(filteredEventList);
+		GUIModel.setEventDoneList(filteredEventDoneList);
 		return "show successful";
 	}
 	
