@@ -13,7 +13,7 @@ import main.Task;
 public class ShowCommand extends Command{
 
 	private String error = STRING_EMPTY;
-	private String[] tags;
+	private ArrayList<String> tags;
 	private String type;
 	
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
@@ -25,9 +25,9 @@ public class ShowCommand extends Command{
 	public ShowCommand(String args) throws Exception{
 		super(args);
 		
-		this.argsArray = args.split(" ");
-		this.count = argsArray.length;
-		this.type = argsArray[0].trim();
+		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(" ")));
+		this.count = argsArray.size();
+		this.type = argsArray.get(0).trim();
 		this.tags = null;
 		
 		if(type.equals("")){
@@ -82,7 +82,7 @@ public class ShowCommand extends Command{
 				}
 				break;
 			case "tag":
-				Set<String> queryTags = new HashSet<String>(Arrays.asList(tags));
+				Set<String> queryTags = new HashSet<String>(tags);
 				for (Task t : taskList) {
 					if (t.getTags().containsAll(queryTags)) {
 						filteredTaskList.add(t);
