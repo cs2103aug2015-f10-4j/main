@@ -25,6 +25,8 @@ public class GUIModel {
 
 	public static ObservableList<Task> taskList;
 	public static ObservableList<Task> doneList;
+	public static ObservableList<Task> eventList;
+	public static ObservableList<Task> eventDoneList;
 
 	public static ObservableList<Task> getTaskList() {
 		return taskList;
@@ -32,6 +34,13 @@ public class GUIModel {
 
 	public static ObservableList<Task> getDoneList() {
 		return doneList;
+	}
+	public static ObservableList<Task> getEventList() {
+		return eventList;
+	}
+
+	public static ObservableList<Task> getEventDoneList() {
+		return eventDoneList;
 	}
 
 	public static void setTaskList(ArrayList<Task> newTaskList) {
@@ -42,10 +51,19 @@ public class GUIModel {
 		doneList = FXCollections.observableArrayList(newDoneList);
 	}
 
+	public static void setEventList(ArrayList<Task> newEventList) {
+		eventList = FXCollections.observableArrayList(newEventList);
+	}
+
+	public static void setEventDoneList(ArrayList<Task> newEventDoneList) {
+		eventDoneList = FXCollections.observableArrayList(newEventDoneList);
+	}
+
 	public static void init() {
 		taskList = FXCollections.observableArrayList(main.Magical.getStorage().getList(main.Storage.TASKS_INDEX));
 		doneList = FXCollections.observableArrayList(main.Magical.getStorage().getList(main.Storage.TASKS_DONE_INDEX));
-
+		eventList = FXCollections.observableArrayList(main.Magical.getStorage().getList(main.Storage.EVENTS_INDEX));
+		eventDoneList = FXCollections.observableArrayList(main.Magical.getStorage().getList(main.Storage.EVENTS_DONE_INDEX));
 	}
 
 }

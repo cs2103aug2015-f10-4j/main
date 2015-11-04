@@ -29,18 +29,29 @@ import main.Task;
 public class GUIController {
 
 	@FXML private TitledPane toDoPane;
+
+	// TASKS
 	@FXML private TableView<Task> taskTable;
-	@FXML private TableView<Task> doneTable;
 	@FXML private TableColumn<Task, String> taskIDCol;
 	@FXML private TableColumn<Task, String> taskTitleCol;
 	@FXML private TableColumn<Task, String> taskDueDateCol;
 	@FXML private TableColumn<Task, String> taskPriorityCol;
 	@FXML private TableColumn<Task, String> taskTagsCol;
+	// DONE TASKS
+	@FXML private TableView<Task> doneTable;
 	@FXML private TableColumn<Task, String> doneIDCol;
 	@FXML private TableColumn<Task, String> doneTitleCol;
 	@FXML private TableColumn<Task, String> doneDueDateCol;
 	@FXML private TableColumn<Task, String> donePriorityCol;
 	@FXML private TableColumn<Task, String> doneTagsCol;
+	// EVENTS
+	@FXML private TableView<Task> eventTable;
+	@FXML private TableColumn<Task, String> eventIDCol;
+	@FXML private TableColumn<Task, String> eventTitleCol;
+	@FXML private TableColumn<Task, String> eventDateCol;
+	@FXML private TableColumn<Task, String> eventPriorityCol;
+	@FXML private TableColumn<Task, String> eventTagsCol;
+	// DONE EVENTS
 	@FXML private Label messageLabel;
 	@FXML private TextField commandLineField;
 	@FXML private TextArea helpTextArea;

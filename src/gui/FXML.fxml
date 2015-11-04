@@ -68,9 +68,10 @@
                                        <columns>
                                           <TableColumn fx:id="taskIDCol1" prefWidth="38.0" text="ID" />
                                           <TableColumn fx:id="taskTitleCol1" prefWidth="238.0" sortable="false" text="Title" />
-                                          <TableColumn fx:id="taskDueDateCol1" prefWidth="158.0" sortable="false" text="Due Date" />
+                                          <TableColumn fx:id="taskDueDateCol1" prefWidth="158.0" sortable="false" text="Date" />
                                           <TableColumn fx:id="taskTagsCol1" prefWidth="156.0" sortable="false" text="Tags" />
                                           <TableColumn fx:id="taskPriorityCol1" prefWidth="110.0" sortable="false" text="Priority" />
+                                          <TableColumn fx:id="taskDueDateCol11" prefWidth="158.0" sortable="false" text="Date" />
                                        </columns>
                                     </TableView>
                                     <Label text="Done">
@@ -78,13 +79,13 @@
                                           <Font name="System Bold" size="20.0" />
                                        </font>
                                     </Label>
-                                    <TableView fx:id="doneTable1" layoutX="10.0" layoutY="45.0">
+                                    <TableView fx:id="eventTable" layoutX="10.0" layoutY="45.0">
                                        <columns>
-                                          <TableColumn fx:id="doneIDCol1" prefWidth="38.0" sortable="false" text="ID" />
-                                          <TableColumn fx:id="doneTitleCol1" prefWidth="238.0" sortable="false" text="Title" />
-                                          <TableColumn fx:id="doneDueDateCol1" prefWidth="158.0" sortable="false" text="Due Date" />
-                                          <TableColumn fx:id="doneTagsCol1" prefWidth="156.0" sortable="false" text="Tags" />
-                                          <TableColumn fx:id="donePriorityCol1" prefWidth="110.0" sortable="false" text="Priority" />
+                                          <TableColumn fx:id="eventIDCol" prefWidth="38.0" sortable="false" text="ID" />
+                                          <TableColumn fx:id="eventTitleCol" prefWidth="238.0" sortable="false" text="Title" />
+                                          <TableColumn fx:id="eventDateCol" prefWidth="158.0" sortable="false" text="Date" />
+                                          <TableColumn fx:id="eventTagsCol" prefWidth="156.0" sortable="false" text="Tags" />
+                                          <TableColumn fx:id="eventPriorityCol" prefWidth="110.0" sortable="false" text="Priority" />
                                        </columns>
                                     </TableView>
                                  </children>
