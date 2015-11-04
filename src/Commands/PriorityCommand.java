@@ -1,6 +1,8 @@
 package Commands;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.GUIModel;
 import main.Magical;
@@ -22,18 +24,18 @@ public class PriorityCommand extends Command{
 	public PriorityCommand(String args) throws Exception{
 		super(args);
 		
-		this.argsArray = args.split(" ", 2);
-		this.count = argsArray.length;
+		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(" ", 2)));
+		this.count = argsArray.size();
 		
 		if(validNumArgs()){
-			task = getTaskByID(argsArray[0].trim());
-			priority = getPriority(argsArray[1].trim());
+			task = getTaskByID(argsArray.get(0).trim());
+			priority = getPriority(argsArray.get(1).trim());
 			
 			if(task == null){
-				error += String.format(MESSAGE_INVALID_ID, argsArray[0].trim());
+				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
 			}
 			if(priority == -1){
-				error += String.format(MESSAGE_INVALID_PRIORITY, argsArray[1].trim());
+				error += String.format(MESSAGE_INVALID_PRIORITY, argsArray.get(1).trim());
 			}
 			if (!error.equals("")) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
@@ -59,7 +61,7 @@ public class PriorityCommand extends Command{
 		task.setPriority(priority);
 		
 		try {
-			int listIndex = Storage.getListIndex(argsArray[0]);
+			int listIndex = Storage.getListIndex(argsArray.get(0));
 			Magical.storage.delete(listIndex, prevTask);
 			Magical.storage.create(listIndex, task);
 		} catch (IOException e) {
