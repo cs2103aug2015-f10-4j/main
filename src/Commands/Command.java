@@ -207,11 +207,11 @@ public abstract class Command {
 	public static void main(String[] args) throws Exception {
 		//Command c = new DateCommand("");
 		//c.flexiParse("audgsf");
-		Span s = Chronic.parse("11:45pm");
+		Span s = Chronic.parse("");
 		System.out.println(s);
 		//System.out.println(s.getBeginCalendar().getTime());
 		//System.out.println(s.getEndCalendar().toString());
 		ExitCommand e = new ExitCommand("");
-		System.out.println(e.getDate("1158pm"));
+		System.out.println(e.getDate("next monday 3pm"));
 	}
 }

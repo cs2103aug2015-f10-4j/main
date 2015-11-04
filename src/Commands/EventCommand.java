@@ -28,9 +28,10 @@ public class EventCommand extends Command{
 	
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: \nevent title/event date/start time/end time/recurrence";
-	private static final String MESSAGE_INVALID_FLEXI = "Use format: event <title> on <date> from "
-			+ "<start time> to <end time>";
+	private static final String MESSAGE_INVALID_FLEXI = "Use format: event <title> from <start date> <start time> "
+			+ "to <end date> <end time> <recurrence>";
 	private static final String MESSAGE_INVALID_TITLE = "No Title" + "\n";
+	private static final String MESSAGE_INVALID_DATE_TIME = "%s Date/Time: %s\n(Use dd-MM-yyyy for date and 24hours format for time)";
 	private static final String MESSAGE_INVALID_DATE = "Event date: %s (Date should be dd-MM-yyyy)\n";
 	private static final String MESSAGE_INVALID_START = "Start time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
@@ -54,38 +55,71 @@ public class EventCommand extends Command{
 			}
 		} else {
 		*/
-		this.argsArray = new ArrayList<String>(Arrays.asList(args.split("(?<=\\s)to(?=\\s)|(?<=\\s)from(?=\\s)|(?<=\\s)on(?=\\s)", -1)));
+		this.argsArray = new ArrayList<String>(Arrays.asList(args.split("(?<=\\s)to(?=\\s)|(?<=\\s)from(?=\\s)", -1)));
 		for(int i = 0; i < argsArray.size(); i++){
 			argsArray.set(i, argsArray.get(i).trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
 		}
 		//}
 		this.count = argsArray.size();
 		
+		if(argsArray.size() > 1 && argsArray.get(count-1).contains(" ")){
+			while(true){
+				String last = argsArray.get(count-1).split("\\s(?=\\S+$)")[1];
+				if(getRecurrence(last) == null){
+					if(getDate(last) != null){
+						break;
+					} else {
+						argsArray.add(count, last);
+						argsArray.set(count-1, argsArray.get(count-1).split("\\s(?=\\S+$)")[0]);
+						System.out.println(argsArray);
+					}
+				} else {
+					argsArray.add(count, last);
+					argsArray.set(count-1, argsArray.get(count-1).split("\\s(?=\\S+$)")[0]);
+					break;
+				}
+			}
+		}
+		this.count = argsArray.size();
+		System.out.println(argsArray);
+		
 		for(int i = 0; i < count; i++){
 			assertNotNull(argsArray.get(i));
 		}
 		
 		//if(!isFlexi){
+
 		if(validNumArgs()){
 
 			this.title = getTitle(argsArray.get(0).trim());
 			this.dateStart = getDate(argsArray.get(1).trim());
-			this.dateEnd = getDate(argsArray.get(1).trim());
-			this.startTime = getTime(argsArray.get(2).trim());
-			this.endTime = getTime(argsArray.get(3).trim());
-			this.recurrence = getRecurrence(argsArray.get(4).trim());
+			this.dateEnd = getDate(argsArray.get(2).trim());
+			this.startTime = dateStart.getTime();
+			this.endTime = dateEnd.getTime();
+			if(count == 4){
+				this.recurrence = getRecurrence(argsArray.get(3).trim());
+			} else {
+				this.recurrence = getRecurrence(STRING_EMPTY);
+			}
 
+			CustomDate today = getDate("today");
+			if(dateEnd.getDateString().equals(today.getDateString())){
+				dateEnd.set("day", dateStart.getDay());
+				dateEnd.set("month", dateStart.getMonth());
+				dateEnd.set("year", dateStart.getYear());
+			}
 			if (title == null) {
 				error += MESSAGE_INVALID_TITLE;
 			}
-			if (dateStart == null || dateEnd == null) {
-				error +=  String.format(MESSAGE_INVALID_DATE, argsArray.get(1).trim());
+			if (dateStart == null) {
+				error += String.format(MESSAGE_INVALID_DATE_TIME, "Start", argsArray.get(1).trim());
 			}
-			if (startTime == -1) {
-				error += String.format(MESSAGE_INVALID_START, argsArray.get(2).trim());
-			}
-			if (endTime == -1) {
-				error += String.format(MESSAGE_INVALID_END, argsArray.get(3).trim());
+
+			if (dateEnd == null) {
+				error += String.format(MESSAGE_INVALID_DATE_TIME, "End", argsArray.get(2).trim());
+			} 
+			if (dateStart != null && dateEnd != null && !validDateRange()) {
+				error += "End date is earlier than start date";
 			}
 			if (recurrence == null) {
 				error += String.format(MESSAGE_INVALID_RECURRENCE, argsArray.get(4).trim());
@@ -97,7 +131,7 @@ public class EventCommand extends Command{
 			dateStart.setTime(startTime);
 			dateEnd.setTime(endTime);
 		} else {
-			error += MESSAGE_INVALID_PARAMS;
+			error += MESSAGE_INVALID_FLEXI;
 			throw new Exception(MESSAGE_HEADER_INVALID + error);
 		}
 			/*
@@ -165,11 +199,15 @@ public class EventCommand extends Command{
 	}
 	
 	public boolean validNumArgs(){
-		if(this.count != 5){
+		if(this.count != 4 && this.count != 3){
 			return false;
 		} else {
 			return true;
 		}
+	}
+	
+	public boolean validDateRange() {
+		return dateEnd.compareTo(dateStart) != -1;
 	}
 
 	@Override
@@ -211,7 +249,7 @@ public class EventCommand extends Command{
 		//EventCommand e = new EventCommand("test on 12-07-1993 from 12pm to 3pm");
 		//EventCommand e = new EventCommand("test from 12pm to 3pm on 12-07-1993");
 		//EventCommand e = new EventCommand("test on tomorrow");
-		//EventCommand e = new EventCommand("test from 12pm to 3pm");
+		EventCommand e = new EventCommand("test from next monday 12pm to next tuesday 3pm");
 		//EventCommand e = new EventCommand("test");
 	}
 

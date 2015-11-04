@@ -74,16 +74,16 @@ public class CustomDate {
 		}
 	}
 	
-	public void add(String field, int amt){
+	public void set(String field, int val){
 		switch(field){
-			case "date":
-				cal.add(Calendar.DATE, amt);
+			case "day":
+				cal.set(Calendar.DAY_OF_MONTH, val);;
 				break;
 			case "month":
-				cal.add(Calendar.MONTH, amt);
+				cal.set(Calendar.MONTH, val);
 				break;
 			case "year":
-				cal.add(Calendar.YEAR, amt);
+				cal.set(Calendar.YEAR, val);
 				break;
 			default:
 				break;
