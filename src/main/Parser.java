@@ -21,8 +21,6 @@ public class Parser {
 	private static final String CMD_ADD = "add";
 	private static final String CMD_DELETE = "delete";
 	private static final String CMD_UNDO = "undo";
-	private static final String CMD_BLOCK = "block";
-	private static final String CMD_CONFIRM = "confirm";
 	private static final String CMD_DATE = "date";
 	private static final String CMD_DONE = "done";
 	private static final String CMD_HELP = "help";
@@ -68,8 +66,6 @@ public class Parser {
 		switch (command) {
 			case CMD_ADD:
 				return new AddCommand(args);
-			case CMD_BLOCK:
-				return new BlockCommand(args);
 			case CMD_EDIT:
 				return new EditCommand(args);
 			case CMD_SEARCH:
