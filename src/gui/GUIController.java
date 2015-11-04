@@ -21,6 +21,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import main.Magical;
 import main.Task;
@@ -44,13 +45,17 @@ public class GUIController {
 	@FXML private TextField commandLineField;
 	@FXML private TextArea helpTextArea;
 
-	private void initialize() throws Exception {
+	public void initialize() throws Exception {
 
 		main.Magical.init();
 		GUIModel.init();
 
 		taskTable.setItems(FXCollections.observableArrayList(GUIModel.taskList));
 		doneTable.setItems(FXCollections.observableArrayList(GUIModel.doneList));
+
+		/*
+		 * TASK TABLE
+		 */
 
 		taskIDCol.setCellFactory(col -> {
 		    TableCell<Task, String> cell = new TableCell<>();
@@ -79,6 +84,16 @@ public class GUIController {
 
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+
+		/*
+		 * EVENT TABLE
+		 */
+
+
+
+		/*
+		 * DONE TASKS TABLE
+		 */
 
 		doneIDCol.setCellFactory(col -> {
 		    TableCell<Task, String> cell = new TableCell<>();
@@ -109,6 +124,7 @@ public class GUIController {
 		donePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 
 		Platform.runLater(new Runnable() {
+			@Override
 		    public void run() {
 		        commandLineField.requestFocus();
 		    }
@@ -116,20 +132,24 @@ public class GUIController {
 
 	}
 
-	public void requestCommandLineFocus() {
-		commandLineField.requestFocus();
-	}
-
 
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {
 		if (event.getCode() == KeyCode.ENTER) {
 			String userInput = commandLineField.getText();
-			String message = Magical.parseCommand(userInput);
-			messageLabel.setText(message);
-			taskTable.setItems(GUIModel.getTaskList());
-			doneTable.setItems(GUIModel.getDoneList());
-			commandLineField.clear();
+//			try {
+				messageLabel.setTextFill(Color.web("#0000ff"));
+				String message = main.Magical.parseCommand(userInput);
+				messageLabel.setText(message);
+				taskTable.setItems(GUIModel.getTaskList());
+				doneTable.setItems(GUIModel.getDoneList());
+				commandLineField.clear();
+//			} catch (Exception e) {
+//				messageLabel.setTextFill(Color.web("#ff0000"));
+//				System.out.println(e.getMessage());
+//				messageLabel.setText(e.getMessage());
+//			}
+
 		}
 		if (GUIModel.showHelpWindow) {
 			Stage helpStage = new Stage();

@@ -42,8 +42,8 @@ public class GUIModel {
 	}
 
 	public static void init() {
-		taskList = FXCollections.observableArrayList(Magical.getStorage().getList(Storage.TASKS_INDEX));
-		doneList = FXCollections.observableArrayList(Magical.getStorage().getList(Storage.TASKS_DONE_INDEX));
+		taskList = FXCollections.observableArrayList(main.Magical.getStorage().getList(main.Storage.TASKS_INDEX));
+		doneList = FXCollections.observableArrayList(main.Magical.getStorage().getList(main.Storage.TASKS_DONE_INDEX));
 
 	}
 

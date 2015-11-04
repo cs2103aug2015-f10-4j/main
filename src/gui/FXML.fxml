@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="mainPane" focusTraversable="true" prefHeight="719.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
+<AnchorPane fx:id="mainPane" focusTraversable="true" prefHeight="784.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
    <children>
-      <VBox fillWidth="false" prefHeight="719.0" prefWidth="1026.0" spacing="5.0">
+      <VBox fillWidth="false" prefHeight="719.0" prefWidth="1026.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
           <TitledPane fx:id="toDoPane" collapsible="false" focusTraversable="false" maxHeight="1.7976931348623157E308" prefHeight="470.0" prefWidth="1016.0" text="To-Do">
             <content>
@@ -51,7 +51,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </TitledPane>
-            <Label fx:id="messageLabel" focusTraversable="false" prefHeight="21.0" prefWidth="1055.0" />
+            <Label fx:id="messageLabel" focusTraversable="false" prefHeight="35.0" prefWidth="1016.0" wrapText="true" />
             <TextField fx:id="commandLineField" onKeyPressed="#onEnterPressed" prefHeight="31.0" prefWidth="1019.0" />
          </children>
          <padding>

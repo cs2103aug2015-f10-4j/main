@@ -56,9 +56,11 @@ public class Magical {
 			}
 		}
 	}
-	
+
 	private static void pushUndoLayer() {
-		ArrayList<Task> prevTasksList = listClone(storage.getList(Storage.TASKS_INDEX));
+		int n = Storage.TASKS_INDEX;
+		ArrayList<Task> t = storage.getList(n);
+		ArrayList<Task> prevTasksList = listClone(t);
 		ArrayList<Task> prevTasksDoneList = listClone(storage.getList(Storage.TASKS_DONE_INDEX));
 		ArrayList<Task> prevEventsList = listClone(storage.getList(Storage.EVENTS_INDEX));
 		ArrayList<Task> prevEventsDoneList = listClone(storage.getList(Storage.EVENTS_DONE_INDEX));
