@@ -104,9 +104,12 @@ public class Storage {
 		try {
 			output = new FileOutputStream(SETTINGS_FILE_PATH);
 			moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
+			
+			// save new properties to project root folder
 			newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
 			prop.setProperty("filePath", newFilePath);
-			prop.store(output, null); // save properties to project root folder
+			prop.store(output, null);
+			
 			moveFile(oldFilePath, newFilePath);
 
 		} catch (IOException io) {
@@ -139,9 +142,9 @@ public class Storage {
 	    	    byte[] buffer = new byte[1024];
 	    		
 	    	    int length;
-	    	    //copy the file content in bytes 
+
 	    	    while ((length = inStream.read(buffer)) > 0){
-	    	    	outStream.write(buffer, 0, length);
+	    	    	outStream.write(buffer, 0, length); // copy file contents over
 	    	    }
 	    	 
 	    	    inStream.close();
@@ -157,7 +160,6 @@ public class Storage {
 	
 	private void initFile() {
 
-		// file = new File(DEFAULT_FILE_NAME);
 		mapper.setDateFormat(dateFormat);
 
 		if ( !(file.exists()) ) {
