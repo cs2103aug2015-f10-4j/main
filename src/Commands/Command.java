@@ -92,14 +92,12 @@ public abstract class Command {
 	}
 
 	protected CustomDate getDate(String date)  {
-		Pattern pattern= Pattern.compile(".*\\d{4}(pm|am).*");
+		Pattern pattern= Pattern.compile(".*\\d{4}.*");
 		Matcher m = pattern.matcher(date);
 		if(m.find()){
 			String s = m.group(0);
 			date = date.replaceAll(s, s.substring(0, 2)+":"+s.substring(2,s.length()));
 		}
-
-		date = date.replaceAll("12(?=[0-9][0-9])", "12:");
 		date = date.replaceAll("(?<=[0-9]+).(?=[0-9])+", ":");
 		Span s = Chronic.parse(date);
 		if(s == null){
@@ -214,6 +212,6 @@ public abstract class Command {
 		//System.out.println(s.getBeginCalendar().getTime());
 		//System.out.println(s.getEndCalendar().toString());
 		ExitCommand e = new ExitCommand("");
-		System.out.println(e.getDate("1158pm monday"));
+		System.out.println(e.getDate("1158pm"));
 	}
 }
