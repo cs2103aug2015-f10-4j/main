@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
@@ -90,6 +92,15 @@ public abstract class Command {
 	}
 
 	protected CustomDate getDate(String date)  {
+		Pattern pattern= Pattern.compile(".*\\d{4}(pm|am).*");
+		Matcher m = pattern.matcher(date);
+		if(m.find()){
+			String s = m.group(0);
+			date = date.replaceAll(s, s.substring(0, 2)+":"+s.substring(2,s.length()));
+		}
+
+		date = date.replaceAll("12(?=[0-9][0-9])", "12:");
+		date = date.replaceAll("(?<=[0-9]+).(?=[0-9])+", ":");
 		Span s = Chronic.parse(date);
 		if(s == null){
 			return null;
@@ -198,9 +209,11 @@ public abstract class Command {
 	public static void main(String[] args) throws Exception {
 		//Command c = new DateCommand("");
 		//c.flexiParse("audgsf");
-		Span s = Chronic.parse("21/01");
+		Span s = Chronic.parse("11:45pm");
 		System.out.println(s);
-		System.out.println(s.getBeginCalendar().getTime());
-		System.out.println(s.getEndCalendar().toString());
+		//System.out.println(s.getBeginCalendar().getTime());
+		//System.out.println(s.getEndCalendar().toString());
+		ExitCommand e = new ExitCommand("");
+		System.out.println(e.getDate("1158pm monday"));
 	}
 }

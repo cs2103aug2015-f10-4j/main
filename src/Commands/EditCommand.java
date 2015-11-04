@@ -48,7 +48,7 @@ public class EditCommand extends Command{
 		for(int i = 0; i < argsArray.size(); i++){
 			argsArray.set(i, argsArray.get(i).trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
 		}
-
+		System.out.println(argsArray);
 		if(validNumArgs()){
 			this.task = getTaskByID(argsArray.get(0).trim());
 			this.field = argsArray.get(1).trim();

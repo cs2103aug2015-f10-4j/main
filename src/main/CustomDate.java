@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class CustomDate {
 
-	private static final String DATE_FORMAT = "%d on %d %s %s, %s";
+	private static final String DATE_FORMAT = "%04d on %d %s %s, %s";
 
 	private static String[] dayArray = {"Sunday", "Monday", "Tuesday", "Wednesday",
 			"Thursday", "Friday", "Saturday"};
@@ -26,6 +26,7 @@ public class CustomDate {
 	public String toString() {
 		String day = dayArray[cal.get(Calendar.DAY_OF_WEEK)-1];
 		String month = monthArray[getMonth()];
+		System.out.println("TIME: " + getTime());
 		return String.format(DATE_FORMAT, getTime(), getDay(), month, getYear(), day);
 	}
 	

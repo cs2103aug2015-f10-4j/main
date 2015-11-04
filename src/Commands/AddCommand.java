@@ -78,7 +78,6 @@ public class AddCommand extends Command{
 		this.count = argsArray.size();
 		this.isFloat = false;
 
-		//if(!isFlexi){
 		if(validNumArgs()){
 
 			this.title = getTitle(argsArray.get(0).trim());
