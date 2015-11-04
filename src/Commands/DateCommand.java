@@ -104,7 +104,7 @@ public class DateCommand extends Command {
 			}
 		}
 		GUIModel.setTaskList(filteredTaskList);
-		GUIModel.setDoneList(filteredTaskDoneList);
+		GUIModel.setTaskDoneList(filteredTaskDoneList);
 		return "date command successful";
 	}
 

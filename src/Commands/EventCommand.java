@@ -231,7 +231,7 @@ public class EventCommand extends Command{
 			return MESSAGE_EVENT_ERROR;
 		} finally {
 			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 	}
 

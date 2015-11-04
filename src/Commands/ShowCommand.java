@@ -98,7 +98,7 @@ public class ShowCommand extends Command{
 				break;
 		}
 		GUIModel.setTaskList(filteredTaskList);
-		GUIModel.setDoneList(filteredTaskDoneList);
+		GUIModel.setTaskDoneList(filteredTaskDoneList);
 		return "show successful";
 	}
 	

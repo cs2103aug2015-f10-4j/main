@@ -11,6 +11,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -38,12 +41,12 @@ public class GUIController {
 	@FXML private TableColumn<Task, String> taskPriorityCol;
 	@FXML private TableColumn<Task, String> taskTagsCol;
 	// DONE TASKS
-	@FXML private TableView<Task> doneTable;
-	@FXML private TableColumn<Task, String> doneIDCol;
-	@FXML private TableColumn<Task, String> doneTitleCol;
-	@FXML private TableColumn<Task, String> doneDueDateCol;
-	@FXML private TableColumn<Task, String> donePriorityCol;
-	@FXML private TableColumn<Task, String> doneTagsCol;
+	@FXML private TableView<Task> taskDoneTable;
+	@FXML private TableColumn<Task, String> taskDoneIDCol;
+	@FXML private TableColumn<Task, String> taskDoneTitleCol;
+	@FXML private TableColumn<Task, String> taskDoneDueDateCol;
+	@FXML private TableColumn<Task, String> taskDonePriorityCol;
+	@FXML private TableColumn<Task, String> taskDoneTagsCol;
 	// EVENTS
 	@FXML private TableView<Task> eventTable;
 	@FXML private TableColumn<Task, String> eventIDCol;
@@ -52,6 +55,17 @@ public class GUIController {
 	@FXML private TableColumn<Task, String> eventPriorityCol;
 	@FXML private TableColumn<Task, String> eventTagsCol;
 	// DONE EVENTS
+	@FXML private TableView<Task> eventDoneTable;
+	@FXML private TableColumn<Task, String> eventDoneIDCol;
+	@FXML private TableColumn<Task, String> eventDoneTitleCol;
+	@FXML private TableColumn<Task, String> eventDoneDateCol;
+	@FXML private TableColumn<Task, String> eventDonePriorityCol;
+	@FXML private TableColumn<Task, String> eventDoneTagsCol;
+
+	// Controls
+	@FXML private TabPane tabPane;
+	@FXML private Tab taskTab;
+	@FXML private Tab eventTab;
 	@FXML private Label messageLabel;
 	@FXML private TextField commandLineField;
 	@FXML private TextArea helpTextArea;
@@ -61,8 +75,10 @@ public class GUIController {
 		main.Magical.init();
 		GUIModel.init();
 
-		taskTable.setItems(FXCollections.observableArrayList(GUIModel.taskList));
-		doneTable.setItems(FXCollections.observableArrayList(GUIModel.doneList));
+		taskTable.setItems(GUIModel.getTaskList());
+		taskDoneTable.setItems(GUIModel.getTaskDoneList());
+		eventTable.setItems(GUIModel.getEventList());
+		eventDoneTable.setItems(GUIModel.getEventDoneList());
 
 		/*
 		 * TASK TABLE
@@ -100,24 +116,18 @@ public class GUIController {
 		/*
 		 * EVENT TABLE
 		 */
-
-
-
-		/*
-		 * DONE TASKS TABLE
-		 */
-
-		doneIDCol.setCellFactory(col -> {
+		eventIDCol.setCellFactory(col -> {
 		    TableCell<Task, String> cell = new TableCell<>();
 		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
 		        .then("")
-		        .otherwise(Bindings.concat("d", cell.indexProperty().add(1).asString())));
-		    return cell;
+		        .otherwise(Bindings.concat("e", cell.indexProperty().add(1).asString())));
+		    return cell ;
 		});
 
-		doneTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
 
-		doneTagsCol.setCellValueFactory(col -> {
+		eventTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+
+		eventTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
 			String result = "";
 			Set<String> tagSet = col.getValue().getTags();
@@ -132,8 +142,73 @@ public class GUIController {
 			return finalResult;
 		});
 
-		doneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
-		donePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+		eventDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
+		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+
+
+		/*
+		 * DONE TASKS TABLE
+		 */
+
+		taskDoneIDCol.setCellFactory(col -> {
+		    TableCell<Task, String> cell = new TableCell<>();
+		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
+		        .then("")
+		        .otherwise(Bindings.concat("d", cell.indexProperty().add(1).asString())));
+		    return cell;
+		});
+
+		taskDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+
+		taskDoneTagsCol.setCellValueFactory(col -> {
+			SimpleStringProperty finalResult = new SimpleStringProperty();
+			String result = "";
+			Set<String> tagSet = col.getValue().getTags();
+			if (!tagSet.isEmpty()) {
+				Iterator<String> iterator = tagSet.iterator();
+				while (iterator.hasNext()) {
+					result += iterator.next() + ", ";
+				}
+				result = result.substring(0, result.lastIndexOf(","));
+			}
+			finalResult.setValue(result);
+			return finalResult;
+		});
+
+		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
+		taskDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+
+		/*
+		 * DONE EVENTS TABLE
+		 */
+
+		eventDoneIDCol.setCellFactory(col -> {
+		    TableCell<Task, String> cell = new TableCell<>();
+		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
+		        .then("")
+		        .otherwise(Bindings.concat("p", cell.indexProperty().add(1).asString())));
+		    return cell;
+		});
+
+		eventDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+
+		eventDoneTagsCol.setCellValueFactory(col -> {
+			SimpleStringProperty finalResult = new SimpleStringProperty();
+			String result = "";
+			Set<String> tagSet = col.getValue().getTags();
+			if (!tagSet.isEmpty()) {
+				Iterator<String> iterator = tagSet.iterator();
+				while (iterator.hasNext()) {
+					result += iterator.next() + ", ";
+				}
+				result = result.substring(0, result.lastIndexOf(","));
+			}
+			finalResult.setValue(result);
+			return finalResult;
+		});
+
+		eventDoneDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
+		eventDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 
 		Platform.runLater(new Runnable() {
 			@Override
@@ -142,6 +217,16 @@ public class GUIController {
 		    }
 		});
 
+	}
+
+	public void switchToTab(String type) {
+		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+		if (type == "tasks") {
+			selectionModel.select(taskTab);
+		} else if (type == "events") {
+			selectionModel.select(eventTab);
+		}
+		return;
 	}
 
 
@@ -154,7 +239,7 @@ public class GUIController {
 				String message = main.Magical.parseCommand(userInput);
 				messageLabel.setText(message);
 				taskTable.setItems(GUIModel.getTaskList());
-				doneTable.setItems(GUIModel.getDoneList());
+				taskDoneTable.setItems(GUIModel.getTaskDoneList());
 				commandLineField.clear();
 			} catch (Exception e) {
 				messageLabel.setTextFill(Color.web("#ff0000"));

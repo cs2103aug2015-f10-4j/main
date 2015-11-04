@@ -69,7 +69,7 @@ public class TagCommand extends Command {
 			return "unable to add tag to task";
 		} finally {
 			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 
 		return tag + " added to task";

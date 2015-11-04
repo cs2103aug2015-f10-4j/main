@@ -58,7 +58,7 @@ public class DoneCommand extends Command{
 			return "unable to archive task";
 		} finally {
 			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 
 		return "task archived";

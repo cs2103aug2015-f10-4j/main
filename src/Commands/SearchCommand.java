@@ -50,7 +50,7 @@ public class SearchCommand extends Command {
 		}
 
 		GUIModel.setTaskList(filteredTaskList);
-		GUIModel.setDoneList(filteredTaskDoneList);
+		GUIModel.setTaskDoneList(filteredTaskDoneList);
 		return "search successful";
 	}
 

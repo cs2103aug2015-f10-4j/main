@@ -26,7 +26,7 @@ public class TagCommandTests {
 			testList.add(new Task());
 		}
 		GUIModel.setTaskList(testList);
-		GUIModel.setDoneList(testList);
+		GUIModel.setTaskDoneList(testList);
 	}
 	
 	@Test

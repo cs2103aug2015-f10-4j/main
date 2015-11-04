@@ -58,7 +58,7 @@ public class UndoneCommand extends Command{
 			return "unable to un-archive task";
 		} finally {
 			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 
 		return "task un-archived";

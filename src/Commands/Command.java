@@ -53,7 +53,7 @@ public abstract class Command {
 		}
 		return swappedDate;
 	}
-	
+
 	protected RecurrencePeriod getRecurrence(String recurrence) {
 		String r = recurrence.toLowerCase();
 		switch (r) {
@@ -141,7 +141,11 @@ public abstract class Command {
 		if (type.equalsIgnoreCase("t")) {
 			return GUIModel.taskList.get(index);
 		} else if (type.equalsIgnoreCase("d")) {
-			return GUIModel.doneList.get(index);
+			return GUIModel.taskDoneList.get(index);
+		} else if (type.equalsIgnoreCase("e")) {
+			return GUIModel.eventList.get(index);
+		} else if (type.equalsIgnoreCase("p")) {
+			return GUIModel.eventDoneList.get(index);
 		} else {
 			return null;
 		}
@@ -173,7 +177,7 @@ public abstract class Command {
 			return true;
 		}
 	}
-	
+
 	protected Date flexiParse(Calendar cal) {
 		Parser p = new Parser();
 		List<DateGroup> date = p.parse((cal.get(Calendar.MONTH)+1)
@@ -203,7 +207,7 @@ public abstract class Command {
 	public boolean isUndoable(){
 		return true;
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		//Command c = new DateCommand("");
 		//c.flexiParse("audgsf");

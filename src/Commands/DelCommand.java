@@ -57,7 +57,7 @@ public class DelCommand extends Command{
 			return "unable to delete task";
 		} finally {
 			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
 		}
 	}
 	

@@ -28,7 +28,7 @@ public class DoneCommandTests {
 			testList.add(new Task());
 		}
 		GUIModel.setTaskList(testList);
-		GUIModel.setDoneList(testList);
+		GUIModel.setTaskDoneList(testList);
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class DoneCommandTests {
 	@After
 	public void tearDown() {
 		GUIModel.taskList = null;
-		GUIModel.doneList = null;
+		GUIModel.taskDoneList = null;
 	}
 
 }
