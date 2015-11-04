@@ -6,14 +6,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import main.CustomDate;
+
 public class BlockCommand extends Command{
 
 	private String type;
 	private String title;
-	private ArrayList<Date> dates;
+	private ArrayList<CustomDate> dates;
 	private String error = STRING_EMPTY;
-	private Date startD;
-	private Date endD;
+	private CustomDate startD;
+	private CustomDate endD;
 	private boolean isRange;
 	
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
@@ -33,6 +35,7 @@ public class BlockCommand extends Command{
 	public BlockCommand(String args) throws Exception {
 		super(args);
 		
+		/*
 		isFlexi = !args.contains("/") || !args.replace("\\/", STRING_EMPTY).contains("/");
 		if(!isFlexi){
 			this.argsArray = args.split("(?<![\\\\])/", -1);
@@ -44,45 +47,48 @@ public class BlockCommand extends Command{
 
 			}
 			isRange = args.contains("//");
-		} else {
-			isRange = args.contains("from")||args.contains("to")||args.contains("till");
-			if(isRange){
-				String[] tempArray = args.split(" ", 3)[2].split("(?<=\\s)to(?=\\s)"
-											+ "|(?<=\\s)from(?=\\s)"
-											+ "|(?<=\\s)till(?=\\s)", -1);
-				this.argsArray = new String[2+tempArray.length];
-				argsArray[0] = args.split(" ", 2)[0];
-				argsArray[1] = args.split(" ", 3)[1];
-				System.arraycopy(tempArray, 0, argsArray, 2, tempArray.length);
-			} else {
-				this.argsArray = args.split(" ");
-			}
 			
-			for(int i = 0; i < argsArray.length; i++){
-				argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY);
-			}
+		} else {
+		*/
+		isRange = args.contains("from")||args.contains("to")||args.contains("till");
+		System.out.println(isRange);
+		if(isRange){
+			String[] tempArray = args.split(" ", 3)[2].split("\\sto\\s"
+										+ "|\\sfrom\\s"
+										+ "|\\still\\s", -1);
+			this.argsArray = new ArrayList<String>(Arrays.asList(tempArray));
+			argsArray.add(0, args.split(" ", 2)[0]); 
+			argsArray.add(1,  args.split(" ", 3)[1]);
+		} else {
+			this.argsArray =  new ArrayList<String>(Arrays.asList(args.split(" ")));
+		}
+		System.out.println(argsArray);
+		
+		for(int i = 0; i < argsArray.size(); i++){
+			argsArray.set(i, argsArray.get(i).trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
 		}
 		
-		this.count = argsArray.length;
-		this.dates = new ArrayList<Date>();
+		this.count = argsArray.size();
+		this.dates = new ArrayList<CustomDate>();
 		
+		/*
 		if(!isFlexi){
 			if(validNumArgs()){
 			
-				this.type = getType(argsArray[0].trim());
-				this.title = getTitle(argsArray[1].trim());
+				this.type = getType(argsArray.get(0).trim());
+				this.title = getTitle(argsArray.get(1).trim());
 				
 				if (type == null) {
-					error += String.format(MESSAGE_INVALID_TYPE, argsArray[0].trim());
+					error += String.format(MESSAGE_INVALID_TYPE, argsArray.get(0).trim());
 				}
 				if (title == null) {
 					error += MESSAGE_INVALID_TITLE;
 				}
 
 				if(isRange){
-					if(argsArray.length == 5){
-						this.startD = getDate(argsArray[2].trim());
-						this.endD = getDate(argsArray[4].trim());
+					if(count == 5){
+						this.startD = getDate(argsArray.get(2).trim());
+						this.endD = getDate(argsArray.get(4).trim());
 	
 						if (startD == null) {
 							error +=  String.format(MESSAGE_INVALID_SDATE, argsArray[2].trim());
@@ -121,55 +127,54 @@ public class BlockCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		} else {
-			if(validNumArgs()){
-				if(isRange){
-					this.startD = getDate(argsArray[2].trim());
-					this.endD = getDate(argsArray[3].trim());
-					if(startD == null){
-						startD = flexiParse(argsArray[2].trim());
-					}
-					if(endD == null){
-						endD = flexiParse(argsArray[3].trim());
-					}
+		//*/
+		if(validNumArgs()){
+			if(isRange){
+				this.startD = getDate(argsArray.get(2).trim());
+				this.endD = getDate(argsArray.get(3).trim());
+				
+				if(startD == null){
+					error += String.format(MESSAGE_INVALID_SDATE, argsArray.get(2).trim());
+				}
+				if(endD == null){
+					error += String.format(MESSAGE_INVALID_EDATE, argsArray.get(3).trim());
+				}
+				if(startD != null && endD != null){
 					if(validDateRange()){
 						this.dates = getDateRange(startD, endD);
 					} else {
 						error += "End date is earlier than start date";
-						throw new Exception(MESSAGE_HEADER_INVALID + error);
-					}
-				} else {
-					for(int i = 2; i < argsArray.length; i++){
-						String currDate = argsArray[i].trim();
-						Date dateToAdd = getDate(currDate);
-						if(dateToAdd == null){
-							dateToAdd = flexiParse(currDate);
-							dates.add(dateToAdd);
-						} else {
-							dates.add(dateToAdd);
-						}
 					}
 				}
+				if (!error.equals(STRING_EMPTY)) {
+					throw new Exception(MESSAGE_HEADER_INVALID + error);
+				}
 			} else {
-				error += MESSAGE_INVALID_FLEXI;
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
+				for(int i = 2; i < count; i++){
+					String currDate = argsArray.get(i).trim();
+					CustomDate dateToAdd = getDate(currDate);
+					dates.add(dateToAdd);
+				}
 			}
+			System.out.println(dates);
+		} else {
+			error += MESSAGE_INVALID_FLEXI;
+			throw new Exception(MESSAGE_HEADER_INVALID + error);
 		}
+		
 	}
 
-	private ArrayList<Date> getDateRange(Date startD, Date endD) {
-		ArrayList<Date> range = new ArrayList<Date>();
+	private ArrayList<CustomDate> getDateRange(CustomDate start, CustomDate end) {
+		ArrayList<CustomDate> range = new ArrayList<CustomDate>();
 		try {
-			range.add(startD);
-			Calendar c = new GregorianCalendar();
-			c.setTime(startD);
-			c.add(Calendar.DATE, 1);
-
-			while (c.getTime().before(endD)) {
-				Date result = c.getTime();
-				range.add(result);
-				c.add(Calendar.DATE, 1);
+			range.add(start);
+			start.add("date", 1);
+			
+			while (start.compareTo(end) == 1) {
+				range.add(start);
+				start.add("date", 1);
 			}
-			range.add(endD);
+			range.add(end);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -180,7 +185,7 @@ public class BlockCommand extends Command{
 	
 	
 	public boolean validDateRange() {
-		return endD.after(startD);
+		return endD.compareTo(startD) != -1;
 	}
 	
 	public boolean validNumArgs(){
@@ -198,6 +203,6 @@ public class BlockCommand extends Command{
 	public static void main(String[] args) throws Exception {
 		//BlockCommand b1 = new BlockCommand("");
 		BlockCommand b2 = new BlockCommand("event test monday tuesday wednesday");
-		BlockCommand b3 = new BlockCommand("task test 01-12-12 to 12-12-12");
+		BlockCommand b3 = new BlockCommand("task test 01-1a2-12 to 12-12-12a");
 	}
 }
