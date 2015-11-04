@@ -63,13 +63,12 @@ public class Storage {
 		String filePath = DEFAULT_FILE_PATH;
 
 		try {
-
 			input = new FileInputStream(SETTINGS_FILE_NAME);
 			prop.load(input);
 			filePath = prop.getProperty("filePath");
 
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			return null;
 		}
 		
 		return filePath;
