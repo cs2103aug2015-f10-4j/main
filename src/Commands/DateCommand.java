@@ -1,8 +1,10 @@
 package Commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
+import main.CustomDate;
 import main.GUIModel;
 import main.Magical;
 import main.Storage;
@@ -11,8 +13,8 @@ import main.Task;
 public class DateCommand extends Command {
 
 	
-	private Date startDate;
-	private Date endDate;
+	private CustomDate startDate;
+	private CustomDate endDate;
 
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: date <start date> <end date>";
@@ -21,24 +23,36 @@ public class DateCommand extends Command {
 	public DateCommand(String args) throws Exception {
 		super(args);
 		
-		this.argsArray = args.split("(?<!next)\\s", 2);
-		this.count = argsArray.length;
+		this.argsArray = new ArrayList(Arrays.asList(args.split("\\s")));
+		
+		System.out.println(argsArray);
+		
+		//checking if the 2 consecutive elements belong together as a date
+		if(argsArray.size() > 1){	
+			int i = 0;
+			while(i+1 < argsArray.size()){
+				
+				if(getDate(argsArray.get(i))== null && getDate(argsArray.get(i+1))!= null){
+					argsArray.set(i, argsArray.get(i) + " " + argsArray.get(i+1));
+					argsArray.remove(i + 1);
+				}
+				i++;
+				System.out.println(argsArray);
+			}
+		}
+		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			String start = argsArray[0].trim();
-			String end = count == 2 ? argsArray[1].trim() : STRING_EMPTY;
+			String start = argsArray.get(0).trim();
+			String end = count == 2 ? argsArray.get(1).trim() : STRING_EMPTY;
 			
-			if(!needsFlexi(start)){
-				startDate = start.equals(STRING_EMPTY) ? new Date(Long.MIN_VALUE) : getDate(start);	
-			} else {
-				startDate = flexiParse(start);
-			}
-
-			if(end.isEmpty() || !needsFlexi(end)){
-				endDate = end.equals(STRING_EMPTY) ? new Date(Long.MAX_VALUE) : getDate(end);
-			} else {
-				endDate = flexiParse(end);
-			}
+			
+			startDate = start.equals(STRING_EMPTY) 
+					? new CustomDate(new Date(0)) 
+					: getDate(start);	
+			endDate = end.equals(STRING_EMPTY) 
+					? new CustomDate(new Date(Long.MAX_VALUE)) 
+					: getDate(end);
 			
 			if (startDate == null) {
 				error += String.format(MESSAGE_INVALID_DATE, "Start", start);
@@ -47,7 +61,8 @@ public class DateCommand extends Command {
 			if (endDate == null) {
 				error += String.format(MESSAGE_INVALID_DATE, "End", end);
 			} 
-
+			//System.out.println(startDate.toString());
+			//System.out.println(endDate.toString());
 			if (startDate != null && endDate != null && !validDateRange()) {
 				error += "End date is earlier than start date";
 			}
@@ -70,7 +85,7 @@ public class DateCommand extends Command {
 	}
 
 	public boolean validDateRange() {
-		return endDate.after(startDate);
+		return endDate.compareTo(startDate) != -1;
 	}
 
 	public String execute() {
@@ -100,10 +115,11 @@ public class DateCommand extends Command {
 	
 	public static void main(String[] args) throws Exception {
 		//DateCommand d = new DateCommand("");
-		//DateCommand d = new DateCommand("29-01-93");
-		//DateCommand d = new DateCommand("29-01-93 28-01-92");
-		//DateCommand d = new DateCommand("29-01-93 28-01-94");
-		//DateCommand d = new DateCommand("29-01-93 28-01-9a2");
-		//DateCommand d = new DateCommand("2a9-01-93 28-01-92");
+		//DateCommand d1 = new DateCommand("29-01-93");
+		//DateCommand d2 = new DateCommand("29-01-93 28-01-92");
+		//DateCommand d3 = new DateCommand("29-01-93 28-01-94");
+		//DateCommand d4 = new DateCommand("29-01-93 28-01-9a2");
+		//DateCommand d5 = new DateCommand("next monday next tuesday next wednesday next following thursday");
+		//DateCommand d6 = new DateCommand("22a-09-94 22-09-1993");
 	}
 }
