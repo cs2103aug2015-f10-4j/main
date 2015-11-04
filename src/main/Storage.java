@@ -25,23 +25,35 @@ public class Storage {
 	public static final int TASKS_DONE_INDEX = 1;
 	public static final int EVENTS_INDEX = 2;
 	public static final int EVENTS_DONE_INDEX = 3;
-	private static final String DEFAULT_FILE_PATH = "storage.txt";
+	// private static final String DEFAULT_FILE_PATH = "storage.txt";
+	
+	private static final String DEFAULT_FILE_DIRECTORY = "magical";
+	private static final String DEFAULT_FILE_NAME = "storage.txt";
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
-	private static File file;
+	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + SETTINGS_FILE_NAME;
+	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
+	
+	
 	private List<ArrayList<Task>> lists;
 	ObjectMapper mapper = new ObjectMapper();
 	private static SimpleDateFormat dateFormat = 
 			new SimpleDateFormat("dd MMM yyyy");
-
+	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
+	private static File defaultPropertiesFile = new File(SETTINGS_FILE_PATH);
+	private static File file =  new File(DEFAULT_FILE_PATH);
+	
 	public Storage () {
 		
 		Properties prop = new Properties();
 		OutputStream output = null;
 		
+		createFolder();
+		
 		String storedFilePath = readFileSettings();
-		if (storedFilePath == null) {
+		System.out.println(storedFilePath);
+		if (storedFilePath == null) { // if properties file is empty, create properties file
 			try {
-				output = new FileOutputStream(SETTINGS_FILE_NAME);
+				output = new FileOutputStream(SETTINGS_FILE_PATH);
 				prop.setProperty("filePath", DEFAULT_FILE_PATH);
 				prop.store(output, null); // save properties to project root folder
 				initFile();
@@ -50,12 +62,25 @@ public class Storage {
 				io.printStackTrace();
 			}
 		} else {
+			file = new File(storedFilePath);
 			initFile();
 		}
 
 	}
 	
-	// returns String of fileName read
+	private static boolean createFolder() {
+		try {
+			if (!newFolder.exists()) {
+				newFolder.mkdir();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	// returns String of filePath read
 	private String readFileSettings() {
 		
 		Properties prop = new Properties();
@@ -63,7 +88,7 @@ public class Storage {
 		String filePath = DEFAULT_FILE_PATH;
 
 		try {
-			input = new FileInputStream(SETTINGS_FILE_NAME);
+			input = new FileInputStream(SETTINGS_FILE_PATH);
 			prop.load(input);
 			filePath = prop.getProperty("filePath");
 
@@ -83,13 +108,27 @@ public class Storage {
 		
 		String oldFilePath = readFileSettings();
 		try {
-			output = new FileOutputStream(SETTINGS_FILE_NAME);
+			output = new FileOutputStream(SETTINGS_FILE_PATH);
+			moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
+			newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
 			prop.setProperty("filePath", newFilePath);
 			prop.store(output, null); // save properties to project root folder
 			moveFile(oldFilePath, newFilePath);
 
 		} catch (IOException io) {
 			io.printStackTrace();
+		}
+	}
+	
+	private void moveFolder(String newFilePath) {
+		File file = new File(newFilePath);
+		
+		// System.out.println(file.exists());
+		
+		if (!file.exists()) {
+			file = new File(newFilePath);
+			// System.out.println(file.getPath());
+			file.mkdir();
 		}
 	}
 	
@@ -111,9 +150,7 @@ public class Storage {
 	    	    int length;
 	    	    //copy the file content in bytes 
 	    	    while ((length = inStream.read(buffer)) > 0){
-	    	  
 	    	    	outStream.write(buffer, 0, length);
-	    	 
 	    	    }
 	    	 
 	    	    inStream.close();
@@ -128,10 +165,8 @@ public class Storage {
 	}
 	
 	private void initFile() {
-		
-		String fileName = readFileSettings();
 
-		file = new File(fileName);
+		// file = new File(DEFAULT_FILE_NAME);
 		mapper.setDateFormat(dateFormat);
 
 		if ( !(file.exists()) ) {
