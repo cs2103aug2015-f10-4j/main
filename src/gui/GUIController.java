@@ -65,6 +65,7 @@ public class GUIController {
 		    return cell ;
 		});
 
+
 		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
 
 		taskTagsCol.setCellValueFactory(col -> {

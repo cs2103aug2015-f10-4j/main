@@ -7,51 +7,94 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="mainPane" focusTraversable="true" prefHeight="784.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
+<AnchorPane fx:id="mainPane" focusTraversable="true" prefHeight="842.0" prefWidth="711.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
    <children>
-      <VBox fillWidth="false" prefHeight="719.0" prefWidth="1026.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-          <TitledPane fx:id="toDoPane" collapsible="false" focusTraversable="false" maxHeight="1.7976931348623157E308" prefHeight="470.0" prefWidth="1016.0" text="To-Do">
-            <content>
-              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView fx:id="taskTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="316.0" prefWidth="1016.0">
-                          <columns>
-                            <TableColumn fx:id="taskIDCol" prefWidth="46.0" resizable="false" sortable="false" text="ID" />
-                              <TableColumn fx:id="taskTitleCol" prefWidth="276.0" text="Task Title" />
-                              <TableColumn fx:id="taskDueDateCol" maxWidth="257.0" minWidth="0.0" prefWidth="119.0" text="Due Date" />
-                            <TableColumn fx:id="taskTagsCol" prefWidth="217.0" text="Tags" />
-                              <TableColumn fx:id="taskPriorityCol" maxWidth="203.0" minWidth="0.0" prefWidth="116.0" resizable="false" text="Priority" />
-                          </columns>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
-            </content>
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-          </TitledPane>
-            <TitledPane fx:id="donePane" collapsible="false" focusTraversable="false" layoutX="15.0" layoutY="15.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="421.0" prefWidth="1098.0" text="Done">
-               <content>
-                  <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="230.0" prefWidth="784.0">
-                     <children>
-                        <TableView fx:id="doneTable" layoutY="-5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="1016.0">
-                           <columns>
-                              <TableColumn fx:id="doneIDCol" prefWidth="46.0" resizable="false" sortable="false" text="ID" />
-                              <TableColumn fx:id="doneTitleCol" prefWidth="276.0" text="Task Title" />
-                              <TableColumn fx:id="doneDueDateCol" maxWidth="257.0" minWidth="0.0" prefWidth="119.0" text="Due Date" />
-                              <TableColumn fx:id="doneTagsCol" prefWidth="217.0" text="Tags" />
-                              <TableColumn fx:id="donePriorityCol" maxWidth="203.0" minWidth="0.0" prefWidth="116.0" resizable="false" text="Priority" />
-                           </columns>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
-               </content>
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </TitledPane>
-            <Label fx:id="messageLabel" focusTraversable="false" prefHeight="35.0" prefWidth="1016.0" wrapText="true" />
+            <TabPane prefHeight="772.0" prefWidth="701.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Tasks">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label text="To-Do">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <TableView fx:id="taskTable" VBox.vgrow="ALWAYS">
+                                      <columns>
+                                        <TableColumn fx:id="taskIDCol" prefWidth="38.0" text="ID" />
+                                        <TableColumn fx:id="taskTitleCol" prefWidth="238.0" sortable="false" text="Title" />
+                                          <TableColumn fx:id="taskDueDateCol" prefWidth="158.0" sortable="false" text="Due Date" />
+                                          <TableColumn fx:id="taskTagsCol" prefWidth="156.0" sortable="false" text="Tags" />
+                                          <TableColumn fx:id="taskPriorityCol" prefWidth="110.0" sortable="false" text="Priority" />
+                                      </columns>
+                                    </TableView>
+                                    <Label text="Done">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <TableView fx:id="doneTable" layoutX="10.0" layoutY="45.0">
+                                       <columns>
+                                          <TableColumn fx:id="doneIDCol" prefWidth="38.0" sortable="false" text="ID" />
+                                          <TableColumn fx:id="doneTitleCol" prefWidth="238.0" sortable="false" text="Title" />
+                                          <TableColumn fx:id="doneDueDateCol" prefWidth="158.0" sortable="false" text="Due Date" />
+                                          <TableColumn fx:id="doneTagsCol" prefWidth="156.0" sortable="false" text="Tags" />
+                                          <TableColumn fx:id="donePriorityCol" prefWidth="110.0" sortable="false" text="Priority" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Events">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label text="Upcoming Events">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <TableView fx:id="taskTable1" VBox.vgrow="ALWAYS">
+                                       <columns>
+                                          <TableColumn fx:id="taskIDCol1" prefWidth="38.0" text="ID" />
+                                          <TableColumn fx:id="taskTitleCol1" prefWidth="238.0" sortable="false" text="Title" />
+                                          <TableColumn fx:id="taskDueDateCol1" prefWidth="158.0" sortable="false" text="Due Date" />
+                                          <TableColumn fx:id="taskTagsCol1" prefWidth="156.0" sortable="false" text="Tags" />
+                                          <TableColumn fx:id="taskPriorityCol1" prefWidth="110.0" sortable="false" text="Priority" />
+                                       </columns>
+                                    </TableView>
+                                    <Label text="Done">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <TableView fx:id="doneTable1" layoutX="10.0" layoutY="45.0">
+                                       <columns>
+                                          <TableColumn fx:id="doneIDCol1" prefWidth="38.0" sortable="false" text="ID" />
+                                          <TableColumn fx:id="doneTitleCol1" prefWidth="238.0" sortable="false" text="Title" />
+                                          <TableColumn fx:id="doneDueDateCol1" prefWidth="158.0" sortable="false" text="Due Date" />
+                                          <TableColumn fx:id="doneTagsCol1" prefWidth="156.0" sortable="false" text="Tags" />
+                                          <TableColumn fx:id="donePriorityCol1" prefWidth="110.0" sortable="false" text="Priority" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </VBox>
+                           </children></AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+            <Label fx:id="messageLabel" focusTraversable="false" prefHeight="31.0" prefWidth="1141.0" wrapText="true" />
             <TextField fx:id="commandLineField" onKeyPressed="#onEnterPressed" prefHeight="31.0" prefWidth="1019.0" />
          </children>
          <padding>

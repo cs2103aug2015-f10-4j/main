@@ -22,6 +22,7 @@ public class GUIModel {
 
 	public static boolean showHelpWindow = false;
 
+
 	public static ObservableList<Task> taskList;
 	public static ObservableList<Task> doneList;
 
