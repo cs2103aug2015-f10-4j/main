@@ -151,15 +151,6 @@ public abstract class Command {
 		}
 	}
 
-	protected Date addTime(Date date, int time){
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.HOUR_OF_DAY, time/100);
-		cal.set(Calendar.MINUTE, time%100);
-		cal.set(Calendar.SECOND, 0);
-		return cal.getTime();
-	}
-
 	protected Calendar dateToCal(Date d) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(d);
@@ -207,7 +198,7 @@ public abstract class Command {
 	public static void main(String[] args) throws Exception {
 		//Command c = new DateCommand("");
 		//c.flexiParse("audgsf");
-		Span s = Chronic.parse("");
+		Span s = Chronic.parse("21/01");
 		System.out.println(s);
 		System.out.println(s.getBeginCalendar().getTime());
 		System.out.println(s.getEndCalendar().toString());

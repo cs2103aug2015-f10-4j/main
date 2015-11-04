@@ -21,7 +21,6 @@ public class EventCommand extends Command{
 	protected Date dateEnd;
 	protected int startTime;
 	protected int endTime;
-	//protected String recurrence;
 	protected RecurrencePeriod recurrence;
 	private Task task;
 	

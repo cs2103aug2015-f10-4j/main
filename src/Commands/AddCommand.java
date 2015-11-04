@@ -36,7 +36,7 @@ public class AddCommand extends Command{
 	private static final String MESSAGE_INVALID_FLEXI = "Use format: add <title> by <date> <time> <recurrence>";
 	private static final String MESSAGE_INVALID_TITLE = "No Title\n";
 	private static final String MESSAGE_INVALID_DATE = "Due date: %s (Date should be dd-MM-yyyy)\n";
-	private static final String MESSAGE_INVALID_DATE_TIME = "Date/Time: %s\n";
+	private static final String MESSAGE_INVALID_DATE_TIME = "Date/Time: %s\n(Use dd-MM-yyyy for date and 24hours format for time)";
 	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
 			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
@@ -56,7 +56,7 @@ public class AddCommand extends Command{
 		this.count = argsArray.size();
 		System.out.println(argsArray);
 		
-		if(argsArray.size() > 1){
+		if(argsArray.size() > 1 && argsArray.get(count-1).contains(" ")){
 			while(true){
 				String last = argsArray.get(count-1).split("\\s(?=\\S+$)")[1];
 				if(getRecurrence(last) == null){
@@ -84,7 +84,8 @@ public class AddCommand extends Command{
 			this.title = getTitle(argsArray.get(0).trim());
 			if(count > 1){
 				this.dueDate = getDate(argsArray.get(1).trim());
-				this.endTime = dueDate.getTime();
+				System.out.println(dueDate);
+				this.endTime = dueDate == null ? -1 : dueDate.getTime();
 				
 				if(count > 2){
 					this.recurrence = getRecurrence(argsArray.get(2));
@@ -173,7 +174,8 @@ public class AddCommand extends Command{
 //		AddCommand d = new AddCommand("");
 //		AddCommand e = new AddCommand("hihihihi by hi at hi");
 //		AddCommand f = new AddCommand("go on stand \\by the hill by 12pm Monday daily asdgasgd asgas");
-		AddCommand g = new AddCommand("go on stand \\by the hill by 12a0193 12pm");
+//		AddCommand g = new AddCommand("go on stand \\by the hill by 12a0193 12pm");
+//		AddCommand h = new AddCommand("task by 21/02 12pm");
 
 	}
 }
