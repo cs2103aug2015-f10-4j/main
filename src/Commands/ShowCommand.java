@@ -20,7 +20,7 @@ public class ShowCommand extends Command{
 			+ "Use Format:\n"
 			+ "1. show\n"
 			+ "2. show <type>\n"
-			+ "3. show tag <tag 1> <tag 2> ...";
+			+ "3. show <tag 1> <tag 2> ...";
 	
 	public ShowCommand(String args) throws Exception{
 		super(args);

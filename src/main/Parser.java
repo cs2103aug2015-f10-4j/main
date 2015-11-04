@@ -18,6 +18,8 @@ public class Parser {
 	private static final String CMD_EDIT = "edit";
 	private static final String CMD_PRIORITY = "set";
 	private static final String CMD_EVENT = "event";
+	private static final String CMD_PATH = "path";
+	private static final String CMD_SORT = "sort";
 	
 	static final String MESSAGE_INVALID_COMMAND = "Invalid command";
 	
@@ -80,6 +82,10 @@ public class Parser {
 				return new PriorityCommand(args);
 			case CMD_EVENT:
 				return new EventCommand(args);
+			case CMD_PATH:
+				return new PathCommand(args);
+			case CMD_SORT:
+				return new SortCommand(args);
 			default:
 				throw new Exception(MESSAGE_INVALID_COMMAND + ": " + command);
 		}
