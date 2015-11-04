@@ -49,7 +49,7 @@ public class Storage {
 
 	}
 
-	private static boolean createFolder() {
+	protected static boolean createFolder() {
 		try {
 			if (!newFolder.exists()) {
 				newFolder.mkdir();
@@ -62,7 +62,7 @@ public class Storage {
 	}
 
 	// returns String of filePath read
-	private String readFileSettings() {
+	protected String readFileSettings() {
 
 		Properties prop = new Properties();
 		InputStream input = null;
@@ -82,7 +82,7 @@ public class Storage {
 
 	// method for Logic to call should the user want to change filePath
 	// will be stored in settings.properties file
-	protected void changeFilePath(String newFilePath) {
+	public void changeFilePath(String newFilePath) {
 
 		String oldFilePath = readFileSettings();
 
@@ -95,7 +95,7 @@ public class Storage {
 		moveFile(oldFilePath, newFilePath);
 	}
 
-	private void writeToProperties (String filePath) {
+	protected void writeToProperties (String filePath) {
 		Properties prop = new Properties();
 		OutputStream output = null;
 
@@ -109,7 +109,7 @@ public class Storage {
 		}
 	}
 
-	private void moveFolder(String newFilePath) {
+	protected void moveFolder(String newFilePath) {
 		File file = new File(newFilePath);
 
 		if (!file.exists()) {
@@ -118,7 +118,7 @@ public class Storage {
 		}
 	}
 
-	private void moveFile(String oldFilePath, String newFilePath) {
+	protected void moveFile(String oldFilePath, String newFilePath) {
 
 		InputStream inStream = null;
 		OutputStream outStream = null;
@@ -150,7 +150,7 @@ public class Storage {
 		}
 	}
 
-	private void initFile() {
+	protected void initFile() {
 
 		mapper.setDateFormat(dateFormat);
 
