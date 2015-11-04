@@ -11,9 +11,6 @@ import main.Task;
 public class SearchCommand extends Command {
 
 	private String query;
-	private String type;
-	private String error = STRING_EMPTY;
-
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format:\n"
 			+ "1. search\n"
