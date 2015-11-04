@@ -1,7 +1,6 @@
 package Commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import gui.GUIModel;
@@ -17,28 +16,36 @@ public class DateCommand extends Command {
 
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: date <start date> <end date>";
+	private static final String MESSAGE_INVALID_DATE = "%s date: %s (Date should be dd-MM-yyyy)\n";
 
 	public DateCommand(String args) throws Exception {
 		super(args);
 		
 		this.argsArray = args.split("(?<!next)\\s", 2);
-		System.out.println(Arrays.toString(argsArray));
 		this.count = argsArray.length;
 
 		if (validNumArgs()) {
 			String start = argsArray[0].trim();
 			String end = count == 2 ? argsArray[1].trim() : STRING_EMPTY;
 			
-			startDate = start.equals(STRING_EMPTY) ? new Date(Long.MIN_VALUE) : getDate(start);
-			endDate = end.equals(STRING_EMPTY) ? new Date(Long.MAX_VALUE) : getDate(end);
-			
-			
-			if (startDate == null) {
+			if(!needsFlexi(start)){
+				startDate = start.equals(STRING_EMPTY) ? new Date(Long.MIN_VALUE) : getDate(start);	
+			} else {
 				startDate = flexiParse(start);
 			}
 
-			if (endDate == null) {
+			if(end.isEmpty() || !needsFlexi(end)){
+				endDate = end.equals(STRING_EMPTY) ? new Date(Long.MAX_VALUE) : getDate(end);
+			} else {
 				endDate = flexiParse(end);
+			}
+			
+			if (startDate == null) {
+				error += String.format(MESSAGE_INVALID_DATE, "Start", start);
+			}
+
+			if (endDate == null) {
+				error += String.format(MESSAGE_INVALID_DATE, "End", end);
 			} 
 
 			if (startDate != null && endDate != null && !validDateRange()) {
@@ -92,10 +99,11 @@ public class DateCommand extends Command {
 	}
 	
 	public static void main(String[] args) throws Exception {
-//		DateCommand d = new DateCommand("");
-//		DateCommand d = new DateCommand("29-01-93 28-01-92");
-//		DateCommand d = new DateCommand("29-01-93 28-01-94");
-//		DateCommand d = new DateCommand("29-01-93 28-01-9a2");
-//		DateCommand d = new DateCommand("2a9-01-93 28-01-92");
+		//DateCommand d = new DateCommand("");
+		//DateCommand d = new DateCommand("29-01-93");
+		//DateCommand d = new DateCommand("29-01-93 28-01-92");
+		//DateCommand d = new DateCommand("29-01-93 28-01-94");
+		//DateCommand d = new DateCommand("29-01-93 28-01-9a2");
+		//DateCommand d = new DateCommand("2a9-01-93 28-01-92");
 	}
 }

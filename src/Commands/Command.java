@@ -32,32 +32,23 @@ public abstract class Command {
 	public Command(String args){
 
 		this.args = args;
-
-		/*
-		isFlexi = !args.contains("/") || !args.replace("\\/", "").contains("/");
-		if(!isFlexi){
-			this.argsArray = args.split("(?<![\\\\])/", -1);
-			for (int i = 0; i < argsArray.length; i++){
-				String param = argsArray[i];
-
-				param = param.replaceAll("(?<![\\\\])\\\\", "");
-				argsArray[i] = param;
-
-			}
-
-		} else {
-			this.argsArray = args.split("(?<=\\s)by(?=\\s)|(?<=\\s)at(?=\\s)", -1);
-			for(int i = 0; i < argsArray.length; i++){
-				argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", "");
-			}
-		}
-		this.count = argsArray.length;
-
-		for(int i = 0; i < count; i++){
-			//assertNotNull(argsArray[i]);
-		}*/
 	}
 
+	protected String swapMonthDay(String date){
+		String[] splitDate;
+		String swappedDate = null;
+		//checking is date is dd/mm/yy or dd/mm
+		if(date.contains("/") && !date.contains("-")){
+			splitDate = date.split("/",3);
+			if(splitDate.length == 2){
+				swappedDate = splitDate[1] + "/" + splitDate[0];
+			} else if (splitDate.length == 3){
+				swappedDate = splitDate[1] + "/" + splitDate[0] + "/" + splitDate[2];
+			}
+		}
+		return swappedDate;
+	}
+	
 	protected RecurrencePeriod getRecurrence(String recurrence) {
 		String r = recurrence.toLowerCase();
 		switch (r) {
@@ -177,19 +168,35 @@ public abstract class Command {
 		return cal;
 	}
 
+	protected boolean needsFlexi(String date){
+		if(date.contains("-")||date.contains("/")){
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	protected Date flexiParse(Calendar cal) {
 		Parser p = new Parser();
 		List<DateGroup> date = p.parse((cal.get(Calendar.MONTH)+1)
 				+ "-" + cal.get(Calendar.DAY_OF_MONTH)
 				+ "-" + cal.get(Calendar.YEAR)
 				+ " " + argsArray[2]);
-		return date.get(0).getDates().get(0);
+		if(date.isEmpty()){
+			return null;
+		} else {
+			return date.get(0).getDates().get(0);
+		}
 	}
 
 	protected Date flexiParse(String dueDate) {
 		Parser p = new Parser();
 		List<DateGroup> date = p.parse(dueDate);
-		return date.get(0).getDates().get(0);
+		if(date.isEmpty()){
+			return null;
+		} else {
+			return date.get(0).getDates().get(0);
+		}
 	}
 
 	public abstract String execute() throws Exception;
@@ -197,5 +204,10 @@ public abstract class Command {
 
 	public boolean isUndoable(){
 		return true;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		Command c = new DateCommand("");
+		c.flexiParse("audgsf");
 	}
 }

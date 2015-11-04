@@ -2,6 +2,7 @@ package Commands;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 
 import gui.GUIModel;
 import main.Magical;
@@ -18,17 +19,20 @@ public class EditCommand extends Command{
 	private Task prevTask;
 	private boolean toFloat;
 	private boolean isTask;
+	private Object editObject;
 	
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: edit <task_id> <field> <value>";
 	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 	private static final String MESSAGE_INVALID_FIELD = "Field: %s\n";
 	private static final String MESSAGE_INVALID_TITLE = "No Title\n";
-	private static final String MESSAGE_INVALID_START = "Start time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
+	private static final String MESSAGE_INVALID_DATE = "Date: %s (Date should be dd-MM-yyyy)\n";
+	private static final String MESSAGE_INVALID_TIME = "%s time: %s (Time should be in 24hrs format)\n";
 	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
 			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
 	private static final String MESSAGE_INVALID_TASK_START = "Task cannot have start time";
+	private static final String MESSAGE_INVALID_DATE_FLEXI = "Date: %s (Invalid flexi date)\n";
+	private static final String MESSAGE_INVALID_TIME_FLEXI = "%s time: %s (Invalid flexi time)\n";
 	
 	public EditCommand(String args) throws Exception {
 		super(args);
@@ -58,26 +62,47 @@ public class EditCommand extends Command{
 			} else if (field.equalsIgnoreCase("date")) {
 				if(value.equals("") && isTask){
 					toFloat = true;
-				} //else if (getDate(value) == null){
-					//error +=  String.format(MESSAGE_INVALID_DATE, value);
-					//flexi commands may be null but also supports rubbish though
-				//}
+				} else if (!needsFlexi(value)){
+					if((editObject = getDate(value)) == null){
+						error +=  String.format(MESSAGE_INVALID_DATE, value);
+					}
+				} else {
+					if((editObject = flexiParse(value)) == null){
+						error += String.format(MESSAGE_INVALID_DATE_FLEXI, value);
+					}
+				}
 			} else if (field.equalsIgnoreCase("start time")) {
 				if(isTask){
 					error += MESSAGE_INVALID_TASK_START;
-				} else if (value.equals(STRING_EMPTY)){
-					error += String.format(MESSAGE_INVALID_START, value);
+				} 
+				try{
+					Integer.parseInt(value);
+					if((editObject = getTime(value)).equals(-1)){
+						error += String.format(MESSAGE_INVALID_TIME, "Start", value);
+					}
+				} catch (NumberFormatException e){
+					//Note: If you enter flexi time like tomorrow, taken will be current time
+					if((editObject = flexiParse(value)) == null){
+						error += String.format(MESSAGE_INVALID_TIME_FLEXI, "Start", value);
+					} 
 				}
-				//else if(getTime(value) == -1){
-					//error += String.format(MESSAGE_INVALID_START, value);
-				//}
+
 			} else if (field.equalsIgnoreCase("end time")) {
-				if (value.equals(STRING_EMPTY)){
-					error += String.format(MESSAGE_INVALID_END, value);
+				try{
+					Integer.parseInt(value);
+					if((editObject = getTime(value)).equals(-1)){
+						error += String.format(MESSAGE_INVALID_TIME, "End", value);
+					}
+				} catch (NumberFormatException e){
+					if((editObject = flexiParse(value)) == null){
+						error += String.format(MESSAGE_INVALID_TIME_FLEXI, "End", value);
+					} else {
+						Calendar c = Calendar.getInstance();
+						c.setTime((Date) editObject);
+						editObject = c.get(Calendar.HOUR_OF_DAY)*100 + c.get(Calendar.MINUTE);
+						System.out.println(editObject);
+					}
 				}
-				//if(getTime(value) == -1){
-					//error += String.format(MESSAGE_INVALID_END, value);
-				//}
 			} else if (field.equalsIgnoreCase("recurrence")) {
 				if(getRecurrence(value) == null){
 					error += String.format(MESSAGE_INVALID_RECURRENCE, value);
@@ -114,39 +139,28 @@ public class EditCommand extends Command{
 			break;
 		case "date":
 			if(toFloat){
+				//change to float
 				task.setDueDate(null);
 				task.setEndTime(-1);
 			} else {
+				//unfloating the task
 				if(task.getEndTime() == -1){
 					task.setEndTime(0000);
 				}
-				if(getDate(value) == null){
-					task.setDueDate(addTime(flexiParse(value), task.getEndTime()));
-				} else {
-					task.setDueDate(addTime(getDate(value), task.getEndTime()));
-				}
+
+				task.setDueDate(addTime((Date) editObject, task.getEndTime()));
 			}
 			break;
 		case "start time":
-			if(getTime(value) == -1){
-				Calendar c = Calendar.getInstance();
-				c.setTime(flexiParse(value));
-				task.setStartTime(c.get(Calendar.HOUR_OF_DAY)*100 + c.get(Calendar.MINUTE));
-			} else {
-				task.setStartTime(getTime(value));
-			}
+			task.setStartTime((int) editObject);
 			break;
 		case "end time":
-			if(getTime(value) == -1){
-				Calendar c = Calendar.getInstance();
-				System.out.println(value);
-				c.setTime(flexiParse(value));
-				task.setEndTime(c.get(Calendar.HOUR_OF_DAY)*100 + c.get(Calendar.MINUTE));
-			} else {
-				task.setEndTime(getTime(value));
-			}
+			task.setEndTime((int) editObject);
+			
+			//unfloating the task
 			if(task.getDueDate() == null){
 				task.setDueDate(addTime(flexiParse("today"), task.getEndTime()));
+			//normal changing of date object
 			} else {
 				task.setDueDate(addTime(task.getDueDate(), task.getEndTime()));
 			}
@@ -173,7 +187,7 @@ public class EditCommand extends Command{
 	}
 	
 	public static void main(String[] args) throws Exception {
-//		EditCommand e = new EditCommand("t1 end time asfas");
-//		EditCommand e1 = new EditCommand("t1 start time asfas");
+		//EditCommand e = new EditCommand("t1 end time asfas");
+		//EditCommand e1 = new EditCommand("t1 start time asfas");
 	}
 }
