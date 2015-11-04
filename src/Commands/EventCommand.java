@@ -4,9 +4,11 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
+import main.CustomDate;
 import main.GUIModel;
 import main.Magical;
 import main.RecurrencePeriod;
@@ -17,8 +19,8 @@ public class EventCommand extends Command{
 
 	/** Command parameters **/
 	protected String title;
-	protected Date dateStart;
-	protected Date dateEnd;
+	protected CustomDate dateStart;
+	protected CustomDate dateEnd;
 	protected int startTime;
 	protected int endTime;
 	protected RecurrencePeriod recurrence;
@@ -41,65 +43,68 @@ public class EventCommand extends Command{
 	public EventCommand(String args) throws Exception {
 		super(args);
 		
+		/*
 		isFlexi = !args.contains("/") || !args.replace("\\/", STRING_EMPTY).contains("/");
 		if(!isFlexi){
-			this.argsArray = args.split("(?<![\\\\])/", -1);
-			for (int i = 0; i < argsArray.length; i++){
-				String param = argsArray[i];
+			this.argsArray = new ArrayList<String>(Arrays.asList(args.split("(?<![\\\\])/", -1)));
+			for (int i = 0; i < argsArray.size(); i++){
+				String param = argsArray.get(i);
 				param = param.replaceAll("(?<![\\\\])\\\\", STRING_EMPTY);
-				argsArray[i] = param;
+				argsArray.set(i, param);
 			}
 		} else {
-			this.argsArray = args.split("(?<=\\s)to(?=\\s)|(?<=\\s)from(?=\\s)|(?<=\\s)on(?=\\s)", -1);
-			for(int i = 0; i < argsArray.length; i++){
-				argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY);
-			}
+		*/
+		this.argsArray = new ArrayList<String>(Arrays.asList(args.split("(?<=\\s)to(?=\\s)|(?<=\\s)from(?=\\s)|(?<=\\s)on(?=\\s)", -1)));
+		for(int i = 0; i < argsArray.size(); i++){
+			argsArray.set(i, argsArray.get(i).trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
 		}
-		this.count = argsArray.length;
+		//}
+		this.count = argsArray.size();
 		
 		for(int i = 0; i < count; i++){
-			assertNotNull(argsArray[i]);
+			assertNotNull(argsArray.get(i));
 		}
 		
-		if(!isFlexi){
-			if(validNumArgs()){
+		//if(!isFlexi){
+		if(validNumArgs()){
 
-				this.title = getTitle(argsArray[0].trim());
-				this.dateStart = getDate(argsArray[1].trim());
-				this.dateEnd = getDate(argsArray[1].trim());
-				this.startTime = getTime(argsArray[2].trim());
-				this.endTime = getTime(argsArray[3].trim());
-				this.recurrence = getRecurrence(argsArray[4].trim());
+			this.title = getTitle(argsArray.get(0).trim());
+			this.dateStart = getDate(argsArray.get(1).trim());
+			this.dateEnd = getDate(argsArray.get(1).trim());
+			this.startTime = getTime(argsArray.get(2).trim());
+			this.endTime = getTime(argsArray.get(3).trim());
+			this.recurrence = getRecurrence(argsArray.get(4).trim());
 
-				if (title == null) {
-					error += MESSAGE_INVALID_TITLE;
-				}
-				if (dateStart == null || dateEnd == null) {
-					error +=  String.format(MESSAGE_INVALID_DATE, argsArray[1].trim());
-				}
-				if (startTime == -1) {
-					error += String.format(MESSAGE_INVALID_START, argsArray[2].trim());
-				}
-				if (endTime == -1) {
-					error += String.format(MESSAGE_INVALID_END, argsArray[3].trim());
-				}
-				if (recurrence == null) {
-					error += String.format(MESSAGE_INVALID_RECURRENCE, argsArray[4].trim());
-				}
-				if (!error.equals(STRING_EMPTY)) {
-					throw new Exception(MESSAGE_HEADER_INVALID + error);
-				}
-				
-				dateStart = addTime(dateStart, startTime);
-				dateEnd = addTime(dateEnd, endTime);
-			} else {
-				error += MESSAGE_INVALID_PARAMS;
+			if (title == null) {
+				error += MESSAGE_INVALID_TITLE;
+			}
+			if (dateStart == null || dateEnd == null) {
+				error +=  String.format(MESSAGE_INVALID_DATE, argsArray.get(1).trim());
+			}
+			if (startTime == -1) {
+				error += String.format(MESSAGE_INVALID_START, argsArray.get(2).trim());
+			}
+			if (endTime == -1) {
+				error += String.format(MESSAGE_INVALID_END, argsArray.get(3).trim());
+			}
+			if (recurrence == null) {
+				error += String.format(MESSAGE_INVALID_RECURRENCE, argsArray.get(4).trim());
+			}
+			if (!error.equals(STRING_EMPTY)) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
+			
+			dateStart.setTime(startTime);
+			dateEnd.setTime(endTime);
 		} else {
-			if(!argsArray[0].equals(STRING_EMPTY) && argsArray.length <= 4){
+			error += MESSAGE_INVALID_PARAMS;
+			throw new Exception(MESSAGE_HEADER_INVALID + error);
+		}
+			/*
+		} else {
+			if(!argsArray.get(0).equals(STRING_EMPTY) && argsArray.size() <= 4){
 
-				title = argsArray[0];
+				title = argsArray.get(0);
 				recurrence = RecurrencePeriod.NONE;
 				String tempDate = null;
 				
@@ -156,6 +161,7 @@ public class EventCommand extends Command{
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 		}
+		//*/
 	}
 	
 	public boolean validNumArgs(){
