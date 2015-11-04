@@ -1,30 +1,14 @@
 package main;
 
-import Commands.AddCommand;
-import Commands.BlockCommand;
-import Commands.Command;
-import Commands.DateCommand;
-import Commands.DelCommand;
-import Commands.DoneCommand;
-import Commands.EditCommand;
-import Commands.EventCommand;
-import Commands.ExitCommand;
-import Commands.HelpCommand;
-import Commands.PriorityCommand;
-import Commands.SearchCommand;
-import Commands.ShowCommand;
-import Commands.TagCommand;
-import Commands.UndoCommand;
-import Commands.UntagCommand;
+import Commands.*;
 
 public class Parser {
 	private static final String CMD_ADD = "add";
 	private static final String CMD_DELETE = "delete";
 	private static final String CMD_UNDO = "undo";
-	private static final String CMD_BLOCK = "block";
-	private static final String CMD_CONFIRM = "confirm";
 	private static final String CMD_DATE = "date";
 	private static final String CMD_DONE = "done";
+	private static final String CMD_UNDONE = "undone";
 	private static final String CMD_HELP = "help";
 	private static final String CMD_SEARCH = "search";
 	private static final String CMD_SHOW = "show";
@@ -68,8 +52,6 @@ public class Parser {
 		switch (command) {
 			case CMD_ADD:
 				return new AddCommand(args);
-			case CMD_BLOCK:
-				return new BlockCommand(args);
 			case CMD_EDIT:
 				return new EditCommand(args);
 			case CMD_SEARCH:
@@ -86,6 +68,8 @@ public class Parser {
 				return new UndoCommand(args);
 			case CMD_DONE:
 				return new DoneCommand(args);
+			case CMD_UNDONE:
+				return new UndoneCommand(args);
 			case CMD_SHOW:
 				return new ShowCommand(args);
 			case CMD_HELP:

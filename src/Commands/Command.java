@@ -1,15 +1,20 @@
 package Commands;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
+import com.mdimension.jchronic.Chronic;
+import com.mdimension.jchronic.utils.Span;
 
 import gui.GUIModel;
 import main.Task;
+import main.CustomDate;
 import main.RecurrencePeriod;
 
 public abstract class Command {
@@ -21,7 +26,7 @@ public abstract class Command {
 	protected static final String STRING_EMPTY = "";
 	//main variables
 	protected String args;
-	protected String[] argsArray;
+	protected ArrayList<String> argsArray;
 	protected int count;
 	protected boolean isFlexi;
 
@@ -86,17 +91,19 @@ public abstract class Command {
 		}
 	}
 
-	protected Date getDate(String date)  {
-		if(date.matches("^\\d+\\-\\d+\\-\\d+")){
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
-			dateFormat.setLenient(false);
-			try {
-				return dateFormat.parse(date);
-			} catch (Exception e){
-				return null;
-			}
-		} else {
+	protected CustomDate getDate(String date)  {
+		Pattern pattern= Pattern.compile(".*\\d{4}.*");
+		Matcher m = pattern.matcher(date);
+		if(m.find()){
+			String s = m.group(0);
+			date = date.replaceAll(s, s.substring(0, 2)+":"+s.substring(2,s.length()));
+		}
+		date = date.replaceAll("(?<=[0-9]+).(?=[0-9])+", ":");
+		Span s = Chronic.parse(date);
+		if(s == null){
 			return null;
+		} else {
+			return new CustomDate(s.getBeginCalendar().getTime());
 		}
 	}
 
@@ -153,15 +160,6 @@ public abstract class Command {
 		}
 	}
 
-	protected Date addTime(Date date, int time){
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.HOUR_OF_DAY, time/100);
-		cal.set(Calendar.MINUTE, time%100);
-		cal.set(Calendar.SECOND, 0);
-		return cal.getTime();
-	}
-
 	protected Calendar dateToCal(Date d) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(d);
@@ -181,7 +179,7 @@ public abstract class Command {
 		List<DateGroup> date = p.parse((cal.get(Calendar.MONTH)+1)
 				+ "-" + cal.get(Calendar.DAY_OF_MONTH)
 				+ "-" + cal.get(Calendar.YEAR)
-				+ " " + argsArray[2]);
+				+ " " + argsArray.get(2));
 		if(date.isEmpty()){
 			return null;
 		} else {
@@ -207,7 +205,13 @@ public abstract class Command {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Command c = new DateCommand("");
-		c.flexiParse("audgsf");
+		//Command c = new DateCommand("");
+		//c.flexiParse("audgsf");
+		Span s = Chronic.parse("");
+		System.out.println(s);
+		//System.out.println(s.getBeginCalendar().getTime());
+		//System.out.println(s.getEndCalendar().toString());
+		ExitCommand e = new ExitCommand("");
+		System.out.println(e.getDate("next monday 3pm"));
 	}
 }

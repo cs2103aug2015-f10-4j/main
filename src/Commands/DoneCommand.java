@@ -1,6 +1,8 @@
 package Commands;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import gui.GUIModel;
 import main.Magical;
@@ -18,14 +20,16 @@ public class DoneCommand extends Command{
 	public DoneCommand(String args) throws Exception{
 		super(args);
 		
-		this.argsArray = args.split(STRING_EMPTY, 1);
-		this.count = argsArray.length;
+		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(STRING_EMPTY, 1)));
+		this.count = argsArray.size();
 		
 		if(validNumArgs()){
-			task = getTaskByID(argsArray[0].trim());
+			task = getTaskByID(argsArray.get(0).trim());
 			
 			if(task == null){
-				error += String.format(MESSAGE_INVALID_ID, argsArray[0].trim());
+				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
+			} else if (argsArray.get(0).trim().contains("d") || argsArray.get(0).trim().contains("p")){
+				error += "Done tasks cannot be done!";
 			}
 			if (!error.equals("")) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
@@ -46,7 +50,7 @@ public class DoneCommand extends Command{
 	
 	public String execute() {
 		try {
-			int listIndex = Storage.getListIndex(argsArray[0]);
+			int listIndex = Storage.getListIndex(argsArray.get(0));
 			int complementListIndex = Storage.getComplementListIndex(listIndex);
 			Magical.storage.delete(listIndex, task);
 			Magical.storage.create(complementListIndex, task);

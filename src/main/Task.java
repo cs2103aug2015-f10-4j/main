@@ -6,7 +6,7 @@ import java.util.*;
 public class Task implements Comparable<Task>, Cloneable {
 	private String type;
 	private String title;
-	private Date dueDate;
+	private CustomDate dueDate;
 	private int startTime;
 	private int endTime;
 	private RecurrencePeriod recurrence;
@@ -101,12 +101,12 @@ public class Task implements Comparable<Task>, Cloneable {
 		return true;
 	}
 
-	public Date getDueDate() {
+	public CustomDate getDueDate() {
 		return dueDate;
 	}
 
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
+	public void setDueDate(CustomDate dueDate2) {
+		this.dueDate = dueDate2;
 	}
 
 	public int getStartTime() {

@@ -1,6 +1,8 @@
 package Commands;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 import gui.GUIModel;
@@ -22,15 +24,15 @@ public class UntagCommand extends Command {
 	public UntagCommand(String args) throws Exception {
 		super(args);
 		
-		this.argsArray = args.split(" ", 2);
-		this.count = argsArray.length;
+		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(" ", 2)));
+		this.count = argsArray.size();
 		
 		if (validNumArgs()) {
-			task = getTaskByID(argsArray[0].trim());
-			tag = argsArray[1].trim();
+			task = getTaskByID(argsArray.get(0).trim());
+			tag = argsArray.get(1).trim();
 			
 			if(task == null){
-				error += String.format(MESSAGE_INVALID_ID, argsArray[0].trim());
+				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
 			}
 
 			if (!error.equals(STRING_EMPTY)) {
@@ -60,7 +62,7 @@ public class UntagCommand extends Command {
 		task.setTags(tags);
 
 		try {
-			int listIndex = Storage.getListIndex(argsArray[0]);
+			int listIndex = Storage.getListIndex(argsArray.get(0));
 			Magical.storage.delete(listIndex, prevTask);
 			Magical.storage.create(listIndex, task);
 		} catch (IOException e) {

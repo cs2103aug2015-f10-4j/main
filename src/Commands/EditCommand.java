@@ -1,14 +1,19 @@
 package Commands;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-import gui.GUIModel;
+import main.CustomDate;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Storage;
 import main.Task;
+import gui.GUIModel;
 
 public class EditCommand extends Command{
 
@@ -38,19 +43,19 @@ public class EditCommand extends Command{
 		super(args);
 		
 		args = args + " ";
-		this.argsArray = args.split("(?<!end|start)\\s(?!time)", 3);
-		this.count = argsArray.length;
-		for(int i = 0; i < argsArray.length; i++){
-			argsArray[i] = argsArray[i].trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY);
+		this.argsArray = new ArrayList<String>(Arrays.asList(args.split("(?<!end|start)\\s(?!time)", 3)));
+		this.count = argsArray.size();
+		for(int i = 0; i < argsArray.size(); i++){
+			argsArray.set(i, argsArray.get(i).trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
 		}
-
+		System.out.println(argsArray);
 		if(validNumArgs()){
-			this.task = getTaskByID(argsArray[0].trim());
-			this.field = argsArray[1].trim();
-			this.value = argsArray[2].trim();
+			this.task = getTaskByID(argsArray.get(0).trim());
+			this.field = argsArray.get(1).trim();
+			this.value = argsArray.get(2).trim();
 			
 			if (task == null) {
-				error += String.format(MESSAGE_INVALID_ID, argsArray[0].trim());
+				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
 			
@@ -60,34 +65,44 @@ public class EditCommand extends Command{
 					error += MESSAGE_INVALID_TITLE;
 				}
 			} else if (field.equalsIgnoreCase("date")) {
-				if(value.equals("") && isTask){
+				if(value.equals(STRING_EMPTY) && isTask){
 					toFloat = true;
-				} else if (!needsFlexi(value)){
-					if((editObject = getDate(value)) == null){
-						error +=  String.format(MESSAGE_INVALID_DATE, value);
-					}
-				} else {
-					if((editObject = flexiParse(value)) == null){
-						error += String.format(MESSAGE_INVALID_DATE_FLEXI, value);
-					}
+				} else if((editObject = getDate(value)) == null){
+						error += String.format(MESSAGE_INVALID_DATE, value);
 				}
 			} else if (field.equalsIgnoreCase("start time")) {
 				if(isTask){
 					error += MESSAGE_INVALID_TASK_START;
-				} 
+				} else {
+					if((editObject = getDate(value)) == null){
+						error += String.format(MESSAGE_INVALID_TIME, "Start", value);
+					} else {
+						editObject = getDate(value).getTime();
+					}
+				}
+				
+				/*
 				try{
 					Integer.parseInt(value);
 					if((editObject = getTime(value)).equals(-1)){
 						error += String.format(MESSAGE_INVALID_TIME, "Start", value);
 					}
 				} catch (NumberFormatException e){
-					//Note: If you enter flexi time like tomorrow, taken will be current time
-					if((editObject = flexiParse(value)) == null){
+					//Note: If you enter flexi time like tomorrow, 12pm if the default time
+					if((editObject = getDate(value)) == null){
 						error += String.format(MESSAGE_INVALID_TIME_FLEXI, "Start", value);
-					} 
-				}
+					} else{
+						editObject = getDate(value).getTime();
+					}
+				}*/
 
 			} else if (field.equalsIgnoreCase("end time")) {
+				if((editObject = getDate(value)) == null){
+					error += String.format(MESSAGE_INVALID_TIME, "End", value);
+				} else {
+					editObject = getDate(value).getTime();
+				}
+				/*
 				try{
 					Integer.parseInt(value);
 					if((editObject = getTime(value)).equals(-1)){
@@ -103,6 +118,7 @@ public class EditCommand extends Command{
 						System.out.println(editObject);
 					}
 				}
+				*/
 			} else if (field.equalsIgnoreCase("recurrence")) {
 				if(getRecurrence(value) == null){
 					error += String.format(MESSAGE_INVALID_RECURRENCE, value);
@@ -147,8 +163,11 @@ public class EditCommand extends Command{
 				if(task.getEndTime() == -1){
 					task.setEndTime(0000);
 				}
-
-				task.setDueDate(addTime((Date) editObject, task.getEndTime()));
+				
+				CustomDate date = (CustomDate) editObject;
+				date.setTime(task.getEndTime());
+						
+				task.setDueDate(date);
 			}
 			break;
 		case "start time":
@@ -157,13 +176,17 @@ public class EditCommand extends Command{
 		case "end time":
 			task.setEndTime((int) editObject);
 			
+			CustomDate date = null;
 			//unfloating the task
 			if(task.getDueDate() == null){
-				task.setDueDate(addTime(flexiParse("today"), task.getEndTime()));
+				date = getDate("today");
 			//normal changing of date object
 			} else {
-				task.setDueDate(addTime(task.getDueDate(), task.getEndTime()));
+				date = task.getDueDate();
 			}
+			assertNotNull(date);
+			date.setTime(task.getEndTime());
+			task.setDueDate(date);
 			break;
 		case "recurrence":
 			task.setRecurrence(RecurrencePeriod.toRecurrence(value));
@@ -173,7 +196,7 @@ public class EditCommand extends Command{
 		}
 		
 		try {
-			int listIndex = Storage.getListIndex(argsArray[0]);
+			int listIndex = Storage.getListIndex(argsArray.get(0));
 			Magical.storage.delete(listIndex, prevTask);
 			Magical.storage.create(listIndex, task);
 		} catch (IOException e) {
