@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="mainPane" prefHeight="719.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
+<AnchorPane fx:id="mainPane" focusTraversable="true" prefHeight="719.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
    <children>
       <VBox fillWidth="false" prefHeight="719.0" prefWidth="1026.0" spacing="5.0">
          <children>
-          <TitledPane fx:id="toDoPane" collapsible="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="470.0" prefWidth="1016.0" text="To-Do">
+          <TitledPane fx:id="toDoPane" collapsible="false" focusTraversable="false" maxHeight="1.7976931348623157E308" prefHeight="470.0" prefWidth="1016.0" text="To-Do">
             <content>
               <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

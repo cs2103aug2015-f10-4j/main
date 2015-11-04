@@ -116,6 +116,10 @@ public class GUIController {
 
 	}
 
+	public void requestCommandLineFocus() {
+		commandLineField.requestFocus();
+	}
+
 
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {

@@ -1,5 +1,7 @@
 package gui;
 
+import com.sun.javafx.application.LauncherImpl;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
@@ -19,10 +21,11 @@ public class GUIView extends Application {
 		Scene myScene = new Scene(myPane);
 		primaryStage.setScene(myScene);
 		primaryStage.show();
+
 	}
 
 	public static void main(String[] args) {
-		launch(args);
+		LauncherImpl.launchApplication(GUIView.class, args);
 	}
 
 
