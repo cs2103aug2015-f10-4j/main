@@ -137,18 +137,18 @@ public class GUIController {
 	protected void onEnterPressed(KeyEvent event) throws Exception {
 		if (event.getCode() == KeyCode.ENTER) {
 			String userInput = commandLineField.getText();
-//			try {
+			try {
 				messageLabel.setTextFill(Color.web("#0000ff"));
 				String message = main.Magical.parseCommand(userInput);
 				messageLabel.setText(message);
 				taskTable.setItems(GUIModel.getTaskList());
 				doneTable.setItems(GUIModel.getDoneList());
 				commandLineField.clear();
-//			} catch (Exception e) {
-//				messageLabel.setTextFill(Color.web("#ff0000"));
-//				System.out.println(e.getMessage());
-//				messageLabel.setText(e.getMessage());
-//			}
+			} catch (Exception e) {
+				messageLabel.setTextFill(Color.web("#ff0000"));
+				System.out.println(e.getMessage());
+				messageLabel.setText(e.getMessage());
+			}
 
 		}
 		if (GUIModel.showHelpWindow) {
