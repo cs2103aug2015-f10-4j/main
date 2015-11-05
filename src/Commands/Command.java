@@ -60,6 +60,7 @@ public abstract class Command {
 	 * @return RecurrencePeriod for the given string
 	 */
 	protected RecurrencePeriod getRecurrence(String recurrence) {
+		assertNotNull(recurrence);
 		String r = recurrence.toLowerCase();
 		switch (r) {
 			case STRING_EMPTY:
@@ -88,6 +89,7 @@ public abstract class Command {
 	 * @return CustomDate object with valid date and time 
 	 */
 	protected CustomDate getDate(String date)  {
+		assertNotNull(date);
 		date = formatCorrectTime(date);
 		date = dateWithYear(date);
 		return dateWithTime(date);
@@ -101,10 +103,15 @@ public abstract class Command {
 	 * @return String with correct time format
 	 */
 	private String formatCorrectTime(String date) {
+		assertNotNull(date);
 		Pattern time= Pattern.compile("\\D*\\d{4}\\D*");
+		assertNotNull(time);
 		Matcher m = time.matcher(date);
+		assertNotNull(m);
+		
 		if(m.find()){
 			String s = m.group(0);
+			assertNotNull(s);
 			date = date.replaceAll(s, s.substring(0, 2) + ":" + s.substring(2,s.length()));
 		}
 		date = date.replaceAll("(?<=[0-9]+)\\.(?=[0-9])+", ":");
@@ -121,11 +128,15 @@ public abstract class Command {
 	 * @return String with year
 	 */
 	private String dateWithYear(String date) {
+		assertNotNull(date);
 		Pattern noYear = Pattern.compile("\\D*\\d{2}(/|-)\\d{2}\\D*");
-		Matcher m;
-		m = noYear.matcher(date);
+		assertNotNull(noYear);
+		Matcher m = noYear.matcher(date);;
+		assertNotNull(m);
+		
 		if(m.find()){
 			String s = m.group(0);
+			assertNotNull(s);
 			date = date.replaceAll(s, s.trim() + "/" + new CustomDate(new Date()).getYear() + " ");
 		}
 		return date;
@@ -141,6 +152,7 @@ public abstract class Command {
 	 * @return CustomDate objects with given date and time, default time if not specified
 	 */
 	private CustomDate dateWithTime(String date) {
+		assertNotNull(date);
 		Span span;
 		if(Chronic.parse(date) != null ){
 			if((span = Chronic.parse(date + " 23:59")) != null){
@@ -162,6 +174,7 @@ public abstract class Command {
 	 * @return String title
 	 */
 	protected String getTitle(String title) {
+		assertNotNull(title);
 		if(title.equals(STRING_EMPTY)){
 			return null;
 		}
@@ -178,6 +191,7 @@ public abstract class Command {
 	 * @return Task object corresponding
 	 */
 	protected Item getItemByID(String itemID){
+		assertNotNull(itemID);
 		String type = getItemIdType(itemID);
 		Integer index = getItemIdIndex(itemID);
 		
@@ -208,6 +222,7 @@ public abstract class Command {
 	 * @return int index of the item
 	 */
 	private int getItemIdIndex(String itemID) {
+		assertNotNull(itemID);
 		try {
 			return Integer.parseInt(itemID.substring(1)) - 1;
 		} catch (Exception e){
@@ -223,6 +238,7 @@ public abstract class Command {
 	 * @return String item type
 	 */
 	private String getItemIdType(String itemID) {
+		assertNotNull(itemID);
 		return itemID.substring(0, 1).toLowerCase();
 	}
 
@@ -235,6 +251,7 @@ public abstract class Command {
 	 * @return int priority
 	 */
 	protected int getPriority(String priority){
+		assertNotNull(priority);
 		try {
 			int p = Integer.parseInt(priority);
 			return getWithinPriorityRange(p);
@@ -252,6 +269,7 @@ public abstract class Command {
 	 * @return int priority
 	 */
 	private int getWithinPriorityRange(int p) {
+		assertNotNull(p);
 		if (p >= 0 && p <= 10){
 			return p;
 		} else {
