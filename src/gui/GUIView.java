@@ -12,7 +12,7 @@ public class GUIView extends Application {
 
 	private static final String TITLE_FORMAT = "Magical v%s";
 	private static final String HELP_TITLE = "Help";
-	private static final String VERSION_NUMBER = "0.3";
+	private static final String VERSION_NUMBER = "0.4";
 
 	public void start(Stage primaryStage) throws Exception {
 

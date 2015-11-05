@@ -1,9 +1,14 @@
 package Commands;
 
+import gui.GUIModel;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
-import javax.print.DocFlavor.STRING;
+import main.Magical;
+import main.Storage;
+import main.Task;
 
 public class SortCommand extends Command{
 
@@ -54,8 +59,40 @@ public class SortCommand extends Command{
 
 	@Override
 	public String execute() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
+		ArrayList<Task> taskDoneList = Magical.storage.getList(Storage.TASKS_DONE_INDEX);
+		ArrayList<Task> eventList = Magical.storage.getList(Storage.EVENTS_INDEX);
+		ArrayList<Task> eventDoneList = Magical.storage.getList(Storage.EVENTS_DONE_INDEX);
+		ArrayList<Task> filteredTaskList = new ArrayList<Task>(taskList);
+		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>(taskDoneList);
+		ArrayList<Task> filteredEventList = new ArrayList<Task>(eventList);
+		ArrayList<Task> filteredEventDoneList = new ArrayList<Task>(eventDoneList);
+		switch (sortParam) {
+			case "priority":
+				Collections.sort(filteredTaskList, Task.Comparators.PRIORITY);
+				Collections.sort(filteredTaskDoneList, Task.Comparators.PRIORITY);
+				Collections.sort(filteredEventList, Task.Comparators.PRIORITY);
+				Collections.sort(filteredEventDoneList, Task.Comparators.PRIORITY);
+				break;
+			case "date":
+				Collections.sort(filteredTaskList, Task.Comparators.DATE);
+				Collections.sort(filteredTaskDoneList, Task.Comparators.DATE);
+				Collections.sort(filteredEventList, Task.Comparators.DATE);
+				Collections.sort(filteredEventDoneList, Task.Comparators.DATE);
+				break;
+			case "title":
+				Collections.sort(filteredTaskList, Task.Comparators.TITLE);
+				Collections.sort(filteredTaskDoneList, Task.Comparators.TITLE);
+				Collections.sort(filteredEventList, Task.Comparators.TITLE);
+				Collections.sort(filteredEventDoneList, Task.Comparators.TITLE);
+			default:
+				break;
+		}
+		GUIModel.setTaskList(filteredTaskList);
+		GUIModel.setTaskDoneList(filteredTaskDoneList);
+		GUIModel.setEventList(filteredEventList);
+		GUIModel.setEventDoneList(filteredEventDoneList);
+		return "sort successful";
 	}
 
 	@Override

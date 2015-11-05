@@ -152,4 +152,10 @@ public class Task implements Comparable<Task>, Cloneable {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+	
+	public static class Comparators {
+	    public static final Comparator<Task> PRIORITY = (Task t1, Task t2) -> Integer.compare(t1.priority, t2.priority);
+	    public static final Comparator<Task> DATE = (Task t1, Task t2) -> t1.dueDate.compareTo(t2.dueDate);
+	    public static final Comparator<Task> TITLE = (Task t1, Task t2) -> t1.title.compareTo(t2.title);
+	}
 }
