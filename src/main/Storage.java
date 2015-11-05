@@ -306,10 +306,10 @@ public class Storage {
 	   * @param t The updated Task to be stored.
 	   * @return Nothing.
 	   */
-	public void update(int listIndex, Task t) throws IOException {
-		int pos = getPos(listIndex, t);
+	public void update(int listIndex, Task oldTask, Task newTask) throws IOException {
+		int pos = getPos(listIndex, oldTask);
 		if (pos > -1) {
-			lists.get(listIndex).set(pos, t);
+			lists.get(listIndex).set(pos, newTask);
 			writeLists();
 		}
 	}
