@@ -5,9 +5,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-
 import main.CustomDate;
 import main.Magical;
 import main.RecurrencePeriod;
@@ -15,12 +12,6 @@ import main.Storage;
 import main.Item;
 import gui.GUIModel;
 
-/**
- * @author James
- * Functionality:
- * If date and time specified, but one of them is invalid, the invalid field will use the default.
- * If only date or time is specified, is they are invalid, returns null.
- */
 public class AddCommand extends Command{
 
 	/** Command parameters **/
@@ -29,32 +20,22 @@ public class AddCommand extends Command{
 	protected int endTime;
 	protected RecurrencePeriod recurrence;
 	protected boolean isFloat;
-	private Item task;
+	private Item item;
 
-	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+ "Use Format: \nadd title/due date/end time/recurrence";
-	private static final String MESSAGE_INVALID_FLEXI = "Use format: add <title> by <date> <time> <recurrence>";
-	private static final String MESSAGE_INVALID_TITLE = "No Title\n";
-	private static final String MESSAGE_INVALID_DATE = "Due date: %s (Date should be dd-MM-yyyy)\n";
-	private static final String MESSAGE_INVALID_DATE_TIME = "Date/Time: %s\n(Use dd-MM-yyyy for date and 24hours format for time)";
-	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
-			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
-	private static final String MESSAGE_TASK_ADDED = "task added";
+	/** Messaging */
+	private static final String MESSAGE_INVALID_FORMAT = "Use format: add <title> by <date> <time> <recurrence>";
+	private static final String MESSAGE_TASK_ADDED = "Task added";
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
-	private static final String MESSAGE_TASK_ERROR = "unable to add task";
+	private static final String MESSAGE_TASK_ERROR = "Unable to add task";
 
 	public AddCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = new ArrayList<String>(Arrays.asList(args.split("\\s+by\\s+", 2)));
+		this.argsArray = splitArgs(args, "\\s+by\\s+", 2);
 
-		for(int i = 0; i < argsArray.size(); i++){
-			argsArray.set(i, argsArray.get(i).trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
-		}
+		removeEscapeCharacters();
 
 		this.count = argsArray.size();
-		System.out.println(argsArray);
 
 		if(argsArray.size() > 1 && argsArray.get(count-1).contains(" ")){
 			while(true){
@@ -118,7 +99,13 @@ public class AddCommand extends Command{
 				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
 			}
 		} else {
-			throw new IllegalArgumentException(MESSAGE_INVALID_FLEXI);
+			throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
+		}
+	}
+
+	private void removeEscapeCharacters() {
+		for(int i = 0; i < argsArray.size(); i++){
+			argsArray.set(i, argsArray.get(i).trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
 		}
 	}
 
@@ -132,21 +119,21 @@ public class AddCommand extends Command{
 
 	@Override
 	public String execute() {
-		task = new Item();
-		task.setType("task");
-		task.setTitle(title);
-		task.setRecurrence(recurrence);
-		task.setStartDate(null);
-		task.setStartTime(-1);
-		task.setEndDate(dueDate);
-		task.setEndTime(endTime);
+		item = new Item();
+		item.setType("task");
+		item.setTitle(title);
+		item.setRecurrence(recurrence);
+		item.setStartDate(null);
+		item.setStartTime(-1);
+		item.setEndDate(dueDate);
+		item.setEndTime(endTime);
 
 		try {
 			String retMsg = MESSAGE_TASK_ADDED;
 			if (isClashing()) {
 				retMsg += MESSAGE_TASK_CLASH;
 			}
-			Magical.storage.create(Storage.TASKS_INDEX, task);
+			Magical.storage.create(Storage.TASKS_INDEX, item);
 			return retMsg;
 		} catch (IOException e) {
 			return MESSAGE_TASK_ERROR;
@@ -160,7 +147,7 @@ public class AddCommand extends Command{
 	private boolean isClashing() {
 		ArrayList<Item> tasks = Magical.storage.getList(Storage.TASKS_INDEX);
 		for (Item t : tasks) {
-			if (t.getEndDate() != null && t.getEndDate().equals(task.getEndDate())) {
+			if (t.getEndDate() != null && t.getEndDate().equals(item.getEndDate())) {
 				return true;
 			}
 		}
@@ -176,7 +163,7 @@ public class AddCommand extends Command{
 //		AddCommand f = new AddCommand("go on stand \\by the hill by 12pm Monday daily asdgasgd asgas");
 //		AddCommand g = new AddCommand("go on stand \\by the hill by 12a0193 12pm");
 		AddCommand h = new AddCommand("task by tuesday 1pm msonthly");
-
+//		System.out.println(Arrays.toString("a b c d".split(" ", 0)));
 
 	}
 }

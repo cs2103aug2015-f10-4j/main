@@ -30,14 +30,35 @@ public class GUIHelpController {
 			"To tag a task:" + ENDL +
 			"> tag [task ID] [tag name]" + ENDL +
 			ENDL +
+			"To untag a task:" + ENDL +
+			"> untag [taskID] [tag name]" + ENDL +
+			ENDL +
+			"To show all tasks:" + ENDL +
+			"> show" + ENDL +
+			ENDL +
+			"To show a different tab:" + ENDL +
+			"> show [tasks / events]" + ENDL +
+			ENDL +
+			"To show tasks/events of a certain tag:" + ENDL +
+			"> show [tag name]" + ENDL +
+			ENDL +
+			"To sort tasks:" + ENDL +
+			"> sort [priority / date / title]" + ENDL +
+			ENDL +
 			"To search for a task:" + ENDL +
 			"> search [query]" + ENDL +
 			ENDL +
 			"To change a task's priority:" + ENDL +
-			"> set [task ID] [number from 1 to]" + ENDL +
+			"> set [task ID] [number from 1 to 10]" + ENDL +
 			ENDL +
 			"To undo a previous action:" + ENDL +
-			"> undo";
+			"> undo" + ENDL +
+			ENDL +
+			"To change where your list is stored:" + ENDL +
+			"> path [filepath]" + ENDL +
+			ENDL +
+			"To exit the application:" + ENDL +
+			"> exit";
 
 	@FXML private Label headerLabel;
 	@FXML private Label bodyLabel;

@@ -3,6 +3,7 @@ package Commands;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +52,20 @@ public abstract class Command {
 		this.args = args;
 	}
 
+	/**
+	 * Method: splitArgs
+	 * Description: Create an ArrayList of Strings that is split into arguments according to 
+	 * the regex and into maximum number of elements specified in the limit. 
+	 * 
+	 * @param args
+	 * @param regex
+	 * @param limit
+	 * @return ArrayList of args
+	 */
+	protected ArrayList<String> splitArgs(String args, String regex, int limit) {
+		return new ArrayList<String>(Arrays.asList(args.split(regex, 2)));
+	}
+	
 	/**
 	 * Method: getRecurrence
 	 * Description: Checks if the string is a valid recurrence and returns the corresponding
@@ -104,9 +119,7 @@ public abstract class Command {
 	 */
 	private String formatCorrectTime(String date) {
 		assertNotNull(date);
-		Pattern time= Pattern.compile("\\D*\\d{4}\\D*");
-		assertNotNull(time);
-		Matcher m = time.matcher(date);
+		Matcher m = getMatcher(date, "\\D*\\d{4}\\D*");
 		assertNotNull(m);
 		
 		if(m.find()){
@@ -129,9 +142,7 @@ public abstract class Command {
 	 */
 	private String dateWithYear(String date) {
 		assertNotNull(date);
-		Pattern noYear = Pattern.compile("\\D*\\d{2}(/|-)\\d{2}\\D*");
-		assertNotNull(noYear);
-		Matcher m = noYear.matcher(date);;
+		Matcher m = getMatcher(date, "\\D*\\d{2}(/|-)\\d{2}\\D*");
 		assertNotNull(m);
 		
 		if(m.find()){
@@ -140,6 +151,21 @@ public abstract class Command {
 			date = date.replaceAll(s, s.trim() + "/" + new CustomDate(new Date()).getYear() + " ");
 		}
 		return date;
+	}
+	
+	/**
+	 * Method: getMatcher
+	 * Description: Creates a matcher using a pattern object with the given regex 
+	 * 
+	 * @param date
+	 * @param regex
+	 * @return Matcher object with given regex
+	 */
+	private Matcher getMatcher(String date, String regex) {
+		Pattern p = Pattern.compile(regex);
+		assertNotNull(p);
+		Matcher m = p.matcher(date);
+		return m;
 	}
 
 	/**
@@ -278,6 +304,16 @@ public abstract class Command {
 	}
 
 	/**
+	 * Method: isUndoable
+	 * Description: Indicates if the command can be undone or not
+	 * 
+	 * @return boolean true/false
+	 */
+	public boolean isUndoable(){
+		return true;
+	}
+	
+	/**
 	 * Abstract Method: execute
 	 * Description: Implements functionality for each Command subclass.
 	 * 
@@ -293,14 +329,4 @@ public abstract class Command {
 	 * @return boolean true/false
 	 */
 	public abstract boolean validNumArgs();
-
-	/**
-	 * Method: isUndoable
-	 * Description: Indicates if the command can be undone or not
-	 * 
-	 * @return boolean true/false
-	 */
-	public boolean isUndoable(){
-		return true;
-	}
 }
