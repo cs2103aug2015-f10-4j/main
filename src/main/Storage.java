@@ -2,6 +2,7 @@ package main;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +23,7 @@ public class Storage {
 	public static final int TASKS_DONE_INDEX = 1;
 	public static final int EVENTS_INDEX = 2;
 	public static final int EVENTS_DONE_INDEX = 3;
+	
 	private static final String DEFAULT_FILE_DIRECTORY = "magical";
 	private static final String DEFAULT_FILE_NAME = "storage.txt";
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
@@ -101,20 +103,31 @@ public class Storage {
 		return filePath;
 	}
 
-	// method for Logic to call should the user want to change filePath
-	// will be stored in settings.properties file
 	/**
-	 * This method changes the file path stored in the properties file.
+	 * This method changes the file path stored in the properties file and moves
+	 * the .txt data file to the specified new file path.
 	 * @param newFilePath New file path specified by user.
-	 * @return Nothing.
+	 * @return whether the file path is changed successfully or not
 	 * @throws IOException 
+	 * @exception FileNotFoundException If the file path does not exist
+	 * @see FileNotFoundException
 	 */
-	public void changeFilePath(String newFilePath) throws IOException {
+	public boolean changeFilePath(String newFilePath) throws IOException {
 		String oldFilePath = readFileSettings();
-		moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
-		newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
-		moveFile(oldFilePath, newFilePath);
-		writeToProperties(newFilePath);
+		
+		if (newFilePath == null || oldFilePath == null) {
+			return false;
+		} else {
+			try {
+				moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
+				newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
+				moveFile(oldFilePath, newFilePath);
+				writeToProperties(newFilePath);
+				return true;
+			} catch (FileNotFoundException fnfe) {
+				return false;
+			}
+		}
 	}
 
 	/**
