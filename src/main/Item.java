@@ -150,7 +150,7 @@ public class Item {
 	}
 
 	public static class Comparators {
-		public static final Comparator<Item> PRIORITY = (Item i1, Item i2) -> Integer
+		public static final Comparator<Item> PRIORITY = (Item i1, Item i2) -> -1 * Integer
 				.compare(i1.priority, i2.priority);
 		public static final Comparator<Item> DATE = new Comparator<Item>() {
 			@Override
