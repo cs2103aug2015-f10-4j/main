@@ -106,30 +106,30 @@ public class DateCommand extends Command {
 		ArrayList<Task> filteredEventList = new ArrayList<Task>();
 		ArrayList<Task> filteredEventDoneList = new ArrayList<Task>();
 		for (Task t : taskList) {
-			if (t.getDueDate() != null
-					&& t.getDueDate().compareTo(startDate) >= 0
-					&& t.getDueDate().compareTo(endDate) <= 0) {
+			if (t.getEndDate() != null
+					&& t.getEndDate().compareTo(startDate) >= 0
+					&& t.getEndDate().compareTo(endDate) <= 0) {
 				filteredTaskList.add(t);
 			}
 		}
 		for (Task t : taskDoneList) {
-			if (t.getDueDate() != null
-					&& t.getDueDate().compareTo(startDate) >= 0
-					&& t.getDueDate().compareTo(endDate) <= 0) {
+			if (t.getEndDate() != null
+					&& t.getEndDate().compareTo(startDate) >= 0
+					&& t.getEndDate().compareTo(endDate) <= 0) {
 				filteredTaskDoneList.add(t);
 			}
 		}
 		for (Task t : eventList) {
-			if (t.getDueDate() != null
-					&& t.getDueDate().compareTo(startDate) >= 0
-					&& t.getDueDate().compareTo(endDate) <= 0) {
+			if (t.getEndDate() != null
+					&& t.getEndDate().compareTo(startDate) >= 0
+					&& t.getEndDate().compareTo(endDate) <= 0) {
 				filteredEventList.add(t);
 			}
 		}
 		for (Task t : eventDoneList) {
-			if (t.getDueDate() != null
-					&& t.getDueDate().compareTo(startDate) >= 0
-					&& t.getDueDate().compareTo(endDate) <= 0) {
+			if (t.getEndDate() != null
+					&& t.getEndDate().compareTo(startDate) >= 0
+					&& t.getEndDate().compareTo(endDate) <= 0) {
 				filteredEventDoneList.add(t);
 			}
 		}
