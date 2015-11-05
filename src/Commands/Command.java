@@ -93,7 +93,7 @@ public abstract class Command {
 
 	protected CustomDate getDate(String date)  {
 		if(date.trim().equalsIgnoreCase("today")){
-			Span span = Chronic.parse(date + " 12pm");
+			Span span = Chronic.parse(date + " 23:59");
 			return new CustomDate(span.getBeginCalendar().getTime());
 		} else {
 			Pattern time= Pattern.compile("\\D*\\d{4}\\D*");
