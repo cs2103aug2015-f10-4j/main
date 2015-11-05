@@ -142,10 +142,13 @@ public abstract class Command {
 	 */
 	private CustomDate dateWithTime(String date) {
 		Span span;
-		if((span = Chronic.parse(date + " 23:59"))!= null){
-			return new CustomDate(span.getBeginCalendar().getTime());
-		} else if ((span = Chronic.parse(date)) != null ){
-			return new CustomDate(span.getBeginCalendar().getTime());
+		if(Chronic.parse(date) != null ){
+			if((span = Chronic.parse(date + " 23:59")) != null){
+				return new CustomDate(span.getBeginCalendar().getTime());
+			} else {
+				span = Chronic.parse(date);
+				return new CustomDate(span.getBeginCalendar().getTime());
+			}
 		} else {
 			return null;
 		}
@@ -280,13 +283,13 @@ public abstract class Command {
 	public static void main(String[] args) throws Exception {
 		//Command c = new DateCommand("");
 		//c.flexiParse("audgsf");
-		Span s = Chronic.parse("21-02/93");
+		Span s = Chronic.parse("00om");
 		System.out.println(s);
 		s = Chronic.parse("today");
 		//System.out.println(s);
 		//System.out.println(s.getBeginCalendar().getTime());
 		//System.out.println(s.getEndCalendar().toString());
 		ExitCommand e = new ExitCommand("");
-		System.out.println(e.getDate("21-02"));
+		System.out.println(e.getDate(""));
 	}
 }
