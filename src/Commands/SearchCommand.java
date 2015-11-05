@@ -29,7 +29,6 @@ public class SearchCommand extends Command {
 	 * query text in the titles of all events and tasks. It then displays the
 	 * found tasks and events to the GUI.
 	 * 
-	 * 
 	 * @param None
 	 *            .
 	 * @return message to show user
