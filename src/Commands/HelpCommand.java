@@ -1,7 +1,6 @@
 package Commands;
 
 import gui.GUIView;
-import main.UI;
 
 public class HelpCommand extends Command {
 
