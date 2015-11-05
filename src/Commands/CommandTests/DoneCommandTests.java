@@ -16,10 +16,9 @@ import main.Task;
 
 public class DoneCommandTests {
 
-	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n";
-	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+ "Use Format: done <task_id>";
-	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
+	// protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
+	// private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <task_id>";
+	// private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 
 	@Before
 	public void setUp() {
@@ -44,42 +43,46 @@ public class DoneCommandTests {
 		try {
 			DoneCommand noArgs = new DoneCommand("");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
+			assertTrue(e instanceof StringIndexOutOfBoundsException);
+			// assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 		try {
 			DoneCommand tooManyArgs = new DoneCommand("t1 t2");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
+			assertTrue(e instanceof IllegalArgumentException);
 		}
 	}
 
 	@Test
 	public void testInvalidID() {
-		final String ERROR_MESSAGE = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_ID;
+		// final String ERROR_MESSAGE = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_ID;
 		try {
 			DoneCommand invalidID = new DoneCommand("t11");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "t11"), e.getMessage());
+			assertTrue(e instanceof IndexOutOfBoundsException);
 		}
 		try {
 			DoneCommand noLetter = new DoneCommand("1");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "1"), e.getMessage());
+			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
 			DoneCommand wrongLetter = new DoneCommand("a1");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "a1"), e.getMessage());
+			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			Command tooShort = new DelCommand("a");
+			Command tooShort = new DoneCommand("a");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "a"), e.getMessage());
+			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			Command youCantDoneADone = new DelCommand("d1");
+			Command youCantDoneADone = new DoneCommand("d1");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "d1"), e.getMessage());
+			assertTrue(e instanceof IllegalArgumentException);
+			// System.out.println("e: " + e);
+			// System.out.println("stringformat: " + String.format(ERROR_MESSAGE, "d1"));
+			// assertEquals(String.format(ERROR_MESSAGE, "d1"), e.getMessage());
 		}
 	}
 
