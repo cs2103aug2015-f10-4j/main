@@ -250,7 +250,7 @@ public class GUIController {
 			String userInput = commandLineField.getText();
 			try {
 				messageLabel.setTextFill(Color.web("#0000ff"));
-				String message = main.Magical.parseCommand(userInput);
+				String message = main.Magical.execute(userInput);
 				messageLabel.setText(message);
 				taskTable.setItems(GUIModel.getTaskList());
 				taskDoneTable.setItems(GUIModel.getTaskDoneList());
