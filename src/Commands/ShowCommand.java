@@ -25,8 +25,10 @@ public class ShowCommand extends Command {
 
 		if (type.equals("")) {
 			this.type = "all";
-		} else if (!type.equalsIgnoreCase("events")
-				&& !type.equalsIgnoreCase("tasks")) {
+		} else if (!type.equalsIgnoreCase("task")
+				&& !type.equalsIgnoreCase("tasks")
+				&& !type.equalsIgnoreCase("event")
+				&& !type.equalsIgnoreCase("events")) {
 			this.type = "tag";
 			this.tags = this.argsArray;
 		}
@@ -66,15 +68,17 @@ public class ShowCommand extends Command {
 			filteredEventList = eventList;
 			filteredEventDoneList = eventDoneList;
 			break;
-		case "events":
-			filteredEventList = eventList;
-			filteredEventDoneList = eventDoneList;
-			GUIModel.setCurrentTab("events");
+		case "task":
+			GUIModel.setCurrentTab("tasks");
 			break;
 		case "tasks":
-			filteredTaskList = taskList;
-			filteredTaskDoneList = taskDoneList;
 			GUIModel.setCurrentTab("tasks");
+			break;
+		case "event":
+			GUIModel.setCurrentTab("events");
+			break;
+		case "events":
+			GUIModel.setCurrentTab("events");
 			break;
 		case "tag":
 			Set<String> queryTags = new HashSet<String>(tags);
