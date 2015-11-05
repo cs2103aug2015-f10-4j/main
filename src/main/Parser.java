@@ -24,7 +24,7 @@ public class Parser {
 	private static final String CMD_SORT = "sort";
 	
 	/** Error Messages*/
-	private static final String MESSAGE_INVALID_COMMAND = "Invalid command";
+	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %s";
 	private static final String MESSAGE_INVALID_INPUT = "Must enter a command when calling execute";
 	
 	/**
@@ -128,7 +128,7 @@ public class Parser {
 			case CMD_SORT:
 				return new SortCommand(args);
 			default:
-				throw new Exception(MESSAGE_INVALID_COMMAND + ": " + command);
+				throw new Exception(String.format(MESSAGE_INVALID_COMMAND, command));
 		}
 	}
 }

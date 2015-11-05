@@ -1,5 +1,7 @@
 package Commands;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,41 +22,43 @@ import main.RecurrencePeriod;
 
 public abstract class Command {
 
+	/** Recurrence types*/
 	private static final String RECUR_YEARLY = "yearly";
 	private static final String RECUR_MONTHLY = "monthly";
 	private static final String RECUR_WEEKLY = "weekly";
 	private static final String RECUR_DAILY = "daily";
+	
 	protected static final String STRING_EMPTY = "";
-	//main variables
+	
+	/** Main variables */
 	protected String args;
 	protected ArrayList<String> argsArray;
 	protected int count;
 	protected boolean isFlexi;
 
-	//messaging params
+	/** Messaging */
 	protected TreeSet<String> invalidArgs = new TreeSet<String>();
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
 
+	/**
+	 * Constructor for Command objects. Stores the arguments passed in when the 
+	 * constructor is called.
+	 * 
+	 * @param args
+	 */
 	public Command(String args){
-
+		assertNotNull(args);
 		this.args = args;
 	}
 
-	protected String swapMonthDay(String date){
-		String[] splitDate;
-		String swappedDate = null;
-		//checking is date is dd/mm/yy or dd/mm
-		if(date.contains("/") && !date.contains("-")){
-			splitDate = date.split("/",3);
-			if(splitDate.length == 2){
-				swappedDate = splitDate[1] + "/" + splitDate[0];
-			} else if (splitDate.length == 3){
-				swappedDate = splitDate[1] + "/" + splitDate[0] + "/" + splitDate[2];
-			}
-		}
-		return swappedDate;
-	}
-
+	/**
+	 * Method: getRecurrence
+	 * Description: Gives the correct recurrence period according to the string provided 
+	 * or null if the recurrencePeriod is not valid.
+	 *  
+	 * @param recurrence
+	 * @return RecurrencePeriod for the given string
+	 */
 	protected RecurrencePeriod getRecurrence(String recurrence) {
 		String r = recurrence.toLowerCase();
 		switch (r) {

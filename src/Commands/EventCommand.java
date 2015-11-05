@@ -230,7 +230,7 @@ public class EventCommand extends Command{
 		} catch (IOException e) {
 			return MESSAGE_EVENT_ERROR;
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getList(Storage.EVENTS_INDEX));
+			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
 			GUIModel.setEventDoneList(Magical.storage.getList(Storage.EVENTS_DONE_INDEX));
 			GUIModel.setCurrentTab("events");
 		}
