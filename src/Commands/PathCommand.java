@@ -1,5 +1,6 @@
 package Commands;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import main.Magical;
@@ -28,7 +29,11 @@ public class PathCommand extends Command {
 	 */
 	@Override
 	public String execute() throws Exception {
-		Magical.storage.changeFilePath(location);
+		try {
+			Magical.storage.changeFilePath(location);
+		} catch (FileNotFoundException fnfe) {
+			throw new Exception(location + " (no such directory)");
+		}
 		return "Path changed to: " + location;
 	}
 

@@ -2,23 +2,17 @@ package gui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class GUIHelpController {
 
 	private static final String ENDL = System.getProperty("line.separator");
 
-	private final String HELP_TEXT = "Welcome to Magical!" + ENDL +
-			ENDL +
-			"==================" + ENDL +
-			"Available Commands" + ENDL +
-			"==================" + ENDL +
-			ENDL +
-			"To add a task:" + ENDL +
+	private static final String HEADER_TEXT = "Magical User Guide";
+
+	private static final String BODY_TEXT =  "To add a task:" + ENDL +
 			"> add [task title] by [due date] [recurrence]" + ENDL +
 			ENDL +
 			"To add an event:" + ENDL +
@@ -45,11 +39,13 @@ public class GUIHelpController {
 			"To undo a previous action:" + ENDL +
 			"> undo";
 
-	@FXML private TextArea helpTextArea;
+	@FXML private Label headerLabel;
+	@FXML private Label bodyLabel;
 
 	public void initialize() {
 
-		helpTextArea.setText(HELP_TEXT);
+		headerLabel.setText(HEADER_TEXT);
+		bodyLabel.setText(BODY_TEXT);
 
 	}
 

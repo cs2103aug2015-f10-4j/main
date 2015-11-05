@@ -12,7 +12,7 @@ import Commands.Command;
 import Commands.DelCommand;
 import Commands.DoneCommand;
 import gui.GUIModel;
-import main.Task;
+import main.Item;
 
 public class DelCommandTests {
 
@@ -23,9 +23,9 @@ public class DelCommandTests {
 
 	@Before
 	public void setUp() {
-		ArrayList<Task> testList = new ArrayList<Task>();
+		ArrayList<Item> testList = new ArrayList<Item>();
 		for (int i = 0; i < 10; i ++) {
-			testList.add(new Task());
+			testList.add(new Item());
 		}
 		GUIModel.setTaskList(testList);
 		GUIModel.setTaskDoneList(testList);

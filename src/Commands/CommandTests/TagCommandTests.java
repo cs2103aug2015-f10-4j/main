@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import main.Task;
+import main.Item;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,9 +21,9 @@ public class TagCommandTests {
 	
 	@Before
 	public void setUp() {
-		ArrayList<Task> testList = new ArrayList<Task>();
+		ArrayList<Item> testList = new ArrayList<Item>();
 		for (int i = 0; i < 10; i ++) {
-			testList.add(new Task());
+			testList.add(new Item());
 		}
 		GUIModel.setTaskList(testList);
 		GUIModel.setTaskDoneList(testList);

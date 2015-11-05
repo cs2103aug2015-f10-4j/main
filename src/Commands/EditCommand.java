@@ -12,15 +12,15 @@ import main.CustomDate;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Storage;
-import main.Task;
+import main.Item;
 import gui.GUIModel;
 
 public class EditCommand extends Command{
 
 	private String field;
 	private String value;
-	private Task task;
-	private Task prevTask;
+	private Item task;
+	private Item prevTask;
 	private boolean toFloat;
 	private boolean isTask;
 	private Object editObject;
@@ -49,7 +49,7 @@ public class EditCommand extends Command{
 		}
 		System.out.println(argsArray);
 		if(validNumArgs()){
-			this.task = getTaskByID(argsArray.get(0).trim());
+			this.task = getItemByID(argsArray.get(0).trim());
 			this.field = argsArray.get(1).trim();
 			this.value = argsArray.get(2).trim();
 			
@@ -154,7 +154,7 @@ public class EditCommand extends Command{
 		case "date":
 			if(toFloat){
 				//change to float
-				task.setDueDate(null);
+				task.setEndDate(null);
 				task.setEndTime(-1);
 			} else {
 				//unfloating the task
@@ -165,7 +165,7 @@ public class EditCommand extends Command{
 				CustomDate date = (CustomDate) editObject;
 				date.setTime(task.getEndTime());
 						
-				task.setDueDate(date);
+				task.setEndDate(date);
 			}
 			break;
 		case "start time":
@@ -176,15 +176,15 @@ public class EditCommand extends Command{
 			
 			CustomDate date = null;
 			//unfloating the task
-			if(task.getDueDate() == null){
+			if(task.getEndDate() == null){
 				date = getDate("today");
 			//normal changing of date object
 			} else {
-				date = task.getDueDate();
+				date = task.getEndDate();
 			}
 			assertNotNull(date);
 			date.setTime(task.getEndTime());
-			task.setDueDate(date);
+			task.setEndDate(date);
 			break;
 		case "recurrence":
 			task.setRecurrence(RecurrencePeriod.toRecurrence(value));
@@ -195,8 +195,7 @@ public class EditCommand extends Command{
 		
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.storage.delete(listIndex, prevTask);
-			Magical.storage.create(listIndex, task);
+			Magical.storage.update(listIndex, prevTask, task);
 		} catch (IOException e) {
 			return "unable to edit task";
 		} finally {

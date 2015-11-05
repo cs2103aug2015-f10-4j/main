@@ -8,7 +8,7 @@ import gui.GUIModel;
 import main.CustomDate;
 import main.Magical;
 import main.Storage;
-import main.Task;
+import main.Item;
 
 public class DateCommand extends Command {
 
@@ -94,42 +94,42 @@ public class DateCommand extends Command {
 	 */
 	@Override
 	public String execute() {
-		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
-		ArrayList<Task> taskDoneList = Magical.storage
+		ArrayList<Item> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
+		ArrayList<Item> taskDoneList = Magical.storage
 				.getList(Storage.TASKS_DONE_INDEX);
-		ArrayList<Task> eventList = Magical.storage
+		ArrayList<Item> eventList = Magical.storage
 				.getList(Storage.EVENTS_INDEX);
-		ArrayList<Task> eventDoneList = Magical.storage
+		ArrayList<Item> eventDoneList = Magical.storage
 				.getList(Storage.EVENTS_DONE_INDEX);
-		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
-		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
-		ArrayList<Task> filteredEventList = new ArrayList<Task>();
-		ArrayList<Task> filteredEventDoneList = new ArrayList<Task>();
-		for (Task t : taskList) {
-			if (t.getDueDate() != null
-					&& t.getDueDate().compareTo(startDate) >= 0
-					&& t.getDueDate().compareTo(endDate) <= 0) {
+		ArrayList<Item> filteredTaskList = new ArrayList<Item>();
+		ArrayList<Item> filteredTaskDoneList = new ArrayList<Item>();
+		ArrayList<Item> filteredEventList = new ArrayList<Item>();
+		ArrayList<Item> filteredEventDoneList = new ArrayList<Item>();
+		for (Item t : taskList) {
+			if (t.getEndDate() != null
+					&& t.getEndDate().compareTo(startDate) >= 0
+					&& t.getEndDate().compareTo(endDate) <= 0) {
 				filteredTaskList.add(t);
 			}
 		}
-		for (Task t : taskDoneList) {
-			if (t.getDueDate() != null
-					&& t.getDueDate().compareTo(startDate) >= 0
-					&& t.getDueDate().compareTo(endDate) <= 0) {
+		for (Item t : taskDoneList) {
+			if (t.getEndDate() != null
+					&& t.getEndDate().compareTo(startDate) >= 0
+					&& t.getEndDate().compareTo(endDate) <= 0) {
 				filteredTaskDoneList.add(t);
 			}
 		}
-		for (Task t : eventList) {
-			if (t.getDueDate() != null
-					&& t.getDueDate().compareTo(startDate) >= 0
-					&& t.getDueDate().compareTo(endDate) <= 0) {
+		for (Item t : eventList) {
+			if (t.getEndDate() != null
+					&& t.getEndDate().compareTo(startDate) >= 0
+					&& t.getEndDate().compareTo(endDate) <= 0) {
 				filteredEventList.add(t);
 			}
 		}
-		for (Task t : eventDoneList) {
-			if (t.getDueDate() != null
-					&& t.getDueDate().compareTo(startDate) >= 0
-					&& t.getDueDate().compareTo(endDate) <= 0) {
+		for (Item t : eventDoneList) {
+			if (t.getEndDate() != null
+					&& t.getEndDate().compareTo(startDate) >= 0
+					&& t.getEndDate().compareTo(endDate) <= 0) {
 				filteredEventDoneList.add(t);
 			}
 		}

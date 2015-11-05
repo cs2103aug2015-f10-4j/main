@@ -1,0 +1,9 @@
+.header-style {
+	-fx-underline: true;
+	-fx-font-size: 18;
+	-fx-font-weight: bold;
+}
+.body-style {
+	-fx-font-size: 15;
+	-fx-text-alignment: justify;
+}

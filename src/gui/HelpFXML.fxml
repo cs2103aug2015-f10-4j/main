@@ -7,11 +7,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="433.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIHelpController">
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" stylesheets="@help.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="gui.GUIHelpController">
    <children>
-      <TextArea fx:id="helpTextArea" editable="false" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="433.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <TextFlow prefHeight="590.0" prefWidth="390.0">
+               <children>
+                  <Label fx:id="headerLabel" styleClass="header-style" text="Label" />
+                  <Label fx:id="bodyLabel" styleClass="body-style" text="Label" />
+               </children>
+            </TextFlow>
+         </content>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </ScrollPane>
    </children>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
 </AnchorPane>

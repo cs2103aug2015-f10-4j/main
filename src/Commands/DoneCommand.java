@@ -7,12 +7,12 @@ import java.util.Arrays;
 import gui.GUIModel;
 import main.Magical;
 import main.Storage;
-import main.Task;
+import main.Item;
 
 public class DoneCommand extends Command {
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <task_id>";
 
-	private Task task;
+	private Item task;
 
 	public DoneCommand(String args) throws Exception {
 		super(args);
@@ -22,7 +22,7 @@ public class DoneCommand extends Command {
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			task = getTaskByID(argsArray.get(0).trim());
+			task = getItemByID(argsArray.get(0).trim());
 
 			if (task == null) {
 				invalidArgs.add("taskID");

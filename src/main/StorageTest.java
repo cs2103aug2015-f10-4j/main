@@ -16,16 +16,16 @@ import junit.framework.TestCase;
 
 public class StorageTest extends TestCase {
 
-	Task task1 = new Task();
-	Task event1 = new Task();
-	Task task2 = new Task();
-	Task event2 = new Task();
+	Item task1 = new Item();
+	Item event1 = new Item();
+	Item task2 = new Item();
+	Item event2 = new Item();
 	
 	@Before
 	public void setUp() {
 		task1.setType("task");
 		task1.setTitle("help mum buy groceries");
-		task1.setDueDate(createDateObjects(1992, 3, 17, 15, 9, 17));
+		task1.setEndDate(createDateObjects(1992, 3, 17, 15, 9, 17));
 		task1.setStartTime(900);
 		task1.setEndTime(2200);
 		task1.setRecurrence(RecurrencePeriod.WEEKLY);
@@ -33,7 +33,7 @@ public class StorageTest extends TestCase {
 		
 		task2.setType("task");
 		task2.setTitle("study for midterms");
-		task2.setDueDate(createDateObjects(1993, 10, 12, 3, 8, 16));
+		task2.setEndDate(createDateObjects(1993, 10, 12, 3, 8, 16));
 		task2.setStartTime(800);
 		task2.setEndTime(2000);
 		task2.setRecurrence(RecurrencePeriod.DAILY);
@@ -41,7 +41,7 @@ public class StorageTest extends TestCase {
 		
 		event1.setType("event");
 		event1.setTitle("my birthday");
-		event1.setDueDate(createDateObjects(1988, 2, 16, 8, 18, 58));
+		event1.setEndDate(createDateObjects(1988, 2, 16, 8, 18, 58));
 		event1.setStartTime(700);
 		event1.setEndTime(1800);
 		event1.setRecurrence(RecurrencePeriod.YEARLY);
@@ -49,7 +49,7 @@ public class StorageTest extends TestCase {
 		
 		event2.setType("event");
 		event2.setTitle("eat dinner at utown");
-		event2.setDueDate(createDateObjects(1988, 8, 18, 3, 19, 16));
+		event2.setEndDate(createDateObjects(1988, 8, 18, 3, 19, 16));
 		event2.setStartTime(500);
 		event2.setEndTime(1400);
 		event2.setRecurrence(RecurrencePeriod.DAILY);
@@ -59,7 +59,7 @@ public class StorageTest extends TestCase {
 	/******************* HELPER METHODS *******************/
 	
 	// creates localArray by adding default tasks to test against
-	private void createLocalArray(ArrayList<Task> localArray) {
+	private void createLocalArray(ArrayList<Item> localArray) {
 		localArray.add(task1);
 		localArray.add(task2);
 		localArray.add(event1); // adding the updated element into localArray

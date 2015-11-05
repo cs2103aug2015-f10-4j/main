@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -22,44 +23,47 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import main.Magical;
-import main.Task;
+import main.Item;
 
 public class GUIController {
 
 	@FXML private TitledPane toDoPane;
 
 	// TASKS
-	@FXML private TableView<Task> taskTable;
-	@FXML private TableColumn<Task, String> taskIDCol;
-	@FXML private TableColumn<Task, String> taskTitleCol;
-	@FXML private TableColumn<Task, String> taskDueDateCol;
-	@FXML private TableColumn<Task, String> taskPriorityCol;
-	@FXML private TableColumn<Task, String> taskTagsCol;
+	@FXML private TableView<Item> taskTable;
+	@FXML private TableColumn<Item, String> taskIDCol;
+	@FXML private TableColumn<Item, String> taskTitleCol;
+	@FXML private TableColumn<Item, String> taskDueDateCol;
+	@FXML private TableColumn<Item, String> taskPriorityCol;
+	@FXML private TableColumn<Item, String> taskTagsCol;
 	// DONE TASKS
-	@FXML private TableView<Task> taskDoneTable;
-	@FXML private TableColumn<Task, String> taskDoneIDCol;
-	@FXML private TableColumn<Task, String> taskDoneTitleCol;
-	@FXML private TableColumn<Task, String> taskDoneDueDateCol;
-	@FXML private TableColumn<Task, String> taskDonePriorityCol;
-	@FXML private TableColumn<Task, String> taskDoneTagsCol;
+	@FXML private TableView<Item> taskDoneTable;
+	@FXML private TableColumn<Item, String> taskDoneIDCol;
+	@FXML private TableColumn<Item, String> taskDoneTitleCol;
+	@FXML private TableColumn<Item, String> taskDoneDueDateCol;
+	@FXML private TableColumn<Item, String> taskDonePriorityCol;
+	@FXML private TableColumn<Item, String> taskDoneTagsCol;
 	// EVENTS
-	@FXML private TableView<Task> eventTable;
-	@FXML private TableColumn<Task, String> eventIDCol;
-	@FXML private TableColumn<Task, String> eventTitleCol;
-	@FXML private TableColumn<Task, String> eventDateCol;
-	@FXML private TableColumn<Task, String> eventPriorityCol;
-	@FXML private TableColumn<Task, String> eventTagsCol;
+	@FXML private TableView<Item> eventTable;
+	@FXML private TableColumn<Item, String> eventIDCol;
+	@FXML private TableColumn<Item, String> eventTitleCol;
+	@FXML private TableColumn<Item, String> eventStartDateCol;
+	@FXML private TableColumn<Item, String> eventEndDateCol;
+	@FXML private TableColumn<Item, String> eventPriorityCol;
+	@FXML private TableColumn<Item, String> eventTagsCol;
 	// DONE EVENTS
-	@FXML private TableView<Task> eventDoneTable;
-	@FXML private TableColumn<Task, String> eventDoneIDCol;
-	@FXML private TableColumn<Task, String> eventDoneTitleCol;
-	@FXML private TableColumn<Task, String> eventDoneDateCol;
-	@FXML private TableColumn<Task, String> eventDonePriorityCol;
-	@FXML private TableColumn<Task, String> eventDoneTagsCol;
+	@FXML private TableView<Item> eventDoneTable;
+	@FXML private TableColumn<Item, String> eventDoneIDCol;
+	@FXML private TableColumn<Item, String> eventDoneTitleCol;
+	@FXML private TableColumn<Item, String> eventDoneStartDateCol;
+	@FXML private TableColumn<Item, String> eventDoneEndDateCol;
+	@FXML private TableColumn<Item, String> eventDonePriorityCol;
+	@FXML private TableColumn<Item, String> eventDoneTagsCol;
 
 	// Controls
 	@FXML private TabPane tabPane;
@@ -68,6 +72,11 @@ public class GUIController {
 	@FXML private Label messageLabel;
 	@FXML private TextField commandLineField;
 	@FXML private TextArea helpTextArea;
+
+	/**
+	 * This method initializes GUIController when it is called by GUIView.
+	 * @throws Exception
+	 */
 
 	public void initialize() throws Exception {
 
@@ -84,7 +93,7 @@ public class GUIController {
 		 */
 
 		taskIDCol.setCellFactory(col -> {
-		    TableCell<Task, String> cell = new TableCell<>();
+		    TableCell<Item, String> cell = new TableCell<>();
 		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
 		        .then("")
 		        .otherwise(Bindings.concat("t", cell.indexProperty().add(1).asString())));
@@ -92,31 +101,24 @@ public class GUIController {
 		});
 
 
-		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
 
 		taskTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
-			String result = "";
 			Set<String> tagSet = col.getValue().getTags();
-			if (!tagSet.isEmpty()) {
-				Iterator<String> iterator = tagSet.iterator();
-				while (iterator.hasNext()) {
-					result += iterator.next() + ", ";
-				}
-				result = result.substring(0, result.lastIndexOf(","));
-			}
+			String result = makeTagString(tagSet);
 			finalResult.setValue(result);
 			return finalResult;
 		});
 
-		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
-		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
+		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
 		/*
 		 * EVENT TABLE
 		 */
 		eventIDCol.setCellFactory(col -> {
-		    TableCell<Task, String> cell = new TableCell<>();
+		    TableCell<Item, String> cell = new TableCell<>();
 		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
 		        .then("")
 		        .otherwise(Bindings.concat("e", cell.indexProperty().add(1).asString())));
@@ -124,25 +126,19 @@ public class GUIController {
 		});
 
 
-		eventTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+		eventTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
 
 		eventTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
-			String result = "";
 			Set<String> tagSet = col.getValue().getTags();
-			if (!tagSet.isEmpty()) {
-				Iterator<String> iterator = tagSet.iterator();
-				while (iterator.hasNext()) {
-					result += iterator.next() + ", ";
-				}
-				result = result.substring(0, result.lastIndexOf(","));
-			}
+			String result = makeTagString(tagSet);
 			finalResult.setValue(result);
 			return finalResult;
 		});
 
-		eventDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
-		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+		eventStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("startDate"));
+		eventEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
+		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
 
 		/*
@@ -150,64 +146,51 @@ public class GUIController {
 		 */
 
 		taskDoneIDCol.setCellFactory(col -> {
-		    TableCell<Task, String> cell = new TableCell<>();
+		    TableCell<Item, String> cell = new TableCell<>();
 		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
 		        .then("")
 		        .otherwise(Bindings.concat("d", cell.indexProperty().add(1).asString())));
 		    return cell;
 		});
 
-		taskDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+		taskDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
 
 		taskDoneTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
-			String result = "";
 			Set<String> tagSet = col.getValue().getTags();
-			if (!tagSet.isEmpty()) {
-				Iterator<String> iterator = tagSet.iterator();
-				while (iterator.hasNext()) {
-					result += iterator.next() + ", ";
-				}
-				result = result.substring(0, result.lastIndexOf(","));
-			}
+			String result = makeTagString(tagSet);
 			finalResult.setValue(result);
 			return finalResult;
 		});
 
-		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
-		taskDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
+		taskDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
 		/*
 		 * DONE EVENTS TABLE
 		 */
 
 		eventDoneIDCol.setCellFactory(col -> {
-		    TableCell<Task, String> cell = new TableCell<>();
+		    TableCell<Item, String> cell = new TableCell<>();
 		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
 		        .then("")
 		        .otherwise(Bindings.concat("p", cell.indexProperty().add(1).asString())));
 		    return cell;
 		});
 
-		eventDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
+		eventDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
 
 		eventDoneTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
-			String result = "";
 			Set<String> tagSet = col.getValue().getTags();
-			if (!tagSet.isEmpty()) {
-				Iterator<String> iterator = tagSet.iterator();
-				while (iterator.hasNext()) {
-					result += iterator.next() + ", ";
-				}
-				result = result.substring(0, result.lastIndexOf(","));
-			}
+			String result = makeTagString(tagSet);
 			finalResult.setValue(result);
 			return finalResult;
 		});
 
-		eventDoneDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
-		eventDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
+		eventDoneStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("startDate"));
+		eventDoneEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
+		eventDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
 		Platform.runLater(new Runnable() {
 			@Override
@@ -226,6 +209,18 @@ public class GUIController {
 			selectionModel.select(eventTab);
 		}
 		return;
+	}
+
+	private String makeTagString(Set<String> tagSet) {
+		String result = "";
+		if (!tagSet.isEmpty()) {
+			Iterator<String> iterator = tagSet.iterator();
+			while (iterator.hasNext()) {
+				result += iterator.next() + ", ";
+			}
+			result = result.substring(0, result.lastIndexOf(","));
+		}
+		return result;
 	}
 
 
@@ -254,7 +249,7 @@ public class GUIController {
 		if (GUIModel.showHelpWindow) {
 			Stage helpStage = new Stage();
 			helpStage.setTitle("Help");
-			Pane myPane = (Pane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
+			AnchorPane myPane = (AnchorPane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
 			Scene myScene = new Scene(myPane);
 			helpStage.setScene(myScene);
 			helpStage.show();

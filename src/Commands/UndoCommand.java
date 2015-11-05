@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import gui.GUIModel;
 import main.Magical;
 import main.Storage;
-import main.Task;
+import main.Item;
 
 public class UndoCommand extends Command {
 
@@ -32,13 +32,13 @@ public class UndoCommand extends Command {
 		}
 
 		try {
-			ArrayList<Task> lastTasksList = Magical.undoLists.get(
+			ArrayList<Item> lastTasksList = Magical.undoLists.get(
 					Storage.TASKS_INDEX).pop();
-			ArrayList<Task> lastTasksDoneList = Magical.undoLists.get(
+			ArrayList<Item> lastTasksDoneList = Magical.undoLists.get(
 					Storage.TASKS_DONE_INDEX).pop();
-			ArrayList<Task> lastEventsList = Magical.undoLists.get(
+			ArrayList<Item> lastEventsList = Magical.undoLists.get(
 					Storage.EVENTS_INDEX).pop();
-			ArrayList<Task> lastEventsDoneList = Magical.undoLists.get(
+			ArrayList<Item> lastEventsDoneList = Magical.undoLists.get(
 					Storage.EVENTS_DONE_INDEX).pop();
 			Magical.storage.setList(Storage.TASKS_INDEX, lastTasksList);
 			Magical.storage

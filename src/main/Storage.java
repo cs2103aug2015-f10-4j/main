@@ -29,7 +29,7 @@ public class Storage {
 	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + SETTINGS_FILE_NAME;
 	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
 
-	private List<ArrayList<Task>> lists;
+	private List<ArrayList<Item>> lists;
 	ObjectMapper mapper = new ObjectMapper();
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
@@ -111,7 +111,6 @@ public class Storage {
 	 */
 	public void changeFilePath(String newFilePath) throws IOException, FileNotFoundException {
 		String oldFilePath = readFileSettings();
-
 		moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
 		newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
 		moveFile(oldFilePath, newFilePath);
@@ -200,9 +199,9 @@ public class Storage {
 		mapper.setDateFormat(dateFormat);
 
 		if ( !(file.exists()) ) {
-			lists = new ArrayList<ArrayList<Task>>(NUM_LISTS);
+			lists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
 			for (int i = 0; i < NUM_LISTS; i++) {
-				lists.add(new ArrayList<Task>());
+				lists.add(new ArrayList<Item>());
 			}
 			try {
 				writeLists();
@@ -275,7 +274,7 @@ public class Storage {
 	 * @param t Task object to store into the list.
 	 * @return Nothing.
 	 */
-	public void create(int listIndex, Task t) throws IOException {
+	public void create(int listIndex, Item t) throws IOException {
 		lists.get(listIndex).add(t);
 		writeLists();
 	}
@@ -285,21 +284,21 @@ public class Storage {
 	 * @param listIndex Index of the list wanted.
 	 * @return the list specified.
 	 */
-	public ArrayList<Task> getList(int listIndex) {
+	public ArrayList<Item> getList(int listIndex) {
 		return lists.get(listIndex);
 	}
 
 	/**
-	 * This method updates a specified Task in the list of tasks where the task is stored in
-	 * and updates the data file.
-	 * @param listIndex Index of the list where the Task to be updated is stored in.
-	 * @param t The updated Task to be stored.
-	 * @return Nothing.
-	 */
-	public void update(int listIndex, Task t) throws IOException {
-		int pos = getPos(listIndex, t);
+	   * This method updates a specified Task in the list of tasks where the task is stored in
+	   * and updates the data file.
+	   * @param listIndex Index of the list where the Task to be updated is stored in.
+	   * @param t The updated Task to be stored.
+	   * @return Nothing.
+	   */
+	public void update(int listIndex, Item oldTask, Item newTask) throws IOException {
+		int pos = getPos(listIndex, oldTask);
 		if (pos > -1) {
-			lists.get(listIndex).set(pos, t);
+			lists.get(listIndex).set(pos, newTask);
 			writeLists();
 		}
 	}
@@ -311,7 +310,7 @@ public class Storage {
 	 * @param t Task to be deleted.
 	 * @return Nothing.
 	 */
-	public void delete(int listIndex, Task t) throws IOException {
+	public void delete(int listIndex, Item t) throws IOException {
 		int pos = getPos(listIndex, t);
 		if (pos > -1) {
 			lists.get(listIndex).remove(pos);
@@ -325,7 +324,7 @@ public class Storage {
 	 * @return Nothing.
 	 */
 	protected void clear(int listIndex) throws IOException {
-		lists.set(listIndex, new ArrayList<Task>());
+		lists.set(listIndex, new ArrayList<Item>());
 		writeLists();
 	}
 
@@ -335,7 +334,7 @@ public class Storage {
 	 * @param t Task object that you want to get the position of.
 	 * @return position of the Task in the list it is stored in. (0-based)
 	 */
-	protected int getPos(int listIndex, Task t) {
+	protected int getPos(int listIndex, Item t) {
 		return lists.get(listIndex).indexOf(t);
 	}
 
@@ -346,7 +345,7 @@ public class Storage {
 	 * @param list The list to be set into the parent array.
 	 * @return Nothing.
 	 */
-	public void setList(int listIndex, ArrayList<Task> list) throws IOException {
+	public void setList(int listIndex, ArrayList<Item> list) throws IOException {
 		lists.set(listIndex, list);
 		writeLists();
 	}
@@ -371,11 +370,11 @@ public class Storage {
 	 */
 	protected void readLists() {
 		try {
-			lists = mapper.readValue(file, new TypeReference<List<ArrayList<Task>>>() { });
+			lists = mapper.readValue(file, new TypeReference<List<ArrayList<Item>>>() { });
 		} catch (Exception e) {
-			lists = new ArrayList<ArrayList<Task>>(NUM_LISTS);
+			lists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
 			for (int i = 0; i < NUM_LISTS; i++) {
-				lists.add(new ArrayList<Task>());
+				lists.add(new ArrayList<Item>());
 			}
 		}
 		return;
