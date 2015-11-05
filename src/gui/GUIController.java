@@ -6,7 +6,6 @@ import java.util.Set;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -73,7 +72,7 @@ public class GUIController {
 	public void initialize() throws Exception {
 
 		main.Magical.init();
-		GUIModel.init();
+		gui.GUIModel.init();
 
 		taskTable.setItems(GUIModel.getTaskList());
 		taskDoneTable.setItems(GUIModel.getTaskDoneList());
