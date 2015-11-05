@@ -14,7 +14,6 @@ public class UntagCommand extends Command {
 
 	private Task task;
 	private String tag;
-	private String error = STRING_EMPTY;
 	private Task prevTask;
 	
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
@@ -32,15 +31,14 @@ public class UntagCommand extends Command {
 			tag = argsArray.get(1).trim();
 			
 			if(task == null){
-				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
+				invalidArgs.add("taskID");
 			}
 
-			if (!error.equals(STRING_EMPTY)) {
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
+			if (invalidArgs.size() > 0) {
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
 			}
 		} else {
-			error += MESSAGE_INVALID_PARAMS;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
+			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
 		}
 	}
 	

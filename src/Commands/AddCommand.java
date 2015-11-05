@@ -89,7 +89,7 @@ public class AddCommand extends Command{
 				if(count > 2){
 					this.recurrence = getRecurrence(argsArray.get(2));
 					if(this.recurrence == null){
-						error += error += String.format(MESSAGE_INVALID_RECURRENCE, argsArray.get(2));
+						invalidArgs.add("recurrence");
 					}
 				} else {
 					this.recurrence = getRecurrence(STRING_EMPTY);
@@ -102,23 +102,29 @@ public class AddCommand extends Command{
 			}
 
 			if (title == null) {
-				error += MESSAGE_INVALID_TITLE;
+				invalidArgs.add("title");
 			}
 
 			if(this.dueDate == null && !isFloat){
-				error += String.format(MESSAGE_INVALID_DATE_TIME, argsArray.get(1));
+				invalidArgs.add("date");
+				invalidArgs.add("time");
 			}
 
 			if (recurrence == null && !isFloat) {
-				error += String.format(MESSAGE_INVALID_RECURRENCE, argsArray.get(3).trim());
+				invalidArgs.add("recurrence");
 			}
+<<<<<<< HEAD
 
 			if (!error.equals(STRING_EMPTY)) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
+=======
+			
+			if (invalidArgs.size() > 0) {
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
+>>>>>>> master
 			}
 		} else {
-			error += MESSAGE_INVALID_FLEXI;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
+			throw new IllegalArgumentException(MESSAGE_INVALID_FLEXI);
 		}
 	}
 
@@ -175,7 +181,8 @@ public class AddCommand extends Command{
 //		AddCommand e = new AddCommand("hihihihi by hi at hi");
 //		AddCommand f = new AddCommand("go on stand \\by the hill by 12pm Monday daily asdgasgd asgas");
 //		AddCommand g = new AddCommand("go on stand \\by the hill by 12a0193 12pm");
-//		AddCommand h = new AddCommand("task by 21/02 12pm");
+		AddCommand h = new AddCommand("task by tuesday 1pm msonthly");
+		
 
 	}
 }

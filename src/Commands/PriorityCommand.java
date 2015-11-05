@@ -13,7 +13,6 @@ public class PriorityCommand extends Command{
 
 	private Task task;
 	private int priority;
-	private String error = STRING_EMPTY;
 	private Task prevTask;
 	
 	private static final String MESSAGE_ARGUMENT_PARAMS = "Number of Arguments\n"
@@ -32,17 +31,16 @@ public class PriorityCommand extends Command{
 			priority = getPriority(argsArray.get(1).trim());
 			
 			if(task == null){
-				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
+				invalidArgs.add("taskID");
 			}
 			if(priority == -1){
-				error += String.format(MESSAGE_INVALID_PRIORITY, argsArray.get(1).trim());
+				invalidArgs.add("priority");
 			}
-			if (!error.equals("")) {
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
+			if (invalidArgs.size() > 0) {
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
 			}	
 		} else {
-			error += MESSAGE_ARGUMENT_PARAMS;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
+			throw new IllegalArgumentException(MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,8 +32,8 @@ public abstract class Command {
 	protected boolean isFlexi;
 
 	//messaging params
-	protected String error = STRING_EMPTY;
-	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n";
+	protected TreeSet<String> invalidArgs = new TreeSet<String>();
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
 
 	public Command(String args){
 

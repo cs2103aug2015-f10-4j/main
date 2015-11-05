@@ -109,30 +109,34 @@ public class EventCommand extends Command{
 				dateEnd.set("year", dateStart.getYear());
 			}
 			if (title == null) {
-				error += MESSAGE_INVALID_TITLE;
+				invalidArgs.add("title");
 			}
 			if (dateStart == null) {
-				error += String.format(MESSAGE_INVALID_DATE_TIME, "Start", argsArray.get(1).trim());
+				invalidArgs.add("start time");
 			}
 
 			if (dateEnd == null) {
+<<<<<<< HEAD
 				error += String.format(MESSAGE_INVALID_DATE_TIME, "End", argsArray.get(2).trim());
 			}
+=======
+				invalidArgs.add("end time");
+			} 
+>>>>>>> master
 			if (dateStart != null && dateEnd != null && !validDateRange()) {
-				error += "End date is earlier than start date";
+				invalidArgs.add("End date is earlier than start date");
 			}
 			if (recurrence == null) {
-				error += String.format(MESSAGE_INVALID_RECURRENCE, argsArray.get(4).trim());
+				invalidArgs.add("recurrence");
 			}
-			if (!error.equals(STRING_EMPTY)) {
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
+			if (invalidArgs.size() > 0) {
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
 			}
 
 			dateStart.setTime(startTime);
 			dateEnd.setTime(endTime);
 		} else {
-			error += MESSAGE_INVALID_FLEXI;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
+			throw new IllegalArgumentException(MESSAGE_INVALID_FLEXI);
 		}
 			/*
 		} else {
@@ -230,7 +234,7 @@ public class EventCommand extends Command{
 		} catch (IOException e) {
 			return MESSAGE_EVENT_ERROR;
 		} finally {
-			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
+			GUIModel.setTaskList(Magical.storage.getList(Storage.EVENTS_INDEX));
 			GUIModel.setEventDoneList(Magical.storage.getList(Storage.EVENTS_DONE_INDEX));
 			GUIModel.setCurrentTab("events");
 		}

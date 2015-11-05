@@ -55,24 +55,23 @@ public class DateCommand extends Command {
 					: getDate(end);
 			
 			if (startDate == null) {
-				error += String.format(MESSAGE_INVALID_DATE, "Start", start);
+				invalidArgs.add("start date");
 			}
 
 			if (endDate == null) {
-				error += String.format(MESSAGE_INVALID_DATE, "End", end);
+				invalidArgs.add("end date");
 			} 
 			//System.out.println(startDate.toString());
 			//System.out.println(endDate.toString());
 			if (startDate != null && endDate != null && !validDateRange()) {
-				error += "End date is earlier than start date";
+				invalidArgs.add("End date is earlier than start date");
 			}
 
-			if (!error.equals(STRING_EMPTY)) {
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
+			if (invalidArgs.size() > 0) {
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
 			}
 		} else {
-			error += MESSAGE_INVALID_PARAMS;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
+			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
 		}
 	}
 

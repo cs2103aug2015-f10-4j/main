@@ -11,7 +11,6 @@ import main.Task;
 
 public class DelCommand extends Command{
 
-	private String error = STRING_EMPTY;
 	private Task task;
 
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
@@ -29,14 +28,13 @@ public class DelCommand extends Command{
 			task = getTaskByID(argsArray.get(0).trim());
 			
 			if(task == null){
-				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
+				invalidArgs.add("TaskID");
 			}
-			if (!error.equals(STRING_EMPTY)) {
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
+			if (invalidArgs.size() > 0) {
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
 			}
 		} else {
-			error += MESSAGE_INVALID_PARAMS;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
+			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
 		}
 	}
 
