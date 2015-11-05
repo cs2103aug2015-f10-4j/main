@@ -14,16 +14,18 @@ public class CustomDate {
 
 	private static Date date;
 
-	private Calendar cal;
+	//private Calendar cal;
 
 	public CustomDate(Date args) {
 		this.date = args;
-		this.cal = Calendar.getInstance();
-		cal.setTime(this.date);
+		//this.cal = Calendar.getInstance();
+		//cal.setTime(this.date);
 	}
 
 	@Override
 	public String toString() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
 		String day = dayArray[cal.get(Calendar.DAY_OF_WEEK)-1];
 		String month = monthArray[getMonth()-1];
 		System.out.println("TIME: " + getTime());
@@ -39,21 +41,29 @@ public class CustomDate {
 	}
 	
 	public int getYear(){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
 		int year = cal.get(Calendar.YEAR);
 		return year;
 	}
 	
 	public int getMonth(){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
 		int month = cal.get(Calendar.MONTH)+1;
 		return month;
 	}
 	
 	public int getDay(){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 		return day;
 	}
 	
 	public int getTime(){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
 		return cal.get(Calendar.HOUR_OF_DAY)*100 + cal.get(Calendar.MINUTE);
 	}
 
@@ -75,6 +85,8 @@ public class CustomDate {
 	}
 	
 	public void set(String field, int val){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
 		switch(field){
 			case "day":
 				cal.set(Calendar.DAY_OF_MONTH, val);;
@@ -92,8 +104,11 @@ public class CustomDate {
 	}
 	
 	public void setTime(int time){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
 		cal.set(Calendar.HOUR_OF_DAY, time/100);
 		cal.set(Calendar.MINUTE, time%100);
 		cal.set(Calendar.SECOND, 0);
+		this.date = cal.getTime();
 	}
 }
