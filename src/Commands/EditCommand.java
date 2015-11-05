@@ -195,8 +195,7 @@ public class EditCommand extends Command{
 		
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.storage.delete(listIndex, prevTask);
-			Magical.storage.create(listIndex, task);
+			Magical.storage.update(listIndex, prevTask, task);
 		} catch (IOException e) {
 			return "unable to edit task";
 		} finally {
