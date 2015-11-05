@@ -6,6 +6,14 @@ public class ExitCommand extends Command {
 		super(args);
 	}
 
+	/**
+	 * This method executes the exit command. Which terminates the program.
+	 * 
+	 * @param None
+	 *            .
+	 * @return None
+	 */
+	@Override
 	public String execute() {
 		System.exit(0);
 		return null;
