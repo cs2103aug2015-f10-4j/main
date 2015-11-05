@@ -110,16 +110,11 @@ public class Storage {
 	 * @throws IOException 
 	 */
 	public void changeFilePath(String newFilePath) throws IOException {
-
 		String oldFilePath = readFileSettings();
-
 		moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
-
-		// save new properties to project root folder
 		newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
-		writeToProperties(newFilePath);
-
 		moveFile(oldFilePath, newFilePath);
+		writeToProperties(newFilePath);
 	}
 
 	/**
