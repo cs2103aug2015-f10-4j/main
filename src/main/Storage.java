@@ -66,13 +66,8 @@ public class Storage {
 	 * @see Exception
 	 */
 	protected static boolean createFolder() {
-		try {
-			if (!newFolder.exists()) {
-				newFolder.mkdir();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+		if (!newFolder.exists()) {
+			newFolder.mkdir();
 		}
 		return true;
 	}
