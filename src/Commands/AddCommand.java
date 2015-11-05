@@ -32,30 +32,12 @@ public class AddCommand extends Command{
 		super(args);
 
 		this.argsArray = splitArgs(args, "\\s+by\\s+", 2);
-
 		removeEscapeCharacters();
 
 		this.count = argsArray.size();
 
-		if(argsArray.size() > 1 && argsArray.get(count-1).contains(" ")){
-			while(true){
-				String last = argsArray.get(count-1).split("\\s(?=\\S+$)")[1];
-				if(getRecurrence(last) == null){
-					if(getDate(last) != null){
-						break;
-					} else {
-						argsArray.add(count, last);
-						argsArray.set(count-1, argsArray.get(count-1).split("\\s(?=\\S+$)")[0]);
-						System.out.println(argsArray);
-					}
-				} else {
-					argsArray.add(count, last);
-					argsArray.set(count-1, argsArray.get(count-1).split("\\s(?=\\S+$)")[0]);
-					break;
-				}
-			}
-		}
-		System.out.println(argsArray);
+		splitArgsAfterDateTime();
+
 		this.count = argsArray.size();
 		this.isFloat = false;
 
@@ -101,6 +83,34 @@ public class AddCommand extends Command{
 		} else {
 			throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
 		}
+	}
+
+	private void splitArgsAfterDateTime() {
+		if(argsArray.size() > 1 && argsArray.get(count-1).contains(" ")){
+			while(true){
+				String last = getLastUncheckedWord();
+				if(getRecurrence(last) == null){
+					if(getDate(last) != null){
+						break;
+					} else {
+						argsArray.add(count, last);
+						removeCheckedWord();
+					}
+				} else {
+					argsArray.add(count, last);
+					removeCheckedWord();
+					break;
+				}
+			}
+		}
+	}
+
+	private void removeCheckedWord() {
+		argsArray.set(count-1, argsArray.get(count-1).split("\\s(?=\\S+$)")[0]);
+	}
+
+	private String getLastUncheckedWord() {
+		return argsArray.get(count-1).split("\\s(?=\\S+$)")[1];
 	}
 
 	private void removeEscapeCharacters() {
@@ -152,18 +162,5 @@ public class AddCommand extends Command{
 			}
 		}
 		return false;
-	}
-
-	public static void main(String[] args) throws Exception {
-//		AddCommand a = new AddCommand("wash my butt by 1st January at 12pm");
-//		AddCommand b = new AddCommand("pass \\by the river \\at St.George by 1st January at 12pm");
-//		AddCommand c = new AddCommand("smack him by 12-01-1993 at 1pm");
-//		AddCommand d = new AddCommand("");
-//		AddCommand e = new AddCommand("hihihihi by hi at hi");
-//		AddCommand f = new AddCommand("go on stand \\by the hill by 12pm Monday daily asdgasgd asgas");
-//		AddCommand g = new AddCommand("go on stand \\by the hill by 12a0193 12pm");
-		AddCommand h = new AddCommand("task by tuesday 1pm msonthly");
-//		System.out.println(Arrays.toString("a b c d".split(" ", 0)));
-
 	}
 }
