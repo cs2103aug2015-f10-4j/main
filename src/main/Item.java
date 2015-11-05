@@ -162,7 +162,10 @@ public class Item {
 		Item copyTask = new Item();
 		copyTask.setType(this.type);
 		copyTask.setTitle(this.title);
-		copyTask.setEndDate(this.endDate);
+		CustomDate sd = this.startDate != null ? new CustomDate(this.startDate.getDate()) : null;
+		CustomDate ed = this.endDate != null ? new CustomDate(this.endDate.getDate()) : null;
+		copyTask.setStartDate(sd);
+		copyTask.setEndDate(ed);
 		copyTask.setStartTime(this.startTime);
 		copyTask.setEndTime(this.endTime);
 		copyTask.setRecurrence(this.recurrence);
