@@ -12,15 +12,15 @@ import main.CustomDate;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Storage;
-import main.Task;
+import main.Item;
 import gui.GUIModel;
 
 public class EditCommand extends Command{
 
 	private String field;
 	private String value;
-	private Task task;
-	private Task prevTask;
+	private Item task;
+	private Item prevTask;
 	private boolean toFloat;
 	private boolean isTask;
 	private Object editObject;
@@ -49,7 +49,7 @@ public class EditCommand extends Command{
 		}
 		System.out.println(argsArray);
 		if(validNumArgs()){
-			this.task = getTaskByID(argsArray.get(0).trim());
+			this.task = getItemByID(argsArray.get(0).trim());
 			this.field = argsArray.get(1).trim();
 			this.value = argsArray.get(2).trim();
 			

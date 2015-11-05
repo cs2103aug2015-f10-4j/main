@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
 import main.CustomDate;
 import main.Magical;
 import main.Storage;
-import main.Task;
+import main.Item;
 
 public class GUIModel {
 
@@ -20,10 +20,10 @@ public class GUIModel {
 
 	public static String currentTab = "tasks";
 
-	public static ObservableList<Task> taskList;
-	public static ObservableList<Task> taskDoneList;
-	public static ObservableList<Task> eventList;
-	public static ObservableList<Task> eventDoneList;
+	public static ObservableList<Item> taskList;
+	public static ObservableList<Item> taskDoneList;
+	public static ObservableList<Item> eventList;
+	public static ObservableList<Item> eventDoneList;
 
 	/**
 	 * This method sets the current tab in the model.
@@ -47,67 +47,35 @@ public class GUIModel {
 		return currentTab;
 	}
 
-	/**
-	 * Return the model's task list.
-	 * @return ObservableList<Task>
-	 */
-	public static ObservableList<Task> getTaskList() {
+
+	public static ObservableList<Item> getTaskList() {
 		return taskList;
 	}
 
-	/**
-	 * Return the model's done task list.
-	 * @return ObservableList<Task>
-	 */
-	public static ObservableList<Task> getTaskDoneList() {
+	public static ObservableList<Item> getTaskDoneList() {
 		return taskDoneList;
 	}
-
-	/**
-	 * Return the model's event list.
-	 * @return ObservableList<Task>
-	 */
-	public static ObservableList<Task> getEventList() {
+	public static ObservableList<Item> getEventList() {
 		return eventList;
 	}
 
-	/**
-	 * Return the model's done event list.
-	 * @return ObservableList<Task>
-	 */
-	public static ObservableList<Task> getEventDoneList() {
+	public static ObservableList<Item> getEventDoneList() {
 		return eventDoneList;
 	}
 
-	/**
-	 * Sets the model's task list.
-	 * @param newTaskList - replaces current task list
-	 */
-	public static void setTaskList(ArrayList<Task> newTaskList) {
+	public static void setTaskList(ArrayList<Item> newTaskList) {
 		taskList = makeObservable(newTaskList);
 	}
 
-	/**
-	 * Sets the model's done task list.
-	 * @param newTaskList - replaces current done task list
-	 */
-	public static void setTaskDoneList(ArrayList<Task> newTaskDoneList) {
+	public static void setTaskDoneList(ArrayList<Item> newTaskDoneList) {
 		taskDoneList = makeObservable(newTaskDoneList);
 	}
 
-	/**
-	 * Sets the model's event list.
-	 * @param newTaskList - replaces current event list
-	 */
-	public static void setEventList(ArrayList<Task> newEventList) {
+	public static void setEventList(ArrayList<Item> newEventList) {
 		eventList = makeObservable(newEventList);
 	}
 
-	/**
-	 * Sets the model's done event list.
-	 * @param newTaskList - replaces current done event list
-	 */
-	public static void setEventDoneList(ArrayList<Task> newEventDoneList) {
+	public static void setEventDoneList(ArrayList<Item> newEventDoneList) {
 		eventDoneList = makeObservable(newEventDoneList);
 	}
 
@@ -129,7 +97,7 @@ public class GUIModel {
 	 * @param arrayList - list to convert
 	 * @return ObservableList
 	 */
-	private static ObservableList<Task> makeObservable(ArrayList<Task> arrayList) {
+	private static ObservableList<Item> makeObservable(ArrayList<Item> arrayList) {
 		return FXCollections.observableArrayList(arrayList);
 	}
 

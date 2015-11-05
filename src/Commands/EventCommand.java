@@ -12,7 +12,7 @@ import main.CustomDate;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Storage;
-import main.Task;
+import main.Item;
 import gui.GUIModel;
 
 public class EventCommand extends Command{
@@ -24,7 +24,7 @@ public class EventCommand extends Command{
 	protected int startTime;
 	protected int endTime;
 	protected RecurrencePeriod recurrence;
-	private Task task;
+	private Item task;
 
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: \nevent title/event date/start time/end time/recurrence";
@@ -212,7 +212,7 @@ public class EventCommand extends Command{
 
 	@Override
 	public String execute() {
-		task = new Task();
+		task = new Item();
 		task.setType("event");
 		task.setTitle(title);
 		task.setRecurrence(recurrence);
@@ -238,8 +238,8 @@ public class EventCommand extends Command{
 	}
 
 	private boolean isClashing() {
-		ArrayList<Task> tasks = Magical.storage.getList(Storage.EVENTS_INDEX);
-		for (Task t : tasks) {
+		ArrayList<Item> tasks = Magical.storage.getList(Storage.EVENTS_INDEX);
+		for (Item t : tasks) {
 			if (t.getEndDate().equals(task.getEndDate())) {
 				return true;
 			}

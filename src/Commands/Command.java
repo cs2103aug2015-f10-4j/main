@@ -16,7 +16,7 @@ import com.mdimension.jchronic.Chronic;
 import com.mdimension.jchronic.utils.Span;
 
 import gui.GUIModel;
-import main.Task;
+import main.Item;
 import main.CustomDate;
 import main.RecurrencePeriod;
 
@@ -60,6 +60,7 @@ public abstract class Command {
 	 * @return RecurrencePeriod for the given string
 	 */
 	protected RecurrencePeriod getRecurrence(String recurrence) {
+		assertNotNull(recurrence);
 		String r = recurrence.toLowerCase();
 		switch (r) {
 			case STRING_EMPTY:
@@ -88,6 +89,7 @@ public abstract class Command {
 	 * @return CustomDate object with valid date and time 
 	 */
 	protected CustomDate getDate(String date)  {
+		assertNotNull(date);
 		date = formatCorrectTime(date);
 		date = dateWithYear(date);
 		return dateWithTime(date);
@@ -101,10 +103,15 @@ public abstract class Command {
 	 * @return String with correct time format
 	 */
 	private String formatCorrectTime(String date) {
+		assertNotNull(date);
 		Pattern time= Pattern.compile("\\D*\\d{4}\\D*");
+		assertNotNull(time);
 		Matcher m = time.matcher(date);
+		assertNotNull(m);
+		
 		if(m.find()){
 			String s = m.group(0);
+			assertNotNull(s);
 			date = date.replaceAll(s, s.substring(0, 2) + ":" + s.substring(2,s.length()));
 		}
 		date = date.replaceAll("(?<=[0-9]+)\\.(?=[0-9])+", ":");
@@ -121,11 +128,15 @@ public abstract class Command {
 	 * @return String with year
 	 */
 	private String dateWithYear(String date) {
+		assertNotNull(date);
 		Pattern noYear = Pattern.compile("\\D*\\d{2}(/|-)\\d{2}\\D*");
-		Matcher m;
-		m = noYear.matcher(date);
+		assertNotNull(noYear);
+		Matcher m = noYear.matcher(date);;
+		assertNotNull(m);
+		
 		if(m.find()){
 			String s = m.group(0);
+			assertNotNull(s);
 			date = date.replaceAll(s, s.trim() + "/" + new CustomDate(new Date()).getYear() + " ");
 		}
 		return date;
@@ -141,11 +152,15 @@ public abstract class Command {
 	 * @return CustomDate objects with given date and time, default time if not specified
 	 */
 	private CustomDate dateWithTime(String date) {
+		assertNotNull(date);
 		Span span;
-		if((span = Chronic.parse(date + " 23:59"))!= null){
-			return new CustomDate(span.getBeginCalendar().getTime());
-		} else if ((span = Chronic.parse(date)) != null ){
-			return new CustomDate(span.getBeginCalendar().getTime());
+		if(Chronic.parse(date) != null ){
+			if((span = Chronic.parse(date + " 23:59")) != null){
+				return new CustomDate(span.getBeginCalendar().getTime());
+			} else {
+				span = Chronic.parse(date);
+				return new CustomDate(span.getBeginCalendar().getTime());
+			}
 		} else {
 			return null;
 		}
@@ -159,6 +174,7 @@ public abstract class Command {
 	 * @return String title
 	 */
 	protected String getTitle(String title) {
+		assertNotNull(title);
 		if(title.equals(STRING_EMPTY)){
 			return null;
 		}
@@ -166,15 +182,18 @@ public abstract class Command {
 	}
 
 	/**
-	 * Method: getTaskByID
-	 * Description:  
+	 * Method: getItemByID
+	 * Description: Get both item type and item index using the itemID and return the 
+	 * corresponding item. Checks the validity of item type. Returns null if the itemID 
+	 * is invalid or item does not exist.
 	 *  
-	 * @param taskID
-	 * @return
+	 * @param itemID
+	 * @return Task object corresponding
 	 */
-	protected Task getTaskByID(String taskID){
-		String type = getTaskIDtype(taskID);
-		Integer index = getTaskIdIndex(taskID);
+	protected Item getItemByID(String itemID){
+		assertNotNull(itemID);
+		String type = getItemIdType(itemID);
+		Integer index = getItemIdIndex(itemID);
 		
 		if(index != -1){
 			switch(type){
@@ -194,85 +213,94 @@ public abstract class Command {
 		}
 	}
 
-	private Integer getTaskIdIndex(String taskID) {
+	/**
+	 * Method: getItemIdIndex
+	 * Description: Gets the index from the itemID and returns it as a number.
+	 * Returns -1 if the index is not a valid number.
+	 * 
+	 * @param itemID
+	 * @return int index of the item
+	 */
+	private int getItemIdIndex(String itemID) {
+		assertNotNull(itemID);
 		try {
-			return Integer.parseInt(taskID.substring(1)) - 1;
+			return Integer.parseInt(itemID.substring(1)) - 1;
 		} catch (Exception e){
 			return -1;
 		}
 	}
 
-	private String getTaskIDtype(String taskID) {
-		return taskID.substring(0, 1).toLowerCase();
+	/**
+	 * Method: getItemId
+	 * Description: Gets the item type from the itemID. Does not check for validity of type.
+	 * 
+	 * @param itemID
+	 * @return String item type
+	 */
+	private String getItemIdType(String itemID) {
+		assertNotNull(itemID);
+		return itemID.substring(0, 1).toLowerCase();
 	}
 
+	/**
+	 * Method: getPriority
+	 * Description: Checks if priority is valid and returns it as integer, or -1 if invalid
+	 * priority
+	 * 
+	 * @param priority
+	 * @return int priority
+	 */
 	protected int getPriority(String priority){
+		assertNotNull(priority);
 		try {
 			int p = Integer.parseInt(priority);
-			if (p >= 0 && p <= 10){
-				return p;
-			} else {
-				return -1;
-			}
+			return getWithinPriorityRange(p);
 		} catch (Exception e){
 			return -1;
 		}
 	}
 
-	protected Calendar dateToCal(Date d) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(d);
-		return cal;
-	}
-
-	protected boolean needsFlexi(String date){
-		if(date.contains("-")||date.contains("/")){
-			return false;
+	/**
+	 * Method: getWithinPriorityRange
+	 * Description: Checks if the priority is valid (from 0 to 10) and gives the priority, 
+	 * or -1 otherwise 
+	 * 
+	 * @param p
+	 * @return int priority
+	 */
+	private int getWithinPriorityRange(int p) {
+		assertNotNull(p);
+		if (p >= 0 && p <= 10){
+			return p;
 		} else {
-			return true;
+			return -1;
 		}
 	}
 
-	protected Date flexiParse(Calendar cal) {
-		Parser p = new Parser();
-		List<DateGroup> date = p.parse((cal.get(Calendar.MONTH)+1)
-				+ "-" + cal.get(Calendar.DAY_OF_MONTH)
-				+ "-" + cal.get(Calendar.YEAR)
-				+ " " + argsArray.get(2));
-		if(date.isEmpty()){
-			return null;
-		} else {
-			return date.get(0).getDates().get(0);
-		}
-	}
-
-	protected Date flexiParse(String dueDate) {
-		Parser p = new Parser();
-		List<DateGroup> date = p.parse(dueDate);
-		if(date.isEmpty()){
-			return null;
-		} else {
-			return date.get(0).getDates().get(0);
-		}
-	}
-
+	/**
+	 * Abstract Method: execute
+	 * Description: Implements functionality for each Command subclass.
+	 * 
+	 * @return String success/failure
+	 * @throws Exception
+	 */
 	public abstract String execute() throws Exception;
+	
+	/**
+	 * Abstract Method: validNumArgs
+	 * Description: Checks if the correct number of arguments are provided
+	 * 
+	 * @return boolean true/false
+	 */
 	public abstract boolean validNumArgs();
 
+	/**
+	 * Method: isUndoable
+	 * Description: Indicates if the command can be undone or not
+	 * 
+	 * @return boolean true/false
+	 */
 	public boolean isUndoable(){
 		return true;
-	}
-
-	public static void main(String[] args) throws Exception {
-		//Command c = new DateCommand("");
-		//c.flexiParse("audgsf");
-		Span s = Chronic.parse("21-02/93");
-		System.out.println(s);
-		s = Chronic.parse("today");
-		//System.out.println(s);
-		//System.out.println(s.getBeginCalendar().getTime());
-		//System.out.println(s.getEndCalendar().toString());
-		ExitCommand e = new ExitCommand("");
-		System.out.println(e.getDate("21-02"));
 	}
 }

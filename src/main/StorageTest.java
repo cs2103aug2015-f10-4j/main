@@ -16,10 +16,10 @@ import junit.framework.TestCase;
 
 public class StorageTest extends TestCase {
 
-	Task task1 = new Task();
-	Task event1 = new Task();
-	Task task2 = new Task();
-	Task event2 = new Task();
+	Item task1 = new Item();
+	Item event1 = new Item();
+	Item task2 = new Item();
+	Item event2 = new Item();
 	
 	@Before
 	public void setUp() {
@@ -59,7 +59,7 @@ public class StorageTest extends TestCase {
 	/******************* HELPER METHODS *******************/
 	
 	// creates localArray by adding default tasks to test against
-	private void createLocalArray(ArrayList<Task> localArray) {
+	private void createLocalArray(ArrayList<Item> localArray) {
 		localArray.add(task1);
 		localArray.add(task2);
 		localArray.add(event1); // adding the updated element into localArray

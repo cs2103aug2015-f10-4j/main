@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import gui.GUIModel;
-import main.Task;
+import main.Item;
 
 public class SortCommand extends Command {
 
@@ -59,32 +59,32 @@ public class SortCommand extends Command {
 	 */
 	@Override
 	public String execute() throws Exception {
-		ArrayList<Task> sortedTaskList = new ArrayList<Task>(
+		ArrayList<Item> sortedTaskList = new ArrayList<Item>(
 				GUIModel.getTaskList());
-		ArrayList<Task> sortedTaskDoneList = new ArrayList<Task>(
+		ArrayList<Item> sortedTaskDoneList = new ArrayList<Item>(
 				GUIModel.getTaskDoneList());
-		ArrayList<Task> sortedEventList = new ArrayList<Task>(
+		ArrayList<Item> sortedEventList = new ArrayList<Item>(
 				GUIModel.getEventList());
-		ArrayList<Task> sortedEventDoneList = new ArrayList<Task>(
+		ArrayList<Item> sortedEventDoneList = new ArrayList<Item>(
 				GUIModel.getEventDoneList());
 		switch (sortParam) {
 		case "priority":
-			Collections.sort(sortedTaskList, Task.Comparators.PRIORITY);
-			Collections.sort(sortedTaskDoneList, Task.Comparators.PRIORITY);
-			Collections.sort(sortedEventList, Task.Comparators.PRIORITY);
-			Collections.sort(sortedEventDoneList, Task.Comparators.PRIORITY);
+			Collections.sort(sortedTaskList, Item.Comparators.PRIORITY);
+			Collections.sort(sortedTaskDoneList, Item.Comparators.PRIORITY);
+			Collections.sort(sortedEventList, Item.Comparators.PRIORITY);
+			Collections.sort(sortedEventDoneList, Item.Comparators.PRIORITY);
 			break;
 		case "date":
-			Collections.sort(sortedTaskList, Task.Comparators.DATE);
-			Collections.sort(sortedTaskDoneList, Task.Comparators.DATE);
-			Collections.sort(sortedEventList, Task.Comparators.DATE);
-			Collections.sort(sortedEventDoneList, Task.Comparators.DATE);
+			Collections.sort(sortedTaskList, Item.Comparators.DATE);
+			Collections.sort(sortedTaskDoneList, Item.Comparators.DATE);
+			Collections.sort(sortedEventList, Item.Comparators.DATE);
+			Collections.sort(sortedEventDoneList, Item.Comparators.DATE);
 			break;
 		case "title":
-			Collections.sort(sortedTaskList, Task.Comparators.TITLE);
-			Collections.sort(sortedTaskDoneList, Task.Comparators.TITLE);
-			Collections.sort(sortedEventList, Task.Comparators.TITLE);
-			Collections.sort(sortedEventDoneList, Task.Comparators.TITLE);
+			Collections.sort(sortedTaskList, Item.Comparators.TITLE);
+			Collections.sort(sortedTaskDoneList, Item.Comparators.TITLE);
+			Collections.sort(sortedEventList, Item.Comparators.TITLE);
+			Collections.sort(sortedEventDoneList, Item.Comparators.TITLE);
 		default:
 			break;
 		}

@@ -6,7 +6,7 @@ import java.util.Arrays;
 import gui.GUIModel;
 import main.Magical;
 import main.Storage;
-import main.Task;
+import main.Item;
 
 public class SearchCommand extends Command {
 
@@ -35,34 +35,34 @@ public class SearchCommand extends Command {
 	 */
 	@Override
 	public String execute() {
-		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
-		ArrayList<Task> taskDoneList = Magical.storage
+		ArrayList<Item> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
+		ArrayList<Item> taskDoneList = Magical.storage
 				.getList(Storage.TASKS_DONE_INDEX);
-		ArrayList<Task> eventList = Magical.storage
+		ArrayList<Item> eventList = Magical.storage
 				.getList(Storage.EVENTS_INDEX);
-		ArrayList<Task> eventDoneList = Magical.storage
+		ArrayList<Item> eventDoneList = Magical.storage
 				.getList(Storage.EVENTS_DONE_INDEX);
-		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
-		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
-		ArrayList<Task> filteredEventList = new ArrayList<Task>();
-		ArrayList<Task> filteredEventDoneList = new ArrayList<Task>();
+		ArrayList<Item> filteredTaskList = new ArrayList<Item>();
+		ArrayList<Item> filteredTaskDoneList = new ArrayList<Item>();
+		ArrayList<Item> filteredEventList = new ArrayList<Item>();
+		ArrayList<Item> filteredEventDoneList = new ArrayList<Item>();
 
-		for (Task t : taskList) {
+		for (Item t : taskList) {
 			if (t.getTitle().contains(query)) {
 				filteredTaskList.add(t);
 			}
 		}
-		for (Task t : taskDoneList) {
+		for (Item t : taskDoneList) {
 			if (t.getTitle().contains(query)) {
 				filteredTaskDoneList.add(t);
 			}
 		}
-		for (Task t : eventList) {
+		for (Item t : eventList) {
 			if (t.getTitle().contains(query)) {
 				filteredTaskList.add(t);
 			}
 		}
-		for (Task t : eventDoneList) {
+		for (Item t : eventDoneList) {
 			if (t.getTitle().contains(query)) {
 				filteredTaskDoneList.add(t);
 			}
