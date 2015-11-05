@@ -6,7 +6,6 @@ import java.util.Set;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -73,7 +72,7 @@ public class GUIController {
 	public void initialize() throws Exception {
 
 		main.Magical.init();
-		GUIModel.init();
+		gui.GUIModel.init();
 
 		taskTable.setItems(GUIModel.getTaskList());
 		taskDoneTable.setItems(GUIModel.getTaskDoneList());
@@ -230,8 +229,10 @@ public class GUIController {
 	}
 
 
+
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {
+
 		if (event.getCode() == KeyCode.ENTER) {
 			String userInput = commandLineField.getText();
 			try {
@@ -241,12 +242,13 @@ public class GUIController {
 				taskTable.setItems(GUIModel.getTaskList());
 				taskDoneTable.setItems(GUIModel.getTaskDoneList());
 				commandLineField.clear();
+				switchToTab(GUIModel.getCurrentTab());
 			} catch (Exception e) {
 				messageLabel.setTextFill(Color.web("#ff0000"));
 				messageLabel.setText(e.getMessage());
 			}
 		}
-		switchToTab(GUIModel.getCurrentTab());
+
 		if (GUIModel.showHelpWindow) {
 			Stage helpStage = new Stage();
 			helpStage.setTitle("Help");
@@ -257,5 +259,17 @@ public class GUIController {
 			GUIModel.showHelpWindow = false;
 		}
 	}
+
+	@FXML
+	protected void handleTaskTabClicked() {
+		GUIModel.setCurrentTab("tasks");
+	}
+
+	@FXML
+	protected void handleEventTabClicked() {
+		GUIModel.setCurrentTab("events");
+	}
+
+
 
 }
