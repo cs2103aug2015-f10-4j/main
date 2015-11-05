@@ -1,17 +1,10 @@
 package gui;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Observable;
 
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
-import main.CustomDate;
-import main.Magical;
-import main.Storage;
+
 import main.Item;
 
 public class GUIModel {
@@ -27,26 +20,27 @@ public class GUIModel {
 
 	/**
 	 * This method sets the current tab in the model.
-	 * @param type - "tasks" or "events"
+	 * 
+	 * @param type
+	 *            - "tasks" or "events"
 	 */
 
 	public static void setCurrentTab(String type) {
 		if (type == "tasks") {
 			currentTab = type;
-		}
-		else if (type == "events") {
+		} else if (type == "events") {
 			currentTab = type;
 		}
 	}
 
 	/**
 	 * Returns the current tab in the model.
+	 * 
 	 * @return String - "events" or "tasks"
 	 */
 	public static String getCurrentTab() {
 		return currentTab;
 	}
-
 
 	public static ObservableList<Item> getTaskList() {
 		return taskList;
@@ -55,6 +49,7 @@ public class GUIModel {
 	public static ObservableList<Item> getTaskDoneList() {
 		return taskDoneList;
 	}
+
 	public static ObservableList<Item> getEventList() {
 		return eventList;
 	}
@@ -82,24 +77,30 @@ public class GUIModel {
 	/**
 	 * This method initializes GUIModel by converting tasks lists from Storage
 	 * into ObservableLists usable by the controller.
+	 * 
 	 * @return Nothing
 	 */
 
 	public static void init() {
-		taskList = makeObservable(main.Magical.getStorage().getList(main.Storage.TASKS_INDEX));
-		taskDoneList = makeObservable(main.Magical.getStorage().getList(main.Storage.TASKS_DONE_INDEX));
-		eventList = makeObservable(main.Magical.getStorage().getList(main.Storage.EVENTS_INDEX));
-		eventDoneList = makeObservable(main.Magical.getStorage().getList(main.Storage.EVENTS_DONE_INDEX));
+		taskList = makeObservable(main.Magical.getStorage().getList(
+				main.Storage.TASKS_INDEX));
+		taskDoneList = makeObservable(main.Magical.getStorage().getList(
+				main.Storage.TASKS_DONE_INDEX));
+		eventList = makeObservable(main.Magical.getStorage().getList(
+				main.Storage.EVENTS_INDEX));
+		eventDoneList = makeObservable(main.Magical.getStorage().getList(
+				main.Storage.EVENTS_DONE_INDEX));
 	}
 
 	/**
 	 * This method converts an arraylist of tasks into an ObservableList.
-	 * @param arrayList - list to convert
+	 * 
+	 * @param arrayList
+	 *            - list to convert
 	 * @return ObservableList
 	 */
 	private static ObservableList<Item> makeObservable(ArrayList<Item> arrayList) {
 		return FXCollections.observableArrayList(arrayList);
 	}
-
 
 }

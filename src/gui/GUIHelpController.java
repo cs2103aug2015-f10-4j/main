@@ -1,10 +1,7 @@
 package gui;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
 public class GUIHelpController {
 

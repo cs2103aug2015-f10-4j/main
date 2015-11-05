@@ -1,10 +1,7 @@
 package Commands;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import main.CustomDate;
 import main.Magical;
 import main.RecurrencePeriod;
@@ -12,7 +9,7 @@ import main.Storage;
 import main.Item;
 import gui.GUIModel;
 
-public class AddCommand extends Command{
+public class AddCommand extends Command {
 
 	/** Command parameters **/
 	protected String title;
@@ -41,17 +38,17 @@ public class AddCommand extends Command{
 		this.count = argsArray.size();
 		this.isFloat = false;
 
-		if(validNumArgs()){
+		if (validNumArgs()) {
 
 			this.title = getTitle(argsArray.get(0).trim());
-			if(count > 1){
+			if (count > 1) {
 				this.dueDate = getDate(argsArray.get(1).trim());
 				System.out.println(dueDate);
 				this.endTime = dueDate == null ? -1 : dueDate.getTime();
 
-				if(count > 2){
+				if (count > 2) {
 					this.recurrence = getRecurrence(argsArray.get(2));
-					if(this.recurrence == null){
+					if (this.recurrence == null) {
 						invalidArgs.add("recurrence");
 					}
 				} else {
@@ -68,7 +65,7 @@ public class AddCommand extends Command{
 				invalidArgs.add("title");
 			}
 
-			if(this.dueDate == null && !isFloat){
+			if (this.dueDate == null && !isFloat) {
 				invalidArgs.add("date");
 				invalidArgs.add("time");
 			}
@@ -78,7 +75,8 @@ public class AddCommand extends Command{
 			}
 
 			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
+						+ String.join(", ", invalidArgs));
 			}
 		} else {
 			throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
@@ -86,11 +84,11 @@ public class AddCommand extends Command{
 	}
 
 	private void splitArgsAfterDateTime() {
-		if(argsArray.size() > 1 && argsArray.get(count-1).contains(" ")){
-			while(true){
+		if (argsArray.size() > 1 && argsArray.get(count - 1).contains(" ")) {
+			while (true) {
 				String last = getLastUncheckedWord();
-				if(getRecurrence(last) == null){
-					if(getDate(last) != null){
+				if (getRecurrence(last) == null) {
+					if (getDate(last) != null) {
 						break;
 					} else {
 						argsArray.add(count, last);
@@ -106,21 +104,25 @@ public class AddCommand extends Command{
 	}
 
 	private void removeCheckedWord() {
-		argsArray.set(count-1, argsArray.get(count-1).split("\\s(?=\\S+$)")[0]);
+		argsArray.set(count - 1,
+				argsArray.get(count - 1).split("\\s(?=\\S+$)")[0]);
 	}
 
 	private String getLastUncheckedWord() {
-		return argsArray.get(count-1).split("\\s(?=\\S+$)")[1];
+		return argsArray.get(count - 1).split("\\s(?=\\S+$)")[1];
 	}
 
 	private void removeEscapeCharacters() {
-		for(int i = 0; i < argsArray.size(); i++){
-			argsArray.set(i, argsArray.get(i).trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
+		for (int i = 0; i < argsArray.size(); i++) {
+			argsArray.set(
+					i,
+					argsArray.get(i).trim()
+							.replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
 		}
 	}
 
-	public boolean validNumArgs(){
-		if(this.count > 3){
+	public boolean validNumArgs() {
+		if (this.count > 3) {
 			return false;
 		} else {
 			return true;
@@ -148,16 +150,20 @@ public class AddCommand extends Command{
 		} catch (IOException e) {
 			return MESSAGE_TASK_ERROR;
 		} finally {
-			GUIModel.setTaskList(Magical.getStorage().getList(Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.getStorage().getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setTaskList(Magical.getStorage().getList(
+					Storage.TASKS_INDEX));
+			GUIModel.setTaskDoneList(Magical.getStorage().getList(
+					Storage.TASKS_DONE_INDEX));
 			GUIModel.setCurrentTab("tasks");
 		}
 	}
 
 	private boolean isClashing() {
-		ArrayList<Item> tasks = Magical.getStorage().getList(Storage.TASKS_INDEX);
+		ArrayList<Item> tasks = Magical.getStorage().getList(
+				Storage.TASKS_INDEX);
 		for (Item t : tasks) {
-			if (t.getEndDate() != null && t.getEndDate().equals(item.getEndDate())) {
+			if (t.getEndDate() != null
+					&& t.getEndDate().equals(item.getEndDate())) {
 				return true;
 			}
 		}
