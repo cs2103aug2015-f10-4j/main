@@ -111,7 +111,6 @@ public class Storage {
 	 */
 	public void changeFilePath(String newFilePath) throws IOException, FileNotFoundException {
 		String oldFilePath = readFileSettings();
-
 		moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
 		newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
 		moveFile(oldFilePath, newFilePath);
