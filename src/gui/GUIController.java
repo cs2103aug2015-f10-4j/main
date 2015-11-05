@@ -229,8 +229,10 @@ public class GUIController {
 	}
 
 
+
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {
+
 		if (event.getCode() == KeyCode.ENTER) {
 			String userInput = commandLineField.getText();
 			try {
@@ -257,5 +259,17 @@ public class GUIController {
 			GUIModel.showHelpWindow = false;
 		}
 	}
+
+	@FXML
+	protected void handleTaskTabClicked() {
+		GUIModel.setCurrentTab("tasks");
+	}
+
+	@FXML
+	protected void handleEventTabClicked() {
+		GUIModel.setCurrentTab("events");
+	}
+
+
 
 }
