@@ -49,7 +49,7 @@ public class EditCommand extends Command{
 		}
 		System.out.println(argsArray);
 		if(validNumArgs()){
-			this.task = getTaskByID(argsArray.get(0).trim());
+			this.task = getItemByID(argsArray.get(0).trim());
 			this.field = argsArray.get(1).trim();
 			this.value = argsArray.get(2).trim();
 			

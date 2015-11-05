@@ -24,7 +24,7 @@ public class DelCommand extends Command {
 
 		if (validNumArgs()) {
 
-			task = getTaskByID(argsArray.get(0).trim());
+			task = getItemByID(argsArray.get(0).trim());
 
 			if (task == null) {
 				invalidArgs.add("TaskID");

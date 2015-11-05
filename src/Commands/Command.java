@@ -166,15 +166,16 @@ public abstract class Command {
 	}
 
 	/**
-	 * Method: getTaskByID
-	 * Description:  
+	 * Method: getItemByID
+	 * Description: Get both item type and item index using the itemID and return the 
+	 * corresponding item. Returns null if the itemID is invalid or item does not exist.
 	 *  
-	 * @param taskID
-	 * @return
+	 * @param itemID
+	 * @return Task object corresponding
 	 */
-	protected Task getTaskByID(String taskID){
-		String type = getTaskIDtype(taskID);
-		Integer index = getTaskIdIndex(taskID);
+	protected Task getItemByID(String itemID){
+		String type = getItemID(itemID);
+		Integer index = getItemIdIndex(itemID);
 		
 		if(index != -1){
 			switch(type){
@@ -194,16 +195,29 @@ public abstract class Command {
 		}
 	}
 
-	private Integer getTaskIdIndex(String taskID) {
+	/**
+	 * Method: getItemIdIndex
+	 * Description: Gets the index from the itemID and returns it as a number.
+	 * Returns -1 if the index is not a valid number.
+	 * 
+	 * @param itemID
+	 * @return Integer index of the item
+	 */
+	private Integer getItemIdIndex(String itemID) {
 		try {
-			return Integer.parseInt(taskID.substring(1)) - 1;
+			return Integer.parseInt(itemID.substring(1)) - 1;
 		} catch (Exception e){
 			return -1;
 		}
 	}
 
-	private String getTaskIDtype(String taskID) {
-		return taskID.substring(0, 1).toLowerCase();
+	/**
+	 * Method: getItemID
+	 * @param itemID
+	 * @return
+	 */
+	private String getItemID(String itemID) {
+		return itemID.substring(0, 1).toLowerCase();
 	}
 
 	protected int getPriority(String priority){

@@ -22,7 +22,7 @@ public class DoneCommand extends Command {
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			task = getTaskByID(argsArray.get(0).trim());
+			task = getItemByID(argsArray.get(0).trim());
 
 			if (task == null) {
 				invalidArgs.add("taskID");

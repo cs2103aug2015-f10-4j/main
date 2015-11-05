@@ -26,7 +26,7 @@ public class UntagCommand extends Command {
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			task = getTaskByID(argsArray.get(0).trim());
+			task = getItemByID(argsArray.get(0).trim());
 			tag = argsArray.get(1).trim();
 
 			if (task == null) {
