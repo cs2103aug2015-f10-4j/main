@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -22,6 +23,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -50,14 +52,16 @@ public class GUIController {
 	@FXML private TableView<Task> eventTable;
 	@FXML private TableColumn<Task, String> eventIDCol;
 	@FXML private TableColumn<Task, String> eventTitleCol;
-	@FXML private TableColumn<Task, String> eventDateCol;
+	@FXML private TableColumn<Task, String> eventStartDateCol;
+	@FXML private TableColumn<Task, String> eventEndDateCol;
 	@FXML private TableColumn<Task, String> eventPriorityCol;
 	@FXML private TableColumn<Task, String> eventTagsCol;
 	// DONE EVENTS
 	@FXML private TableView<Task> eventDoneTable;
 	@FXML private TableColumn<Task, String> eventDoneIDCol;
 	@FXML private TableColumn<Task, String> eventDoneTitleCol;
-	@FXML private TableColumn<Task, String> eventDoneDateCol;
+	@FXML private TableColumn<Task, String> eventDoneStartDateCol;
+	@FXML private TableColumn<Task, String> eventDoneEndDateCol;
 	@FXML private TableColumn<Task, String> eventDonePriorityCol;
 	@FXML private TableColumn<Task, String> eventDoneTagsCol;
 
@@ -96,20 +100,13 @@ public class GUIController {
 
 		taskTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
-			String result = "";
 			Set<String> tagSet = col.getValue().getTags();
-			if (!tagSet.isEmpty()) {
-				Iterator<String> iterator = tagSet.iterator();
-				while (iterator.hasNext()) {
-					result += iterator.next() + ", ";
-				}
-				result = result.substring(0, result.lastIndexOf(","));
-			}
+			String result = makeTagString(tagSet);
 			finalResult.setValue(result);
 			return finalResult;
 		});
 
-		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
+		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("endDate"));
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 
 		/*
@@ -128,20 +125,14 @@ public class GUIController {
 
 		eventTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
-			String result = "";
 			Set<String> tagSet = col.getValue().getTags();
-			if (!tagSet.isEmpty()) {
-				Iterator<String> iterator = tagSet.iterator();
-				while (iterator.hasNext()) {
-					result += iterator.next() + ", ";
-				}
-				result = result.substring(0, result.lastIndexOf(","));
-			}
+			String result = makeTagString(tagSet);
 			finalResult.setValue(result);
 			return finalResult;
 		});
 
-		eventDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
+		eventStartDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("startDate"));
+		eventEndDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("endDate"));
 		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 
 
@@ -161,20 +152,13 @@ public class GUIController {
 
 		taskDoneTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
-			String result = "";
 			Set<String> tagSet = col.getValue().getTags();
-			if (!tagSet.isEmpty()) {
-				Iterator<String> iterator = tagSet.iterator();
-				while (iterator.hasNext()) {
-					result += iterator.next() + ", ";
-				}
-				result = result.substring(0, result.lastIndexOf(","));
-			}
+			String result = makeTagString(tagSet);
 			finalResult.setValue(result);
 			return finalResult;
 		});
 
-		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
+		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("endDate"));
 		taskDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 
 		/*
@@ -193,20 +177,14 @@ public class GUIController {
 
 		eventDoneTagsCol.setCellValueFactory(col -> {
 			SimpleStringProperty finalResult = new SimpleStringProperty();
-			String result = "";
 			Set<String> tagSet = col.getValue().getTags();
-			if (!tagSet.isEmpty()) {
-				Iterator<String> iterator = tagSet.iterator();
-				while (iterator.hasNext()) {
-					result += iterator.next() + ", ";
-				}
-				result = result.substring(0, result.lastIndexOf(","));
-			}
+			String result = makeTagString(tagSet);
 			finalResult.setValue(result);
 			return finalResult;
 		});
 
-		eventDoneDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("dueDate"));
+		eventDoneStartDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("startDate"));
+		eventDoneEndDateCol.setCellValueFactory(new PropertyValueFactory<Task, String>("endDate"));
 		eventDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Task, String>("priority"));
 
 		Platform.runLater(new Runnable() {
@@ -226,6 +204,18 @@ public class GUIController {
 			selectionModel.select(eventTab);
 		}
 		return;
+	}
+
+	private String makeTagString(Set<String> tagSet) {
+		String result = "";
+		if (!tagSet.isEmpty()) {
+			Iterator<String> iterator = tagSet.iterator();
+			while (iterator.hasNext()) {
+				result += iterator.next() + ", ";
+			}
+			result = result.substring(0, result.lastIndexOf(","));
+		}
+		return result;
 	}
 
 
@@ -254,7 +244,7 @@ public class GUIController {
 		if (GUIModel.showHelpWindow) {
 			Stage helpStage = new Stage();
 			helpStage.setTitle("Help");
-			Pane myPane = (Pane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
+			AnchorPane myPane = (AnchorPane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
 			Scene myScene = new Scene(myPane);
 			helpStage.setScene(myScene);
 			helpStage.show();
