@@ -241,6 +241,8 @@ public class GUIController {
 				messageLabel.setText(message);
 				taskTable.setItems(GUIModel.getTaskList());
 				taskDoneTable.setItems(GUIModel.getTaskDoneList());
+				eventTable.setItems(GUIModel.getEventList());
+				eventDoneTable.setItems(GUIModel.getEventDoneList());
 				commandLineField.clear();
 				switchToTab(GUIModel.getCurrentTab());
 			} catch (Exception e) {

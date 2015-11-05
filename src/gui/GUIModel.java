@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
+import main.CustomDate;
 import main.Magical;
 import main.Storage;
 import main.Task;
@@ -80,5 +81,18 @@ public class GUIModel {
 	private static ObservableList<Task> makeObservable(ArrayList<Task> arrayList) {
 		return FXCollections.observableArrayList(arrayList);
 	}
+
+//	public static void main(String[] args) {
+//		ArrayList<Task> testList = new ArrayList<Task>();
+//		Task t = new Task();
+//		t.setTitle("TEST EVENT");
+//		t.setStartTime(1600);
+//		t.setEndTime(1800);
+//		testList.add(t);
+//		setEventList(testList);
+//		System.out.println(getEventList());
+//		System.out.println(getEventList().get(0).getStartTime());
+//		System.out.println(getEventList().get(0).getEndTime());
+//	}
 
 }

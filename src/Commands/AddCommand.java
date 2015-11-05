@@ -17,7 +17,7 @@ import gui.GUIModel;
 
 /**
  * @author James
- * Functionality: 
+ * Functionality:
  * If date and time specified, but one of them is invalid, the invalid field will use the default.
  * If only date or time is specified, is they are invalid, returns null.
  */
@@ -46,16 +46,16 @@ public class AddCommand extends Command{
 
 	public AddCommand(String args) throws Exception {
 		super(args);
-		
+
 		this.argsArray = new ArrayList<String>(Arrays.asList(args.split("\\s+by\\s+", 2)));
 
 		for(int i = 0; i < argsArray.size(); i++){
 			argsArray.set(i, argsArray.get(i).trim().replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
 		}
-		
+
 		this.count = argsArray.size();
 		System.out.println(argsArray);
-		
+
 		if(argsArray.size() > 1 && argsArray.get(count-1).contains(" ")){
 			while(true){
 				String last = argsArray.get(count-1).split("\\s(?=\\S+$)")[1];
@@ -85,7 +85,7 @@ public class AddCommand extends Command{
 				this.dueDate = getDate(argsArray.get(1).trim());
 				System.out.println(dueDate);
 				this.endTime = dueDate == null ? -1 : dueDate.getTime();
-				
+
 				if(count > 2){
 					this.recurrence = getRecurrence(argsArray.get(2));
 					if(this.recurrence == null){
@@ -100,11 +100,11 @@ public class AddCommand extends Command{
 				this.recurrence = getRecurrence(STRING_EMPTY);
 				this.isFloat = true;
 			}
-			
+
 			if (title == null) {
 				error += MESSAGE_INVALID_TITLE;
 			}
-			
+
 			if(this.dueDate == null && !isFloat){
 				error += String.format(MESSAGE_INVALID_DATE_TIME, argsArray.get(1));
 			}
@@ -112,7 +112,7 @@ public class AddCommand extends Command{
 			if (recurrence == null && !isFloat) {
 				error += String.format(MESSAGE_INVALID_RECURRENCE, argsArray.get(3).trim());
 			}
-			
+
 			if (!error.equals(STRING_EMPTY)) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
@@ -121,7 +121,7 @@ public class AddCommand extends Command{
 			throw new Exception(MESSAGE_HEADER_INVALID + error);
 		}
 	}
-	
+
 	public boolean validNumArgs(){
 		if(this.count > 3){
 			return false;
@@ -153,6 +153,7 @@ public class AddCommand extends Command{
 		} finally {
 			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
 			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setCurrentTab("tasks");
 		}
 	}
 

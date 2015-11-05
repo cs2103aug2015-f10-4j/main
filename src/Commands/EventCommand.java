@@ -25,7 +25,7 @@ public class EventCommand extends Command{
 	protected int endTime;
 	protected RecurrencePeriod recurrence;
 	private Task task;
-	
+
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: \nevent title/event date/start time/end time/recurrence";
 	private static final String MESSAGE_INVALID_FLEXI = "Use format: event <title> from <start date> <start time> "
@@ -40,10 +40,10 @@ public class EventCommand extends Command{
 	private static final String MESSAGE_EVENT_ADDED = "event added";
 	private static final String MESSAGE_EVENT_CLASH = ". Another event exists on the same date.";
 	private static final String MESSAGE_EVENT_ERROR = "unable to add event";
-	
+
 	public EventCommand(String args) throws Exception {
 		super(args);
-		
+
 		/*
 		isFlexi = !args.contains("/") || !args.replace("\\/", STRING_EMPTY).contains("/");
 		if(!isFlexi){
@@ -61,7 +61,7 @@ public class EventCommand extends Command{
 		}
 		//}
 		this.count = argsArray.size();
-		
+
 		if(argsArray.size() > 1 && argsArray.get(count-1).contains(" ")){
 			while(true){
 				String last = argsArray.get(count-1).split("\\s(?=\\S+$)")[1];
@@ -82,11 +82,11 @@ public class EventCommand extends Command{
 		}
 		this.count = argsArray.size();
 		System.out.println(argsArray);
-		
+
 		for(int i = 0; i < count; i++){
 			assertNotNull(argsArray.get(i));
 		}
-		
+
 		//if(!isFlexi){
 
 		if(validNumArgs()){
@@ -117,7 +117,7 @@ public class EventCommand extends Command{
 
 			if (dateEnd == null) {
 				error += String.format(MESSAGE_INVALID_DATE_TIME, "End", argsArray.get(2).trim());
-			} 
+			}
 			if (dateStart != null && dateEnd != null && !validDateRange()) {
 				error += "End date is earlier than start date";
 			}
@@ -127,7 +127,7 @@ public class EventCommand extends Command{
 			if (!error.equals(STRING_EMPTY)) {
 				throw new Exception(MESSAGE_HEADER_INVALID + error);
 			}
-			
+
 			dateStart.setTime(startTime);
 			dateEnd.setTime(endTime);
 		} else {
@@ -141,7 +141,7 @@ public class EventCommand extends Command{
 				title = argsArray.get(0);
 				recurrence = RecurrencePeriod.NONE;
 				String tempDate = null;
-				
+
 				if(argsArray.length < 4){
 					String tempStart = null;
 					String tempEnd = null;
@@ -170,16 +170,16 @@ public class EventCommand extends Command{
 						startIndex = 1;
 						endIndex = 2;
 					}
-					dateStart = getDate(argsArray[dateIndex]);					
+					dateStart = getDate(argsArray[dateIndex]);
 					if(dateStart == null){
 						dateStart = flexiParse(argsArray[dateIndex] + " " + argsArray[startIndex]);
 						dateEnd = flexiParse(argsArray[dateIndex] + " " + argsArray[endIndex]);
 					} else {
 						Calendar c = Calendar.getInstance();
 						c.setTime(dateStart);
-						
-						tempDate = c.get(Calendar.MONTH) + "-" 
-										+ c.get(Calendar.DAY_OF_MONTH) + "-" 
+
+						tempDate = c.get(Calendar.MONTH) + "-"
+										+ c.get(Calendar.DAY_OF_MONTH) + "-"
 										+ c.get(Calendar.YEAR);
 
 						dateStart = flexiParse(tempDate + " " + argsArray[startIndex]);
@@ -197,7 +197,7 @@ public class EventCommand extends Command{
 		}
 		//*/
 	}
-	
+
 	public boolean validNumArgs(){
 		if(this.count != 4 && this.count != 3){
 			return false;
@@ -205,7 +205,7 @@ public class EventCommand extends Command{
 			return true;
 		}
 	}
-	
+
 	public boolean validDateRange() {
 		return dateEnd.compareTo(dateStart) != -1;
 	}
@@ -232,6 +232,7 @@ public class EventCommand extends Command{
 		} finally {
 			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
 			GUIModel.setEventDoneList(Magical.storage.getList(Storage.EVENTS_DONE_INDEX));
+			GUIModel.setCurrentTab("events");
 		}
 	}
 
@@ -244,13 +245,13 @@ public class EventCommand extends Command{
 		}
 		return false;
 	}
-	
-	public static void main(String[] args) throws Exception {
-		//EventCommand e = new EventCommand("test on 12-07-1993 from 12pm to 3pm");
-		//EventCommand e = new EventCommand("test from 12pm to 3pm on 12-07-1993");
-		//EventCommand e = new EventCommand("test on tomorrow");
-		EventCommand e = new EventCommand("test from next monday 12pm to next tuesday 3pm");
-		//EventCommand e = new EventCommand("test");
-	}
+
+//	public static void main(String[] args) throws Exception {
+//		//EventCommand e = new EventCommand("test on 12-07-1993 from 12pm to 3pm");
+//		//EventCommand e = new EventCommand("test from 12pm to 3pm on 12-07-1993");
+//		//EventCommand e = new EventCommand("test on tomorrow");
+//		EventCommand e = new EventCommand("test from next monday 12pm to next tuesday 3pm");
+//		//EventCommand e = new EventCommand("test");
+//	}
 
 }
