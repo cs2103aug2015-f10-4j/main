@@ -216,8 +216,9 @@ public class EventCommand extends Command{
 		task.setType("event");
 		task.setTitle(title);
 		task.setRecurrence(recurrence);
-		task.setDueDate(dateStart);
+		task.setStartDate(dateStart);
 		task.setStartTime(startTime);
+		task.setEndDate(dateEnd);
 		task.setEndTime(endTime);
 
 		try {
@@ -239,7 +240,7 @@ public class EventCommand extends Command{
 	private boolean isClashing() {
 		ArrayList<Task> tasks = Magical.storage.getList(Storage.EVENTS_INDEX);
 		for (Task t : tasks) {
-			if (t.getDueDate().equals(task.getDueDate())) {
+			if (t.getEndDate().equals(task.getEndDate())) {
 				return true;
 			}
 		}

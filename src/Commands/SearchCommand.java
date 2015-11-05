@@ -11,29 +11,37 @@ import main.Task;
 public class SearchCommand extends Command {
 
 	private String query;
-	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+ "Use Format:\n"
-			+ "1. search\n"
-			+ "2. search <query>";
 
 	public SearchCommand(String args) throws Exception {
 		super(args);
 
 		this.argsArray = new ArrayList<String>(Arrays.asList(args.split("", 1)));
 		this.count = argsArray.size();
-		this.query = args.trim();			
+		this.query = args.trim();
 	}
 
 	public boolean validNumArgs() {
 		return true;
 	}
 
-	//needs to be re-written
+	/**
+	 * This method executes the search command. Which searches for the specified
+	 * query text in the titles of all events and tasks. It then displays the
+	 * found tasks and events to the GUI.
+	 * 
+	 * @param None
+	 *            .
+	 * @return message to show user
+	 */
+	@Override
 	public String execute() {
 		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
-		ArrayList<Task> taskDoneList = Magical.storage.getList(Storage.TASKS_DONE_INDEX);
-		ArrayList<Task> eventList = Magical.storage.getList(Storage.EVENTS_INDEX);
-		ArrayList<Task> eventDoneList = Magical.storage.getList(Storage.EVENTS_DONE_INDEX);
+		ArrayList<Task> taskDoneList = Magical.storage
+				.getList(Storage.TASKS_DONE_INDEX);
+		ArrayList<Task> eventList = Magical.storage
+				.getList(Storage.EVENTS_INDEX);
+		ArrayList<Task> eventDoneList = Magical.storage
+				.getList(Storage.EVENTS_DONE_INDEX);
 		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
 		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
 		ArrayList<Task> filteredEventList = new ArrayList<Task>();
@@ -68,12 +76,7 @@ public class SearchCommand extends Command {
 	}
 
 	@Override
-	public boolean isUndoable(){
+	public boolean isUndoable() {
 		return false;
-	}
-
-	public static void main(String[] args) throws Exception {
-//		SearchCommand s = new SearchCommand("asasd asdhfnasfd");
-//		SearchCommand s = new SearchCommand(" ");
 	}
 }

@@ -12,30 +12,30 @@ import main.Task;
 
 public class TagCommand extends Command {
 
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: tag <task_id> <tag name>";
+
 	private Task task;
 	private String tag;
 	private Task prevTask;
-	
-	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+ "Use Format: tag <task_id> <tag name>";
-	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
-	
+
 	public TagCommand(String args) throws Exception {
 		super(args);
-		
-		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(" ", 2)));
+
+		this.argsArray = new ArrayList<String>(
+				Arrays.asList(args.split(" ", 2)));
 		this.count = argsArray.size();
-		
+
 		if (validNumArgs()) {
 			task = getTaskByID(argsArray.get(0).trim());
 			tag = argsArray.get(1).trim();
-			
-			if(task == null){
+
+			if (task == null) {
 				invalidArgs.add("taskID");
 			}
 
 			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
+						+ String.join(", ", invalidArgs));
 			}
 		} else {
 			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
@@ -49,12 +49,20 @@ public class TagCommand extends Command {
 			return true;
 		}
 	}
-	
-	//Need to modify
+
+	/**
+	 * This method executes the tag command. Which simply adds the specified tag
+	 * to a task or event's tag set.
+	 * 
+	 * @param None
+	 *            .
+	 * @return message to show user
+	 */
+	@Override
 	public String execute() {
 		prevTask = task;
 		task = prevTask.copy();
-		
+
 		Set<String> tags = task.getTags();
 		tags.add(tag);
 		task.setTags(tags);
@@ -66,16 +74,13 @@ public class TagCommand extends Command {
 			return "unable to add tag to task";
 		} finally {
 			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setTaskDoneList(Magical.storage
+					.getList(Storage.TASKS_DONE_INDEX));
 			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.storage.getList(Storage.EVENTS_DONE_INDEX));
+			GUIModel.setEventDoneList(Magical.storage
+					.getList(Storage.EVENTS_DONE_INDEX));
 		}
 
 		return tag + " added to task";
-	}
-	
-	public static void main(String[] args) throws Exception {
-//		TagCommand t = new TagCommand("lalaa");
-//		TagCommand t = new TagCommand("t1 adsgasg");
 	}
 }

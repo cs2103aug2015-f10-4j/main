@@ -136,9 +136,9 @@ public class AddCommand extends Command{
 		task.setType("task");
 		task.setTitle(title);
 		task.setRecurrence(recurrence);
-
-		task.setDueDate(dueDate);
+		task.setStartDate(null);
 		task.setStartTime(-1);
+		task.setEndDate(dueDate);
 		task.setEndTime(endTime);
 
 		try {
@@ -160,7 +160,7 @@ public class AddCommand extends Command{
 	private boolean isClashing() {
 		ArrayList<Task> tasks = Magical.storage.getList(Storage.TASKS_INDEX);
 		for (Task t : tasks) {
-			if (t.getDueDate() != null && t.getDueDate().equals(task.getDueDate())) {
+			if (t.getEndDate() != null && t.getEndDate().equals(task.getEndDate())) {
 				return true;
 			}
 		}

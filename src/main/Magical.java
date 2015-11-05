@@ -6,28 +6,18 @@ import java.util.*;
 import Commands.Command;
 
 public class Magical {
-	private static final String CONFIG_STORAGE_FILENAME = "storage.txt";
-
 	public static Storage storage;
 	public static List<Stack<ArrayList<Task>>> undoLists = new ArrayList<Stack<ArrayList<Task>>>(Storage.NUM_LISTS);
 
-	public static Storage getStorage(){
-		return storage;
-	}
-
-	public static void main(String args[]) {
-		try {
-			init();
-			startApp();
-			startREPL();
-		} catch (Exception e) {
-			UI.displayErrorMessage();
-			e.printStackTrace();
+	public static void init() throws IOException {
+		storage = new Storage();
+		for (int i = 0; i < Storage.NUM_LISTS; i++) {
+			undoLists.add(new Stack<ArrayList<Task>>());
 		}
 	}
 
-	private static void startApp() {
-		UI.displayWelcomeMessage();
+	public static Storage getStorage(){
+		return storage;
 	}
 
 	public static String parseCommand(String userInput) throws Exception{
@@ -37,24 +27,6 @@ public class Magical {
 		}
 		String message = command.execute();
 		return message;
-	}
-
-	private static void startREPL() throws Exception {
-		while(true) {
-			try {
-				String userInput = UI.readInput();
-				Command command = Parser.parse(userInput);
-				ArrayList<Task> prevTaskList = listClone(storage.getList(Storage.TASKS_INDEX));
-				String message = command.execute();
-				UI.showToUser(message);
-				if (command.isUndoable()) {
-					undoLists.get(Storage.TASKS_INDEX).push(prevTaskList);
-					UI.displayTaskList("Tasks", storage.getList(Storage.TASKS_INDEX));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private static void pushUndoLayer() {
@@ -82,10 +54,4 @@ public class Magical {
 		}
 	}
 
-	public static void init() throws IOException {
-		storage = new Storage();
-		for (int i = 0; i < Storage.NUM_LISTS; i++) {
-			undoLists.add(new Stack<ArrayList<Task>>());
-		}
-	}
 }

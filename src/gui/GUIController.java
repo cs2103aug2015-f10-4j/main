@@ -73,6 +73,11 @@ public class GUIController {
 	@FXML private TextField commandLineField;
 	@FXML private TextArea helpTextArea;
 
+	/**
+	 * This method initializes GUIController when it is called by GUIView.
+	 * @throws Exception
+	 */
+
 	public void initialize() throws Exception {
 
 		main.Magical.init();

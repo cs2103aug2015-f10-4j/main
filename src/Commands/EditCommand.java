@@ -154,7 +154,7 @@ public class EditCommand extends Command{
 		case "date":
 			if(toFloat){
 				//change to float
-				task.setDueDate(null);
+				task.setEndDate(null);
 				task.setEndTime(-1);
 			} else {
 				//unfloating the task
@@ -165,7 +165,7 @@ public class EditCommand extends Command{
 				CustomDate date = (CustomDate) editObject;
 				date.setTime(task.getEndTime());
 						
-				task.setDueDate(date);
+				task.setEndDate(date);
 			}
 			break;
 		case "start time":
@@ -176,15 +176,15 @@ public class EditCommand extends Command{
 			
 			CustomDate date = null;
 			//unfloating the task
-			if(task.getDueDate() == null){
+			if(task.getEndDate() == null){
 				date = getDate("today");
 			//normal changing of date object
 			} else {
-				date = task.getDueDate();
+				date = task.getEndDate();
 			}
 			assertNotNull(date);
 			date.setTime(task.getEndTime());
-			task.setDueDate(date);
+			task.setEndDate(date);
 			break;
 		case "recurrence":
 			task.setRecurrence(RecurrencePeriod.toRecurrence(value));

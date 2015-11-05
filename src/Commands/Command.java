@@ -1,5 +1,7 @@
 package Commands;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,41 +22,43 @@ import main.RecurrencePeriod;
 
 public abstract class Command {
 
+	/** Recurrence types*/
 	private static final String RECUR_YEARLY = "yearly";
 	private static final String RECUR_MONTHLY = "monthly";
 	private static final String RECUR_WEEKLY = "weekly";
 	private static final String RECUR_DAILY = "daily";
+	
 	protected static final String STRING_EMPTY = "";
-	//main variables
+	
+	/** Main variables */
 	protected String args;
 	protected ArrayList<String> argsArray;
 	protected int count;
 	protected boolean isFlexi;
 
-	//messaging params
+	/** Messaging */
 	protected TreeSet<String> invalidArgs = new TreeSet<String>();
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
 
+	/**
+	 * Constructor for Command objects. Stores the arguments passed in when the 
+	 * constructor is called.
+	 * 
+	 * @param args
+	 */
 	public Command(String args){
-
+		assertNotNull(args);
 		this.args = args;
 	}
 
-	protected String swapMonthDay(String date){
-		String[] splitDate;
-		String swappedDate = null;
-		//checking is date is dd/mm/yy or dd/mm
-		if(date.contains("/") && !date.contains("-")){
-			splitDate = date.split("/",3);
-			if(splitDate.length == 2){
-				swappedDate = splitDate[1] + "/" + splitDate[0];
-			} else if (splitDate.length == 3){
-				swappedDate = splitDate[1] + "/" + splitDate[0] + "/" + splitDate[2];
-			}
-		}
-		return swappedDate;
-	}
-
+	/**
+	 * Method: getRecurrence
+	 * Description: Checks if the string is a valid recurrence and returns the corresponding
+	 * RecurrencePeriod, or null if the string is not valid
+	 *  
+	 * @param recurrence
+	 * @return RecurrencePeriod for the given string
+	 */
 	protected RecurrencePeriod getRecurrence(String recurrence) {
 		String r = recurrence.toLowerCase();
 		switch (r) {
@@ -73,63 +77,87 @@ public abstract class Command {
 		}
 	}
 
-	protected int getTime(String time) {
-		if(time.length() != 4){
-			return -1;
-		} else {
-			try {
-				int hour = Integer.parseInt(time.substring(0, 2));
-				int min = Integer.parseInt(time.substring(2, 4));
-
-				if(hour > 23 || hour < 0 || min > 59 || min < 0){
-					return -1;
-				} else {
-					return hour*100 + min;
-				}
-			} catch(Exception e){
-				return -1;
-			}
-		}
+	/**
+	 * Method: CustomDate
+	 * Description: Checks if a given string contains a valid date and/or time and parses it
+	 * into a CustomDate object, or null if the string is invalid. Uses default values if 
+	 * a date field or time is not given. Default date is current day, current month, current
+	 * year. Default time is 2359.
+	 * 
+	 * @param date
+	 * @return CustomDate object with valid date and time 
+	 */
+	protected CustomDate getDate(String date)  {
+		date = formatCorrectTime(date);
+		date = dateWithYear(date);
+		return dateWithTime(date);
 	}
 
-	protected CustomDate getDate(String date)  {
-		if(date.trim().equalsIgnoreCase("today")){
-			Span span = Chronic.parse(date + " 23:59");
+	/**
+	 * Method: formatCorrectTime
+	 * Description: Formats the time in a given string properly for parsing, if present. 
+	 * 
+	 * @param date
+	 * @return String with correct time format
+	 */
+	private String formatCorrectTime(String date) {
+		Pattern time= Pattern.compile("\\D*\\d{4}\\D*");
+		Matcher m = time.matcher(date);
+		if(m.find()){
+			String s = m.group(0);
+			date = date.replaceAll(s, s.substring(0, 2) + ":" + s.substring(2,s.length()));
+		}
+		date = date.replaceAll("(?<=[0-9]+)\\.(?=[0-9])+", ":");
+		return date;
+	}
+	
+	/**
+	 * Method: dateWithYear
+	 * Description: Checks if a given string has date in the format dd/MM or dd-MM and adds 
+	 * the current year onto the string, for correct parsing. Does nothing if year is already 
+	 * present in string.
+	 * 
+	 * @param date
+	 * @return String with year
+	 */
+	private String dateWithYear(String date) {
+		Pattern noYear = Pattern.compile("\\D*\\d{2}(/|-)\\d{2}\\D*");
+		Matcher m;
+		m = noYear.matcher(date);
+		if(m.find()){
+			String s = m.group(0);
+			date = date.replaceAll(s, s.trim() + "/" + new CustomDate(new Date()).getYear() + " ");
+		}
+		return date;
+	}
+
+	/**
+	 * Method: dateWithTime
+	 * Description: Adds the default time of 23:59 to a given string if no time has been 
+	 * specified in the string originally. Parses the string into a CustomDate object
+	 * using jChronic natural date parser. Returns null if date string cannot be parsed.
+	 * 
+	 * @param date
+	 * @return CustomDate objects with given date and time, default time if not specified
+	 */
+	private CustomDate dateWithTime(String date) {
+		Span span;
+		if((span = Chronic.parse(date + " 23:59"))!= null){
+			return new CustomDate(span.getBeginCalendar().getTime());
+		} else if ((span = Chronic.parse(date)) != null ){
 			return new CustomDate(span.getBeginCalendar().getTime());
 		} else {
-			Pattern time= Pattern.compile("\\D*\\d{4}\\D*");
-			Matcher m = time.matcher(date);
-			if(m.find()){
-				String s = m.group(0);
-				date = date.replaceAll(s, s.substring(0, 2)+":"+s.substring(2,s.length()));
-			}
-			//System.out.println(date);
-			Pattern noYear = Pattern.compile("\\D*\\d{2}/\\d{2}\\D*");
-			m = noYear.matcher(date);
-			if(m.find()){
-				String s = m.group(0);
-				date = date.replaceAll(s, s.trim() +"/"+new CustomDate(new Date()).getYear()+" ");
-			}
-			//System.out.println(date);
-			date = date.replaceAll("(?<=[0-9]+)\\.(?=[0-9])+", ":");
-			//System.out.println(date);
-			Span span = Chronic.parse(date);
-			if(span == null){
-				return null;
-			} else {
-				return new CustomDate(span.getBeginCalendar().getTime());
-			}
+			return null;
 		}
 	}
 
-	protected boolean checkFloat(String dueDate, String endTime){
-		if(dueDate.equals(STRING_EMPTY) && endTime.equals(STRING_EMPTY)){
-			return true;
-		} else {
-			return false;
-		}
-	}
-
+	/**
+	 * Method: getTitle
+	 * Description: Checks if the title is empty and returns null or the title 
+	 * 
+	 * @param title
+	 * @return String title
+	 */
 	protected String getTitle(String title) {
 		if(title.equals(STRING_EMPTY)){
 			return null;
@@ -137,33 +165,45 @@ public abstract class Command {
 		return title;
 	}
 
-	protected String getType(String type){
-		if(!type.toLowerCase().equals("event")
-			&& !type.toLowerCase().equals("task")){
-			return null;
-		}
-		return type;
-	}
-
+	/**
+	 * Method: getTaskByID
+	 * Description:  
+	 *  
+	 * @param taskID
+	 * @return
+	 */
 	protected Task getTaskByID(String taskID){
-		String type = taskID.substring(0, 1);
-		Integer index;
-		try {
-			index = Integer.parseInt(taskID.substring(1)) - 1;
-		} catch (Exception e){
-			return null;
-		}
-		if (type.equalsIgnoreCase("t")) {
-			return GUIModel.taskList.get(index);
-		} else if (type.equalsIgnoreCase("d")) {
-			return GUIModel.taskDoneList.get(index);
-		} else if (type.equalsIgnoreCase("e")) {
-			return GUIModel.eventList.get(index);
-		} else if (type.equalsIgnoreCase("p")) {
-			return GUIModel.eventDoneList.get(index);
+		String type = getTaskIDtype(taskID);
+		Integer index = getTaskIdIndex(taskID);
+		
+		if(index != -1){
+			switch(type){
+				case "t":
+					return GUIModel.taskList.get(index);
+				case "d":
+					return GUIModel.taskDoneList.get(index);
+				case "e":
+					return GUIModel.eventList.get(index);
+				case "p":
+					return GUIModel.eventDoneList.get(index);
+				default:
+					return null;
+			}
 		} else {
 			return null;
 		}
+	}
+
+	private Integer getTaskIdIndex(String taskID) {
+		try {
+			return Integer.parseInt(taskID.substring(1)) - 1;
+		} catch (Exception e){
+			return -1;
+		}
+	}
+
+	private String getTaskIDtype(String taskID) {
+		return taskID.substring(0, 1).toLowerCase();
 	}
 
 	protected int getPriority(String priority){
@@ -226,13 +266,13 @@ public abstract class Command {
 	public static void main(String[] args) throws Exception {
 		//Command c = new DateCommand("");
 		//c.flexiParse("audgsf");
-		Span s = Chronic.parse("Today");
+		Span s = Chronic.parse("21-02/93");
 		System.out.println(s);
 		s = Chronic.parse("today");
 		//System.out.println(s);
 		//System.out.println(s.getBeginCalendar().getTime());
 		//System.out.println(s.getEndCalendar().toString());
 		ExitCommand e = new ExitCommand("");
-		System.out.println(e.getDate("Today"));
+		System.out.println(e.getDate("21-02"));
 	}
 }
