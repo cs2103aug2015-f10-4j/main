@@ -25,7 +25,7 @@ public class CustomDate {
 	@Override
 	public String toString() {
 		String day = dayArray[cal.get(Calendar.DAY_OF_WEEK)-1];
-		String month = monthArray[getMonth()];
+		String month = monthArray[getMonth()-1];
 		System.out.println("TIME: " + getTime());
 		return String.format(DATE_FORMAT, getTime(), getDay(), month, getYear(), day);
 	}
@@ -44,7 +44,7 @@ public class CustomDate {
 	}
 	
 	public int getMonth(){
-		int month = cal.get(Calendar.MONTH);
+		int month = cal.get(Calendar.MONTH)+1;
 		return month;
 	}
 	
