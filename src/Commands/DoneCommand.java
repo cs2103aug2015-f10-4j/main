@@ -60,17 +60,19 @@ public class DoneCommand extends Command {
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
 			int complementListIndex = Storage.getComplementListIndex(listIndex);
-			Magical.storage.delete(listIndex, task);
-			Magical.storage.create(complementListIndex, task);
+			Magical.getStorage().delete(listIndex, task);
+			Magical.getStorage().create(complementListIndex, task);
 		} catch (IOException e) {
 			return "unable to archive item";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.storage
-					.getList(Storage.TASKS_DONE_INDEX));
-			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.storage
-					.getList(Storage.EVENTS_DONE_INDEX));
+			GUIModel.setTaskList(Magical.getStorage().getList(
+					Storage.TASKS_INDEX));
+			GUIModel.setTaskDoneList(Magical.getStorage().getList(
+					Storage.TASKS_DONE_INDEX));
+			GUIModel.setEventList(Magical.getStorage().getList(
+					Storage.EVENTS_INDEX));
+			GUIModel.setEventDoneList(Magical.getStorage().getList(
+					Storage.EVENTS_DONE_INDEX));
 		}
 
 		return "item archived";

@@ -58,17 +58,19 @@ public class DelCommand extends Command {
 	public String execute() {
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.storage.delete(listIndex, task);
+			Magical.getStorage().delete(listIndex, task);
 			return "task deleted";
 		} catch (IOException e) {
 			return "unable to delete task";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.storage
-					.getList(Storage.TASKS_DONE_INDEX));
-			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.storage
-					.getList(Storage.EVENTS_DONE_INDEX));
+			GUIModel.setTaskList(Magical.getStorage().getList(
+					Storage.TASKS_INDEX));
+			GUIModel.setTaskDoneList(Magical.getStorage().getList(
+					Storage.TASKS_DONE_INDEX));
+			GUIModel.setEventList(Magical.getStorage().getList(
+					Storage.EVENTS_INDEX));
+			GUIModel.setEventDoneList(Magical.getStorage().getList(
+					Storage.EVENTS_DONE_INDEX));
 		}
 	}
 }

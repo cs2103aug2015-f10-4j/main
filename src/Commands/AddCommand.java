@@ -133,19 +133,19 @@ public class AddCommand extends Command{
 			if (isClashing()) {
 				retMsg += MESSAGE_TASK_CLASH;
 			}
-			Magical.storage.create(Storage.TASKS_INDEX, item);
+			Magical.getStorage().create(Storage.TASKS_INDEX, item);
 			return retMsg;
 		} catch (IOException e) {
 			return MESSAGE_TASK_ERROR;
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setTaskList(Magical.getStorage().getList(Storage.TASKS_INDEX));
+			GUIModel.setTaskDoneList(Magical.getStorage().getList(Storage.TASKS_DONE_INDEX));
 			GUIModel.setCurrentTab("tasks");
 		}
 	}
 
 	private boolean isClashing() {
-		ArrayList<Item> tasks = Magical.storage.getList(Storage.TASKS_INDEX);
+		ArrayList<Item> tasks = Magical.getStorage().getList(Storage.TASKS_INDEX);
 		for (Item t : tasks) {
 			if (t.getEndDate() != null && t.getEndDate().equals(item.getEndDate())) {
 				return true;
