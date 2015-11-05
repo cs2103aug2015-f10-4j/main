@@ -95,7 +95,10 @@
                 </Tab>
               </tabs>
             </TabPane>
-            <Label fx:id="messageLabel" focusTraversable="false" prefHeight="31.0" prefWidth="1141.0" wrapText="true" />
+            <Label fx:id="messageLabel" focusTraversable="false" prefHeight="31.0" prefWidth="1141.0" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
             <TextField fx:id="commandLineField" onKeyPressed="#onEnterPressed" prefHeight="31.0" prefWidth="1019.0" />
          </children>
          <padding>
