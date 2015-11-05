@@ -5,24 +5,17 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import gui.GUIController;
 import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Task;
 
-public class ShowCommand extends Command{
+public class ShowCommand extends Command {
 
 	private ArrayList<String> tags;
 	private String type;
 
-	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+ "Use Format:\n"
-			+ "1. show\n"
-			+ "2. show <type>\n"
-			+ "3. show <tag 1> <tag 2> ...";
-
-	public ShowCommand(String args) throws Exception{
+	public ShowCommand(String args) throws Exception {
 		super(args);
 
 		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(" ")));
@@ -30,9 +23,10 @@ public class ShowCommand extends Command{
 		this.type = argsArray.get(0).trim();
 		this.tags = null;
 
-		if(type.equals("")){
+		if (type.equals("")) {
 			this.type = "all";
-		} else if(!type.equalsIgnoreCase("events")&&!type.equalsIgnoreCase("tasks")){
+		} else if (!type.equalsIgnoreCase("events")
+				&& !type.equalsIgnoreCase("tasks")) {
 			this.type = "tag";
 			this.tags = this.argsArray;
 		}
@@ -42,58 +36,71 @@ public class ShowCommand extends Command{
 		return true;
 	}
 
+	/**
+	 * This method executes the show command. Which filters the database
+	 * according to the parameters specified. It then shows a subset of tasks
+	 * and events to the GUI. The valid parameters are either (1) "title" (2)
+	 * "event" OR (3) a list of tags.
+	 * 
+	 * @param None
+	 *            .
+	 * @return message to show user
+	 */
 	@Override
 	public String execute() {
 		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
-		ArrayList<Task> taskDoneList = Magical.storage.getList(Storage.TASKS_DONE_INDEX);
-		ArrayList<Task> eventList = Magical.storage.getList(Storage.EVENTS_INDEX);
-		ArrayList<Task> eventDoneList = Magical.storage.getList(Storage.EVENTS_DONE_INDEX);
+		ArrayList<Task> taskDoneList = Magical.storage
+				.getList(Storage.TASKS_DONE_INDEX);
+		ArrayList<Task> eventList = Magical.storage
+				.getList(Storage.EVENTS_INDEX);
+		ArrayList<Task> eventDoneList = Magical.storage
+				.getList(Storage.EVENTS_DONE_INDEX);
 		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
 		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
 		ArrayList<Task> filteredEventList = new ArrayList<Task>();
 		ArrayList<Task> filteredEventDoneList = new ArrayList<Task>();
 		switch (type) {
-			case "all":
-				filteredTaskList = taskList;
-				filteredTaskDoneList = taskDoneList;
-				filteredEventList = eventList;
-				filteredEventDoneList = eventDoneList;
-				break;
-			case "events":
-				filteredEventList = eventList;
-				filteredEventDoneList = eventDoneList;
-				GUIModel.setCurrentTab("events");
-				break;
-			case "tasks":
-				filteredTaskList = taskList;
-				filteredTaskDoneList = taskDoneList;
-				GUIModel.setCurrentTab("tasks");
-				break;
-			case "tag":
-				Set<String> queryTags = new HashSet<String>(tags);
-				for (Task t : taskList) {
-					if (t.getTags().containsAll(queryTags)) {
-						filteredTaskList.add(t);
-					}
+		case "all":
+			filteredTaskList = taskList;
+			filteredTaskDoneList = taskDoneList;
+			filteredEventList = eventList;
+			filteredEventDoneList = eventDoneList;
+			break;
+		case "events":
+			filteredEventList = eventList;
+			filteredEventDoneList = eventDoneList;
+			GUIModel.setCurrentTab("events");
+			break;
+		case "tasks":
+			filteredTaskList = taskList;
+			filteredTaskDoneList = taskDoneList;
+			GUIModel.setCurrentTab("tasks");
+			break;
+		case "tag":
+			Set<String> queryTags = new HashSet<String>(tags);
+			for (Task t : taskList) {
+				if (t.getTags().containsAll(queryTags)) {
+					filteredTaskList.add(t);
 				}
-				for (Task t : taskDoneList) {
-					if (t.getTags().containsAll(queryTags)) {
-						filteredTaskDoneList.add(t);
-					}
+			}
+			for (Task t : taskDoneList) {
+				if (t.getTags().containsAll(queryTags)) {
+					filteredTaskDoneList.add(t);
 				}
-				for (Task t : eventList) {
-					if (t.getTags().containsAll(queryTags)) {
-						filteredEventList.add(t);
-					}
+			}
+			for (Task t : eventList) {
+				if (t.getTags().containsAll(queryTags)) {
+					filteredEventList.add(t);
 				}
-				for (Task t : eventDoneList) {
-					if (t.getTags().containsAll(queryTags)) {
-						filteredEventDoneList.add(t);
-					}
+			}
+			for (Task t : eventDoneList) {
+				if (t.getTags().containsAll(queryTags)) {
+					filteredEventDoneList.add(t);
 				}
-				break;
-			default:
-				break;
+			}
+			break;
+		default:
+			break;
 		}
 		GUIModel.setTaskList(filteredTaskList);
 		GUIModel.setTaskDoneList(filteredTaskDoneList);
@@ -103,13 +110,7 @@ public class ShowCommand extends Command{
 	}
 
 	@Override
-	public boolean isUndoable(){
+	public boolean isUndoable() {
 		return false;
-	}
-
-	public static void main(String[] args) throws Exception {
-//		ShowCommand s = new ShowCommand("");
-//		ShowCommand s = new ShowCommand("event");
-//		ShowCommand s = new ShowCommand("food work play");
 	}
 }
