@@ -113,15 +113,9 @@ public class AddCommand extends Command{
 			if (recurrence == null && !isFloat) {
 				invalidArgs.add("recurrence");
 			}
-<<<<<<< HEAD
 
-			if (!error.equals(STRING_EMPTY)) {
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
-=======
-			
 			if (invalidArgs.size() > 0) {
 				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
->>>>>>> master
 			}
 		} else {
 			throw new IllegalArgumentException(MESSAGE_INVALID_FLEXI);
@@ -182,7 +176,7 @@ public class AddCommand extends Command{
 //		AddCommand f = new AddCommand("go on stand \\by the hill by 12pm Monday daily asdgasgd asgas");
 //		AddCommand g = new AddCommand("go on stand \\by the hill by 12a0193 12pm");
 		AddCommand h = new AddCommand("task by tuesday 1pm msonthly");
-		
+
 
 	}
 }

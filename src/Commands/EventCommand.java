@@ -116,13 +116,9 @@ public class EventCommand extends Command{
 			}
 
 			if (dateEnd == null) {
-<<<<<<< HEAD
-				error += String.format(MESSAGE_INVALID_DATE_TIME, "End", argsArray.get(2).trim());
-			}
-=======
 				invalidArgs.add("end time");
-			} 
->>>>>>> master
+			}
+
 			if (dateStart != null && dateEnd != null && !validDateRange()) {
 				invalidArgs.add("End date is earlier than start date");
 			}
