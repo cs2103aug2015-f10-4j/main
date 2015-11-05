@@ -150,20 +150,35 @@ public class Item {
 	}
 
 	public static class Comparators {
-		public static final Comparator<Item> PRIORITY = (Item t1, Item t2) -> Integer
-				.compare(t1.priority, t2.priority);
-		public static final Comparator<Item> DATE = (Item t1, Item t2) -> t1.endDate
-				.compareTo(t2.endDate);
-		public static final Comparator<Item> TITLE = (Item t1, Item t2) -> t1.title
-				.compareTo(t2.title);
+		public static final Comparator<Item> PRIORITY = (Item i1, Item i2) -> Integer
+				.compare(i1.priority, i2.priority);
+		public static final Comparator<Item> DATE = new Comparator<Item>() {
+			@Override
+			public int compare(Item i1, Item i2) {
+				if (i1.endDate == null && i2.endDate == null) {
+					return 0;
+				}
+				if (i1.endDate == null) {
+					return 1;
+				}
+				if (i2.endDate == null) {
+					return -1;
+				}
+				return i1.endDate.getDate().compareTo(i2.endDate.getDate());
+			}
+		};
+		public static final Comparator<Item> TITLE = (Item i1, Item i2) -> i1.title
+				.compareTo(i2.title);
 	}
 
 	public Item copy() {
 		Item copyTask = new Item();
 		copyTask.setType(this.type);
 		copyTask.setTitle(this.title);
-		CustomDate sd = this.startDate != null ? new CustomDate(this.startDate.getDate()) : null;
-		CustomDate ed = this.endDate != null ? new CustomDate(this.endDate.getDate()) : null;
+		CustomDate sd = this.startDate != null ? new CustomDate(
+				this.startDate.getDate()) : null;
+		CustomDate ed = this.endDate != null ? new CustomDate(
+				this.endDate.getDate()) : null;
 		copyTask.setStartDate(sd);
 		copyTask.setEndDate(ed);
 		copyTask.setStartTime(this.startTime);
