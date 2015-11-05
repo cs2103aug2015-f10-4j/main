@@ -171,13 +171,14 @@ public abstract class Command {
 	/**
 	 * Method: getItemByID
 	 * Description: Get both item type and item index using the itemID and return the 
-	 * corresponding item. Returns null if the itemID is invalid or item does not exist.
+	 * corresponding item. Checks the validity of item type. Returns null if the itemID 
+	 * is invalid or item does not exist.
 	 *  
 	 * @param itemID
 	 * @return Task object corresponding
 	 */
 	protected Item getItemByID(String itemID){
-		String type = getItemID(itemID);
+		String type = getItemIdType(itemID);
 		Integer index = getItemIdIndex(itemID);
 		
 		if(index != -1){
@@ -204,9 +205,9 @@ public abstract class Command {
 	 * Returns -1 if the index is not a valid number.
 	 * 
 	 * @param itemID
-	 * @return Integer index of the item
+	 * @return int index of the item
 	 */
-	private Integer getItemIdIndex(String itemID) {
+	private int getItemIdIndex(String itemID) {
 		try {
 			return Integer.parseInt(itemID.substring(1)) - 1;
 		} catch (Exception e){
@@ -215,81 +216,73 @@ public abstract class Command {
 	}
 
 	/**
-	 * Method: getItemID
+	 * Method: getItemId
+	 * Description: Gets the item type from the itemID. Does not check for validity of type.
+	 * 
 	 * @param itemID
-	 * @return
+	 * @return String item type
 	 */
-	private String getItemID(String itemID) {
+	private String getItemIdType(String itemID) {
 		return itemID.substring(0, 1).toLowerCase();
 	}
 
+	/**
+	 * Method: getPriority
+	 * Description: Checks if priority is valid and returns it as integer, or -1 if invalid
+	 * priority
+	 * 
+	 * @param priority
+	 * @return int priority
+	 */
 	protected int getPriority(String priority){
 		try {
 			int p = Integer.parseInt(priority);
-			if (p >= 0 && p <= 10){
-				return p;
-			} else {
-				return -1;
-			}
+			return getWithinPriorityRange(p);
 		} catch (Exception e){
 			return -1;
 		}
 	}
 
-	protected Calendar dateToCal(Date d) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(d);
-		return cal;
-	}
-
-	protected boolean needsFlexi(String date){
-		if(date.contains("-")||date.contains("/")){
-			return false;
+	/**
+	 * Method: getWithinPriorityRange
+	 * Description: Checks if the priority is valid (from 0 to 10) and gives the priority, 
+	 * or -1 otherwise 
+	 * 
+	 * @param p
+	 * @return int priority
+	 */
+	private int getWithinPriorityRange(int p) {
+		if (p >= 0 && p <= 10){
+			return p;
 		} else {
-			return true;
+			return -1;
 		}
 	}
 
-	protected Date flexiParse(Calendar cal) {
-		Parser p = new Parser();
-		List<DateGroup> date = p.parse((cal.get(Calendar.MONTH)+1)
-				+ "-" + cal.get(Calendar.DAY_OF_MONTH)
-				+ "-" + cal.get(Calendar.YEAR)
-				+ " " + argsArray.get(2));
-		if(date.isEmpty()){
-			return null;
-		} else {
-			return date.get(0).getDates().get(0);
-		}
-	}
-
-	protected Date flexiParse(String dueDate) {
-		Parser p = new Parser();
-		List<DateGroup> date = p.parse(dueDate);
-		if(date.isEmpty()){
-			return null;
-		} else {
-			return date.get(0).getDates().get(0);
-		}
-	}
-
+	/**
+	 * Abstract Method: execute
+	 * Description: Implements functionality for each Command subclass.
+	 * 
+	 * @return String success/failure
+	 * @throws Exception
+	 */
 	public abstract String execute() throws Exception;
+	
+	/**
+	 * Abstract Method: validNumArgs
+	 * Description: Checks if the correct number of arguments are provided
+	 * 
+	 * @return boolean true/false
+	 */
 	public abstract boolean validNumArgs();
 
+	/**
+	 * Method: isUndoable
+	 * Description: Indicates if the command can be undone or not
+	 * 
+	 * @return boolean true/false
+	 */
 	public boolean isUndoable(){
 		return true;
-	}
-
-	public static void main(String[] args) throws Exception {
-		//Command c = new DateCommand("");
-		//c.flexiParse("audgsf");
-		Span s = Chronic.parse("00om");
-		System.out.println(s);
-		s = Chronic.parse("today");
-		//System.out.println(s);
-		//System.out.println(s.getBeginCalendar().getTime());
-		//System.out.println(s.getEndCalendar().toString());
-		ExitCommand e = new ExitCommand("");
-		System.out.println(e.getDate(""));
 	}
 }
