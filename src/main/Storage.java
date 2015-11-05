@@ -17,13 +17,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Storage {
 
-	// private static final String MESSAGE_FILE_NOT_CREATED = "Error. File is not created successfully.";
 	public static final int NUM_LISTS = 4;
 	public static final int TASKS_INDEX = 0;
 	public static final int TASKS_DONE_INDEX = 1;
 	public static final int EVENTS_INDEX = 2;
 	public static final int EVENTS_DONE_INDEX = 3;
-	
+
 	private static final String DEFAULT_FILE_DIRECTORY = "magical";
 	private static final String DEFAULT_FILE_NAME = "storage.txt";
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
@@ -108,26 +107,15 @@ public class Storage {
 	 * the .txt data file to the specified new file path.
 	 * @param newFilePath New file path specified by user.
 	 * @return whether the file path is changed successfully or not
-	 * @throws IOException 
-	 * @exception FileNotFoundException If the file path does not exist
-	 * @see FileNotFoundException
+	 * @throws IOException, FileNotFoundException
 	 */
-	public boolean changeFilePath(String newFilePath) throws IOException {
+	public void changeFilePath(String newFilePath) throws IOException, FileNotFoundException {
 		String oldFilePath = readFileSettings();
-		
-		if (newFilePath == null || oldFilePath == null) {
-			return false;
-		} else {
-			try {
-				moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
-				newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
-				moveFile(oldFilePath, newFilePath);
-				writeToProperties(newFilePath);
-				return true;
-			} catch (FileNotFoundException fnfe) {
-				return false;
-			}
-		}
+
+		moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
+		newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
+		moveFile(oldFilePath, newFilePath);
+		writeToProperties(newFilePath);
 	}
 
 	/**
@@ -171,10 +159,9 @@ public class Storage {
 	 * @param oldFilePath File path of the source .txt file.
 	 * @param newFilePath File path of the destination .txt file.
 	 * @return Nothing.
-	 * @exception IOException On input error.
-	 * @see IOException
+	 * @throws IOException, FileNotFoundException
 	 */
-	protected void moveFile(String oldFilePath, String newFilePath) throws IOException {
+	protected void moveFile(String oldFilePath, String newFilePath) throws IOException, FileNotFoundException {
 
 		InputStream inStream = null;
 		OutputStream outStream = null;
