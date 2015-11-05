@@ -88,9 +88,7 @@ public class GUIController {
 		eventTable.setItems(GUIModel.getEventList());
 		eventDoneTable.setItems(GUIModel.getEventDoneList());
 
-		/*
-		 * TASK TABLE
-		 */
+		// Populate task table columns
 
 		taskIDCol.setCellFactory(col -> {
 		    TableCell<Item, String> cell = new TableCell<>();
@@ -114,9 +112,9 @@ public class GUIController {
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
-		/*
-		 * EVENT TABLE
-		 */
+
+		// Populate event table columns
+
 		eventIDCol.setCellFactory(col -> {
 		    TableCell<Item, String> cell = new TableCell<>();
 		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
@@ -141,9 +139,7 @@ public class GUIController {
 		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
 
-		/*
-		 * DONE TASKS TABLE
-		 */
+		// Populate done task table columns
 
 		taskDoneIDCol.setCellFactory(col -> {
 		    TableCell<Item, String> cell = new TableCell<>();
@@ -166,9 +162,8 @@ public class GUIController {
 		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
 		taskDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
-		/*
-		 * DONE EVENTS TABLE
-		 */
+
+		// Populate done event table columns
 
 		eventDoneIDCol.setCellFactory(col -> {
 		    TableCell<Item, String> cell = new TableCell<>();
@@ -201,6 +196,11 @@ public class GUIController {
 
 	}
 
+	/**
+	 * This method switches the currently selected tab.
+	 * @param type - either "tasks" or "events"
+	 */
+
 	public void switchToTab(String type) {
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
 		if (type == "tasks") {
@@ -210,6 +210,13 @@ public class GUIController {
 		}
 		return;
 	}
+
+	/**
+	 * This method converts a tagSet into a printable String to populate
+	 * Tags columns with.
+	 * @param tagSet - set of tags from a Task object
+	 * @return String
+	 */
 
 	private String makeTagString(Set<String> tagSet) {
 		String result = "";
@@ -224,6 +231,17 @@ public class GUIController {
 	}
 
 
+	/**
+	 * This method handles input from commandLineField by checking if the
+	 * Enter key has been pressed, reading user input and passing it to
+	 * the main application logic via main.Magical.parseCommand. If the
+	 * user input throws an exception, the error message is printed into
+	 * the label above the command line.
+	 * This method also checks if GUIModel.showHelpWindow is true, and
+	 * opens the help window accordingly.
+	 * @param event - Enter pressed
+	 * @throws Exception
+	 */
 
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {
@@ -257,6 +275,11 @@ public class GUIController {
 		}
 	}
 
+	/**
+	 * These methods set the current tab of the GUIModel to the
+	 * tab last clicked by the user. They are assigned to their
+	 * respective tabs in the FXML file.
+	 */
 	@FXML
 	protected void handleTaskTabClicked() {
 		GUIModel.setCurrentTab("tasks");
