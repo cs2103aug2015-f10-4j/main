@@ -59,39 +59,35 @@ public class SortCommand extends Command{
 
 	@Override
 	public String execute() throws Exception {
-		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
-		ArrayList<Task> taskDoneList = Magical.storage.getList(Storage.TASKS_DONE_INDEX);
-		ArrayList<Task> eventList = Magical.storage.getList(Storage.EVENTS_INDEX);
-		ArrayList<Task> eventDoneList = Magical.storage.getList(Storage.EVENTS_DONE_INDEX);
-		ArrayList<Task> filteredTaskList = new ArrayList<Task>(taskList);
-		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>(taskDoneList);
-		ArrayList<Task> filteredEventList = new ArrayList<Task>(eventList);
-		ArrayList<Task> filteredEventDoneList = new ArrayList<Task>(eventDoneList);
+		ArrayList<Task> sortedTaskList = new ArrayList<Task>(GUIModel.getTaskList());
+		ArrayList<Task> sortedTaskDoneList = new ArrayList<Task>(GUIModel.getTaskDoneList());
+		ArrayList<Task> sortedEventList = new ArrayList<Task>(GUIModel.getEventList());
+		ArrayList<Task> sortedEventDoneList = new ArrayList<Task>(GUIModel.getEventDoneList());
 		switch (sortParam) {
 			case "priority":
-				Collections.sort(filteredTaskList, Task.Comparators.PRIORITY);
-				Collections.sort(filteredTaskDoneList, Task.Comparators.PRIORITY);
-				Collections.sort(filteredEventList, Task.Comparators.PRIORITY);
-				Collections.sort(filteredEventDoneList, Task.Comparators.PRIORITY);
+				Collections.sort(sortedTaskList, Task.Comparators.PRIORITY);
+				Collections.sort(sortedTaskDoneList, Task.Comparators.PRIORITY);
+				Collections.sort(sortedEventList, Task.Comparators.PRIORITY);
+				Collections.sort(sortedEventDoneList, Task.Comparators.PRIORITY);
 				break;
 			case "date":
-				Collections.sort(filteredTaskList, Task.Comparators.DATE);
-				Collections.sort(filteredTaskDoneList, Task.Comparators.DATE);
-				Collections.sort(filteredEventList, Task.Comparators.DATE);
-				Collections.sort(filteredEventDoneList, Task.Comparators.DATE);
+				Collections.sort(sortedTaskList, Task.Comparators.DATE);
+				Collections.sort(sortedTaskDoneList, Task.Comparators.DATE);
+				Collections.sort(sortedEventList, Task.Comparators.DATE);
+				Collections.sort(sortedEventDoneList, Task.Comparators.DATE);
 				break;
 			case "title":
-				Collections.sort(filteredTaskList, Task.Comparators.TITLE);
-				Collections.sort(filteredTaskDoneList, Task.Comparators.TITLE);
-				Collections.sort(filteredEventList, Task.Comparators.TITLE);
-				Collections.sort(filteredEventDoneList, Task.Comparators.TITLE);
+				Collections.sort(sortedTaskList, Task.Comparators.TITLE);
+				Collections.sort(sortedTaskDoneList, Task.Comparators.TITLE);
+				Collections.sort(sortedEventList, Task.Comparators.TITLE);
+				Collections.sort(sortedEventDoneList, Task.Comparators.TITLE);
 			default:
 				break;
 		}
-		GUIModel.setTaskList(filteredTaskList);
-		GUIModel.setTaskDoneList(filteredTaskDoneList);
-		GUIModel.setEventList(filteredEventList);
-		GUIModel.setEventDoneList(filteredEventDoneList);
+		GUIModel.setTaskList(sortedTaskList);
+		GUIModel.setTaskDoneList(sortedTaskDoneList);
+		GUIModel.setEventList(sortedEventList);
+		GUIModel.setEventDoneList(sortedEventDoneList);
 		return "sort successful";
 	}
 
