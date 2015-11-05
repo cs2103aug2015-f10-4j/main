@@ -55,7 +55,6 @@ public class TagCommand extends Command {
 	 * to a task or event's tag set.
 	 * 
 	 * @param None
-	 *            .
 	 * @return message to show user
 	 */
 	@Override
@@ -69,16 +68,18 @@ public class TagCommand extends Command {
 
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.storage.update(listIndex, prevTask, task);
+			Magical.getStorage().update(listIndex, prevTask, task);
 		} catch (IOException e) {
 			return "unable to add tag to task";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.storage
-					.getList(Storage.TASKS_DONE_INDEX));
-			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.storage
-					.getList(Storage.EVENTS_DONE_INDEX));
+			GUIModel.setTaskList(Magical.getStorage().getList(
+					Storage.TASKS_INDEX));
+			GUIModel.setTaskDoneList(Magical.getStorage().getList(
+					Storage.TASKS_DONE_INDEX));
+			GUIModel.setEventList(Magical.getStorage().getList(
+					Storage.EVENTS_INDEX));
+			GUIModel.setEventDoneList(Magical.getStorage().getList(
+					Storage.EVENTS_DONE_INDEX));
 		}
 
 		return tag + " added to task";

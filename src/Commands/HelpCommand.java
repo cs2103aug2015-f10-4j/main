@@ -11,7 +11,6 @@ public class HelpCommand extends Command {
 	 * the help window.
 	 * 
 	 * @param None
-	 *            .
 	 * @return None
 	 */
 	@Override

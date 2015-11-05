@@ -56,7 +56,6 @@ public class PriorityCommand extends Command {
 	 * priority of the selected task or event to the new priority specified.
 	 * 
 	 * @param None
-	 *            .
 	 * @return message to show user
 	 */
 	@Override
@@ -67,16 +66,18 @@ public class PriorityCommand extends Command {
 
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.storage.update(listIndex, prevTask, task);
+			Magical.getStorage().update(listIndex, prevTask, task);
 		} catch (IOException e) {
 			return "unable to change priority";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.storage
-					.getList(Storage.TASKS_DONE_INDEX));
-			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.storage
-					.getList(Storage.EVENTS_DONE_INDEX));
+			GUIModel.setTaskList(Magical.getStorage().getList(
+					Storage.TASKS_INDEX));
+			GUIModel.setTaskDoneList(Magical.getStorage().getList(
+					Storage.TASKS_DONE_INDEX));
+			GUIModel.setEventList(Magical.getStorage().getList(
+					Storage.EVENTS_INDEX));
+			GUIModel.setEventDoneList(Magical.getStorage().getList(
+					Storage.EVENTS_DONE_INDEX));
 		}
 
 		return "Priority updated.";

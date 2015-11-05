@@ -43,18 +43,18 @@ public class ShowCommand extends Command {
 	 * "event" OR (3) a list of tags.
 	 * 
 	 * @param None
-	 *            .
 	 * @return message to show user
 	 */
 	@Override
 	public String execute() {
-		ArrayList<Item> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
-		ArrayList<Item> taskDoneList = Magical.storage
-				.getList(Storage.TASKS_DONE_INDEX);
-		ArrayList<Item> eventList = Magical.storage
-				.getList(Storage.EVENTS_INDEX);
-		ArrayList<Item> eventDoneList = Magical.storage
-				.getList(Storage.EVENTS_DONE_INDEX);
+		ArrayList<Item> taskList = Magical.getStorage().getList(
+				Storage.TASKS_INDEX);
+		ArrayList<Item> taskDoneList = Magical.getStorage().getList(
+				Storage.TASKS_DONE_INDEX);
+		ArrayList<Item> eventList = Magical.getStorage().getList(
+				Storage.EVENTS_INDEX);
+		ArrayList<Item> eventDoneList = Magical.getStorage().getList(
+				Storage.EVENTS_DONE_INDEX);
 		ArrayList<Item> filteredTaskList = new ArrayList<Item>();
 		ArrayList<Item> filteredTaskDoneList = new ArrayList<Item>();
 		ArrayList<Item> filteredEventList = new ArrayList<Item>();

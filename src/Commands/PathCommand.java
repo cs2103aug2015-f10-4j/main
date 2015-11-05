@@ -24,13 +24,12 @@ public class PathCommand extends Command {
 	 * database file.
 	 * 
 	 * @param None
-	 * 
 	 * @return message to show user
 	 */
 	@Override
 	public String execute() throws Exception {
 		try {
-			Magical.storage.changeFilePath(location);
+			Magical.getStorage().changeFilePath(location);
 		} catch (FileNotFoundException fnfe) {
 			throw new Exception(location + " (no such directory)");
 		}

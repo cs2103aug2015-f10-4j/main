@@ -10,7 +10,6 @@ public class ExitCommand extends Command {
 	 * This method executes the exit command. Which terminates the program.
 	 * 
 	 * @param None
-	 *            .
 	 * @return None
 	 */
 	@Override

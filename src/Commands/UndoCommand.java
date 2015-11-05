@@ -21,7 +21,6 @@ public class UndoCommand extends Command {
 	 * exists, this command reverts the database to the previous version.
 	 * 
 	 * @param None
-	 *            .
 	 * @return message to show user
 	 */
 	@Override
@@ -40,22 +39,24 @@ public class UndoCommand extends Command {
 					Storage.EVENTS_INDEX).pop();
 			ArrayList<Item> lastEventsDoneList = Magical.undoLists.get(
 					Storage.EVENTS_DONE_INDEX).pop();
-			Magical.storage.setList(Storage.TASKS_INDEX, lastTasksList);
-			Magical.storage
-					.setList(Storage.TASKS_DONE_INDEX, lastTasksDoneList);
-			Magical.storage.setList(Storage.EVENTS_INDEX, lastEventsList);
-			Magical.storage.setList(Storage.EVENTS_DONE_INDEX,
+			Magical.getStorage().setList(Storage.TASKS_INDEX, lastTasksList);
+			Magical.getStorage().setList(Storage.TASKS_DONE_INDEX,
+					lastTasksDoneList);
+			Magical.getStorage().setList(Storage.EVENTS_INDEX, lastEventsList);
+			Magical.getStorage().setList(Storage.EVENTS_DONE_INDEX,
 					lastEventsDoneList);
 			return "undo successful";
 		} catch (IOException e) {
 			return "unable to undo";
 		} finally {
-			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.storage
-					.getList(Storage.TASKS_DONE_INDEX));
-			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.storage
-					.getList(Storage.EVENTS_DONE_INDEX));
+			GUIModel.setTaskList(Magical.getStorage().getList(
+					Storage.TASKS_INDEX));
+			GUIModel.setTaskDoneList(Magical.getStorage().getList(
+					Storage.TASKS_DONE_INDEX));
+			GUIModel.setEventList(Magical.getStorage().getList(
+					Storage.EVENTS_INDEX));
+			GUIModel.setEventDoneList(Magical.getStorage().getList(
+					Storage.EVENTS_DONE_INDEX));
 		}
 	}
 

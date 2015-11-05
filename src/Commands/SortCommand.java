@@ -54,7 +54,6 @@ public class SortCommand extends Command {
 	 * parameter specified.
 	 * 
 	 * @param None
-	 *            .
 	 * @return message to show user
 	 */
 	@Override
