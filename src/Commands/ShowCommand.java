@@ -13,7 +13,6 @@ import main.Task;
 
 public class ShowCommand extends Command{
 
-	private String error = STRING_EMPTY;
 	private ArrayList<String> tags;
 	private String type;
 
@@ -36,10 +35,6 @@ public class ShowCommand extends Command{
 		} else if(!type.equalsIgnoreCase("events")&&!type.equalsIgnoreCase("tasks")){
 			this.type = "tag";
 			this.tags = this.argsArray;
-		}
-
-		if (!error.equals(STRING_EMPTY)) {
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
 		}
 	}
 

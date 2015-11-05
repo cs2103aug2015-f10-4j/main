@@ -19,7 +19,6 @@ public class EditCommand extends Command{
 
 	private String field;
 	private String value;
-	private String error = STRING_EMPTY;
 	private Task task;
 	private Task prevTask;
 	private boolean toFloat;
@@ -55,27 +54,27 @@ public class EditCommand extends Command{
 			this.value = argsArray.get(2).trim();
 			
 			if (task == null) {
-				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
+				invalidArgs.add("taskID");
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
 			}
 			
 			isTask = task.getType().equals("task");
 			if (field.equalsIgnoreCase("title")) {
 				if (getTitle(value) == null){
-					error += MESSAGE_INVALID_TITLE;
+					invalidArgs.add("title");
 				}
 			} else if (field.equalsIgnoreCase("date")) {
 				if(value.equals(STRING_EMPTY) && isTask){
 					toFloat = true;
 				} else if((editObject = getDate(value)) == null){
-						error += String.format(MESSAGE_INVALID_DATE, value);
+					invalidArgs.add("date");
 				}
 			} else if (field.equalsIgnoreCase("start time")) {
 				if(isTask){
-					error += MESSAGE_INVALID_TASK_START;
+					invalidArgs.add(MESSAGE_INVALID_TASK_START);
 				} else {
 					if((editObject = getDate(value)) == null){
-						error += String.format(MESSAGE_INVALID_TIME, "Start", value);
+						invalidArgs.add("start time");
 					} else {
 						editObject = getDate(value).getTime();
 					}
@@ -98,7 +97,7 @@ public class EditCommand extends Command{
 
 			} else if (field.equalsIgnoreCase("end time")) {
 				if((editObject = getDate(value)) == null){
-					error += String.format(MESSAGE_INVALID_TIME, "End", value);
+					invalidArgs.add("end time");
 				} else {
 					editObject = getDate(value).getTime();
 				}
@@ -121,18 +120,17 @@ public class EditCommand extends Command{
 				*/
 			} else if (field.equalsIgnoreCase("recurrence")) {
 				if(getRecurrence(value) == null){
-					error += String.format(MESSAGE_INVALID_RECURRENCE, value);
+					invalidArgs.add("recurrence");
 				}
 			} else {
-				error += String.format(MESSAGE_INVALID_FIELD, field);
+				invalidArgs.add(MESSAGE_INVALID_FIELD);
 			}
 			
-			if (!error.equals(STRING_EMPTY)) {
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
+			if (invalidArgs.size() > 0) {
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
 			}
 		} else {
-			error += MESSAGE_INVALID_PARAMS;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
+			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
 		}
 	}
 

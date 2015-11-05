@@ -10,7 +10,6 @@ import main.Storage;
 import main.Task;
 
 public class UndoneCommand extends Command{
-	private String error = STRING_EMPTY;
 	private Task task;
 	
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
@@ -27,16 +26,15 @@ public class UndoneCommand extends Command{
 			task = getTaskByID(argsArray.get(0).trim());
 			
 			if(task == null){
-				error += String.format(MESSAGE_INVALID_ID, argsArray.get(0).trim());
+				invalidArgs.add("taskID");
 			} else if (argsArray.get(0).trim().contains("t") || argsArray.get(0).trim().contains("e")){
-				error += "Undone tasks cannot be undone!";
+				invalidArgs.add("Undone tasks cannot be undone!");
 			}
-			if (!error.equals("")) {
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
-			}			
+			if (invalidArgs.size() > 0) {
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
+			}
 		} else {
-			error += MESSAGE_INVALID_PARAMS;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
+			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
 		}
 	}
 	

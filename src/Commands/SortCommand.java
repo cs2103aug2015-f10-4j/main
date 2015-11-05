@@ -33,14 +33,13 @@ public class SortCommand extends Command{
 			if(sortParam.equals(STRING_EMPTY)){
 				sortParam = "priority";
 			} else if (!isValidSortParam()){
-				error += String.format(MESSAGE_INVALID_SORT, sortParam);
+				invalidArgs.add("sort parameter");
 			}
-			if (!error.equals(STRING_EMPTY)) {
-				throw new Exception(MESSAGE_HEADER_INVALID + error);
+			if (invalidArgs.size() > 0) {
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
 			}	
 		} else {
-			error += MESSAGE_INVALID_PARAMS;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
+			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
 		}
 	}
 	

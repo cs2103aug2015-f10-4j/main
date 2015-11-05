@@ -26,8 +26,7 @@ public class PathCommand extends Command {
 				//wanted to throw error
 			}
 		} else {
-			error += MESSAGE_INVALID_PARAMS;
-			throw new Exception(MESSAGE_HEADER_INVALID + error);
+			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
 		}
 		
 	}
