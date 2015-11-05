@@ -7,13 +7,13 @@ import java.util.Arrays;
 import gui.GUIModel;
 import main.Magical;
 import main.Storage;
-import main.Task;
+import main.Item;
 
 public class DelCommand extends Command {
 
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: delete <task_id>";
 
-	private Task task;
+	private Item task;
 
 	public DelCommand(String args) throws Exception {
 		super(args);

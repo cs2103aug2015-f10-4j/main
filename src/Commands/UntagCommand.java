@@ -8,15 +8,15 @@ import java.util.Set;
 import gui.GUIModel;
 import main.Magical;
 import main.Storage;
-import main.Task;
+import main.Item;
 
 public class UntagCommand extends Command {
 
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: untag <task_id> <tag name>";
 
-	private Task task;
+	private Item task;
 	private String tag;
-	private Task prevTask;
+	private Item prevTask;
 
 	public UntagCommand(String args) throws Exception {
 		super(args);

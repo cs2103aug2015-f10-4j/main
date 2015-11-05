@@ -7,12 +7,12 @@ import Commands.Command;
 
 public class Magical {
 	public static Storage storage;
-	public static List<Stack<ArrayList<Task>>> undoLists = new ArrayList<Stack<ArrayList<Task>>>(Storage.NUM_LISTS);
+	public static List<Stack<ArrayList<Item>>> undoLists = new ArrayList<Stack<ArrayList<Item>>>(Storage.NUM_LISTS);
 
 	public static void init() throws IOException {
 		storage = new Storage();
 		for (int i = 0; i < Storage.NUM_LISTS; i++) {
-			undoLists.add(new Stack<ArrayList<Task>>());
+			undoLists.add(new Stack<ArrayList<Item>>());
 		}
 	}
 
@@ -31,21 +31,21 @@ public class Magical {
 
 	private static void pushUndoLayer() {
 		int n = Storage.TASKS_INDEX;
-		ArrayList<Task> t = storage.getList(n);
-		ArrayList<Task> prevTasksList = listClone(t);
-		ArrayList<Task> prevTasksDoneList = listClone(storage.getList(Storage.TASKS_DONE_INDEX));
-		ArrayList<Task> prevEventsList = listClone(storage.getList(Storage.EVENTS_INDEX));
-		ArrayList<Task> prevEventsDoneList = listClone(storage.getList(Storage.EVENTS_DONE_INDEX));
+		ArrayList<Item> t = storage.getList(n);
+		ArrayList<Item> prevTasksList = listClone(t);
+		ArrayList<Item> prevTasksDoneList = listClone(storage.getList(Storage.TASKS_DONE_INDEX));
+		ArrayList<Item> prevEventsList = listClone(storage.getList(Storage.EVENTS_INDEX));
+		ArrayList<Item> prevEventsDoneList = listClone(storage.getList(Storage.EVENTS_DONE_INDEX));
 		undoLists.get(Storage.TASKS_INDEX).push(prevTasksList);
 		undoLists.get(Storage.TASKS_DONE_INDEX).push(prevTasksDoneList);
 		undoLists.get(Storage.EVENTS_INDEX).push(prevEventsList);
 		undoLists.get(Storage.EVENTS_DONE_INDEX).push(prevEventsDoneList);
 	}
 
-	private static ArrayList<Task> listClone(ArrayList<Task> tasks) {
-		ArrayList<Task> newList = new ArrayList<Task>(tasks.size());
+	private static ArrayList<Item> listClone(ArrayList<Item> tasks) {
+		ArrayList<Item> newList = new ArrayList<Item>(tasks.size());
 		try {
-			for(Task t : tasks) {
+			for(Item t : tasks) {
 				newList.add(t.copy());
 			}
 			return newList;

@@ -12,7 +12,7 @@ import main.CustomDate;
 import main.Magical;
 import main.RecurrencePeriod;
 import main.Storage;
-import main.Task;
+import main.Item;
 import gui.GUIModel;
 
 /**
@@ -29,7 +29,7 @@ public class AddCommand extends Command{
 	protected int endTime;
 	protected RecurrencePeriod recurrence;
 	protected boolean isFloat;
-	private Task task;
+	private Item task;
 
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: \nadd title/due date/end time/recurrence";
@@ -132,7 +132,7 @@ public class AddCommand extends Command{
 
 	@Override
 	public String execute() {
-		task = new Task();
+		task = new Item();
 		task.setType("task");
 		task.setTitle(title);
 		task.setRecurrence(recurrence);
@@ -158,8 +158,8 @@ public class AddCommand extends Command{
 	}
 
 	private boolean isClashing() {
-		ArrayList<Task> tasks = Magical.storage.getList(Storage.TASKS_INDEX);
-		for (Task t : tasks) {
+		ArrayList<Item> tasks = Magical.storage.getList(Storage.TASKS_INDEX);
+		for (Item t : tasks) {
 			if (t.getEndDate() != null && t.getEndDate().equals(task.getEndDate())) {
 				return true;
 			}

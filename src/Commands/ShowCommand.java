@@ -8,7 +8,7 @@ import java.util.Set;
 import gui.GUIModel;
 import main.Magical;
 import main.Storage;
-import main.Task;
+import main.Item;
 
 public class ShowCommand extends Command {
 
@@ -48,17 +48,17 @@ public class ShowCommand extends Command {
 	 */
 	@Override
 	public String execute() {
-		ArrayList<Task> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
-		ArrayList<Task> taskDoneList = Magical.storage
+		ArrayList<Item> taskList = Magical.storage.getList(Storage.TASKS_INDEX);
+		ArrayList<Item> taskDoneList = Magical.storage
 				.getList(Storage.TASKS_DONE_INDEX);
-		ArrayList<Task> eventList = Magical.storage
+		ArrayList<Item> eventList = Magical.storage
 				.getList(Storage.EVENTS_INDEX);
-		ArrayList<Task> eventDoneList = Magical.storage
+		ArrayList<Item> eventDoneList = Magical.storage
 				.getList(Storage.EVENTS_DONE_INDEX);
-		ArrayList<Task> filteredTaskList = new ArrayList<Task>();
-		ArrayList<Task> filteredTaskDoneList = new ArrayList<Task>();
-		ArrayList<Task> filteredEventList = new ArrayList<Task>();
-		ArrayList<Task> filteredEventDoneList = new ArrayList<Task>();
+		ArrayList<Item> filteredTaskList = new ArrayList<Item>();
+		ArrayList<Item> filteredTaskDoneList = new ArrayList<Item>();
+		ArrayList<Item> filteredEventList = new ArrayList<Item>();
+		ArrayList<Item> filteredEventDoneList = new ArrayList<Item>();
 		switch (type) {
 		case "all":
 			filteredTaskList = taskList;
@@ -78,22 +78,22 @@ public class ShowCommand extends Command {
 			break;
 		case "tag":
 			Set<String> queryTags = new HashSet<String>(tags);
-			for (Task t : taskList) {
+			for (Item t : taskList) {
 				if (t.getTags().containsAll(queryTags)) {
 					filteredTaskList.add(t);
 				}
 			}
-			for (Task t : taskDoneList) {
+			for (Item t : taskDoneList) {
 				if (t.getTags().containsAll(queryTags)) {
 					filteredTaskDoneList.add(t);
 				}
 			}
-			for (Task t : eventList) {
+			for (Item t : eventList) {
 				if (t.getTags().containsAll(queryTags)) {
 					filteredEventList.add(t);
 				}
 			}
-			for (Task t : eventDoneList) {
+			for (Item t : eventDoneList) {
 				if (t.getTags().containsAll(queryTags)) {
 					filteredEventDoneList.add(t);
 				}

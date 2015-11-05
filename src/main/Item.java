@@ -2,7 +2,7 @@ package main;
 
 import java.util.*;
 
-public class Task {
+public class Item {
 
 	private String type;
 	private String title;
@@ -112,7 +112,7 @@ public class Task {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Task other = (Task) obj;
+		Item other = (Item) obj;
 		if (endDate == null) {
 			if (other.endDate != null)
 				return false;
@@ -150,16 +150,16 @@ public class Task {
 	}
 
 	public static class Comparators {
-		public static final Comparator<Task> PRIORITY = (Task t1, Task t2) -> Integer
+		public static final Comparator<Item> PRIORITY = (Item t1, Item t2) -> Integer
 				.compare(t1.priority, t2.priority);
-		public static final Comparator<Task> DATE = (Task t1, Task t2) -> t1.endDate
+		public static final Comparator<Item> DATE = (Item t1, Item t2) -> t1.endDate
 				.compareTo(t2.endDate);
-		public static final Comparator<Task> TITLE = (Task t1, Task t2) -> t1.title
+		public static final Comparator<Item> TITLE = (Item t1, Item t2) -> t1.title
 				.compareTo(t2.title);
 	}
 
-	public Task copy() {
-		Task copyTask = new Task();
+	public Item copy() {
+		Item copyTask = new Item();
 		copyTask.setType(this.type);
 		copyTask.setTitle(this.title);
 		copyTask.setEndDate(this.endDate);

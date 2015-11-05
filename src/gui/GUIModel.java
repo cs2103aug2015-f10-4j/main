@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
 import main.CustomDate;
 import main.Magical;
 import main.Storage;
-import main.Task;
+import main.Item;
 
 public class GUIModel {
 
@@ -22,10 +22,10 @@ public class GUIModel {
 
 	public static String currentTab = "tasks";
 
-	public static ObservableList<Task> taskList;
-	public static ObservableList<Task> taskDoneList;
-	public static ObservableList<Task> eventList;
-	public static ObservableList<Task> eventDoneList;
+	public static ObservableList<Item> taskList;
+	public static ObservableList<Item> taskDoneList;
+	public static ObservableList<Item> eventList;
+	public static ObservableList<Item> eventDoneList;
 
 	public static void setCurrentTab(String type) {
 		if (type == "tasks") {
@@ -40,34 +40,34 @@ public class GUIModel {
 		return currentTab;
 	}
 
-	public static ObservableList<Task> getTaskList() {
+	public static ObservableList<Item> getTaskList() {
 		return taskList;
 	}
 
-	public static ObservableList<Task> getTaskDoneList() {
+	public static ObservableList<Item> getTaskDoneList() {
 		return taskDoneList;
 	}
-	public static ObservableList<Task> getEventList() {
+	public static ObservableList<Item> getEventList() {
 		return eventList;
 	}
 
-	public static ObservableList<Task> getEventDoneList() {
+	public static ObservableList<Item> getEventDoneList() {
 		return eventDoneList;
 	}
 
-	public static void setTaskList(ArrayList<Task> newTaskList) {
+	public static void setTaskList(ArrayList<Item> newTaskList) {
 		taskList = makeObservable(newTaskList);
 	}
 
-	public static void setTaskDoneList(ArrayList<Task> newTaskDoneList) {
+	public static void setTaskDoneList(ArrayList<Item> newTaskDoneList) {
 		taskDoneList = makeObservable(newTaskDoneList);
 	}
 
-	public static void setEventList(ArrayList<Task> newEventList) {
+	public static void setEventList(ArrayList<Item> newEventList) {
 		eventList = makeObservable(newEventList);
 	}
 
-	public static void setEventDoneList(ArrayList<Task> newEventDoneList) {
+	public static void setEventDoneList(ArrayList<Item> newEventDoneList) {
 		eventDoneList = makeObservable(newEventDoneList);
 	}
 
@@ -78,7 +78,7 @@ public class GUIModel {
 		eventDoneList = makeObservable(main.Magical.getStorage().getList(main.Storage.EVENTS_DONE_INDEX));
 	}
 
-	private static ObservableList<Task> makeObservable(ArrayList<Task> arrayList) {
+	private static ObservableList<Item> makeObservable(ArrayList<Item> arrayList) {
 		return FXCollections.observableArrayList(arrayList);
 	}
 

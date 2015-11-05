@@ -16,7 +16,7 @@ import com.mdimension.jchronic.Chronic;
 import com.mdimension.jchronic.utils.Span;
 
 import gui.GUIModel;
-import main.Task;
+import main.Item;
 import main.CustomDate;
 import main.RecurrencePeriod;
 
@@ -176,7 +176,7 @@ public abstract class Command {
 	 * @param itemID
 	 * @return Task object corresponding
 	 */
-	protected Task getItemByID(String itemID){
+	protected Item getItemByID(String itemID){
 		String type = getItemID(itemID);
 		Integer index = getItemIdIndex(itemID);
 		

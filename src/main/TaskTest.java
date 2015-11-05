@@ -13,11 +13,11 @@ import org.junit.Test;
 
 public class TaskTest {
 
-	Task task1 = new Task();
-	Task event1 = new Task();
-	Task task2 = new Task();
-	Task event2 = new Task();
-	Task event3 = new Task();
+	Item task1 = new Item();
+	Item event1 = new Item();
+	Item task2 = new Item();
+	Item event2 = new Item();
+	Item event3 = new Item();
 	private Set<String> tags = new HashSet<String>();
 	
 	@Before
