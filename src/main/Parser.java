@@ -40,8 +40,8 @@ public class Parser {
 	public static Command parse(String userInput) throws Exception{
 		if(userInput != null){
 			String trimInput = userInput.trim();
-			String command = splitCommand(trimInput);
-			String args = splitArgs(trimInput);
+			String command = getCommand(trimInput);
+			String args = getArgs(trimInput);
 			return inputValidation(command, args);
 		} else {
 			throw new Exception(MESSAGE_INVALID_INPUT);
@@ -56,7 +56,7 @@ public class Parser {
 	 * @param userInput
 	 * @return String stating the command given by user
 	 */
-	private static String splitCommand(String userInput) {
+	private static String getCommand(String userInput) {
 		String[] toSplit = userInput.split(" ", 2);
 		return toSplit[0].toLowerCase().trim();
 	}
@@ -69,7 +69,7 @@ public class Parser {
 	 * @param userInput
 	 * @return String containing the arguments of the command
 	 */
-	private static String splitArgs(String userInput) {
+	private static String getArgs(String userInput) {
 		String[] toSplit = userInput.split(" ", 2);
 		if(toSplit.length > 1){
 			return toSplit[1].trim();
