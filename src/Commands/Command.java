@@ -92,13 +92,22 @@ public abstract class Command {
 	}
 
 	protected CustomDate getDate(String date)  {
-		Pattern pattern= Pattern.compile(".*\\d{4}.*");
+		Pattern pattern= Pattern.compile("\\D*\\d{4}\\D*");
 		Matcher m = pattern.matcher(date);
 		if(m.find()){
 			String s = m.group(0);
 			date = date.replaceAll(s, s.substring(0, 2)+":"+s.substring(2,s.length()));
 		}
-		date = date.replaceAll("(?<=[0-9]+).(?=[0-9])+", ":");
+		System.out.println(date);
+		Pattern noYear = Pattern.compile("\\D*\\d{2}/\\d{2}\\D*");
+		m = noYear.matcher(date);
+		if(m.find()){
+			String s = m.group(0);
+			date = date.replaceAll(s, s.trim() +"/"+new CustomDate(new Date()).getYear()+" ");
+		}
+		System.out.println(date);
+		date = date.replaceAll("(?<=[0-9]+)\\.(?=[0-9])+", ":");
+		System.out.println(date);
 		Span s = Chronic.parse(date);
 		if(s == null){
 			return null;
@@ -211,11 +220,11 @@ public abstract class Command {
 	public static void main(String[] args) throws Exception {
 		//Command c = new DateCommand("");
 		//c.flexiParse("audgsf");
-		Span s = Chronic.parse("");
+		Span s = Chronic.parse("21/02");
 		System.out.println(s);
 		//System.out.println(s.getBeginCalendar().getTime());
 		//System.out.println(s.getEndCalendar().toString());
 		ExitCommand e = new ExitCommand("");
-		System.out.println(e.getDate("next monday 3pm"));
+		System.out.println(e.getDate("21/02 3pm"));
 	}
 }
