@@ -12,36 +12,36 @@ import main.Task;
 
 public class UntagCommand extends Command {
 
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: untag <task_id> <tag name>";
+
 	private Task task;
 	private String tag;
 	private Task prevTask;
-	
-	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+ "Use Format: untag <task_id> <tag name>";
-	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
-	
+
 	public UntagCommand(String args) throws Exception {
 		super(args);
-		
-		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(" ", 2)));
+
+		this.argsArray = new ArrayList<String>(
+				Arrays.asList(args.split(" ", 2)));
 		this.count = argsArray.size();
-		
+
 		if (validNumArgs()) {
 			task = getTaskByID(argsArray.get(0).trim());
 			tag = argsArray.get(1).trim();
-			
-			if(task == null){
+
+			if (task == null) {
 				invalidArgs.add("taskID");
 			}
 
 			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID + String.join(", ", invalidArgs));
+				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
+						+ String.join(", ", invalidArgs));
 			}
 		} else {
 			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
 		}
 	}
-	
+
 	public boolean validNumArgs() {
 		if (this.count != 2) {
 			return false;
@@ -49,12 +49,19 @@ public class UntagCommand extends Command {
 			return true;
 		}
 	}
-	
-	//Need to modify
+
+	/**
+	 * This method creates a executes the untag command. Which simply removes
+	 * the specified tag from the tag Set of the task/event
+	 * 
+	 * @param None
+	 *            .
+	 * @return message to show user
+	 */
 	public String execute() {
 		prevTask = task;
 		task = prevTask.copy();
-		
+
 		Set<String> tags = task.getTags();
 		tags.remove(tag);
 		task.setTags(tags);
@@ -64,14 +71,15 @@ public class UntagCommand extends Command {
 			Magical.storage.delete(listIndex, prevTask);
 			Magical.storage.create(listIndex, task);
 		} catch (IOException e) {
-			return "unable to remove tag from task";
+			return "unable to remove tag from item";
 		} finally {
 			GUIModel.setTaskList(Magical.storage.getList(Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.storage.getList(Storage.TASKS_DONE_INDEX));
+			GUIModel.setTaskDoneList(Magical.storage
+					.getList(Storage.TASKS_DONE_INDEX));
 			GUIModel.setEventList(Magical.storage.getList(Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.storage.getList(Storage.EVENTS_DONE_INDEX));
+			GUIModel.setEventDoneList(Magical.storage
+					.getList(Storage.EVENTS_DONE_INDEX));
 		}
-
-		return tag + " removed from task";
+		return tag + " removed from item";
 	}
 }
