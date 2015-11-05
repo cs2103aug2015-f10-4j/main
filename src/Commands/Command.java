@@ -92,18 +92,32 @@ public abstract class Command {
 	}
 
 	protected CustomDate getDate(String date)  {
-		Pattern pattern= Pattern.compile(".*\\d{4}.*");
-		Matcher m = pattern.matcher(date);
-		if(m.find()){
-			String s = m.group(0);
-			date = date.replaceAll(s, s.substring(0, 2)+":"+s.substring(2,s.length()));
-		}
-		date = date.replaceAll("(?<=[0-9]+).(?=[0-9])+", ":");
-		Span s = Chronic.parse(date);
-		if(s == null){
-			return null;
+		if(date.trim().equalsIgnoreCase("today")){
+			Span span = Chronic.parse(date + " 23:59");
+			return new CustomDate(span.getBeginCalendar().getTime());
 		} else {
-			return new CustomDate(s.getBeginCalendar().getTime());
+			Pattern time= Pattern.compile("\\D*\\d{4}\\D*");
+			Matcher m = time.matcher(date);
+			if(m.find()){
+				String s = m.group(0);
+				date = date.replaceAll(s, s.substring(0, 2)+":"+s.substring(2,s.length()));
+			}
+			//System.out.println(date);
+			Pattern noYear = Pattern.compile("\\D*\\d{2}/\\d{2}\\D*");
+			m = noYear.matcher(date);
+			if(m.find()){
+				String s = m.group(0);
+				date = date.replaceAll(s, s.trim() +"/"+new CustomDate(new Date()).getYear()+" ");
+			}
+			//System.out.println(date);
+			date = date.replaceAll("(?<=[0-9]+)\\.(?=[0-9])+", ":");
+			//System.out.println(date);
+			Span span = Chronic.parse(date);
+			if(span == null){
+				return null;
+			} else {
+				return new CustomDate(span.getBeginCalendar().getTime());
+			}
 		}
 	}
 
@@ -211,11 +225,13 @@ public abstract class Command {
 	public static void main(String[] args) throws Exception {
 		//Command c = new DateCommand("");
 		//c.flexiParse("audgsf");
-		Span s = Chronic.parse("");
+		Span s = Chronic.parse("Today");
 		System.out.println(s);
+		s = Chronic.parse("today");
+		//System.out.println(s);
 		//System.out.println(s.getBeginCalendar().getTime());
 		//System.out.println(s.getEndCalendar().toString());
 		ExitCommand e = new ExitCommand("");
-		System.out.println(e.getDate("next monday 3pm"));
+		System.out.println(e.getDate("Today"));
 	}
 }
