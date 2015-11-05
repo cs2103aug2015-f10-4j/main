@@ -83,7 +83,7 @@ public class Magical {
 	}
 
 	public static void init() throws IOException {
-		storage = new Storage(CONFIG_STORAGE_FILENAME);
+		storage = new Storage();
 		for (int i = 0; i < Storage.NUM_LISTS; i++) {
 			undoLists.add(new Stack<ArrayList<Task>>());
 		}
