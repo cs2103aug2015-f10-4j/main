@@ -106,8 +106,9 @@ public class EventCommand extends Command {
 			CustomDate today = getDate("today");
 			if (dateEnd.getDateString().equals(today.getDateString())) {
 				dateEnd.set("day", dateStart.getDay());
-				dateEnd.set("month", dateStart.getMonth());
+				dateEnd.set("month", dateStart.getMonth() - 1);
 				dateEnd.set("year", dateStart.getYear());
+				System.out.println(dateEnd);
 			}
 			if (title == null) {
 				invalidArgs.add("title");
