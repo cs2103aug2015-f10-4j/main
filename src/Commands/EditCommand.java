@@ -3,9 +3,6 @@ package Commands;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import main.CustomDate;
 import main.Magical;
 import main.Storage;
@@ -16,42 +13,33 @@ public class EditCommand extends Command {
 
 	private String field;
 	private String value;
-	private Item task;
-	private Item prevTask;
+	private Item item;
+	private Item prevItem;
 	private boolean toFloat;
 	private boolean isTask;
 	private Object editObject;
 
-	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+ "Use Format: edit <task_id> <field> <value>";
+	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <task_id> <field> <value>";
 	private static final String MESSAGE_INVALID_FIELD = "Field: %s\n";
 	private static final String MESSAGE_INVALID_TASK_START = "Task cannot have start time";
+	
 	public EditCommand(String args) throws Exception {
 		super(args);
 
 		args = args + " ";
-		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(
-				"(?<!end|start)\\s(?!time)", 3)));
+		
+		this.argsArray = splitArgs(args, "(?<!end|start)\\s(?!time|date)", 3);
+		
 		this.count = argsArray.size();
-		for (int i = 0; i < argsArray.size(); i++) {
-			argsArray.set(
-					i,
-					argsArray.get(i).trim()
-							.replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
-		}
-		System.out.println(argsArray);
+
 		if (validNumArgs()) {
-			this.task = getItemByID(argsArray.get(0).trim());
-			this.field = argsArray.get(1).trim();
-			this.value = argsArray.get(2).trim();
+			setProperParams();
 
-			if (task == null) {
-				invalidArgs.add("taskID");
-				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
-						+ String.join(", ", invalidArgs));
-			}
+			checkTaskExists();
+//			errorInvalidArgs();
 
-			isTask = task.getType().equals("task");
+			isTask = item.getType().equals("task");
+			
 			if (field.equalsIgnoreCase("title")) {
 				if (getTitle(value) == null) {
 					invalidArgs.add("title");
@@ -83,13 +71,49 @@ public class EditCommand extends Command {
 				invalidArgs.add(MESSAGE_INVALID_FIELD);
 			}
 
-			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
-						+ String.join(", ", invalidArgs));
-			}
+			errorInvalidArgs();
+			
 		} else {
-			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
+			errorInvalidFormat();
 		}
+	}
+
+	/**
+	 * Adds error message if task does not exist or unable to get
+	 */
+	void checkTaskExists() {
+		if (item == null) {
+			invalidArgs.add("taskID");
+		}
+	}
+	
+	/**
+	 * Throws exception if error messages for invalid arguments are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	private void errorInvalidArgs() throws IllegalArgumentException {
+		if (invalidArgs.size() > 0) {
+			throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
+		}
+	}
+	
+	/**
+	 * Throws exception if error messages for format are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	private void errorInvalidFormat() throws IllegalArgumentException {
+		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
+	}
+	
+	/**
+	 * Set the relevant parameters of AddCommand to that of the specified task
+	 */
+	private void setProperParams() {
+		this.item = getItemByID(argsArray.get(0).trim());
+		this.field = argsArray.get(1).trim();
+		this.value = argsArray.get(2).trim();
 	}
 
 	public boolean validNumArgs() {
@@ -102,47 +126,47 @@ public class EditCommand extends Command {
 
 	@Override
 	public String execute() {
-		prevTask = task;
-		task = prevTask.copy();
+		prevItem = item;
+		item = prevItem.copy();
 
 		switch (field.toLowerCase()) {
 		case "title":
-			task.setTitle(value);
+			item.setTitle(value);
 			break;
 		case "date":
 			if (toFloat) {
 				// change to float
-				task.setEndDate(null);
-				task.setEndTime(-1);
+				item.setEndDate(null);
+				item.setEndTime(-1);
 			} else {
 				// unfloating the task
-				if (task.getEndTime() == -1) {
-					task.setEndTime(0000);
+				if (item.getEndTime() == -1) {
+					item.setEndTime(0000);
 				}
 
 				CustomDate date = (CustomDate) editObject;
-				date.setTime(task.getEndTime());
+				date.setTime(item.getEndTime());
 
-				task.setEndDate(date);
+				item.setEndDate(date);
 			}
 			break;
 		case "start time":
-			task.setStartTime((int) editObject);
+			item.setStartTime((int) editObject);
 			break;
 		case "end time":
-			task.setEndTime((int) editObject);
+			item.setEndTime((int) editObject);
 
 			CustomDate date = null;
 			// unfloating the task
-			if (task.getEndDate() == null) {
+			if (item.getEndDate() == null) {
 				date = getDate("today");
 				// normal changing of date object
 			} else {
-				date = task.getEndDate();
+				date = item.getEndDate();
 			}
 			assertNotNull(date);
-			date.setTime(task.getEndTime());
-			task.setEndDate(date);
+			date.setTime(item.getEndTime());
+			item.setEndDate(date);
 			break;
 		default:
 			return "Unable to edit task.";
@@ -150,7 +174,7 @@ public class EditCommand extends Command {
 
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.getStorage().update(listIndex, prevTask, task);
+			Magical.getStorage().update(listIndex, prevItem, item);
 		} catch (IOException e) {
 			return "unable to edit task";
 		} finally {
