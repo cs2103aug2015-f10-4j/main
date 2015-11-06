@@ -4,204 +4,193 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import main.CustomDate;
 import main.Magical;
-import main.RecurrencePeriod;
 import main.Storage;
 import main.Item;
 import gui.GUIModel;
 
 public class EventCommand extends Command {
 
+	
+	/** Messaging */
+	private static final String MESSAGE_INVALID_FLEXI = "Use format: event <title> "
+			+ "from <start date> <start time> "
+			+ "to <end date> <end time>";
+	private static final String MESSAGE_INVALID_DATETIME_END = "End time";
+	private static final String MESSAGE_INVALID_DATETIME_START = "Start time";
+	private static final String MESSAGE_INVALID_DATETIME_RANGE = "End date/time is earlier than Start date/time";
+	private static final String MESSAGE_INVALID_TITLE = "Title";
+	private static final String MESSAGE_EVENT_ADDED = "event added";
+	private static final String MESSAGE_EVENT_CLASH = ". Another event exists on the same date.";
+	private static final String MESSAGE_EVENT_ERROR = "unable to add event";
+
+	/** For checking */
+	private final CustomDate today = getDate("today");
+	
 	/** Command parameters **/
 	protected String title;
 	protected CustomDate dateStart;
 	protected CustomDate dateEnd;
 	protected int startTime;
 	protected int endTime;
-	protected RecurrencePeriod recurrence;
-	private Item task;
-
-	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+ "Use Format: \nevent title/event date/start time/end time/recurrence";
-	private static final String MESSAGE_INVALID_FLEXI = "Use format: event <title> from <start date> <start time> "
-			+ "to <end date> <end time> <recurrence>";
-	private static final String MESSAGE_INVALID_TITLE = "No Title" + "\n";
-	private static final String MESSAGE_INVALID_DATE_TIME = "%s Date/Time: %s\n(Use dd-MM-yyyy for date and 24hours format for time)";
-	private static final String MESSAGE_INVALID_DATE = "Event date: %s (Date should be dd-MM-yyyy)\n";
-	private static final String MESSAGE_INVALID_START = "Start time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_INVALID_END = "End time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
-			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
-	private static final String MESSAGE_EVENT_ADDED = "event added";
-	private static final String MESSAGE_EVENT_CLASH = ". Another event exists on the same date.";
-	private static final String MESSAGE_EVENT_ERROR = "unable to add event";
+	private Item event;
 
 	public EventCommand(String args) throws Exception {
 		super(args);
 
-		/*
-		 * isFlexi = !args.contains("/") || !args.replace("\\/",
-		 * STRING_EMPTY).contains("/"); if(!isFlexi){ this.argsArray = new
-		 * ArrayList<String>(Arrays.asList(args.split("(?<![\\\\])/", -1))); for
-		 * (int i = 0; i < argsArray.size(); i++){ String param =
-		 * argsArray.get(i); param = param.replaceAll("(?<![\\\\])\\\\",
-		 * STRING_EMPTY); argsArray.set(i, param); } } else {
-		 */
-		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(
-				"(?<=\\s)to(?=\\s)|(?<=\\s)from(?=\\s)", -1)));
-		for (int i = 0; i < argsArray.size(); i++) {
-			argsArray.set(
-					i,
-					argsArray.get(i).trim()
-							.replaceAll("(?<![\\\\])\\\\", STRING_EMPTY));
-		}
-		// }
+		this.argsArray = splitArgs(args, "(?<=\\s)to(?=\\s)|(?<=\\s)from(?=\\s)", -1);
+		
+		removeEscapeCharacters();
 		this.count = argsArray.size();
 
-		if (argsArray.size() > 1 && argsArray.get(count - 1).contains(" ")) {
-			while (true) {
-				String last = argsArray.get(count - 1).split("\\s(?=\\S+$)")[1];
-				if (getRecurrence(last) == null) {
-					if (getDate(last) != null) {
-						break;
-					} else {
-						argsArray.add(count, last);
-						argsArray.set(count - 1, argsArray.get(count - 1)
-								.split("\\s(?=\\S+$)")[0]);
-						System.out.println(argsArray);
-					}
-				} else {
-					argsArray.add(count, last);
-					argsArray.set(count - 1,
-							argsArray.get(count - 1).split("\\s(?=\\S+$)")[0]);
-					break;
-				}
-			}
-		}
+		splitArgsAfterDateTime();
+		
 		this.count = argsArray.size();
-		System.out.println(argsArray);
 
 		for (int i = 0; i < count; i++) {
 			assertNotNull(argsArray.get(i));
 		}
 
-		// if(!isFlexi){
-
 		if (validNumArgs()) {
 
-			this.title = getTitle(argsArray.get(0).trim());
-			this.dateStart = getDate(argsArray.get(1).trim());
-			this.dateEnd = getDate(argsArray.get(2).trim());
-			this.startTime = dateStart.getTime();
-			this.endTime = dateEnd.getTime();
-			if (count == 4) {
-				this.recurrence = getRecurrence(argsArray.get(3).trim());
-			} else {
-				this.recurrence = getRecurrence(STRING_EMPTY);
-			}
+			setProperParams();
 
-			CustomDate today = getDate("today");
 			if (dateEnd.getDateString().equals(today.getDateString())) {
 				dateEnd.set("day", dateStart.getDay());
 				dateEnd.set("month", dateStart.getMonth() - 1);
 				dateEnd.set("year", dateStart.getYear());
 				System.out.println(dateEnd);
 			}
+			
 			if (title == null) {
-				invalidArgs.add("title");
+				invalidArgs.add(MESSAGE_INVALID_TITLE);
 			}
 			if (dateStart == null) {
-				invalidArgs.add("start time");
+				invalidArgs.add(MESSAGE_INVALID_DATETIME_START);
 			}
 
 			if (dateEnd == null) {
-				invalidArgs.add("end time");
+				invalidArgs.add(MESSAGE_INVALID_DATETIME_END);
 			}
 
 			if (dateStart != null && dateEnd != null && !validDateRange()) {
-				invalidArgs.add("End date is earlier than start date");
+				invalidArgs.add(MESSAGE_INVALID_DATETIME_RANGE);
 			}
-			if (recurrence == null) {
-				invalidArgs.add("recurrence");
-			}
+			
 			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
-						+ String.join(", ", invalidArgs));
+				throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
 			}
-
-			dateStart.setTime(startTime);
-			dateEnd.setTime(endTime);
 		} else {
 			throw new IllegalArgumentException(MESSAGE_INVALID_FLEXI);
 		}
-		/*
-		 * } else { if(!argsArray.get(0).equals(STRING_EMPTY) &&
-		 * argsArray.size() <= 4){
-		 * 
-		 * title = argsArray.get(0); recurrence = RecurrencePeriod.NONE; String
-		 * tempDate = null;
-		 * 
-		 * if(argsArray.length < 4){ String tempStart = null; String tempEnd =
-		 * null; if(argsArray.length == 3 || argsArray.length == 1){ tempDate
-		 * =""; } else{ tempDate = argsArray[1]; } if(argsArray.length <= 2){
-		 * tempStart = "0000"; tempEnd = "2359"; } else { tempStart =
-		 * argsArray[1]; tempEnd = argsArray[2]; } dateStart =
-		 * flexiParse(tempDate + " " + tempStart); dateEnd = flexiParse(tempDate
-		 * + " " + tempEnd); } else if(argsArray.length == 4){ int dateIndex,
-		 * startIndex, endIndex; if(args.indexOf("from") > args.indexOf("on")){
-		 * dateIndex = 1; startIndex = 2; endIndex = 3; } else { dateIndex = 3;
-		 * startIndex = 1; endIndex = 2; } dateStart =
-		 * getDate(argsArray[dateIndex]); if(dateStart == null){ dateStart =
-		 * flexiParse(argsArray[dateIndex] + " " + argsArray[startIndex]);
-		 * dateEnd = flexiParse(argsArray[dateIndex] + " " +
-		 * argsArray[endIndex]); } else { Calendar c = Calendar.getInstance();
-		 * c.setTime(dateStart);
-		 * 
-		 * tempDate = c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH)
-		 * + "-" + c.get(Calendar.YEAR);
-		 * 
-		 * dateStart = flexiParse(tempDate + " " + argsArray[startIndex]);
-		 * dateEnd = flexiParse(tempDate + " " + argsArray[endIndex]); } }
-		 * Calendar cal = dateToCal(dateStart); this.startTime =
-		 * cal.get(Calendar.HOUR_OF_DAY)*100 + cal.get(Calendar.MINUTE); cal =
-		 * dateToCal(dateEnd); this.endTime = cal.get(Calendar.HOUR_OF_DAY)*100
-		 * + cal.get(Calendar.MINUTE); } else { error += MESSAGE_INVALID_FLEXI;
-		 * throw new Exception(MESSAGE_HEADER_INVALID + error); } } //
-		 */
+		
 	}
 
-	public boolean validNumArgs() {
-		if (this.count != 4 && this.count != 3) {
-			return false;
-		} else {
-			return true;
+	/**
+	 * Set the relevant parameters of EventCommand to that of the specified event
+	 */
+	private void setProperParams() {
+		this.title = getTitle(argsArray.get(0).trim());
+		this.dateStart = getDate(argsArray.get(1).trim());
+		this.dateEnd = getDate(argsArray.get(2).trim());
+		this.startTime = dateStart.getTime();
+		this.endTime = dateEnd.getTime();
+	}
+
+	/**
+	 * Replaces characters that were used for escaping the keyword argument
+	 * that was used for splitting
+	 */
+	private void removeEscapeCharacters() {
+		for (int i = 0; i < argsArray.size(); i++) {
+			argsArray.set(i,
+						  argsArray.get(i).trim().replaceAll("(?<=from)\"|\"(?=from)"
+						  		+ "(?<=to)\"|\"(?=to)", STRING_EMPTY));
 		}
 	}
 
+	/**
+	 * Check if the end date given is after the start date
+	 * @return
+	 */
 	public boolean validDateRange() {
 		return dateEnd.compareTo(dateStart) != -1;
 	}
+	
+	/**
+	 * Date/time argument might be concatenated with other arguments, thus
+	 * the method splits the arguments properly
+	 */
+	private void splitArgsAfterDateTime() {
+		if (argsArray.size() > 1 && argsArray.get(count - 1).contains(" ")) {
+			while (true) {
+				String last = getLastWord(argsArray.get(count - 1));
+				if (getDate(last) != null) {
+					break;
+				} else {
+					splitOnce(last);
+				}
+			}
+		}
+	}
 
-	@Override
+	/**
+	 * Adds last word to the argsArray and removes it from the date/time argument
+	 * 
+	 * @param last
+	 */
+	private void splitOnce(String last) {
+		argsArray.add(count, last);
+		argsArray.set(count - 1, removeLastWord(argsArray.get(count - 1)));
+	}
+
+	/**
+	 * Removes last word from a string
+	 * 
+	 * @param string
+	 * @return String with last word removed
+	 */
+	private String removeLastWord(String string) {
+		return string.split("\\s(?=\\S+$)")[0];
+	}
+
+	/**
+	 * Gives last word of a string
+	 * 
+	 * @param string
+	 * @return String last word
+	 */
+	private String getLastWord(String string) {
+		return string.split("\\s(?=\\S+$)")[1];
+	}
+
+	private boolean isClashing() {
+		ArrayList<Item> events = Magical.getStorage().getList(
+				Storage.EVENTS_INDEX);
+		for (Item t : events) {
+			if (t.getEndDate().equals(event.getEndDate())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String execute() {
-		task = new Item();
-		task.setType("event");
-		task.setTitle(title);
-		task.setRecurrence(recurrence);
-		task.setStartDate(dateStart);
-		task.setStartTime(startTime);
-		task.setEndDate(dateEnd);
-		task.setEndTime(endTime);
+		event = new Item();
+		event.setType("event");
+		event.setTitle(title);
+		event.setStartDate(dateStart);
+		event.setStartTime(startTime);
+		event.setEndDate(dateEnd);
+		event.setEndTime(endTime);
 
 		try {
 			String retMsg = MESSAGE_EVENT_ADDED;
 			if (isClashing()) {
 				retMsg += MESSAGE_EVENT_CLASH;
 			}
-			Magical.getStorage().create(Storage.EVENTS_INDEX, task);
+			Magical.getStorage().create(Storage.EVENTS_INDEX, event);
 			return retMsg;
 		} catch (IOException e) {
 			return MESSAGE_EVENT_ERROR;
@@ -214,26 +203,15 @@ public class EventCommand extends Command {
 		}
 	}
 
-	private boolean isClashing() {
-		ArrayList<Item> tasks = Magical.getStorage().getList(
-				Storage.EVENTS_INDEX);
-		for (Item t : tasks) {
-			if (t.getEndDate().equals(task.getEndDate())) {
-				return true;
-			}
+	public boolean validNumArgs() {
+		if (this.count != 3) {
+			return false;
+		} else {
+			return true;
 		}
-		return false;
 	}
 
-	// public static void main(String[] args) throws Exception {
-	// //EventCommand e = new
-	// EventCommand("test on 12-07-1993 from 12pm to 3pm");
-	// //EventCommand e = new
-	// EventCommand("test from 12pm to 3pm on 12-07-1993");
-	// //EventCommand e = new EventCommand("test on tomorrow");
-	// EventCommand e = new
-	// EventCommand("test from next monday 12pm to next tuesday 3pm");
-	// //EventCommand e = new EventCommand("test");
-	// }
-
+	public boolean isUndoable() {
+		return true;
+	}
 }

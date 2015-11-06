@@ -47,11 +47,13 @@ public class AddCommand extends Command {
 
 		this.count = argsArray.size();
 		this.isFloat = false;
+		
+		for (int i = 0; i < count; i++) {
+			assertNotNull(argsArray.get(i));
+		}
 
 		if (validNumArgs()) {
 
-			this.title = getTitle(argsArray.get(0).trim());
-			
 			if (count == 1) {
 				setFloatParams();
 			} else {
@@ -112,6 +114,7 @@ public class AddCommand extends Command {
 	 * Set the relevant parameters of AddCommand to that of the specified task
 	 */
 	private void setProperParams() {
+		this.title = getTitle(argsArray.get(0).trim());
 		this.dueDate = getDate(argsArray.get(1).trim());
 		this.endTime = dueDate == null ? -1 : dueDate.getTime();
 		assertFalse(isFloat);
@@ -121,6 +124,7 @@ public class AddCommand extends Command {
 	 * Set the relevant parameters of AddCommand to that of a floating task
 	 */
 	private void setFloatParams() {
+		this.title = getTitle(argsArray.get(0).trim());
 		this.dueDate = null;
 		this.endTime = -1;
 		this.isFloat = true;
