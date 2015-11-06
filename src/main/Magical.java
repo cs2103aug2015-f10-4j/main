@@ -1,20 +1,27 @@
 package main;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 import Commands.Command;
 
+/**
+ * Magical is the used to logic behind the application. It acts as a
+ * intermediary between GUI and the rest of the classes. All core program
+ * execution starts in this class. Magical should be used to execute the users
+ * requests.
+ *
+ * @author Varun Patro
+ */
 public class Magical {
-	private static Storage storage;
 	public static List<Stack<ArrayList<Item>>> undoLists = new ArrayList<Stack<ArrayList<Item>>>(
 			Storage.NUM_LISTS);
+	private static Storage storage;
 
 	/**
 	 * This method initializes the Magical class by initializing the storage and
 	 * undo history
-	 * 
-	 * @param None
-	 * @return None
 	 */
 	public static void init() {
 		storage = new Storage();
@@ -26,8 +33,7 @@ public class Magical {
 	/**
 	 * Getter for storage.
 	 * 
-	 * @param None
-	 * @return Storage
+	 * @return active instance of Storage
 	 */
 	public static Storage getStorage() {
 		return storage;
@@ -37,9 +43,9 @@ public class Magical {
 	 * This method reads makes use of the Parser to create the relevant command.
 	 * The command is then executed and its result is returned.
 	 * 
-	 * @param String
-	 *            userInput
-	 * @return String message to display
+	 * @param userInput
+	 *            input to execute
+	 * @return message to display
 	 * @exception Exception
 	 */
 	public static String execute(String userInput) throws Exception {
@@ -54,9 +60,6 @@ public class Magical {
 	/**
 	 * This method takes a snapshot of the current storage. This is known as
 	 * pushing an undo layer onto the undo history stack.
-	 * 
-	 * @param None
-	 * @return None
 	 */
 	private static void pushUndoLayer() {
 		int n = Storage.TASKS_INDEX;
@@ -78,8 +81,9 @@ public class Magical {
 	 * This method is used to deep clone an ArrayList of Items. Used for
 	 * creating undo layers of storage.
 	 * 
-	 * @param ArrayList<Item> list
-	 * @return ArrayList<Item>
+	 * @param list
+	 *            List to clone
+	 * @return clonedList
 	 */
 	private static ArrayList<Item> listClone(ArrayList<Item> list) {
 		ArrayList<Item> newList = new ArrayList<Item>(list.size());
