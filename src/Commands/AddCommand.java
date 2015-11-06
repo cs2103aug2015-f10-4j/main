@@ -186,38 +186,6 @@ public class AddCommand extends Command {
 	}
 
 	/**
-	 * Checks if the number of arguments provided is correct
-	 * 
-	 * @return boolean true/false
-	 */
-	public boolean validNumArgs() {
-		if (this.count > 2) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/**
-	 * Adds the task specified by the user into the storage and updates the GUI as well.
-	 * Returns a message informing user of success or failure of the command.
-	 */
-	public String execute() {
-		setTaskParams();
-
-		try {
-			returnMsg = MESSAGE_TASK_ADDED;
-			checkTaskClash();
-			storeTask();
-			return returnMsg;
-		} catch (IOException e) {
-			return MESSAGE_TASK_ERROR;
-		} finally {
-			updateView();
-		}
-	}
-
-	/**
 	 * Checks if the task to be added clashes with another task and adds to the return
 	 * message to inform the user
 	 */
@@ -276,10 +244,29 @@ public class AddCommand extends Command {
 		return false;
 	}
 
-	/**
-	 * Returns true if command can be undone, or fals otherwise
-	 * @return 
-	 */
+	protected boolean validNumArgs() {
+		if (this.count > 2) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public String execute() {
+		setTaskParams();
+
+		try {
+			returnMsg = MESSAGE_TASK_ADDED;
+			checkTaskClash();
+			storeTask();
+			return returnMsg;
+		} catch (IOException e) {
+			return MESSAGE_TASK_ERROR;
+		} finally {
+			updateView();
+		}
+	}
+	
 	public boolean isUndoable() {
 		return true;
 	}
