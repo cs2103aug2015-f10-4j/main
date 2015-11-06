@@ -14,7 +14,7 @@ public class EventCommand extends Command {
 
 	
 	/** Messaging */
-	private static final String MESSAGE_INVALID_FLEXI = "Use format: event <title> "
+	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "
 			+ "from <start date> <start time> "
 			+ "to <end date> <end time>";
 	private static final String MESSAGE_INVALID_DATETIME_END = "End time";
@@ -36,12 +36,21 @@ public class EventCommand extends Command {
 	protected int endTime;
 	private Item event;
 
+	/**
+	 * Constructor for EventCommand objects.
+	 * Checks if arguments are valid and stores the correct arguments properly.
+	 * Throws the appropriate exception if arguments are invalid
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public EventCommand(String args) throws Exception {
 		super(args);
 
 		this.argsArray = splitArgs(args, "(?<=\\s)to(?=\\s)|(?<=\\s)from(?=\\s)", -1);
 		
 		removeEscapeCharacters();
+		
 		this.count = argsArray.size();
 
 		splitArgsAfterDateTime();
@@ -56,35 +65,85 @@ public class EventCommand extends Command {
 
 			setProperParams();
 
-			if (dateEnd.getDateString().equals(today.getDateString())) {
-				dateEnd.set("day", dateStart.getDay());
-				dateEnd.set("month", dateStart.getMonth() - 1);
-				dateEnd.set("year", dateStart.getYear());
-				System.out.println(dateEnd);
-			}
+			setDefaultEndDay();
 			
-			if (title == null) {
-				invalidArgs.add(MESSAGE_INVALID_TITLE);
-			}
-			if (dateStart == null) {
-				invalidArgs.add(MESSAGE_INVALID_DATETIME_START);
-			}
+			checkTitle();
 
-			if (dateEnd == null) {
-				invalidArgs.add(MESSAGE_INVALID_DATETIME_END);
-			}
-
-			if (dateStart != null && dateEnd != null && !validDateRange()) {
-				invalidArgs.add(MESSAGE_INVALID_DATETIME_RANGE);
-			}
+			checkDateTime(dateStart, 0);
 			
-			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
-			}
+			checkDateTime(dateEnd, 1);
+
+			checkDateRange();
+			
+			errorInvalidArgs();
+			
 		} else {
-			throw new IllegalArgumentException(MESSAGE_INVALID_FLEXI);
+			errorInvalidFormat();
 		}
 		
+	}
+
+	/** 
+	 * Set the default day to start day if unspecified
+	 */
+	private void setDefaultEndDay() {
+		if (dateEnd.getDateString().equals(today.getDateString())) {
+			dateEnd.set("day", dateStart.getDay());
+			dateEnd.set("month", dateStart.getMonth() - 1);
+			dateEnd.set("year", dateStart.getYear());
+		}
+	}
+	
+	/**
+	 * Throws exception if error messages for format are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	private void errorInvalidFormat() throws IllegalArgumentException {
+		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
+	}
+
+	/**
+	 * Throws exception if error messages for invalid arguments are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	private void errorInvalidArgs() throws IllegalArgumentException {
+		if (invalidArgs.size() > 0) {
+			throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
+		}
+	}
+	
+	/**
+	 * Adds error message if end date is before start date
+	 */
+	private void checkDateRange() {
+		if (dateStart != null && dateEnd != null && !validDateRange()) {
+			invalidArgs.add(MESSAGE_INVALID_DATETIME_RANGE);
+		}
+	}
+
+	/**
+	 * Adds error message if invalid date and time specified, according to if the date
+	 * is the start or end date.
+	 */
+	private void checkDateTime(CustomDate date, int type) {
+		if (date == null) {
+			if(type == 0){
+				invalidArgs.add(MESSAGE_INVALID_DATETIME_START);
+			} else if (type == 1){
+				invalidArgs.add(MESSAGE_INVALID_DATETIME_END);
+			}
+		}
+	}
+	
+	/**
+	 * Adds error message if title is invalid
+	 */
+	private void checkTitle() {
+		if (title == null) {
+			invalidArgs.add(MESSAGE_INVALID_TITLE);
+		}
 	}
 
 	/**
@@ -165,18 +224,88 @@ public class EventCommand extends Command {
 		return string.split("\\s(?=\\S+$)")[1];
 	}
 
+	/**
+	 * Checks if the current event to be added clashes with another event
+	 * @return
+	 */
 	private boolean isClashing() {
-		ArrayList<Item> events = Magical.getStorage().getList(
-				Storage.EVENTS_INDEX);
+		ArrayList<Item> events = getEvents();
 		for (Item t : events) {
-			if (t.getEndDate().equals(event.getEndDate())) {
+			if (isTimeOverlap(t)) {
 				return true;
 			}
 		}
 		return false;
 	}
+
+	/**
+	 * Checks if events overlap
+	 * @param t
+	 * @return
+	 */
+	private boolean isTimeOverlap(Item t) {
+		return t.getEndDate().equals(event.getEndDate());
+	}
+	
+	/**
+	 * get events list from storage
+	 * @return
+	 */
+	private ArrayList<Item> getEvents() {
+		ArrayList<Item> events = Magical.getStorage().getList(
+				Storage.EVENTS_INDEX);
+		return events;
+	}
 	
 	public String execute() {
+		setEventParams();
+
+		try {
+			returnMsg = MESSAGE_EVENT_ADDED;
+			checkEventClash();
+			storeEvent();
+			return returnMsg;
+		} catch (IOException e) {
+			return MESSAGE_EVENT_ERROR;
+		} finally {
+			updateView();
+		}
+	}
+
+	/**
+	 * Updates the new view in the GUI
+	 */
+	private void updateView() {
+		GUIModel.setEventList(Magical.getStorage().getList(
+				Storage.EVENTS_INDEX));
+		GUIModel.setEventDoneList(Magical.getStorage().getList(
+				Storage.EVENTS_DONE_INDEX));
+		GUIModel.setCurrentTab("events");
+	}
+
+	/**
+     * Stores the created Item Object as event
+	 * 
+	 * @throws IOException
+	 */
+	private void storeEvent() throws IOException {
+		Magical.getStorage().create(Storage.EVENTS_INDEX, event);
+	}
+
+	/**
+	 * Checks if the event to be added clashes with another event and adds to the return
+	 * message to inform the user
+	 */
+	private void checkEventClash() {
+		if (isClashing()) {
+			returnMsg += MESSAGE_EVENT_CLASH;
+		}
+	}
+
+	/**
+	 * Create an Item object with the correct argument parameters for an event
+	 */
+	private void setEventParams() {
 		event = new Item();
 		event.setType("event");
 		event.setTitle(title);
@@ -184,23 +313,6 @@ public class EventCommand extends Command {
 		event.setStartTime(startTime);
 		event.setEndDate(dateEnd);
 		event.setEndTime(endTime);
-
-		try {
-			String retMsg = MESSAGE_EVENT_ADDED;
-			if (isClashing()) {
-				retMsg += MESSAGE_EVENT_CLASH;
-			}
-			Magical.getStorage().create(Storage.EVENTS_INDEX, event);
-			return retMsg;
-		} catch (IOException e) {
-			return MESSAGE_EVENT_ERROR;
-		} finally {
-			GUIModel.setEventList(Magical.getStorage().getList(
-					Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.getStorage().getList(
-					Storage.EVENTS_DONE_INDEX));
-			GUIModel.setCurrentTab("events");
-		}
 	}
 
 	public boolean validNumArgs() {

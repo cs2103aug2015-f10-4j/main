@@ -220,7 +220,7 @@ public class AddCommand extends Command {
 	}
 
 	/**
-	 * Create an Item object with the correct argument parameters
+	 * Create an Item object with the correct argument parameters for a task
 	 */
 	private void setTaskParams() {
 		task = new Item();
