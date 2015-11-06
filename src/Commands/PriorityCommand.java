@@ -82,4 +82,9 @@ public class PriorityCommand extends Command {
 
 		return "Priority updated.";
 	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
 }

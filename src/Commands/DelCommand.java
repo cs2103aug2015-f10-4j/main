@@ -73,4 +73,9 @@ public class DelCommand extends Command {
 					Storage.EVENTS_DONE_INDEX));
 		}
 	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
 }

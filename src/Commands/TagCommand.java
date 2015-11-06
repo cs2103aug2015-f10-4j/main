@@ -84,4 +84,9 @@ public class TagCommand extends Command {
 
 		return tag + " added to task";
 	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
 }

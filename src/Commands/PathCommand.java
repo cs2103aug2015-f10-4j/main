@@ -41,4 +41,9 @@ public class PathCommand extends Command {
 		return true;
 	}
 
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
+
 }

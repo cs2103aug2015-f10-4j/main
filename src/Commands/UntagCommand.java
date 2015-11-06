@@ -82,4 +82,9 @@ public class UntagCommand extends Command {
 		}
 		return tag + " removed from item";
 	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
 }

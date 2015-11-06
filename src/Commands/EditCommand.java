@@ -8,7 +8,6 @@ import java.util.Arrays;
 
 import main.CustomDate;
 import main.Magical;
-import main.RecurrencePeriod;
 import main.Storage;
 import main.Item;
 import gui.GUIModel;
@@ -209,5 +208,10 @@ public class EditCommand extends Command {
 	public static void main(String[] args) throws Exception {
 		// EditCommand e = new EditCommand("t1 end time asfas");
 		// EditCommand e1 = new EditCommand("t1 start time asfas");
+	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
 	}
 }

@@ -77,4 +77,9 @@ public class UndoneCommand extends Command {
 
 		return "task un-archived";
 	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
 }

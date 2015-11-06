@@ -103,4 +103,9 @@ public class SortCommand extends Command {
 		}
 	}
 
+	@Override
+	public boolean isUndoable() {
+		return false;
+	}
+
 }

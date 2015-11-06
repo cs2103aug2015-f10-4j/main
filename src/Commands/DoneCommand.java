@@ -77,4 +77,9 @@ public class DoneCommand extends Command {
 
 		return "item archived";
 	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
 }
