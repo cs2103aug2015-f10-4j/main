@@ -10,12 +10,70 @@ public class Item {
 	private CustomDate endDate;
 	private int startTime;
 	private int endTime;
-	private RecurrencePeriod recurrence;
 	private Set<String> tags = new HashSet<String>();
 	private int priority;
 
 	public String getType() {
 		return type;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+		result = prime * result + endTime;
+		result = prime * result + priority;
+		result = prime * result
+				+ ((startDate == null) ? 0 : startDate.hashCode());
+		result = prime * result + startTime;
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (endDate == null) {
+			if (other.endDate != null)
+				return false;
+		} else if (!endDate.equals(other.endDate))
+			return false;
+		if (endTime != other.endTime)
+			return false;
+		if (priority != other.priority)
+			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
+			return false;
+		if (startTime != other.startTime)
+			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
 	}
 
 	public void setType(String type) {
@@ -62,14 +120,6 @@ public class Item {
 		this.endTime = endTime;
 	}
 
-	public RecurrencePeriod getRecurrence() {
-		return recurrence;
-	}
-
-	public void setRecurrence(RecurrencePeriod recurrence) {
-		this.recurrence = recurrence;
-	}
-
 	public Set<String> getTags() {
 		return tags;
 	}
@@ -84,69 +134,6 @@ public class Item {
 
 	public void setPriority(int priority) {
 		this.priority = priority;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-		result = prime * result + endTime;
-		result = prime * result + priority;
-		result = prime * result
-				+ ((recurrence == null) ? 0 : recurrence.hashCode());
-		result = prime * result
-				+ ((startDate == null) ? 0 : startDate.hashCode());
-		result = prime * result + startTime;
-		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Item other = (Item) obj;
-		if (endDate == null) {
-			if (other.endDate != null)
-				return false;
-		} else if (!endDate.equals(other.endDate))
-			return false;
-		if (endTime != other.endTime)
-			return false;
-		if (priority != other.priority)
-			return false;
-		if (recurrence != other.recurrence)
-			return false;
-		if (startDate == null) {
-			if (other.startDate != null)
-				return false;
-		} else if (!startDate.equals(other.startDate))
-			return false;
-		if (startTime != other.startTime)
-			return false;
-		if (tags == null) {
-			if (other.tags != null)
-				return false;
-		} else if (!tags.equals(other.tags))
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
-			return false;
-		return true;
 	}
 
 	public static class Comparators {
@@ -183,7 +170,6 @@ public class Item {
 		copyTask.setEndDate(ed);
 		copyTask.setStartTime(this.startTime);
 		copyTask.setEndTime(this.endTime);
-		copyTask.setRecurrence(this.recurrence);
 		Set<String> copyTags = new HashSet<String>();
 		for (String tag : this.tags) {
 			copyTags.add(tag);
