@@ -24,17 +24,8 @@ public class EditCommand extends Command {
 
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
 			+ "Use Format: edit <task_id> <field> <value>";
-	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 	private static final String MESSAGE_INVALID_FIELD = "Field: %s\n";
-	private static final String MESSAGE_INVALID_TITLE = "No Title\n";
-	private static final String MESSAGE_INVALID_DATE = "Date: %s (Date should be dd-MM-yyyy)\n";
-	private static final String MESSAGE_INVALID_TIME = "%s time: %s (Time should be in 24hrs format)\n";
-	private static final String MESSAGE_INVALID_RECURRENCE = "Recurrence: %s"
-			+ "\n(Recurrence should be daily, weekly, monthly, yearly or left empty\n";
 	private static final String MESSAGE_INVALID_TASK_START = "Task cannot have start time";
-	private static final String MESSAGE_INVALID_DATE_FLEXI = "Date: %s (Invalid flexi date)\n";
-	private static final String MESSAGE_INVALID_TIME_FLEXI = "%s time: %s (Invalid flexi time)\n";
-
 	public EditCommand(String args) throws Exception {
 		super(args);
 
@@ -82,37 +73,11 @@ public class EditCommand extends Command {
 					}
 				}
 
-				/*
-				 * try{ Integer.parseInt(value); if((editObject =
-				 * getTime(value)).equals(-1)){ error +=
-				 * String.format(MESSAGE_INVALID_TIME, "Start", value); } }
-				 * catch (NumberFormatException e){ //Note: If you enter flexi
-				 * time like tomorrow, 12pm if the default time if((editObject =
-				 * getDate(value)) == null){ error +=
-				 * String.format(MESSAGE_INVALID_TIME_FLEXI, "Start", value); }
-				 * else{ editObject = getDate(value).getTime(); } }
-				 */
-
 			} else if (field.equalsIgnoreCase("end time")) {
 				if ((editObject = getDate(value)) == null) {
 					invalidArgs.add("end time");
 				} else {
 					editObject = getDate(value).getTime();
-				}
-				/*
-				 * try{ Integer.parseInt(value); if((editObject =
-				 * getTime(value)).equals(-1)){ error +=
-				 * String.format(MESSAGE_INVALID_TIME, "End", value); } } catch
-				 * (NumberFormatException e){ if((editObject =
-				 * flexiParse(value)) == null){ error +=
-				 * String.format(MESSAGE_INVALID_TIME_FLEXI, "End", value); }
-				 * else { Calendar c = Calendar.getInstance(); c.setTime((Date)
-				 * editObject); editObject = c.get(Calendar.HOUR_OF_DAY)*100 +
-				 * c.get(Calendar.MINUTE); System.out.println(editObject); } }
-				 */
-			} else if (field.equalsIgnoreCase("recurrence")) {
-				if (getRecurrence(value) == null) {
-					invalidArgs.add("recurrence");
 				}
 			} else {
 				invalidArgs.add(MESSAGE_INVALID_FIELD);
@@ -178,9 +143,6 @@ public class EditCommand extends Command {
 			assertNotNull(date);
 			date.setTime(task.getEndTime());
 			task.setEndDate(date);
-			break;
-		case "recurrence":
-			task.setRecurrence(RecurrencePeriod.toRecurrence(value));
 			break;
 		default:
 			return "Unable to edit task.";
