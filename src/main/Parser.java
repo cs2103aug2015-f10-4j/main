@@ -28,8 +28,7 @@ public class Parser {
 	private static final String MESSAGE_INVALID_INPUT = "Must enter a command when calling execute";
 	
 	/**
-	 * Method: parse
-	 * Description: Takes in an input from the user and returns the correct command object
+	 * Takes in an input from the user and returns the correct command object
 	 * for executing what the user wants. Calls the inputValidation method. Exception is 
 	 * thrown if no input is given.
 	 * 
@@ -49,8 +48,7 @@ public class Parser {
 	}
 	
 	/**
-	 * Method: splitCommand
-	 * Description: splits a given string of user input and returns the first argument,
+	 * Splits a given string of user input and returns the first argument,
 	 * which should be the command
 	 * 
 	 * @param userInput
@@ -62,8 +60,7 @@ public class Parser {
 	}
 
 	/**
-	 * Method: splitArgs
-	 * Description: splits a given string of user input and returns the words after the 
+	 * Splits a given string of user input and returns the words after the 
 	 * first word of the input, which are the arguments of the command
 	 * 
 	 * @param userInput
@@ -79,8 +76,7 @@ public class Parser {
 	}
 	
 	/**
-	 * Method: inputValidation
-	 * Description: checks if the command is valid and returns the correct Command subclass
+	 * Checks if the command is valid and returns the correct Command subclass
 	 * of the user's command. Passes the arguments to the Command subclass, which will be 
 	 * checked for validity within the constructor. Exception thrown if a command is not 
 	 * valid 
