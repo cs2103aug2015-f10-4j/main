@@ -1,5 +1,7 @@
 package Commands;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import main.CustomDate;
@@ -10,22 +12,24 @@ import gui.GUIModel;
 
 public class AddCommand extends Command {
 
-	/** Command parameters **/
-	protected String title;
-	protected CustomDate dueDate;
-	protected int endTime;
-	protected boolean isFloat;
-	private Item item;
-
 	/** Messaging */
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: add <title> by <date> <time>";
+	private static final String MESSAGE_INVALID_TITLE = "Title";
+	private static final String MESSAGE_INVALID_DATETIME = "Date/Time";
 	private static final String MESSAGE_TASK_ADDED = "Task added";
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
 	private static final String MESSAGE_TASK_ERROR = "Unable to add task";
+	
+	/** Command parameters **/
+	private String title;
+	private CustomDate dueDate;
+	private int endTime;
+	private boolean isFloat;
+	private Item item;
 
 	/**
-	 * Constructor for AddCommand objects
-	 * Description: Checks if arguments are valid and stores the correct arguments properly.
+	 * Constructor for AddCommand objects.
+	 * Checks if arguments are valid and stores the correct arguments properly.
 	 * Throws the appropriate exception if arguments are invalid
 	 * 
 	 * @param args
@@ -56,7 +60,7 @@ public class AddCommand extends Command {
 
 			checkTitle();
 
-			checkDueDate();
+			checkDateTime();
 
 			errorInvalidArgs();
 			
@@ -65,85 +69,124 @@ public class AddCommand extends Command {
 		}
 	}
 
+	/**
+	 * Throws exception if error messages for format are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
 	private void errorInvalidFormat() throws IllegalArgumentException {
 		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
 	}
 
+	/**
+	 * Throws exception if error messages for invalid arguments are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
 	private void errorInvalidArgs() throws IllegalArgumentException {
 		if (invalidArgs.size() > 0) {
 			throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
 		}
 	}
 
-	private void checkDueDate() {
+	/**
+	 * Adds error message if invalid date and time specified, and task to
+	 * be added is not a floating task
+	 */
+	private void checkDateTime() {
 		if (this.dueDate == null && !isFloat) {
-			invalidArgs.add("Date");
-			invalidArgs.add("Time");
+			invalidArgs.add(MESSAGE_INVALID_DATETIME);
 		}
 	}
 
+	/**
+	 * Adds error message if title is invalid
+	 */
 	private void checkTitle() {
 		if (title == null) {
-			invalidArgs.add("Title");
+			invalidArgs.add(MESSAGE_INVALID_TITLE);
 		}
 	}
 
+	/**
+	 * Set the relevant parameters of AddCommand to that of the specified task
+	 */
 	private void setProperParams() {
 		this.dueDate = getDate(argsArray.get(1).trim());
 		this.endTime = dueDate == null ? -1 : dueDate.getTime();
+		assertFalse(isFloat);
 	}
 
+	/**
+	 * Set the relevant parameters of AddCommand to that of a floating task
+	 */
 	private void setFloatParams() {
 		this.dueDate = null;
 		this.endTime = -1;
 		this.isFloat = true;
 	}
 
+	/**
+	 * Date/time argument might be concatenated with other arguments, thus
+	 * the method splits the arguments properly
+	 */
 	private void splitArgsAfterDateTime() {
 		if (argsArray.size() > 1 && argsArray.get(count - 1).contains(" ")) {
 			while (true) {
-				String last = getLastUncheckedWord();
+				String last = getLastWord(argsArray.get(count - 1));
 				if (getDate(last) != null) {
 					break;
 				} else {
-					argsArray.add(count, last);
-					removeCheckedWord();
+					splitOnce(last);
 				}
 			}
 		}
 	}
 
-	private void removeCheckedWord() {
-		argsArray.set(count - 1, argsArray.get(count - 1).split("\\s(?=\\S+$)")[0]);
-	}
-
 	/**
-	 * Method: getLastUncheckedWord
-	 * Description: 
+	 * Adds last word to the argsArray and removes it from the date/time argument
 	 * 
-	 * @return
+	 * @param last
 	 */
-	private String getLastUncheckedWord() {
-		return argsArray.get(count - 1).split("\\s(?=\\S+$)")[1];
+	private void splitOnce(String last) {
+		argsArray.add(count, last);
+		argsArray.set(count - 1, removeLastWord(argsArray.get(count - 1)));
 	}
 
 	/**
-	 * Method: removeEscapeCharacters
-	 * Description: Replaces characters that were used for escaping the keyword argument
-	 * were split about
+	 * Removes last word from a string
+	 * 
+	 * @param string
+	 * @return String with last word removed
+	 */
+	private String removeLastWord(String string) {
+		return string.split("\\s(?=\\S+$)")[0];
+	}
+
+	/**
+	 * Gives last word of a string
+	 * 
+	 * @param string
+	 * @return String last word
+	 */
+	private String getLastWord(String string) {
+		return string.split("\\s(?=\\S+$)")[1];
+	}
+
+	/**
+	 * Replaces characters that were used for escaping the keyword argument
+	 * that was used for splitting
 	 */
 	private void removeEscapeCharacters() {
 		for (int i = 0; i < argsArray.size(); i++) {
-			argsArray.set(
-					i,
-					argsArray.get(i).trim()
-							.replaceAll("(?<=by)\"|\"(?=by)", STRING_EMPTY));
+			argsArray.set(i,
+						  argsArray.get(i).trim().replaceAll("(?<=by)\"|\"(?=by)", 
+															 STRING_EMPTY));
 		}
 	}
 
 	/**
-	 * Method validNumArgs
-	 * Description: Checks if the number of arguments provided is correct
+	 * Checks if the number of arguments provided is correct
 	 * 
 	 * @return boolean true/false
 	 */
@@ -155,8 +198,59 @@ public class AddCommand extends Command {
 		}
 	}
 
-	@Override
+	/**
+	 * Adds the task specified by the user into the storage and updates the GUI as well.
+	 * Returns a message informing user of success or failure of the command.
+	 */
 	public String execute() {
+		setTaskParams();
+
+		try {
+			returnMsg = MESSAGE_TASK_ADDED;
+			checkTaskClash();
+			storeTask();
+			return returnMsg;
+		} catch (IOException e) {
+			return MESSAGE_TASK_ERROR;
+		} finally {
+			updateView();
+		}
+	}
+
+	/**
+	 * Checks if the task to be added clashes with another task and adds to the return
+	 * message to inform the user
+	 */
+	private void checkTaskClash() {
+		if (isClashing()) {
+			returnMsg += MESSAGE_TASK_CLASH;
+		}
+	}
+
+	/**
+     * Stores the created Item Object as task
+	 * 
+	 * @throws IOException
+	 */
+	private void storeTask() throws IOException {
+		Magical.getStorage().create(Storage.TASKS_INDEX, item);
+	}
+
+	/**
+	 * Updates the new view in the GUI
+	 */
+	private void updateView() {
+		GUIModel.setTaskList(Magical.getStorage().getList(
+				Storage.TASKS_INDEX));
+		GUIModel.setTaskDoneList(Magical.getStorage().getList(
+				Storage.TASKS_DONE_INDEX));
+		GUIModel.setCurrentTab("tasks");
+	}
+
+	/**
+	 * Create an Item object with the correct argument parameters
+	 */
+	private void setTaskParams() {
 		item = new Item();
 		item.setType("task");
 		item.setTitle(title);
@@ -164,25 +258,12 @@ public class AddCommand extends Command {
 		item.setStartTime(-1);
 		item.setEndDate(dueDate);
 		item.setEndTime(endTime);
-
-		try {
-			String retMsg = MESSAGE_TASK_ADDED;
-			if (isClashing()) {
-				retMsg += MESSAGE_TASK_CLASH;
-			}
-			Magical.getStorage().create(Storage.TASKS_INDEX, item);
-			return retMsg;
-		} catch (IOException e) {
-			return MESSAGE_TASK_ERROR;
-		} finally {
-			GUIModel.setTaskList(Magical.getStorage().getList(
-					Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.getStorage().getList(
-					Storage.TASKS_DONE_INDEX));
-			GUIModel.setCurrentTab("tasks");
-		}
 	}
 
+	/**
+	 * Checks if the current task to be added clashes with another task
+	 * @return
+	 */
 	private boolean isClashing() {
 		ArrayList<Item> tasks = Magical.getStorage().getList(
 				Storage.TASKS_INDEX);
@@ -193,5 +274,13 @@ public class AddCommand extends Command {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Returns true if command can be undone, or fals otherwise
+	 * @return 
+	 */
+	public boolean isUndoable() {
+		return true;
 	}
 }
