@@ -59,12 +59,12 @@ public class SearchCommand extends Command {
 		}
 		for (Item t : eventList) {
 			if (t.getTitle().contains(query)) {
-				filteredTaskList.add(t);
+				filteredEventList.add(t);
 			}
 		}
 		for (Item t : eventDoneList) {
 			if (t.getTitle().contains(query)) {
-				filteredTaskDoneList.add(t);
+				filteredEventDoneList.add(t);
 			}
 		}
 

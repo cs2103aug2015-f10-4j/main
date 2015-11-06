@@ -57,16 +57,16 @@ public class ShowCommand extends Command {
 				Storage.EVENTS_INDEX);
 		ArrayList<Item> eventDoneList = Magical.getStorage().getList(
 				Storage.EVENTS_DONE_INDEX);
-		ArrayList<Item> filteredTaskList = new ArrayList<Item>();
-		ArrayList<Item> filteredTaskDoneList = new ArrayList<Item>();
-		ArrayList<Item> filteredEventList = new ArrayList<Item>();
-		ArrayList<Item> filteredEventDoneList = new ArrayList<Item>();
+		ArrayList<Item> showTaskList = new ArrayList<Item>(taskList);
+		ArrayList<Item> showTaskDoneList = new ArrayList<Item>(taskDoneList);
+		ArrayList<Item> showEventList = new ArrayList<Item>(eventList);
+		ArrayList<Item> showEventDoneList = new ArrayList<Item>(eventDoneList);
 		switch (type) {
 		case "all":
-			filteredTaskList = taskList;
-			filteredTaskDoneList = taskDoneList;
-			filteredEventList = eventList;
-			filteredEventDoneList = eventDoneList;
+			showTaskList = taskList;
+			showTaskDoneList = taskDoneList;
+			showEventList = eventList;
+			showEventDoneList = eventDoneList;
 			break;
 		case "task":
 			GUIModel.setCurrentTab("tasks");
@@ -81,35 +81,39 @@ public class ShowCommand extends Command {
 			GUIModel.setCurrentTab("events");
 			break;
 		case "tag":
+			showTaskList = new ArrayList<Item>();
+			showTaskDoneList = new ArrayList<Item>();
+			showEventList = new ArrayList<Item>();
+			showEventDoneList = new ArrayList<Item>();
 			Set<String> queryTags = new HashSet<String>(tags);
 			for (Item t : taskList) {
 				if (t.getTags().containsAll(queryTags)) {
-					filteredTaskList.add(t);
+					showTaskList.add(t);
 				}
 			}
 			for (Item t : taskDoneList) {
 				if (t.getTags().containsAll(queryTags)) {
-					filteredTaskDoneList.add(t);
+					showTaskDoneList.add(t);
 				}
 			}
 			for (Item t : eventList) {
 				if (t.getTags().containsAll(queryTags)) {
-					filteredEventList.add(t);
+					showEventList.add(t);
 				}
 			}
 			for (Item t : eventDoneList) {
 				if (t.getTags().containsAll(queryTags)) {
-					filteredEventDoneList.add(t);
+					showEventDoneList.add(t);
 				}
 			}
 			break;
 		default:
 			break;
 		}
-		GUIModel.setTaskList(filteredTaskList);
-		GUIModel.setTaskDoneList(filteredTaskDoneList);
-		GUIModel.setEventList(filteredEventList);
-		GUIModel.setEventDoneList(filteredEventDoneList);
+		GUIModel.setTaskList(showTaskList);
+		GUIModel.setTaskDoneList(showTaskDoneList);
+		GUIModel.setEventList(showEventList);
+		GUIModel.setEventDoneList(showEventDoneList);
 		return "show successful";
 	}
 
