@@ -25,7 +25,7 @@ public class AddCommand extends Command {
 	private CustomDate dueDate;
 	private int endTime;
 	private boolean isFloat;
-	private Item item;
+	private Item task;
 
 	/**
 	 * Constructor for AddCommand objects.
@@ -205,7 +205,7 @@ public class AddCommand extends Command {
 	 * @throws IOException
 	 */
 	private void storeTask() throws IOException {
-		Magical.getStorage().create(Storage.TASKS_INDEX, item);
+		Magical.getStorage().create(Storage.TASKS_INDEX, task);
 	}
 
 	/**
@@ -223,13 +223,13 @@ public class AddCommand extends Command {
 	 * Create an Item object with the correct argument parameters
 	 */
 	private void setTaskParams() {
-		item = new Item();
-		item.setType("task");
-		item.setTitle(title);
-		item.setStartDate(null);
-		item.setStartTime(-1);
-		item.setEndDate(dueDate);
-		item.setEndTime(endTime);
+		task = new Item();
+		task.setType("task");
+		task.setTitle(title);
+		task.setStartDate(null);
+		task.setStartTime(-1);
+		task.setEndDate(dueDate);
+		task.setEndTime(endTime);
 	}
 
 	/**
@@ -237,15 +237,33 @@ public class AddCommand extends Command {
 	 * @return
 	 */
 	private boolean isClashing() {
-		ArrayList<Item> tasks = Magical.getStorage().getList(
-				Storage.TASKS_INDEX);
+		ArrayList<Item> tasks = getTasks();
 		for (Item t : tasks) {
-			if (t.getEndDate() != null
-					&& t.getEndDate().equals(item.getEndDate())) {
+			if (isSameEndDate(t)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Checks if a given task has end date and is the same as the the created task
+	 * @param t
+	 * @return
+	 */
+	private boolean isSameEndDate(Item t) {
+		return t.getEndDate() != null
+				&& t.getEndDate().equals(task.getEndDate());
+	}
+
+	/**
+	 * get task list from storage
+	 * @return
+	 */
+	private ArrayList<Item> getTasks() {
+		ArrayList<Item> tasks = Magical.getStorage().getList(
+				Storage.TASKS_INDEX);
+		return tasks;
 	}
 
 	protected boolean validNumArgs() {
