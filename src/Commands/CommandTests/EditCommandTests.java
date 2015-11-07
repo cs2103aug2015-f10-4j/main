@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Commands.Command;
@@ -26,16 +28,24 @@ public class EditCommandTests {
 	private static final String WEIRD_STRING = "T#is str/ng h@s we!rd $ymb^\\s. And punc!tuat!ion?";
 	private static final String QUOTES_STRING = "\"This string has 'quotes' of both kinds\"";
 
-	@Before
-	public void setUp() {
-		ArrayList<Item> testList = new ArrayList<Item>();
+	@BeforeClass
+	public static void setUp() {
+		ArrayList<Item> taskList = new ArrayList<Item>();
+		Item task = new Item();
+		task.setType("task");
 		for (int i = 0; i < 10; i ++) {
-			testList.add(new Item());
+			taskList.add(task);
 		}
-		GUIModel.setTaskList(testList);
-		GUIModel.setTaskDoneList(testList);
-		GUIModel.setEventList(testList);
-		GUIModel.setEventDoneList(testList);
+		GUIModel.setTaskList(taskList);
+		GUIModel.setTaskDoneList(taskList);
+		ArrayList<Item> eventList = new ArrayList<Item>();
+		Item event = new Item();
+		event.setType("event");
+		for (int i = 0; i < 10; i ++) {
+			eventList.add(event);
+		}
+		GUIModel.setEventList(eventList);
+		GUIModel.setEventDoneList(eventList);
 	}
 
 	@Test
@@ -51,16 +61,17 @@ public class EditCommandTests {
 		Command normalEditDoneEvent = new EditCommand("p1 title Title");
 	}
 
+	@Test
 	public void testEditDateNormalInputs() throws Exception {
 		Command normalEdit = new EditCommand("t1 date November 7 2015");
 		Command normalEditPastDate = new EditCommand("t1 date January 1 1915");
 	}
 
-	@After
-	public void tearDown() {
+	@AfterClass
+	public static void tearDown() {
 		GUIModel.taskList = null;
 		GUIModel.taskDoneList = null;
-		GUIModel.eventList = null;
+		GUIModel.eventDoneList = null;
 		GUIModel.eventDoneList = null;
 	}
 
