@@ -51,16 +51,14 @@ public class DelCommand extends Command {
 	 * This method executes the delete command. Which simply deletes the
 	 * specified task or event from the database.
 	 * 
-	 * @param None
-	 *            .
-	 * @return None
+	 * @return message to show user
 	 */
 	@Override
 	public String execute() {
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
 			Magical.getStorage().delete(listIndex, item);
-			return "item deleted";
+			return itemID + " deleted";
 		} catch (IOException e) {
 			return "unable to delete " + itemID;
 		} finally {
