@@ -24,7 +24,7 @@ public abstract class Command {
 			.parse("today").getEndCalendar().getTime());
 
 	/** Messaging */
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %s";
 	protected TreeSet<String> invalidArgs = new TreeSet<String>();
 	protected String returnMsg = STRING_EMPTY;
 

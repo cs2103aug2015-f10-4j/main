@@ -41,8 +41,8 @@ public class PriorityCommand extends Command {
 				invalidArgs.add("priority");
 			}
 			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
-						+ String.join(", ", invalidArgs));
+				throw new IllegalArgumentException(String.format(
+						MESSAGE_HEADER_INVALID, invalidArgs));
 			}
 		} else {
 			throw new IllegalArgumentException(MESSAGE_ARGUMENT_PARAMS);

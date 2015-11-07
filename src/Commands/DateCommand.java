@@ -63,8 +63,8 @@ public class DateCommand extends Command {
 			}
 
 			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
-						+ String.join(", ", invalidArgs));
+				throw new IllegalArgumentException(String.format(
+						MESSAGE_HEADER_INVALID, invalidArgs));
 			}
 		} else {
 			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);

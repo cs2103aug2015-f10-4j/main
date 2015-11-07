@@ -34,8 +34,8 @@ public class UndoneCommand extends Command {
 				invalidArgs.add("Undone tasks cannot be undone!");
 			}
 			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
-						+ String.join(", ", invalidArgs));
+				throw new IllegalArgumentException(String.format(
+						MESSAGE_HEADER_INVALID, invalidArgs));
 			}
 		} else {
 			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);

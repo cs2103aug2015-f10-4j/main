@@ -1,6 +1,5 @@
 package Commands;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import gui.GUIModel;
