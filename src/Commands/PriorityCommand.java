@@ -15,7 +15,7 @@ public class PriorityCommand extends Command {
 
 	private Item item;
 	private String itemID;
-	private int priority;
+	private String priority;
 	private Item prevItem;
 
 	public PriorityCommand(String args) throws Exception {
@@ -33,7 +33,7 @@ public class PriorityCommand extends Command {
 			if (item == null) {
 				invalidArgs.add("itemID");
 			}
-			if (priority == -1) {
+			if (priority == null) {
 				invalidArgs.add("priority");
 			}
 			if (invalidArgs.size() > 0) {

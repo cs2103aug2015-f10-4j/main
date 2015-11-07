@@ -121,16 +121,15 @@ public abstract class Command {
 	 * Checks if priority is valid and returns it as integer, or -1 if invalid priority
 	 * 
 	 * @param priority
-	 * @return int priority
+	 * @return String priority
 	 */
-	protected int getPriority(String priority) {
+	protected String getPriority(String priority) {
+		System.out.println(priority);
 		assertNotNull(priority);
-		try {
-			int p = Integer.parseInt(priority);
-			return getWithinPriorityRange(p);
-		} catch (Exception e) {
-			return -1;
+		if (priority.equals("high") || priority.equals("medium") || priority.equals("low")) {
+			return priority;
 		}
+		return null;
 	}
 
 	
