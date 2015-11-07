@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Commands.Command;
-import Commands.DelCommand;
 import Commands.DoneCommand;
 import gui.GUIModel;
 import main.Item;
