@@ -2,7 +2,6 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
@@ -19,6 +18,10 @@ import Commands.Command;
 public class Magical {
 	public static List<Stack<ArrayList<Item>>> undoLists = new ArrayList<Stack<ArrayList<Item>>>(
 			Storage.NUM_LISTS);
+	public static List<Stack<ArrayList<Item>>> redoLists = new ArrayList<Stack<ArrayList<Item>>>(
+			Storage.NUM_LISTS);
+	public static Command lastCommand;
+	
 	private static Storage storage;
 
 	/**
@@ -30,6 +33,9 @@ public class Magical {
 		archivePastEvents();
 		for (int i = 0; i < Storage.NUM_LISTS; i++) {
 			undoLists.add(new Stack<ArrayList<Item>>());
+		}
+		for (int i = 0; i < Storage.NUM_LISTS; i++) {
+			redoLists.add(new Stack<ArrayList<Item>>());
 		}
 	}
 
@@ -81,6 +87,7 @@ public class Magical {
 			pushUndoLayer();
 		}
 		String message = command.execute();
+		lastCommand = command;
 		return message;
 	}
 
@@ -88,10 +95,9 @@ public class Magical {
 	 * This method takes a snapshot of the current storage. This is known as
 	 * pushing an undo layer onto the undo history stack.
 	 */
-	private static void pushUndoLayer() {
-		int n = Storage.TASKS_INDEX;
-		ArrayList<Item> t = storage.getList(n);
-		ArrayList<Item> prevTasksList = listClone(t);
+	public static void pushUndoLayer() {
+		ArrayList<Item> prevTasksList = listClone(storage
+				.getList(Storage.TASKS_INDEX));
 		ArrayList<Item> prevTasksDoneList = listClone(storage
 				.getList(Storage.TASKS_DONE_INDEX));
 		ArrayList<Item> prevEventsList = listClone(storage

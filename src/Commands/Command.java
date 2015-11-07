@@ -20,8 +20,9 @@ public abstract class Command {
 
 	/** Checking */
 	protected static final String STRING_EMPTY = "";
-	protected static final CustomDate today = new CustomDate(Chronic.parse("today").getEndCalendar().getTime());
-	
+	protected static final CustomDate today = new CustomDate(Chronic
+			.parse("today").getEndCalendar().getTime());
+
 	/** Messaging */
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
 	protected TreeSet<String> invalidArgs = new TreeSet<String>();
@@ -34,8 +35,8 @@ public abstract class Command {
 	protected boolean isFlexi;
 
 	/**
-	 * Constructor for Command objects. 
-	 * Stores the arguments passed in when the constructor is called.
+	 * Constructor for Command objects. Stores the arguments passed in when the
+	 * constructor is called.
 	 * 
 	 * @param args
 	 */
@@ -45,8 +46,8 @@ public abstract class Command {
 	}
 
 	/**
- 	 * Create an ArrayList of Strings that is split into arguments according to the 
- 	 * regex and into maximum number of elements specified in the limit.
+	 * Create an ArrayList of Strings that is split into arguments according to
+	 * the regex and into maximum number of elements specified in the limit.
 	 * 
 	 * @param args
 	 * @param regex
@@ -58,10 +59,10 @@ public abstract class Command {
 	}
 
 	/**
-	 * Checks if a given string contains a valid date and/or time and parses it into
-	 * a CustomDate object, or null if the string is invalid. Uses default values if
-	 * a date field or time is not given. Default date is current day, current month, 
-	 * current year. Default time is 2359.
+	 * Checks if a given string contains a valid date and/or time and parses it
+	 * into a CustomDate object, or null if the string is invalid. Uses default
+	 * values if a date field or time is not given. Default date is current day,
+	 * current month, current year. Default time is 2359.
 	 * 
 	 * @param date
 	 * @return CustomDate object with valid date and time
@@ -73,7 +74,9 @@ public abstract class Command {
 	}
 
 	/**
-	 * Ensure that all correct input are properly formatted for the jChronic parser
+	 * Ensure that all correct input are properly formatted for the jChronic
+	 * parser
+	 * 
 	 * @param date
 	 * @return
 	 */
@@ -87,32 +90,36 @@ public abstract class Command {
 
 	/**
 	 * Swaps the day and the month for flexicommands in order to parse properly
+	 * 
 	 * @param date
 	 * @return
 	 */
 	private String swapDayMonthFlexi(String date) {
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}\\s[A-z]{3,}(?=\\s{0,1})");
-		if(m.find()){
+		Matcher m = getMatcher(date,
+				"(?<=\\s{0,1})\\d{1,2}\\s[A-z]{3,}(?=\\s{0,1})");
+		if (m.find()) {
 			String s = m.group(0);
 			String[] splitS = s.split(" ", 2);
-			String newS = splitS[1] + " " + splitS[0]; 
+			String newS = splitS[1] + " " + splitS[0];
 			date = date.replace(s, newS);
 		}
 		return date;
 	}
-	
+
 	/**
 	 * Swaps the day and the month for non-flexi in order to parse properly
+	 * 
 	 * @param date
 	 * @return
 	 */
-	private String swapDayMonth (String date){
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}(/|-)\\d{1,2}(?=\\s{0,1}|/)");
-		if(m.find()){
+	private String swapDayMonth(String date) {
+		Matcher m = getMatcher(date,
+				"(?<=\\s{0,1})\\d{1,2}(/|-)\\d{1,2}(?=\\s{0,1}|/)");
+		if (m.find()) {
 			String s = m.group(0);
 			String token = getToken(s);
 			String[] splitS = s.split(token, 2);
-			String newS = splitS[1] + token + splitS[0]; 
+			String newS = splitS[1] + token + splitS[0];
 			date = date.replace(s, newS);
 		}
 		return date;
@@ -120,12 +127,13 @@ public abstract class Command {
 
 	/**
 	 * Get the token for a date string
+	 * 
 	 * @param s
 	 * @return
 	 */
 	private String getToken(String s) {
-		assert(s.contains("/")|s.contains("-"));
-		if(s.contains("/")){
+		assert (s.contains("/") | s.contains("-"));
+		if (s.contains("/")) {
 			return "/";
 		} else {
 			return "-";
@@ -147,9 +155,9 @@ public abstract class Command {
 	}
 
 	/**
-	 * Get both item type and item index using the itemID and return the 
-	 * corresponding item. Checks the validity of item type. Returns null
-	 * if the itemID is invalid or item does not exist.
+	 * Get both item type and item index using the itemID and return the
+	 * corresponding item. Checks the validity of item type. Returns null if the
+	 * itemID is invalid or item does not exist.
 	 * 
 	 * @param itemID
 	 * @return Task object corresponding
@@ -158,40 +166,44 @@ public abstract class Command {
 		assertNotNull(itemID);
 		String type = getItemIdType(itemID);
 		Integer index = getItemIdIndex(itemID);
-
-		if (index != -1) {
-			switch (type) {
-			case "t":
-				return GUIModel.taskList.get(index);
-			case "d":
-				return GUIModel.taskDoneList.get(index);
-			case "e":
-				return GUIModel.eventList.get(index);
-			case "p":
-				return GUIModel.eventDoneList.get(index);
-			default:
+		try {
+			if (index != -1) {
+				switch (type) {
+				case "t":
+					return GUIModel.taskList.get(index);
+				case "d":
+					return GUIModel.taskDoneList.get(index);
+				case "e":
+					return GUIModel.eventList.get(index);
+				case "p":
+					return GUIModel.eventDoneList.get(index);
+				default:
+					return null;
+				}
+			} else {
 				return null;
 			}
-		} else {
+		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Checks if priority is valid and returns it as integer, or -1 if invalid priority
+	 * Checks if priority is valid and returns it as integer, or -1 if invalid
+	 * priority
 	 * 
 	 * @param priority
 	 * @return String priority
 	 */
 	protected String getPriority(String priority) {
 		assertNotNull(priority);
-		if (priority.equals("high") || priority.equals("medium") || priority.equals("low") || priority.equals("")) {
+		if (priority.equals("high") || priority.equals("medium")
+				|| priority.equals("low") || priority.equals("")) {
 			return priority;
 		}
 		return null;
 	}
 
-	
 	/**
 	 * Formats the time in a given string properly for parsing, if present.
 	 * 
@@ -214,16 +226,17 @@ public abstract class Command {
 	}
 
 	/**
-	 * Checks if a given string has date in the format dd/MM or dd-MM and adds 
-	 * the current year onto the string, for correct parsing. Does nothing if year
-	 * is already present in string.
+	 * Checks if a given string has date in the format dd/MM or dd-MM and adds
+	 * the current year onto the string, for correct parsing. Does nothing if
+	 * year is already present in string.
 	 * 
 	 * @param date
 	 * @return String with year
 	 */
 	private String dateWithYear(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}(/|-)\\d{1,2}(?=\\s{0,1})(?!(/|-|\\d))");
+		Matcher m = getMatcher(date,
+				"(?<=\\s{0,1})\\d{1,2}(/|-)\\d{1,2}(?=\\s{0,1})(?!(/|-|\\d))");
 		assertNotNull(m);
 
 		if (m.find()) {
@@ -231,13 +244,13 @@ public abstract class Command {
 			assertNotNull(s);
 			String temp = date.replaceAll(s, s + "/"
 					+ new CustomDate(new Date()).getYear());
-			if(getDate(temp).compareTo(today) == -1){
-				date = date.replaceAll(s, s + "/"
-						+ (new CustomDate(new Date()).getYear()+1));
+			if (getDate(temp).compareTo(today) == -1) {
+				date = date.replaceAll(s,
+						s + "/" + (new CustomDate(new Date()).getYear() + 1));
 			} else {
 				date = temp;
 			}
-			
+
 		}
 		return date;
 	}
@@ -257,9 +270,9 @@ public abstract class Command {
 	}
 
 	/**
-	 * Adds the default time of 23:59 to a given string if no time has been 
-	 * specified in the string originally. Parses the string into a CustomDate 
-	 * object using jChronic natural date parser. Returns null if date string 
+	 * Adds the default time of 23:59 to a given string if no time has been
+	 * specified in the string originally. Parses the string into a CustomDate
+	 * object using jChronic natural date parser. Returns null if date string
 	 * cannot be parsed.
 	 * 
 	 * @param date
@@ -281,11 +294,9 @@ public abstract class Command {
 		}
 	}
 
-	
-
 	/**
-	 * Gets the index from the itemID and returns it as a number. 
-	 * Returns -1 if the index is not a valid number.
+	 * Gets the index from the itemID and returns it as a number. Returns -1 if
+	 * the index is not a valid number.
 	 * 
 	 * @param itemID
 	 * @return int index of the item
@@ -312,7 +323,7 @@ public abstract class Command {
 		}
 		return itemID.substring(0, 1).toLowerCase();
 	}
-	
+
 	/**
 	 * Indicates if the command can be undone or not
 	 * 

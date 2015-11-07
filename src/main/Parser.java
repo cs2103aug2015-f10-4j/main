@@ -8,6 +8,7 @@ public class Parser {
 	private static final String CMD_ADD = "add";
 	private static final String CMD_DELETE = "delete";
 	private static final String CMD_UNDO = "undo";
+	private static final String CMD_REDO = "redo";
 	private static final String CMD_DATE = "date";
 	private static final String CMD_DONE = "done";
 	private static final String CMD_UNDONE = "undone";
@@ -105,6 +106,8 @@ public class Parser {
 				return new DelCommand(args);
 			case CMD_UNDO:
 				return new UndoCommand(args);
+			case CMD_REDO:
+				return new RedoCommand(args);
 			case CMD_DONE:
 				return new DoneCommand(args);
 			case CMD_UNDONE:

@@ -10,7 +10,7 @@ import main.Item;
 import gui.GUIModel;
 
 public class EditCommand extends Command {
-	
+
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <item_id> <field> <value>";
 	private static final String MESSAGE_INVALID_FIELD = "Unknown field";
@@ -22,14 +22,14 @@ public class EditCommand extends Command {
 	private static final String MESSAGE_INVALID_TITLE = "Title";
 	private static final String MESSAGE_ITEM_ERROR = "Unable to edit item %s";
 	private static final String MESSAGE_ITEM_EDITED = "Item edited.";
-	
+
 	/** For checking **/
 	private static final String FIELD_TIME_END = "end time";
 	private static final String FIELD_TIME_START = "start time";
 	private static final String FIELD_DATE = "date";
 	private static final String FIELD_TITLE = "title";
 	private final CustomDate today = getDate("today");
-	
+
 	/** Command parameters **/
 	private String field;
 	private String value;
@@ -41,9 +41,9 @@ public class EditCommand extends Command {
 	private Object editObject;
 
 	/**
-	 * Constructor for EditCommand objects.
-	 * Checks if arguments are valid and stores the correct arguments properly.
-	 * Throws the appropriate exception if arguments are invalid
+	 * Constructor for EditCommand objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -52,21 +52,18 @@ public class EditCommand extends Command {
 		super(args);
 
 		args = args + " ";
-		
+
 		this.argsArray = splitArgs(args, "(?<!end|start)\\s(?!time|date)", 3);
 		System.out.println(argsArray);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
 			setProperParams();
-
 			checkItemExists();
-
 			errorInvalidArgs();
-			
 			isTask = item.getType().equals("task");
-			
-			switch(field.toLowerCase()){
+
+			switch (field.toLowerCase()) {
 			case FIELD_TITLE:
 				checkTitle();
 				break;
@@ -82,9 +79,7 @@ public class EditCommand extends Command {
 			default:
 				invalidField();
 			}
-
 			errorInvalidArgs();
-			
 		} else {
 			errorInvalidFormat();
 		}
@@ -98,16 +93,17 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Adds error message if time is invalid, according to type, or error message if the 
-	 * start time is provided for tasks, or get the correct time if valid.
+	 * Adds error message if time is invalid, according to type, or error
+	 * message if the start time is provided for tasks, or get the correct time
+	 * if valid.
 	 */
 	void checkTime(int type) {
-		assert(type == 0 || type == 1);
+		assert (type == 0 || type == 1);
 		if (isTask && type == 0) {
 			invalidArgs.add(MESSAGE_INVALID_TASK_START);
 		} else {
 			if ((editObject = getDate(value)) == null) {
-				if(type == 0){
+				if (type == 0) {
 					invalidArgs.add(MESSAGE_INVALID_TIME_START);
 				} else {
 					invalidArgs.add(MESSAGE_INVALID_TIME_END);
@@ -119,8 +115,8 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Adds error message if date is invalid or if task is to be made floating, sets
-	 * toFloat to true.
+	 * Adds error message if date is invalid or if task is to be made floating,
+	 * sets toFloat to true.
 	 */
 	void checkDate() {
 		if (value.equals(STRING_EMPTY) && isTask) {
@@ -147,7 +143,7 @@ public class EditCommand extends Command {
 			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
-	
+
 	/**
 	 * Throws exception if error messages for invalid arguments are present
 	 * 
@@ -155,10 +151,11 @@ public class EditCommand extends Command {
 	 */
 	private void errorInvalidArgs() throws IllegalArgumentException {
 		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
+			throw new IllegalArgumentException(String.format(
+					MESSAGE_HEADER_INVALID, invalidArgs));
 		}
 	}
-	
+
 	/**
 	 * Throws exception if error messages for format are present
 	 * 
@@ -167,7 +164,7 @@ public class EditCommand extends Command {
 	private void errorInvalidFormat() throws IllegalArgumentException {
 		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
 	}
-	
+
 	/**
 	 * Set the relevant parameters of AddCommand to that of the specified task
 	 */
@@ -188,7 +185,7 @@ public class EditCommand extends Command {
 
 	@Override
 	public String execute() {
-		
+
 		duplicateItem();
 
 		switch (field.toLowerCase()) {
@@ -200,12 +197,9 @@ public class EditCommand extends Command {
 				floatItem();
 			} else {
 				unfloatItemForDate();
-
 				CustomDate date = (CustomDate) editObject;
 				date.setTime(item.getEndTime());
-				
 				assertNotNull(date);
-
 				item.setEndDate(date);
 			}
 			break;
@@ -214,11 +208,8 @@ public class EditCommand extends Command {
 			break;
 		case FIELD_TIME_END:
 			item.setEndTime((int) editObject);
-
 			CustomDate date = unfloatItemForTime();
-			
 			assertNotNull(date);
-			
 			date.setTime(item.getEndTime());
 			item.setEndDate(date);
 			break;
@@ -254,8 +245,8 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Sets the end time of an item to be 2359, the default time, if item 
-	 * is floating
+	 * Sets the end time of an item to be 2359, the default time, if item is
+	 * floating
 	 */
 	void unfloatItemForDate() {
 		if (item.getEndTime() == -1) {
@@ -264,8 +255,8 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Gives a CustomDate object if the item is floating or a CustomDate object with
-	 * the end date of the item
+	 * Gives a CustomDate object if the item is floating or a CustomDate object
+	 * with the end date of the item
 	 * 
 	 * @return
 	 */
@@ -280,7 +271,7 @@ public class EditCommand extends Command {
 	}
 
 	/**
-     * Updates the original item with the new modified item
+	 * Updates the original item with the new modified item
 	 * 
 	 * @throws IOException
 	 */
@@ -288,17 +279,16 @@ public class EditCommand extends Command {
 		int listIndex = Storage.getListIndex(argsArray.get(0));
 		Magical.getStorage().update(listIndex, prevItem, item);
 	}
-	
+
 	/**
 	 * Updates the new view in the GUI
 	 */
 	void updateView() {
-		GUIModel.setTaskList(Magical.getStorage().getList(
-				Storage.TASKS_INDEX));
+		GUIModel.setTaskList(Magical.getStorage().getList(Storage.TASKS_INDEX));
 		GUIModel.setTaskDoneList(Magical.getStorage().getList(
 				Storage.TASKS_DONE_INDEX));
-		GUIModel.setEventList(Magical.getStorage().getList(
-				Storage.EVENTS_INDEX));
+		GUIModel.setEventList(Magical.getStorage()
+				.getList(Storage.EVENTS_INDEX));
 		GUIModel.setEventDoneList(Magical.getStorage().getList(
 				Storage.EVENTS_DONE_INDEX));
 	}

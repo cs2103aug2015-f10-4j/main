@@ -3,7 +3,7 @@ package main;
 import java.util.Calendar;
 import java.util.Date;
 
-public class CustomDate implements Comparable {
+public class CustomDate {
 
 	private static final String DATE_FORMAT = "%04d on %d %s %s, %s";
 
