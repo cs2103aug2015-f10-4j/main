@@ -15,10 +15,18 @@ import main.Item;
 
 public class EditCommandTests {
 
-	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <task_id> <field> <value>";
-	private static final String MESSAGE_INVALID_FIELD = "Field: %s\n";
+	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <item_id> <field> <value>";
+	private static final String MESSAGE_INVALID_FIELD = "Unknown field";
 	private static final String MESSAGE_INVALID_TASK_START = "Task cannot have start time";
+	private static final String MESSAGE_INVALID_DATE = "Date";
+	private static final String MESSAGE_INVALID_TIME_END = "End time";
+	private static final String MESSAGE_INVALID_TIME_START = "Start time";
+	private static final String MESSAGE_INVALID_ITEM_ID = "taskID";
+	private static final String MESSAGE_INVALID_TITLE = "Title";
+	private static final String MESSAGE_ITEM_ERROR = "Unable to edit item %s";
+	private static final String MESSAGE_ITEM_EDITED = "Item edited.";
 
+	/** Strings to test with **/
 	private static final String EMPTY_STRING = "";
 	private static final String WHITESPACE_STRING = "                ";
 	private static final String NUMBER_STRING = "1234567890";
@@ -61,7 +69,16 @@ public class EditCommandTests {
 
 	@Test
 	public void testEditDateNormalInputs() throws Exception {
-		Command normalEdit = new EditCommand("t1 date today");
+		Command normalEdit = new EditCommand("t1 date 1 January 2015");
+		Command normalEditDateFormat = new EditCommand("t1 date January 1 2015");
+		Command normalEditShortDate = new EditCommand("t1 date Jan 1");
+		Command normalEditShortDateFormat = new EditCommand("t1 date 1 Jan");
+		Command normalEditDateNoYear = new EditCommand("t1 date January 1");
+		Command normalEditFlexiDate = new EditCommand("t1 date today");
+		Command normalEditEvent = new EditCommand("e1 date 1 January 2015");
+		Command normalEditDoneTask = new EditCommand("d1 date 1 January 2015");
+		Command normalEditDoneEvent = new EditCommand("p1 date 1 January 2015");
+
 	}
 
 	@AfterClass

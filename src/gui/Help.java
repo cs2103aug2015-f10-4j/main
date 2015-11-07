@@ -1,15 +1,12 @@
 package gui;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+public class Help {
 
-public class GUIHelpController {
+	public static final String ENDL = System.getProperty("line.separator");
 
-	private static final String ENDL = System.getProperty("line.separator");
+	public static final String HEADER_TEXT = "Magical User Guide";
 
-	private static final String HEADER_TEXT = "Magical User Guide";
-
-	private static final String BODY_TEXT = ENDL + "To add a task:" + ENDL +
+	public static final String BODY_TEXT = ENDL + "To add a task:" + ENDL +
 			"> add [task title] by [due date] [recurrence]" + ENDL +
 			ENDL +
 			"To add an event:" + ENDL +
@@ -56,15 +53,5 @@ public class GUIHelpController {
 			ENDL +
 			"To exit the application:" + ENDL +
 			"> exit";
-
-	@FXML private Label headerLabel;
-	@FXML private Label bodyLabel;
-
-	public void initialize() {
-
-		headerLabel.setText(HEADER_TEXT);
-		bodyLabel.setText(BODY_TEXT);
-
-	}
 
 }
