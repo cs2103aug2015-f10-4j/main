@@ -3,7 +3,6 @@ package Commands;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 import gui.GUIModel;
@@ -16,7 +15,7 @@ public class TagCommand extends Command {
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: tag <task_id> <tag name>";
 	private static final String MESSAGE_INVALID_ITEM_ID = "itemID";
-	private static final String MESSAGE_TAG_CONTAINED = "%s already has tag: ";
+	private static final String MESSAGE_TAG_PRESENT = "%s already has tag: ";
 	private static final String MESSAGE_TAG_RESTRICTED = "%s cannot have tag: ";
 	private static final String MESSAGE_TAG_ERROR = "Unable to add tag to %s";
 	private static final String MESSAGE_TAG_ADDED = "%s added to %s";
@@ -30,7 +29,7 @@ public class TagCommand extends Command {
 	private String itemID;
 	private ArrayList<String> tags;
 	private Item prevItem;
-	private String duplicateTags = STRING_EMPTY;
+	private String presentTags = STRING_EMPTY;
 	private String invalidTags = STRING_EMPTY;
 
 	/**
@@ -122,7 +121,7 @@ public class TagCommand extends Command {
 				addTagToItem(currentTags, tag);
 			}
 		}
-		errorDuplicateORInvalidTags();
+		errorPresentORInvalidTags();
 
 		try {
 			updateItem();
@@ -147,17 +146,17 @@ public class TagCommand extends Command {
 	}
 
 	/**
-	 * Throws exception if error messages for invalid tags or duplicate tags are
-	 * present
+	 * Throws exception if error messages for invalid tags or tags that are
+	 * already present
 	 * 
 	 * @throws IllegalArgumentException
 	 */
-	void errorDuplicateORInvalidTags() throws Exception {
-		if (!duplicateTags.equals(STRING_EMPTY)
+	void errorPresentORInvalidTags() throws Exception {
+		if (!presentTags.equals(STRING_EMPTY)
 				&& !invalidTags.equals(STRING_EMPTY)) {
-			throw new Exception(duplicateTags + " AND " + invalidTags);
-		} else if (!duplicateTags.equals(STRING_EMPTY)) {
-			throw new Exception(duplicateTags);
+			throw new Exception(presentTags + " AND " + invalidTags);
+		} else if (!presentTags.equals(STRING_EMPTY)) {
+			throw new Exception(presentTags);
 		} else if (!invalidTags.equals(STRING_EMPTY)) {
 			throw new Exception(invalidTags);
 		}
@@ -180,13 +179,12 @@ public class TagCommand extends Command {
 				invalidTags += ", " + tag;
 			}
 		}
-		System.out.println("fuck rest");
 		return false;
 	}
 
 	/**
-	 * Check if a tag is already inside a set of tags and add to return message
-	 * duplicateTags if it is. Returns true if there are duplicates, or false
+	 * Check if a tag is present inside a set of tags and add to return message
+	 * presentTags if it is. Returns true if there are present tags, or false
 	 * otherwise.
 	 * 
 	 * @param currentTags
@@ -195,16 +193,14 @@ public class TagCommand extends Command {
 	 */
 	private boolean checkTags(Set<String> currentTags, String tag) {
 		if (currentTags.contains(tag)) {
-			if (duplicateTags.equals(STRING_EMPTY)) {
-				duplicateTags = String.format(MESSAGE_TAG_CONTAINED, itemID)
-						+ tag;
+			if (presentTags.equals(STRING_EMPTY)) {
+				presentTags = String.format(MESSAGE_TAG_PRESENT, itemID) + tag;
 				return true;
 			} else {
-				duplicateTags += ", " + tag;
+				presentTags += ", " + tag;
 				return true;
 			}
 		}
-		System.out.println("fuck dupl");
 		return false;
 	}
 
@@ -242,19 +238,5 @@ public class TagCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return true;
-	}
-
-	public static void main(String[] args) throws Exception {
-		ArrayList<Item> msg = new ArrayList<Item>();
-		Item t1 = new Item();
-		Set<String> set = new HashSet<String>();
-		set.add("tag1");
-		set.add("tag2");
-		t1.setTags(set);
-		msg.add(t1);
-		GUIModel.setTaskList(msg);
-
-		TagCommand tag1 = new TagCommand("t1 tag1 tag2");
-		System.out.println(tag1.execute());
 	}
 }
