@@ -189,8 +189,7 @@ public class EditCommand extends Command {
 	@Override
 	public String execute() {
 		
-		prevItem = item;
-		item = prevItem.copy();
+		duplicateItem();
 
 		switch (field.toLowerCase()) {
 		case FIELD_TITLE:
@@ -236,6 +235,14 @@ public class EditCommand extends Command {
 		}
 
 		return MESSAGE_ITEM_EDITED;
+	}
+
+	/**
+	 * Make 2 copies of the item to be stored in prevItem and item
+	 */
+	void duplicateItem() {
+		prevItem = item;
+		item = prevItem.copy();
 	}
 
 	/**
