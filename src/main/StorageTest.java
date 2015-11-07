@@ -34,7 +34,6 @@ public class StorageTest {
 		// task1.setEndDate(createDateObjects(1992, 3, 17, 15, 9, 17));
 		task1.setStartTime(900);
 		task1.setEndTime(2200);
-		task1.setRecurrence(RecurrencePeriod.WEEKLY);
 		task1.setPriority(1);
 		
 		task2.setType("task");
@@ -42,7 +41,6 @@ public class StorageTest {
 		// task2.setEndDate(createDateObjects(1993, 10, 12, 3, 8, 16));
 		task2.setStartTime(800);
 		task2.setEndTime(2000);
-		task2.setRecurrence(RecurrencePeriod.DAILY);
 		task2.setPriority(2);
 		
 		event1.setType("event");
@@ -50,7 +48,6 @@ public class StorageTest {
 		// event1.setEndDate(createDateObjects(1988, 2, 16, 8, 18, 58));
 		event1.setStartTime(700);
 		event1.setEndTime(1800);
-		event1.setRecurrence(RecurrencePeriod.YEARLY);
 		event1.setPriority(3);
 		
 		event2.setType("event");
@@ -58,7 +55,6 @@ public class StorageTest {
 		// event2.setEndDate(createDateObjects(1988, 8, 18, 3, 19, 16));
 		event2.setStartTime(500);
 		event2.setEndTime(1400);
-		event2.setRecurrence(RecurrencePeriod.DAILY);
 		event2.setPriority(4);
 	}
 	
