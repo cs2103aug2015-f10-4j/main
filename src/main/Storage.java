@@ -120,11 +120,11 @@ public class Storage {
 	/**
 	 * This method writes the specified file path into the default properties file.
 	 * @param filePath File path to be stored.
-	 * @return Nothing.
+	 * @return whether the file path is written successfully or not
 	 * @exception IOException On input error.
 	 * @see IOException
 	 */
-	protected void writeToProperties (String filePath) {
+	protected boolean writeToProperties (String filePath) {
 		Properties prop = new Properties();
 		OutputStream output = null;
 
@@ -132,9 +132,10 @@ public class Storage {
 			output = new FileOutputStream(SETTINGS_FILE_PATH);
 			prop.setProperty("filePath", filePath);
 			prop.store(output, null); // save properties to project root folder
-
+			return true;
 		} catch (IOException io) {
 			io.printStackTrace();
+			return false;
 		}
 	}
 
