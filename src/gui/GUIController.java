@@ -119,9 +119,7 @@ public class GUIController {
 		});
 
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, CustomDate>("endDate"));
-		taskDueDateCol.setCellFactory(col -> {
-			return makeDateCellFactory();
-		});
+
 
 
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
@@ -157,9 +155,7 @@ public class GUIController {
 		});
 
 		eventStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, CustomDate>("startDate"));
-		eventStartDateCol.setCellFactory(col -> {
-			return makeDateCellFactory();
-		});
+
 
 		eventEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
 		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
@@ -184,6 +180,8 @@ public class GUIController {
 		eventDoneEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
 		eventDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
+		updateRowColor();
+
 		Platform.runLater(new Runnable() {
 			@Override
 		    public void run() {
@@ -193,6 +191,8 @@ public class GUIController {
 		});
 
 	}
+
+
 
 	/**
 	 * This method switches the currently selected tab.
@@ -207,6 +207,71 @@ public class GUIController {
 			selectionModel.select(eventTab);
 		}
 		return;
+	}
+
+
+
+
+	/**
+	 * This method handles input from commandLineField by checking if the
+	 * Enter key has been pressed, reading user input and passing it to
+	 * the main application logic via main.Magical.parseCommand. If the
+	 * user input throws an exception, the error message is printed into
+	 * the label above the command line.
+	 * This method also checks if GUIModel.showHelpWindow is true, and
+	 * opens the help window accordingly.
+	 * @param event - Enter pressed
+	 * @throws Exception
+	 */
+
+	@FXML
+	protected void onEnterPressed(KeyEvent event) throws Exception {
+		helpPane.setVisible(false);
+		if (event.getCode() == KeyCode.ENTER) {
+			String userInput = commandLineField.getText();
+			try {
+				messageLabel.setTextFill(Color.web("#0000ff"));
+				String message = main.Magical.execute(userInput);
+				messageLabel.setText(message);
+				taskTable.setItems(GUIModel.getTaskList());
+				taskDoneTable.setItems(GUIModel.getTaskDoneList());
+				eventTable.setItems(GUIModel.getEventList());
+				eventDoneTable.setItems(GUIModel.getEventDoneList());
+				commandLineField.clear();
+				updateRowColor();
+				switchToTab(GUIModel.getCurrentTab());
+			} catch (Exception e) {
+				messageLabel.setTextFill(Color.web("#ff0000"));
+				messageLabel.setText(e.getMessage());
+			}
+		}
+
+		if (GUIModel.showHelpWindow) {
+			helpPane.setVisible(true);
+//			Stage helpStage = new Stage();
+//			helpStage.setTitle("Help");
+//			AnchorPane myPane = (AnchorPane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
+//			Scene myScene = new Scene(myPane);
+//			helpStage.setScene(myScene);
+//			helpStage.show();
+			GUIModel.showHelpWindow = false;
+		}
+	}
+
+	/**
+	 * These methods set the current tab of the GUIModel to the
+	 * tab last clicked by the user. They are assigned to their
+	 * respective tabs in the FXML file.
+	 * @return nothing
+	 */
+	@FXML
+	protected void handleTaskTabClicked() {
+		GUIModel.setCurrentTab("tasks");
+	}
+
+	@FXML
+	protected void handleEventTabClicked() {
+		GUIModel.setCurrentTab("events");
 	}
 
 	/**
@@ -284,66 +349,13 @@ public class GUIController {
 		};
 	}
 
-
-	/**
-	 * This method handles input from commandLineField by checking if the
-	 * Enter key has been pressed, reading user input and passing it to
-	 * the main application logic via main.Magical.parseCommand. If the
-	 * user input throws an exception, the error message is printed into
-	 * the label above the command line.
-	 * This method also checks if GUIModel.showHelpWindow is true, and
-	 * opens the help window accordingly.
-	 * @param event - Enter pressed
-	 * @throws Exception
-	 */
-
-	@FXML
-	protected void onEnterPressed(KeyEvent event) throws Exception {
-		helpPane.setVisible(false);
-		if (event.getCode() == KeyCode.ENTER) {
-			String userInput = commandLineField.getText();
-			try {
-				messageLabel.setTextFill(Color.web("#0000ff"));
-				String message = main.Magical.execute(userInput);
-				messageLabel.setText(message);
-				taskTable.setItems(GUIModel.getTaskList());
-				taskDoneTable.setItems(GUIModel.getTaskDoneList());
-				eventTable.setItems(GUIModel.getEventList());
-				eventDoneTable.setItems(GUIModel.getEventDoneList());
-				commandLineField.clear();
-				switchToTab(GUIModel.getCurrentTab());
-			} catch (Exception e) {
-				messageLabel.setTextFill(Color.web("#ff0000"));
-				messageLabel.setText(e.getMessage());
-			}
-		}
-
-		if (GUIModel.showHelpWindow) {
-			helpPane.setVisible(true);
-//			Stage helpStage = new Stage();
-//			helpStage.setTitle("Help");
-//			AnchorPane myPane = (AnchorPane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
-//			Scene myScene = new Scene(myPane);
-//			helpStage.setScene(myScene);
-//			helpStage.show();
-			GUIModel.showHelpWindow = false;
-		}
-	}
-
-	/**
-	 * These methods set the current tab of the GUIModel to the
-	 * tab last clicked by the user. They are assigned to their
-	 * respective tabs in the FXML file.
-	 * @return nothing
-	 */
-	@FXML
-	protected void handleTaskTabClicked() {
-		GUIModel.setCurrentTab("tasks");
-	}
-
-	@FXML
-	protected void handleEventTabClicked() {
-		GUIModel.setCurrentTab("events");
+	private void updateRowColor() {
+		taskDueDateCol.setCellFactory(col -> {
+			return makeDateCellFactory();
+		});
+		eventStartDateCol.setCellFactory(col -> {
+			return makeDateCellFactory();
+		});
 	}
 
 
