@@ -9,14 +9,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Commands.Command;
-import Commands.DoneCommand;
+import Commands.DelCommand;
+import Commands.UndoneCommand;
 import gui.GUIModel;
 import main.Item;
 
-public class DoneCommandTests {
+public class UndoneCommandTests {
 
 	// protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
-	// private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <task_id>";
+	// private static final String MESSAGE_INVALID_PARAMS = "Use Format: undone <task_id>";
 	// private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 
 	@Before
@@ -31,22 +32,21 @@ public class DoneCommandTests {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		DoneCommand doneTask = new DoneCommand("t1");
-		DoneCommand doneTaskAgain = new DoneCommand("t1");
-		DoneCommand doneNextTask = new DoneCommand("t2");
-		DoneCommand doneLastTask = new DoneCommand("t7");
+		UndoneCommand UndoneTask = new UndoneCommand("d1");
+		UndoneCommand UndoneTaskAgain = new UndoneCommand("d1");
+		UndoneCommand UndoneNextTask = new UndoneCommand("d2");
+		UndoneCommand UndoneLastTask = new UndoneCommand("d7");
 	}
 
 	@Test
 	public void testWrongNumArgs() {
 		try {
-			DoneCommand noArgs = new DoneCommand("");
+			UndoneCommand noArgs = new UndoneCommand("");
 		} catch (Exception e) {
 			assertTrue(e instanceof StringIndexOutOfBoundsException);
-			// assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 		try {
-			DoneCommand tooManyArgs = new DoneCommand("t1 t2");
+			UndoneCommand tooManyArgs = new UndoneCommand("d1 d2");
 		} catch (Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
@@ -56,32 +56,29 @@ public class DoneCommandTests {
 	public void testInvalidID() {
 		// final String ERROR_MESSAGE = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_ID;
 		try {
-			DoneCommand invalidID = new DoneCommand("t11");
+			UndoneCommand invalidID = new UndoneCommand("d11");
 		} catch (Exception e) {
 			assertTrue(e instanceof IndexOutOfBoundsException);
 		}
 		try {
-			DoneCommand noLetter = new DoneCommand("1");
+			UndoneCommand noLetter = new UndoneCommand("1");
 		} catch (Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			DoneCommand wrongLetter = new DoneCommand("a1");
+			UndoneCommand wrongLetter = new UndoneCommand("a1");
 		} catch (Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			Command tooShort = new DoneCommand("a");
+			Command tooShort = new UndoneCommand("a");
 		} catch (Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			Command youCantDoneADone = new DoneCommand("d1");
+			Command youCantUndoneAUndone = new UndoneCommand("t1");
 		} catch (Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
-			// System.out.println("e: " + e);
-			// System.out.println("stringformat: " + String.format(ERROR_MESSAGE, "d1"));
-			// assertEquals(String.format(ERROR_MESSAGE, "d1"), e.getMessage());
 		}
 	}
 

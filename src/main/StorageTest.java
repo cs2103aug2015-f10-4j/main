@@ -14,7 +14,13 @@ import java.io.File;
 
 import junit.framework.TestCase;
 
-public class StorageTest extends TestCase {
+public class StorageTest {
+	
+	private static final String DEFAULT_FILE_DIRECTORY = "magical";
+	private static final String DEFAULT_FILE_NAME = "storage.txt";
+	private static final String SETTINGS_FILE_NAME = "settings.properties";
+	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + SETTINGS_FILE_NAME;
+	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
 
 	Item task1 = new Item();
 	Item event1 = new Item();
@@ -25,7 +31,7 @@ public class StorageTest extends TestCase {
 	public void setUp() {
 		task1.setType("task");
 		task1.setTitle("help mum buy groceries");
-		task1.setEndDate(createDateObjects(1992, 3, 17, 15, 9, 17));
+		// task1.setEndDate(createDateObjects(1992, 3, 17, 15, 9, 17));
 		task1.setStartTime(900);
 		task1.setEndTime(2200);
 		task1.setRecurrence(RecurrencePeriod.WEEKLY);
@@ -33,7 +39,7 @@ public class StorageTest extends TestCase {
 		
 		task2.setType("task");
 		task2.setTitle("study for midterms");
-		task2.setEndDate(createDateObjects(1993, 10, 12, 3, 8, 16));
+		// task2.setEndDate(createDateObjects(1993, 10, 12, 3, 8, 16));
 		task2.setStartTime(800);
 		task2.setEndTime(2000);
 		task2.setRecurrence(RecurrencePeriod.DAILY);
@@ -41,7 +47,7 @@ public class StorageTest extends TestCase {
 		
 		event1.setType("event");
 		event1.setTitle("my birthday");
-		event1.setEndDate(createDateObjects(1988, 2, 16, 8, 18, 58));
+		// event1.setEndDate(createDateObjects(1988, 2, 16, 8, 18, 58));
 		event1.setStartTime(700);
 		event1.setEndTime(1800);
 		event1.setRecurrence(RecurrencePeriod.YEARLY);
@@ -49,7 +55,7 @@ public class StorageTest extends TestCase {
 		
 		event2.setType("event");
 		event2.setTitle("eat dinner at utown");
-		event2.setEndDate(createDateObjects(1988, 8, 18, 3, 19, 16));
+		// event2.setEndDate(createDateObjects(1988, 8, 18, 3, 19, 16));
 		event2.setStartTime(500);
 		event2.setEndTime(1400);
 		event2.setRecurrence(RecurrencePeriod.DAILY);
@@ -66,23 +72,23 @@ public class StorageTest extends TestCase {
 		localArray.add(event2); // adding items into local array
 	}
 
-	/*
+	
 	// this method helps to add everything into the testing array using createTask()
 	// method in Storage.java
 	private void creatingTasks(Storage testStorage) {
 		try {
-			testStorage.createTask(task1);
-			testStorage.createTask(task2);
-			testStorage.createTask(event1);
-			testStorage.createTask(event2); //adding original items into Storage array
+			testStorage.create(0, task1);
+			testStorage.create(0, task2);
+			testStorage.create(2, event1);
+			testStorage.create(2, event2); //adding original items into Storage array
 		} catch (IOException e) {
-			// print exception
+			e.printStackTrace();
 		}
 	}
-	*/
+	
 	
 	// creates localArray by adding default tasks to test against
-	private Date createDateObjects(int year, int month, int day, int hour, int min, int sec) {
+	private CustomDate createDateObjects(int year, int month, int day, int hour, int min, int sec) {
 		Calendar date = Calendar.getInstance();
 		date.clear();
 			
@@ -92,8 +98,9 @@ public class StorageTest extends TestCase {
 		date.set(Calendar.HOUR_OF_DAY, hour);
 		date.set(Calendar.MINUTE, min);
 		date.set(Calendar.SECOND, sec);
-			
-		return date.getTime();
+		
+		CustomDate dateToReturn = new CustomDate(date.getTime());
+		return dateToReturn;
 	}
 		
 	/******************* END OF HELPER METHODS *******************/
@@ -103,8 +110,22 @@ public class StorageTest extends TestCase {
 	// successfully tested
 	@Test
 	public void testStorageConstructor() throws IOException {
-			Storage testStorage = new Storage();
-			assertTrue(testStorage.fileExist());
+		Storage testStorage = new Storage();
+		assertTrue(testStorage.fileExist());
+	}
+	
+	// tests whether the magical folder will be created
+	// test successful
+	@Test
+	public void testCreateFolder() {
+		Storage testStorage = new Storage();
+		assertTrue(testStorage.createFolder());
+	}
+	
+	@Test
+	public void testWriteToProperties() {
+		Storage testStorage = new Storage();
+		assertTrue(testStorage.writeToProperties(DEFAULT_FILE_PATH));
 	}
 	
 /*
