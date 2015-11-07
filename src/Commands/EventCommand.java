@@ -154,6 +154,8 @@ public class EventCommand extends Command {
 		this.title = getTitle(argsArray.get(0).trim());
 		this.dateStart = getDate(argsArray.get(1).trim());
 		this.dateEnd = getDate(argsArray.get(2).trim());
+		assertNotNull(dateStart);
+		assertNotNull(dateEnd);
 		this.startTime = dateStart.getTime();
 		this.endTime = dateEnd.getTime();
 	}

@@ -79,7 +79,7 @@ public abstract class Command {
 	 * @return
 	 */
 	private String swapDayMonth(String date) {
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}\\s\\w{3,}(?=\\s{0,1})");
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}\\s\\[A-z]{3,}(?=\\s{0,1})");
 		if(m.find()){
 			String s = m.group(0);
 			String[] splitS = s.split(" ", 2);
@@ -158,7 +158,7 @@ public abstract class Command {
 	 */
 	private String formatCorrectTime(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "\\D*\\d{4}\\D*");
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<!/|-)\\d{4}(?=\\s{0,1})");
 		assertNotNull(m);
 
 		if (m.find()) {
@@ -181,14 +181,15 @@ public abstract class Command {
 	 */
 	private String dateWithYear(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "\\D*\\d{2}(/|-)\\d{2}\\D*");
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}(/|-)\\d{1,2}(?=\\s{0,1})(?!(/|-|\\d))");
 		assertNotNull(m);
 
 		if (m.find()) {
 			String s = m.group(0);
+			System.out.println(s);
 			assertNotNull(s);
 			date = date.replaceAll(s, s.trim() + "/"
-					+ new CustomDate(new Date()).getYear() + " ");
+					+ new CustomDate(new Date()).getYear());
 		}
 		return date;
 	}
@@ -282,9 +283,4 @@ public abstract class Command {
 	 * @return boolean true/false
 	 */
 	protected abstract boolean validNumArgs();
-	
-	public static void main(String[] args) throws Exception {
-		ExitCommand e = new ExitCommand("");
-		System.out.println(e.getDate("5 November"));
-	}
 }
