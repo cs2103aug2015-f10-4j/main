@@ -41,25 +41,27 @@ public class GUIController {
 	private static final String EVENT_DONE_TABLE_LETTER = "p";
 
 
-	private static final String OVERDUE_ROW_COLOR = "indianred";
+	private static final String OVERDUE_ROW_COLOR = "lightcoral";
 
-	@FXML private TitledPane toDoPane;
+	@FXML private AnchorPane helpPane;
 
-	// TASKS
+	/** Task Table Elements **/
 	@FXML private TableView<Item> taskTable;
 	@FXML private TableColumn<Item, String> taskIDCol;
 	@FXML private TableColumn<Item, String> taskTitleCol;
 	@FXML private TableColumn<Item, CustomDate> taskDueDateCol;
 	@FXML private TableColumn<Item, String> taskPriorityCol;
 	@FXML private TableColumn<Item, String> taskTagsCol;
-	// DONE TASKS
+
+	/** Done Task Table Elements **/
 	@FXML private TableView<Item> taskDoneTable;
 	@FXML private TableColumn<Item, String> taskDoneIDCol;
 	@FXML private TableColumn<Item, String> taskDoneTitleCol;
 	@FXML private TableColumn<Item, String> taskDoneDueDateCol;
 	@FXML private TableColumn<Item, String> taskDonePriorityCol;
 	@FXML private TableColumn<Item, String> taskDoneTagsCol;
-	// EVENTS
+
+	/** Event Table Elements **/
 	@FXML private TableView<Item> eventTable;
 	@FXML private TableColumn<Item, String> eventIDCol;
 	@FXML private TableColumn<Item, String> eventTitleCol;
@@ -67,7 +69,9 @@ public class GUIController {
 	@FXML private TableColumn<Item, String> eventEndDateCol;
 	@FXML private TableColumn<Item, String> eventPriorityCol;
 	@FXML private TableColumn<Item, String> eventTagsCol;
-	// DONE EVENTS
+
+
+	/** Done Event Table Elements **/
 	@FXML private TableView<Item> eventDoneTable;
 	@FXML private TableColumn<Item, String> eventDoneIDCol;
 	@FXML private TableColumn<Item, String> eventDoneTitleCol;
@@ -76,7 +80,7 @@ public class GUIController {
 	@FXML private TableColumn<Item, String> eventDonePriorityCol;
 	@FXML private TableColumn<Item, String> eventDoneTagsCol;
 
-	// Controls
+	/** Controls **/
 	@FXML private TabPane tabPane;
 	@FXML private Tab taskTab;
 	@FXML private Tab eventTab;
@@ -84,8 +88,11 @@ public class GUIController {
 	@FXML private TextField commandLineField;
 	@FXML private TextArea helpTextArea;
 
+	/** PUBLIC METHODS **/
+
 	/**
-	 * This method initializes GUIController when it is called by GUIView.
+	 * This method initializes GUIController when the FXML file is
+	 * loaded by GUIView.
 	 * @throws Exception
 	 */
 
@@ -181,6 +188,7 @@ public class GUIController {
 			@Override
 		    public void run() {
 		        commandLineField.requestFocus();
+		        helpPane.setVisible(false);
 		    }
 		});
 
@@ -291,7 +299,7 @@ public class GUIController {
 
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {
-
+		helpPane.setVisible(false);
 		if (event.getCode() == KeyCode.ENTER) {
 			String userInput = commandLineField.getText();
 			try {
@@ -311,12 +319,13 @@ public class GUIController {
 		}
 
 		if (GUIModel.showHelpWindow) {
-			Stage helpStage = new Stage();
-			helpStage.setTitle("Help");
-			AnchorPane myPane = (AnchorPane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
-			Scene myScene = new Scene(myPane);
-			helpStage.setScene(myScene);
-			helpStage.show();
+			helpPane.setVisible(true);
+//			Stage helpStage = new Stage();
+//			helpStage.setTitle("Help");
+//			AnchorPane myPane = (AnchorPane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
+//			Scene myScene = new Scene(myPane);
+//			helpStage.setScene(myScene);
+//			helpStage.show();
 			GUIModel.showHelpWindow = false;
 		}
 	}
