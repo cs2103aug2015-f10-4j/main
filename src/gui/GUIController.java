@@ -7,10 +7,7 @@ import java.util.Set;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -18,7 +15,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -40,8 +36,7 @@ public class GUIController {
 	private static final String EVENT_TABLE_LETTER = "e";
 	private static final String EVENT_DONE_TABLE_LETTER = "p";
 
-
-	private static final String OVERDUE_ROW_COLOR = "lightcoral";
+	private static final String OVERDUE_ROW_COLOR = "lightpink";
 
 	@FXML private AnchorPane helpPane;
 
@@ -70,7 +65,6 @@ public class GUIController {
 	@FXML private TableColumn<Item, String> eventPriorityCol;
 	@FXML private TableColumn<Item, String> eventTagsCol;
 
-
 	/** Done Event Table Elements **/
 	@FXML private TableView<Item> eventDoneTable;
 	@FXML private TableColumn<Item, String> eventDoneIDCol;
@@ -80,13 +74,17 @@ public class GUIController {
 	@FXML private TableColumn<Item, String> eventDonePriorityCol;
 	@FXML private TableColumn<Item, String> eventDoneTagsCol;
 
-	/** Controls **/
+	/** Help Elements **/
+	@FXML private Label headerLabel;
+	@FXML private Label bodyLabel;
+
+	/** Other Controls **/
 	@FXML private TabPane tabPane;
 	@FXML private Tab taskTab;
 	@FXML private Tab eventTab;
 	@FXML private Label messageLabel;
 	@FXML private TextField commandLineField;
-	@FXML private TextArea helpTextArea;
+
 
 	/** PUBLIC METHODS **/
 
@@ -106,82 +104,61 @@ public class GUIController {
 		eventTable.setItems(GUIModel.getEventList());
 		eventDoneTable.setItems(GUIModel.getEventDoneList());
 
-		// Populate task table columns
-
+		/** Task Table Columns **/
 		taskIDCol.setCellFactory(col -> {
 		    return makeIndex(TASK_TABLE_LETTER);
 		});
-
 		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
-
 		taskTagsCol.setCellValueFactory(col -> {
 			return makeTagCellValue(col);
 		});
-
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, CustomDate>("endDate"));
-
-
-
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
-		// Populate done task table columns
-
+		/** Done Task Table Columns **/
 		taskDoneIDCol.setCellFactory(col -> {
 			return makeIndex(TASK_DONE_TABLE_LETTER);
 		});
-
 		taskDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
-
 		taskDoneTagsCol.setCellValueFactory(col -> {
 			return makeTagCellValue(col);
 		});
-
 		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
 		taskDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
-
-
-
-		// Populate event table columns
-
+		/** Event Table Columns **/
 		eventIDCol.setCellFactory(col -> {
 			return makeIndex(EVENT_TABLE_LETTER);
 		});
-
 		eventTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
-
 		eventTagsCol.setCellValueFactory(col -> {
 			return makeTagCellValue(col);
 		});
-
 		eventStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, CustomDate>("startDate"));
-
-
 		eventEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
 		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
 
 
-		// Populate done event table columns
-
+		/** Done Event Table Columns **/
 		eventDoneIDCol.setCellFactory(col -> {
 			return makeIndex(EVENT_DONE_TABLE_LETTER);
 		});
-
 		eventDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
-
 		eventDoneTagsCol.setCellValueFactory(col -> {
 			return makeTagCellValue(col);
 		});
-
 		eventDoneStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("startDate"));
-
-
 		eventDoneEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
 		eventDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
 		updateRowColor();
 
+		/**Help Controls**/
+		headerLabel.setText(Help.HEADER_TEXT);
+		bodyLabel.setText(Help.BODY_TEXT);
+
+		/** For dealing with controls that need to be initialized first **/
 		Platform.runLater(new Runnable() {
 			@Override
 		    public void run() {
@@ -226,8 +203,8 @@ public class GUIController {
 
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {
-		helpPane.setVisible(false);
 		if (event.getCode() == KeyCode.ENTER) {
+			helpPane.setVisible(false);
 			String userInput = commandLineField.getText();
 			try {
 				messageLabel.setTextFill(Color.web("#0000ff"));
@@ -294,7 +271,7 @@ public class GUIController {
 	}
 
 	/**
-	 * This method returns a SimpleStringProperty of a cell's Item's tags.
+	 * Returns a SimpleStringProperty of a cell's Item's tags.
 	 * @param col
 	 * @return SimpleStringProperty
 	 */
@@ -308,9 +285,9 @@ public class GUIController {
 	}
 
 	/**
-	 * This method makes the appropriate index cell for table columns.
+	 * Makes the appropriate index cell for table columns.
 	 * @param character - depending on table
-	 * @return
+	 * @return TableCell
 	 */
 
 	private TableCell<Item, String> makeIndex(String character) {
@@ -322,9 +299,10 @@ public class GUIController {
 	}
 
 	/**
-	 * This method creates a table cell for dates in tables that colors
-	 * the whole row red if the date is past. As such, this method is
-	 * only used for the undone event and task tables.
+	 * Creates a table cell for dates in tables that colors
+	 * the whole row red if the date is past.
+	 * As such, this method is only used for the undone
+	 * event and task tables.
 	 * @return TableCell<Item, CustomDate> - colors the row depending on date
 	 */
 
@@ -348,6 +326,12 @@ public class GUIController {
 			}
 		};
 	}
+
+	/**
+	 * Updates row colors of the task table and event table.
+	 * Needs to be called after every command.
+	 * @return nothing
+	 */
 
 	private void updateRowColor() {
 		taskDueDateCol.setCellFactory(col -> {
