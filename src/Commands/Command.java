@@ -126,7 +126,7 @@ public abstract class Command {
 	protected String getPriority(String priority) {
 		System.out.println(priority);
 		assertNotNull(priority);
-		if (priority.equals("high") || priority.equals("medium") || priority.equals("low")) {
+		if (priority.equals("high") || priority.equals("medium") || priority.equals("low") || priority.equals("")) {
 			return priority;
 		}
 		return null;
@@ -242,22 +242,6 @@ public abstract class Command {
 	private String getItemIdType(String itemID) {
 		assertNotNull(itemID);
 		return itemID.substring(0, 1).toLowerCase();
-	}
-
-	/**
-	 * Checks if the priority is valid (from 0 to 10) and gives the priority, 
-	 * or -1 otherwise
-	 * 
-	 * @param p
-	 * @return int priority
-	 */
-	private int getWithinPriorityRange(int p) {
-		assertNotNull(p);
-		if (p >= 0 && p <= 10) {
-			return p;
-		} else {
-			return -1;
-		}
 	}
 	
 	/**
