@@ -13,7 +13,6 @@ import main.Item;
 
 public class TagCommand extends Command {
 
-	
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: tag <task_id> <tag name>";
 	private static final String MESSAGE_INVALID_ITEM_ID = "itemID";
@@ -21,11 +20,11 @@ public class TagCommand extends Command {
 	private static final String MESSAGE_TAG_RESTRICTED = "%s cannot have tag: ";
 	private static final String MESSAGE_TAG_ERROR = "Unable to add tag to %s";
 	private static final String MESSAGE_TAG_ADDED = "%s added to %s";
-	
+
 	/** For Checking **/
 	private static final ArrayList<String> RESTRICTED = new ArrayList<String>(
-		    Arrays.asList("event", "events", "task", "tasks", "done"));
-	
+			Arrays.asList("event", "events", "task", "tasks", "done"));
+
 	/** Command Parameters **/
 	private Item item;
 	private String itemID;
@@ -35,9 +34,9 @@ public class TagCommand extends Command {
 	private String invalidTags = STRING_EMPTY;
 
 	/**
-	 * Constructor for TagCommand objects.
-	 * Checks if arguments are valid and stores the correct arguments properly.
-	 * Throws the appropriate exception if arguments are invalid
+	 * Constructor for TagCommand objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -50,16 +49,13 @@ public class TagCommand extends Command {
 
 		if (validNumArgs()) {
 			setProperParams();
-
 			checkItemExists();
-
 			errorInvalidArgs();
-			
 		} else {
 			errorInvalidFormat();
 		}
 	}
-	
+
 	/**
 	 * Adds error message if item does not exist or unable to get
 	 */
@@ -77,7 +73,7 @@ public class TagCommand extends Command {
 	private void errorInvalidFormat() throws IllegalArgumentException {
 		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
 	}
-	
+
 	/**
 	 * Throws exception if error messages for invalid arguments are present
 	 * 
@@ -85,7 +81,8 @@ public class TagCommand extends Command {
 	 */
 	private void errorInvalidArgs() throws IllegalArgumentException {
 		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
+			throw new IllegalArgumentException(String.format(
+					MESSAGE_HEADER_INVALID, invalidArgs));
 		}
 	}
 
@@ -112,22 +109,19 @@ public class TagCommand extends Command {
 	 * 
 	 * @param None
 	 * @return message to show user
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Override
 	public String execute() throws Exception {
-		
-		duplicateItem();
 
+		duplicateItem();
 		Set<String> currentTags = item.getTags();
-		
-		for(String tag : tags){
-			
-			if(!checkTags(currentTags, tag)&&!checkRestricted(currentTags, tag)){
+		for (String tag : tags) {
+			if (!checkTags(currentTags, tag)
+					&& !checkRestricted(currentTags, tag)) {
 				addTagToItem(currentTags, tag);
 			}
 		}
-		System.out.println(currentTags);
 		errorDuplicateORInvalidTags();
 
 		try {
@@ -137,12 +131,13 @@ public class TagCommand extends Command {
 		} finally {
 			updateView();
 		}
-		
+
 		return String.format(MESSAGE_TAG_ADDED, tags, itemID);
 	}
 
 	/**
 	 * Adds given tag to set of tags and set item tags as this set
+	 * 
 	 * @param currentTags
 	 * @param tag
 	 */
@@ -152,32 +147,35 @@ public class TagCommand extends Command {
 	}
 
 	/**
-	 * Throws exception if error messages for invalid tags or duplicate tags are present
+	 * Throws exception if error messages for invalid tags or duplicate tags are
+	 * present
 	 * 
 	 * @throws IllegalArgumentException
 	 */
 	void errorDuplicateORInvalidTags() throws Exception {
-		if(!duplicateTags.equals(STRING_EMPTY) && !invalidTags.equals(STRING_EMPTY)){
+		if (!duplicateTags.equals(STRING_EMPTY)
+				&& !invalidTags.equals(STRING_EMPTY)) {
 			throw new Exception(duplicateTags + " AND " + invalidTags);
-		} else if (!duplicateTags.equals(STRING_EMPTY)){
+		} else if (!duplicateTags.equals(STRING_EMPTY)) {
 			throw new Exception(duplicateTags);
-		} else if (!invalidTags.equals(STRING_EMPTY)){
+		} else if (!invalidTags.equals(STRING_EMPTY)) {
 			throw new Exception(invalidTags);
 		}
 	}
-	
+
 	/**
-	 * Check if a tag is restricted and add to return message invalidTags 
-	 * if it is. Returns true if tag is restricted, or false otherwise.
+	 * Check if a tag is restricted and add to return message invalidTags if it
+	 * is. Returns true if tag is restricted, or false otherwise.
 	 * 
 	 * @param currentTags
 	 * @param tag
 	 * @return boolean
 	 */
 	private boolean checkRestricted(Set<String> currentTags, String tag) {
-		if (RESTRICTED.contains(tag.toLowerCase())){
-			if(invalidTags.equals(STRING_EMPTY)){
-				invalidTags = String.format(MESSAGE_TAG_RESTRICTED, itemID) + tag;
+		if (RESTRICTED.contains(tag.toLowerCase())) {
+			if (invalidTags.equals(STRING_EMPTY)) {
+				invalidTags = String.format(MESSAGE_TAG_RESTRICTED, itemID)
+						+ tag;
 			} else {
 				invalidTags += ", " + tag;
 			}
@@ -187,8 +185,9 @@ public class TagCommand extends Command {
 	}
 
 	/**
-	 * Check if a tag is already inside a set of tags and add to return message duplicateTags 
-	 * if it is. Returns true if there are duplicates, or false otherwise.
+	 * Check if a tag is already inside a set of tags and add to return message
+	 * duplicateTags if it is. Returns true if there are duplicates, or false
+	 * otherwise.
 	 * 
 	 * @param currentTags
 	 * @param tag
@@ -196,14 +195,15 @@ public class TagCommand extends Command {
 	 */
 	private boolean checkTags(Set<String> currentTags, String tag) {
 		if (currentTags.contains(tag)) {
-			if(duplicateTags.equals(STRING_EMPTY)){ 
-				duplicateTags = String.format(MESSAGE_TAG_CONTAINED, itemID) + tag;
+			if (duplicateTags.equals(STRING_EMPTY)) {
+				duplicateTags = String.format(MESSAGE_TAG_CONTAINED, itemID)
+						+ tag;
 				return true;
 			} else {
 				duplicateTags += ", " + tag;
 				return true;
 			}
-		} 
+		}
 		System.out.println("fuck dupl");
 		return false;
 	}
@@ -217,7 +217,7 @@ public class TagCommand extends Command {
 	}
 
 	/**
-     * Updates the original item with the new modified item
+	 * Updates the original item with the new modified item
 	 * 
 	 * @throws IOException
 	 */
@@ -225,17 +225,16 @@ public class TagCommand extends Command {
 		int listIndex = Storage.getListIndex(argsArray.get(0));
 		Magical.getStorage().update(listIndex, prevItem, item);
 	}
-	
+
 	/**
 	 * Updates the new view in the GUI
 	 */
 	void updateView() {
-		GUIModel.setTaskList(Magical.getStorage().getList(
-				Storage.TASKS_INDEX));
+		GUIModel.setTaskList(Magical.getStorage().getList(Storage.TASKS_INDEX));
 		GUIModel.setTaskDoneList(Magical.getStorage().getList(
 				Storage.TASKS_DONE_INDEX));
-		GUIModel.setEventList(Magical.getStorage().getList(
-				Storage.EVENTS_INDEX));
+		GUIModel.setEventList(Magical.getStorage()
+				.getList(Storage.EVENTS_INDEX));
 		GUIModel.setEventDoneList(Magical.getStorage().getList(
 				Storage.EVENTS_DONE_INDEX));
 	}
@@ -244,7 +243,7 @@ public class TagCommand extends Command {
 	public boolean isUndoable() {
 		return true;
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		ArrayList<Item> msg = new ArrayList<Item>();
 		Item t1 = new Item();
@@ -254,7 +253,7 @@ public class TagCommand extends Command {
 		t1.setTags(set);
 		msg.add(t1);
 		GUIModel.setTaskList(msg);
-		
+
 		TagCommand tag1 = new TagCommand("t1 tag1 tag2");
 		System.out.println(tag1.execute());
 	}
