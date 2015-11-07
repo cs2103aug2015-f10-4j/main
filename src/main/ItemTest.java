@@ -69,9 +69,6 @@ public class ItemTest {
 		event3.setPriority(3);
 	}
 	
-	/******************* HELPER METHODS *******************/
-	
-	// creates localArray by adding default tasks to test against
 	private CustomDate createCustomDate(int year, int month, int day, int hour, int min, int sec) {
 		Calendar date = Calendar.getInstance();
 		date.clear();
@@ -105,6 +102,7 @@ public class ItemTest {
 	public void testNotEquals() {
 		// to test if 2 task objects not equal
 		assertNotEquals(event1, event2);
+		assertNotEquals(task1, task2);
 	}
 	
 	
