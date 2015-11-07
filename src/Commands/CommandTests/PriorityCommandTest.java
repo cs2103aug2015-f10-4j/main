@@ -15,8 +15,8 @@ import main.Item;
 
 public class PriorityCommandTest {
 
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: priority";
-	protected static final String MESSAGE_ID_INVALID = "Invalid arguments: taskID";
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %spriority";
+	protected static final String MESSAGE_ID_INVALID = "Invalid arguments: %sitemID, priority";
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: set <task id> <priority>";
 
 	@Before
@@ -31,11 +31,11 @@ public class PriorityCommandTest {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		PriorityCommand tagTask = new PriorityCommand("t1 10");
-		PriorityCommand tagTaskAgain = new PriorityCommand("t1 9");
-		PriorityCommand tagTaskWithSamePriorityAgain = new PriorityCommand("t1 9");
-		PriorityCommand tagNextTask = new PriorityCommand("t2 8");
-		PriorityCommand tagLastTask = new PriorityCommand("t7 7");
+		PriorityCommand tagTask = new PriorityCommand("t1 high");
+		PriorityCommand tagTaskAgain = new PriorityCommand("t1 medium");
+		PriorityCommand tagTaskWithSamePriorityAgain = new PriorityCommand("t1 medium");
+		PriorityCommand tagNextTask = new PriorityCommand("t2 low");
+		PriorityCommand tagLastTask = new PriorityCommand("t7 high");
 	}
 
 	@Test
@@ -88,6 +88,7 @@ public class PriorityCommandTest {
 		try {
 			Command priorityTooLarge = new PriorityCommand("t1 11");
 		} catch (Exception e) {
+			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
