@@ -27,14 +27,14 @@ public class ItemTest {
 		task1.setEndDate(createCustomDate(1992, 3, 17, 15, 9, 17));
 		task1.setStartTime(900);
 		task1.setEndTime(2200);
-		task1.setPriority(1);
+		task1.setPriority("medium");
 		
 		task2.setType("task");
 		task2.setTitle("study for midterms");
 		task2.setEndDate(createCustomDate(1993, 10, 12, 3, 8, 16));
 		task2.setStartTime(800);
 		task2.setEndTime(2000);
-		task2.setPriority(2);
+		task2.setPriority("high");
 		
 		event1.setType("event");
 		event1.setTitle("my birthday");
@@ -44,14 +44,14 @@ public class ItemTest {
 		tags.clear();
 		tags.add(null);
 		event1.setTags(tags);
-		event1.setPriority(3);
+		event1.setPriority("high");
 		
 		event2.setType("event");
 		event2.setTitle("eat dinner at utown");
 		event2.setEndDate(createCustomDate(1988, 8, 18, 3, 19, 16));
 		event2.setStartTime(500);
 		event2.setEndTime(1400);
-		event2.setPriority(4);
+		event2.setPriority("low");
 		
 		event3.setType("event"); // exactly the same as event1
 		event3.setTitle("my birthday");
@@ -61,7 +61,7 @@ public class ItemTest {
 		tags.clear();
 		tags.add("");
 		event3.setTags(tags);
-		event3.setPriority(3);
+		event3.setPriority("high");
 	}
 	
 	private CustomDate createCustomDate(int year, int month, int day, int hour, int min, int sec) {

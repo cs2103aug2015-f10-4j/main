@@ -12,11 +12,15 @@ import main.Item;
 
 public class TagCommand extends Command {
 
-	/** Messaging **/
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: tag <task_id> <tag name>";
+	private static final String MESSAGE_INVALID_ITEM_ID = "itemID";
 
+	/** Messaging **/
+	private static final String MESSAGE_INVALID_FORMAT = "Use Format: tag <task_id> <tag name>";
+	private static final String MESSAGE_HAS_TAG = "%s already has tag: ";
+	private static final String MESSAGE_HAS_RESTRICTED = "%s cannot have tag: ";
 	/** For Checking **/
-	private static final String[] RESTRICTED = {"event", "events", "task", "tasks", "done"};
+	private static final ArrayList<String> RESTRICTED = new ArrayList<String>(
+		    Arrays.asList("event", "events", "task", "tasks", "done"));
 	
 	/** Command Parameters **/
 	private Item item;
@@ -35,22 +39,47 @@ public class TagCommand extends Command {
 	public TagCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = splitArgs(args," ", -1);
+		this.argsArray = splitArgs(args, " ", -1);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
 			setProperParams();
 
-			if (item == null) {
-				invalidArgs.add("itemID");
-			}
+			checkItemExists();
 
-			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
-						+ String.join(", ", invalidArgs));
-			}
+			errorInvalidArgs();
+			
 		} else {
-			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
+			errorInvalidFormat();
+		}
+	}
+	
+	/**
+	 * Adds error message if item does not exist or unable to get
+	 */
+	void checkItemExists() {
+		if (item == null) {
+			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
+		}
+	}
+
+	/**
+	 * Throws exception if error messages for format are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	private void errorInvalidFormat() throws IllegalArgumentException {
+		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
+	}
+	
+	/**
+	 * Throws exception if error messages for invalid arguments are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	private void errorInvalidArgs() throws IllegalArgumentException {
+		if (invalidArgs.size() > 0) {
+			throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
 		}
 	}
 
@@ -86,16 +115,23 @@ public class TagCommand extends Command {
 
 		Set<String> currentTags = item.getTags();
 		String duplicateTags = STRING_EMPTY;
+		String invalidTags = STRING_EMPTY;
 		for(String tag : tags){
 			if (currentTags.contains(tag)) {
-				duplicateTags += duplicateTags.equals(STRING_EMPTY) ? tags : ", " + tags;
+				duplicateTags += duplicateTags.equals(STRING_EMPTY) 
+						? String.format(MESSAGE_HAS_TAG, itemID) + tag 
+								: ", " + tag;
+			} else if (RESTRICTED.contains(tag.toLowerCase())){
+				invalidTags += invalidTags.equals(STRING_EMPTY) 
+						? String.format(MESSAGE_HAS_RESTRICTED, itemID) + tag 
+								: ", " + tag;
 			} else {
 				currentTags.add(tag);
 				item.setTags(currentTags);
 			}
 		}
-		if(duplicateTags.equals(STRING_EMPTY)){
-			throw new Exception(itemID + " already has tag: " + duplicateTags);
+		if(duplicateTags.equals(STRING_EMPTY)||invalidTags.equals(STRING_EMPTY)){
+			throw new Exception(duplicateTags + " " + invalidTags);
 		}
 
 		try {
