@@ -79,7 +79,7 @@ public abstract class Command {
 	 * @return
 	 */
 	private String swapDayMonth(String date) {
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}\\s\\[A-z]{3,}(?=\\s{0,1})");
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}\\s[A-z]{3,}(?=\\s{0,1})");
 		if(m.find()){
 			String s = m.group(0);
 			String[] splitS = s.split(" ", 2);
