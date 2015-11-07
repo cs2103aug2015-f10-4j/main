@@ -23,7 +23,7 @@ public abstract class Command {
 	protected static final CustomDate today = new CustomDate(Chronic.parse("today").getEndCalendar().getTime());
 	
 	/** Messaging */
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %s";
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
 	protected TreeSet<String> invalidArgs = new TreeSet<String>();
 	protected String returnMsg = STRING_EMPTY;
 
@@ -307,6 +307,9 @@ public abstract class Command {
 	 */
 	private String getItemIdType(String itemID) {
 		assertNotNull(itemID);
+		if (itemID.isEmpty()) {
+			return null;
+		}
 		return itemID.substring(0, 1).toLowerCase();
 	}
 	
