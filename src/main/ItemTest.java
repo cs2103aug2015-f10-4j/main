@@ -27,7 +27,6 @@ public class ItemTest {
 		task1.setEndDate(createCustomDate(1992, 3, 17, 15, 9, 17));
 		task1.setStartTime(900);
 		task1.setEndTime(2200);
-		task1.setRecurrence(RecurrencePeriod.WEEKLY);
 		task1.setPriority(1);
 		
 		task2.setType("task");
@@ -35,7 +34,6 @@ public class ItemTest {
 		task2.setEndDate(createCustomDate(1993, 10, 12, 3, 8, 16));
 		task2.setStartTime(800);
 		task2.setEndTime(2000);
-		task2.setRecurrence(RecurrencePeriod.DAILY);
 		task2.setPriority(2);
 		
 		event1.setType("event");
@@ -46,7 +44,6 @@ public class ItemTest {
 		tags.clear();
 		tags.add(null);
 		event1.setTags(tags);
-		event1.setRecurrence(RecurrencePeriod.YEARLY);
 		event1.setPriority(3);
 		
 		event2.setType("event");
@@ -54,7 +51,6 @@ public class ItemTest {
 		event2.setEndDate(createCustomDate(1988, 8, 18, 3, 19, 16));
 		event2.setStartTime(500);
 		event2.setEndTime(1400);
-		event2.setRecurrence(RecurrencePeriod.WEEKLY);
 		event2.setPriority(4);
 		
 		event3.setType("event"); // exactly the same as event1
@@ -65,7 +61,6 @@ public class ItemTest {
 		tags.clear();
 		tags.add("");
 		event3.setTags(tags);
-		event3.setRecurrence(RecurrencePeriod.YEARLY);
 		event3.setPriority(3);
 	}
 	
