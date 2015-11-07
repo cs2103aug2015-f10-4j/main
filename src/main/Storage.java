@@ -34,6 +34,7 @@ public class Storage {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
 	private static File file =  new File(DEFAULT_FILE_PATH);
+	private String storedFilePath;
 
 	/**
 	 * This is the Storage constructor which makes use of createFolder, writeToProperties, readFileSettings
@@ -44,18 +45,23 @@ public class Storage {
 	 * @return Nothing.
 	 */
 	public Storage () {
-
 		createFolder();
-
-		String storedFilePath = readFileSettings();
-		if (storedFilePath == null) { // if properties file is empty, create properties file
+		storedFilePath = readFileSettings();
+		if (storedFilePath == null) {
 			writeToProperties(DEFAULT_FILE_PATH);
 			initFile();
 		} else {
 			file = new File(storedFilePath);
 			initFile();
 		}
-
+	}
+	
+	/**
+	 * This method returns the current path of the of the storage file.
+	 * @return location of storage file.
+	 */
+	public String getFilePath() {
+		return storedFilePath;
 	}
 
 	/**

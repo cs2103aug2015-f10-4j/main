@@ -1,22 +1,22 @@
 package Commands;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 import main.Magical;
 
 public class PathCommand extends Command {
 
+	private static final String MESSAGE_ARGUMENT_PARAMS = "Use Format: path <location>";
+	
 	private String location;
 
 	public PathCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = new ArrayList<String>();
-		argsArray.add(args);
-		this.count = argsArray.size();
 		this.location = args;
-
+		if (args.isEmpty()) {
+			throw new IllegalArgumentException(MESSAGE_ARGUMENT_PARAMS);
+		}
 	}
 
 	/**
