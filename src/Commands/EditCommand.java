@@ -3,6 +3,7 @@ package Commands;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+
 import main.CustomDate;
 import main.Magical;
 import main.Storage;
@@ -14,10 +15,12 @@ public class EditCommand extends Command {
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <item_id> <field> <value>";
 	private static final String MESSAGE_INVALID_FIELD = "Unknown field";
-	private static final String MESSAGE_INVALID_TASK_START = "Task cannot have start time";
-	private static final String MESSAGE_INVALID_DATE = "Date";
-	private static final String MESSAGE_INVALID_TIME_END = "End time";
+	private static final String MESSAGE_INVALID_TASK_START_TIME = "Task cannot have start time";
+	private static final String MESSAGE_INVALID_TASK_START_DATE = "Task cannot have start date";
+	private static final String MESSAGE_INVALID_DATE_START = "Start date";
+	private static final String MESSAGE_INVALID_DATE_END = "End date";
 	private static final String MESSAGE_INVALID_TIME_START = "Start time";
+	private static final String MESSAGE_INVALID_TIME_END = "End time";
 	private static final String MESSAGE_INVALID_ITEM_ID = "taskID";
 	private static final String MESSAGE_INVALID_TITLE = "Title";
 	private static final String MESSAGE_ITEM_ERROR = "Unable to edit item %s";
@@ -26,6 +29,9 @@ public class EditCommand extends Command {
 	/** For checking **/
 	private static final String FIELD_TIME_END = "end time";
 	private static final String FIELD_TIME_START = "start time";
+	private static final String FIELD_TIME = "time";
+	private static final String FIELD_START_DATE = "start date";
+	private static final String FIELD_END_DATE = "end date";
 	private static final String FIELD_DATE = "date";
 	private static final String FIELD_TITLE = "title";
 	private final CustomDate today = getDate("today");
@@ -67,13 +73,22 @@ public class EditCommand extends Command {
 			case FIELD_TITLE:
 				checkTitle();
 				break;
+			case FIELD_START_DATE:
+				checkDate(0);
+				break;
+			case FIELD_END_DATE:
+				checkDate(1);
+				break;
 			case FIELD_DATE:
-				checkDate();
+				checkDate(1);
 				break;
 			case FIELD_TIME_START:
 				checkTime(0);
 				break;
 			case FIELD_TIME_END:
+				checkTime(1);
+				break;
+			case FIELD_TIME:
 				checkTime(1);
 				break;
 			default:
@@ -100,7 +115,7 @@ public class EditCommand extends Command {
 	void checkTime(int type) {
 		assert (type == 0 || type == 1);
 		if (isTask && type == 0) {
-			invalidArgs.add(MESSAGE_INVALID_TASK_START);
+			invalidArgs.add(MESSAGE_INVALID_TASK_START_TIME);
 		} else {
 			if ((editObject = getDate(value)) == null) {
 				if (type == 0) {
@@ -118,11 +133,21 @@ public class EditCommand extends Command {
 	 * Adds error message if date is invalid or if task is to be made floating,
 	 * sets toFloat to true.
 	 */
-	void checkDate() {
-		if (value.equals(STRING_EMPTY) && isTask) {
-			toFloat = true;
-		} else if ((editObject = getDate(value)) == null) {
-			invalidArgs.add(MESSAGE_INVALID_DATE);
+	void checkDate(int type) {
+		assert (type == 0 || type == 1);
+		if (isTask && type == 0) {
+			invalidArgs.add(MESSAGE_INVALID_TASK_START_DATE);
+		} else {
+			if (value.equals(STRING_EMPTY) && isTask) {
+				toFloat = true;
+			} else if ((editObject = getDate(value)) == null) {
+				if (type == 0) {
+					invalidArgs.add(MESSAGE_INVALID_DATE_START);
+				} else {
+					invalidArgs.add(MESSAGE_INVALID_DATE_END);
+				}
+				
+			}
 		}
 	}
 
@@ -192,6 +217,28 @@ public class EditCommand extends Command {
 		case FIELD_TITLE:
 			item.setTitle(value);
 			break;
+		case FIELD_START_DATE:
+			if (toFloat) {
+				floatItem();
+			} else {
+				unfloatItemForDate();
+				CustomDate date = (CustomDate) editObject;
+				date.setTime(item.getEndTime());
+				assertNotNull(date);
+				item.setStartDate(date);
+			}
+			break;
+		case FIELD_END_DATE:
+			if (toFloat) {
+				floatItem();
+			} else {
+				unfloatItemForDate();
+				CustomDate date = (CustomDate) editObject;
+				date.setTime(item.getEndTime());
+				assertNotNull(date);
+				item.setEndDate(date);
+			}
+			break;
 		case FIELD_DATE:
 			if (toFloat) {
 				floatItem();
@@ -209,6 +256,13 @@ public class EditCommand extends Command {
 		case FIELD_TIME_END:
 			item.setEndTime((int) editObject);
 			CustomDate date = unfloatItemForTime();
+			assertNotNull(date);
+			date.setTime(item.getEndTime());
+			item.setEndDate(date);
+			break;
+		case FIELD_TIME:
+			item.setEndTime((int) editObject);
+			date = unfloatItemForTime();
 			assertNotNull(date);
 			date.setTime(item.getEndTime());
 			item.setEndDate(date);
@@ -296,5 +350,9 @@ public class EditCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return true;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		new EditCommand("t1  date today");
 	}
 }
