@@ -15,7 +15,7 @@ import main.Item;
 
 public class UntagCommandTest {
 
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: taskID";
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %staskID";
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: untag <task_id> <tag name>";
 
 	@Before
@@ -69,6 +69,7 @@ public class UntagCommandTest {
 		try {
 			UntagCommand noLetter = new UntagCommand("1 CS2103");
 		} catch (Exception e) {
+			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
