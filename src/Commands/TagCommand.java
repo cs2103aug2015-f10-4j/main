@@ -12,24 +12,34 @@ import main.Item;
 
 public class TagCommand extends Command {
 
+	/** Messaging **/
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: tag <task_id> <tag name>";
 
+	/** For Checking **/
+	private static final String[] RESTRICTED = {"event", "events", "task", "tasks", "done"};
+	
+	/** Command Parameters **/
 	private Item item;
 	private String itemID;
-	private String tag;
+	private ArrayList<String> tags;
 	private Item prevItem;
 
+	/**
+	 * Constructor for TagCommand objects.
+	 * Checks if arguments are valid and stores the correct arguments properly.
+	 * Throws the appropriate exception if arguments are invalid
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public TagCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = new ArrayList<String>(
-				Arrays.asList(args.split(" ", 2)));
+		this.argsArray = splitArgs(args," ", -1);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			itemID = argsArray.get(0).trim();
-			item = getItemByID(itemID);
-			tag = argsArray.get(1).trim();
+			setProperParams();
 
 			if (item == null) {
 				invalidArgs.add("itemID");
@@ -44,8 +54,17 @@ public class TagCommand extends Command {
 		}
 	}
 
+	/**
+	 * Set the relevant parameters of TagCommand to that of the specified task
+	 */
+	void setProperParams() {
+		this.itemID = argsArray.get(0).trim();
+		this.item = getItemByID(itemID);
+		this.tags = new ArrayList<String>(argsArray.subList(1, count));
+	}
+
 	public boolean validNumArgs() {
-		if (this.count != 2) {
+		if (this.count < 2) {
 			return false;
 		} else {
 			return true;
@@ -65,12 +84,19 @@ public class TagCommand extends Command {
 		prevItem = item;
 		item = prevItem.copy();
 
-		Set<String> tags = item.getTags();
-		if (tags.contains(tag)) {
-			throw new Exception(itemID + " already has tag: " + tag);
+		Set<String> currentTags = item.getTags();
+		String duplicateTags = STRING_EMPTY;
+		for(String tag : tags){
+			if (currentTags.contains(tag)) {
+				duplicateTags += duplicateTags.equals(STRING_EMPTY) ? tags : ", " + tags;
+			} else {
+				currentTags.add(tag);
+				item.setTags(currentTags);
+			}
 		}
-		tags.add(tag);
-		item.setTags(tags);
+		if(duplicateTags.equals(STRING_EMPTY)){
+			throw new Exception(itemID + " already has tag: " + duplicateTags);
+		}
 
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
@@ -88,11 +114,14 @@ public class TagCommand extends Command {
 					Storage.EVENTS_DONE_INDEX));
 		}
 
-		return tag + " added to " + itemID;
+		return tags + " added to " + itemID;
 	}
 
 	@Override
 	public boolean isUndoable() {
 		return true;
+	}
+	public static void main(String[] args) throws Exception {
+		TagCommand t = new TagCommand("uasgg asdgna");
 	}
 }
