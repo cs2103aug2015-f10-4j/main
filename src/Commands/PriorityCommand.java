@@ -28,8 +28,12 @@ public class PriorityCommand extends Command {
 		if (validNumArgs()) {
 			itemID = argsArray.get(0).trim();
 			item = getItemByID(itemID);
-			priority = getPriority(argsArray.get(1).trim());
-
+			
+			if (argsArray.size() == 1) {
+				priority = "";
+			} else {
+				priority = getPriority(argsArray.get(1).trim());
+			}
 			if (item == null) {
 				invalidArgs.add("itemID");
 			}
@@ -46,7 +50,7 @@ public class PriorityCommand extends Command {
 	}
 
 	public boolean validNumArgs() {
-		if (this.count != 2) {
+		if (this.count > 2 && this.count < 0) {
 			return false;
 		} else {
 			return true;

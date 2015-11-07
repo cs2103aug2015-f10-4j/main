@@ -1,7 +1,6 @@
 package Commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import gui.GUIModel;
@@ -9,22 +8,24 @@ import main.Item;
 
 public class SortCommand extends Command {
 
-	private String sortParam;
+	private ArrayList<String> sortParams;
 
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: sort <priority OR date OR title>";
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: sort <parameter> (upto 3 parameters)";
 
 	public SortCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(" ")));
+		this.argsArray = splitArgs(args, " ", 3);
 		this.count = argsArray.size();
-		this.sortParam = argsArray.get(0).trim().toLowerCase();
+		this.sortParams = argsArray;
 
 		if (validNumArgs()) {
-			if (sortParam.equals(STRING_EMPTY)) {
-				sortParam = "priority";
-			} else if (!isValidSortParam()) {
-				invalidArgs.add("sort parameter");
+			if (sortParams.size() == 1 && sortParams.get(0).isEmpty()) {
+				sortParams.add("priority");
+				sortParams.add("date");
+				sortParams.add("title");
+			} else if (!isValidSortParams()) {
+				invalidArgs.add("parameters");
 			}
 			if (invalidArgs.size() > 0) {
 				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
@@ -35,17 +36,13 @@ public class SortCommand extends Command {
 		}
 	}
 
-	private boolean isValidSortParam() {
-		switch (sortParam) {
-		case "priority":
-			return true;
-		case "title":
-			return true;
-		case "date":
-			return true;
-		default:
-			return false;
+	private boolean isValidSortParams() {
+		for (String param : sortParams) {
+			if (!(param.equals("priority") || param.equals("title") || param.equals("date"))) {
+				return false;
+			}
 		}
+		return true;
 	}
 
 	/**
@@ -66,27 +63,26 @@ public class SortCommand extends Command {
 				GUIModel.getEventList());
 		ArrayList<Item> sortedEventDoneList = new ArrayList<Item>(
 				GUIModel.getEventDoneList());
-		switch (sortParam) {
-		case "priority":
-			Collections.sort(sortedTaskList, Item.Comparators.PRIORITY);
-			Collections.sort(sortedTaskDoneList, Item.Comparators.PRIORITY);
-			Collections.sort(sortedEventList, Item.Comparators.PRIORITY);
-			Collections.sort(sortedEventDoneList, Item.Comparators.PRIORITY);
-			break;
-		case "date":
-			Collections.sort(sortedTaskList, Item.Comparators.DATE);
-			Collections.sort(sortedTaskDoneList, Item.Comparators.DATE);
-			Collections.sort(sortedEventList, Item.Comparators.DATE);
-			Collections.sort(sortedEventDoneList, Item.Comparators.DATE);
-			break;
-		case "title":
+		
+		if (sortParams.contains("title")) {
 			Collections.sort(sortedTaskList, Item.Comparators.TITLE);
 			Collections.sort(sortedTaskDoneList, Item.Comparators.TITLE);
 			Collections.sort(sortedEventList, Item.Comparators.TITLE);
 			Collections.sort(sortedEventDoneList, Item.Comparators.TITLE);
-		default:
-			break;
 		}
+		if (sortParams.contains("date")) {
+			Collections.sort(sortedTaskList, Item.Comparators.DATE);
+			Collections.sort(sortedTaskDoneList, Item.Comparators.DATE);
+			Collections.sort(sortedEventList, Item.Comparators.DATE);
+			Collections.sort(sortedEventDoneList, Item.Comparators.DATE);
+		}
+		if (sortParams.contains("priority")) {
+			Collections.sort(sortedTaskList, Item.Comparators.PRIORITY);
+			Collections.sort(sortedTaskDoneList, Item.Comparators.PRIORITY);
+			Collections.sort(sortedEventList, Item.Comparators.PRIORITY);
+			Collections.sort(sortedEventDoneList, Item.Comparators.PRIORITY);
+		}
+		
 		GUIModel.setTaskList(sortedTaskList);
 		GUIModel.setTaskDoneList(sortedTaskDoneList);
 		GUIModel.setEventList(sortedEventList);
@@ -96,7 +92,7 @@ public class SortCommand extends Command {
 
 	@Override
 	public boolean validNumArgs() {
-		if (count > 1) {
+		if (count > 3) {
 			return false;
 		} else {
 			return true;
