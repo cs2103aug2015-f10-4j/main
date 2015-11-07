@@ -22,15 +22,20 @@ public class UndoCommand extends Command {
 	 * 
 	 * @param None
 	 * @return message to show user
+	 * @throws Exception 
 	 */
 	@Override
-	public String execute() {
+	public String execute() throws Exception {
 		int undoLayersSize = Magical.undoLists.get(0).size();
 		if (undoLayersSize <= 0) {
-			return "nothing to undo";
+			throw new Exception("nothing to undo");
 		}
 
 		try {
+			Magical.redoLists.get(Storage.TASKS_INDEX).push(Magical.getStorage().getList(Storage.TASKS_INDEX));
+			Magical.redoLists.get(Storage.TASKS_DONE_INDEX).push(Magical.getStorage().getList(Storage.TASKS_DONE_INDEX));
+			Magical.redoLists.get(Storage.EVENTS_INDEX).push(Magical.getStorage().getList(Storage.EVENTS_INDEX));
+			Magical.redoLists.get(Storage.EVENTS_DONE_INDEX).push(Magical.getStorage().getList(Storage.EVENTS_DONE_INDEX));
 			ArrayList<Item> lastTasksList = Magical.undoLists.get(
 					Storage.TASKS_INDEX).pop();
 			ArrayList<Item> lastTasksDoneList = Magical.undoLists.get(
@@ -46,8 +51,8 @@ public class UndoCommand extends Command {
 			Magical.getStorage().setList(Storage.EVENTS_DONE_INDEX,
 					lastEventsDoneList);
 			return "undo successful";
-		} catch (IOException e) {
-			return "unable to undo";
+		} catch (Exception e) {
+			throw new Exception("unable to undo");
 		} finally {
 			GUIModel.setTaskList(Magical.getStorage().getList(
 					Storage.TASKS_INDEX));
