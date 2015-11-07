@@ -19,7 +19,6 @@ public class Item {
 		return type;
 	}
 
-
 	public void setType(String type) {
 		this.type = type;
 	}
@@ -75,7 +74,7 @@ public class Item {
 	public String getPriority() {
 		return priority;
 	}
-	
+
 	public void setPriority(String priority) {
 		this.priority = priority;
 	}
@@ -96,7 +95,6 @@ public class Item {
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -148,15 +146,30 @@ public class Item {
 		public static final Comparator<Item> PRIORITY = new Comparator<Item>() {
 			@Override
 			public int compare(Item i1, Item i2) {
-				if (i1.priority == null & i2.priority == null) {
-					return 0;
-				} else if (i1.priority == null) {
-					return 1;
-				} else if (i2.priority == null) {
-					return -1;
+				int i1p, i2p = 0;
+				if (i1.priority == null) {
+					i1p = 0;
+				} else if (i1.priority.equals("high")) {
+					i1p = 3;
+				} else if (i1.priority.equals("medium")) {
+					i1p = 2;
+				} else if (i1.priority.equals("low")) {
+					i1p = 1;
 				} else {
-					return i1.priority.compareTo(i2.priority);
+					i1p = 0;
 				}
+				if (i2.priority == null) {
+					i2p = 0;
+				} else if (i2.priority.equals("high")) {
+					i2p = 3;
+				} else if (i2.priority.equals("medium")) {
+					i2p = 2;
+				} else if (i2.priority.equals("low")) {
+					i2p = 1;
+				} else {
+					i2p = 0;
+				}
+				return Integer.compare(i2p, i1p);
 			}
 		};
 		public static final Comparator<Item> DATE = new Comparator<Item>() {
