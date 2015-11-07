@@ -3,6 +3,7 @@ package Commands;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import gui.GUIModel;
@@ -12,12 +13,15 @@ import main.Item;
 
 public class TagCommand extends Command {
 
-	private static final String MESSAGE_INVALID_ITEM_ID = "itemID";
-
+	
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: tag <task_id> <tag name>";
-	private static final String MESSAGE_HAS_TAG = "%s already has tag: ";
-	private static final String MESSAGE_HAS_RESTRICTED = "%s cannot have tag: ";
+	private static final String MESSAGE_INVALID_ITEM_ID = "itemID";
+	private static final String MESSAGE_TAG_CONTAINED = "%s already has tag: ";
+	private static final String MESSAGE_TAG_RESTRICTED = "%s cannot have tag: ";
+	private static final String MESSAGE_TAG_ERROR = "Unable to add tag to %s";
+	private static final String MESSAGE_TAG_ADDED = "%s added to %s";
+	
 	/** For Checking **/
 	private static final ArrayList<String> RESTRICTED = new ArrayList<String>(
 		    Arrays.asList("event", "events", "task", "tasks", "done"));
@@ -27,6 +31,8 @@ public class TagCommand extends Command {
 	private String itemID;
 	private ArrayList<String> tags;
 	private Item prevItem;
+	private String duplicateTags = STRING_EMPTY;
+	private String invalidTags = STRING_EMPTY;
 
 	/**
 	 * Constructor for TagCommand objects.
@@ -110,54 +116,146 @@ public class TagCommand extends Command {
 	 */
 	@Override
 	public String execute() throws Exception {
-		prevItem = item;
-		item = prevItem.copy();
+		
+		duplicateItem();
 
 		Set<String> currentTags = item.getTags();
-		String duplicateTags = STRING_EMPTY;
-		String invalidTags = STRING_EMPTY;
+		
 		for(String tag : tags){
-			if (currentTags.contains(tag)) {
-				duplicateTags += duplicateTags.equals(STRING_EMPTY) 
-						? String.format(MESSAGE_HAS_TAG, itemID) + tag 
-								: ", " + tag;
-			} else if (RESTRICTED.contains(tag.toLowerCase())){
-				invalidTags += invalidTags.equals(STRING_EMPTY) 
-						? String.format(MESSAGE_HAS_RESTRICTED, itemID) + tag 
-								: ", " + tag;
-			} else {
-				currentTags.add(tag);
-				item.setTags(currentTags);
+			
+			if(!checkTags(currentTags, tag)&&!checkRestricted(currentTags, tag)){
+				addTagToItem(currentTags, tag);
 			}
 		}
-		if(duplicateTags.equals(STRING_EMPTY)||invalidTags.equals(STRING_EMPTY)){
-			throw new Exception(duplicateTags + " " + invalidTags);
-		}
+		System.out.println(currentTags);
+		errorDuplicateORInvalidTags();
 
 		try {
-			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.getStorage().update(listIndex, prevItem, item);
+			updateItem();
 		} catch (IOException e) {
-			throw new Exception("unable to add tag to " + itemID);
+			return String.format(MESSAGE_TAG_ERROR, itemID);
 		} finally {
-			GUIModel.setTaskList(Magical.getStorage().getList(
-					Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.getStorage().getList(
-					Storage.TASKS_DONE_INDEX));
-			GUIModel.setEventList(Magical.getStorage().getList(
-					Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.getStorage().getList(
-					Storage.EVENTS_DONE_INDEX));
+			updateView();
 		}
+		
+		return String.format(MESSAGE_TAG_ADDED, tags, itemID);
+	}
 
-		return tags + " added to " + itemID;
+	/**
+	 * Adds given tag to set of tags and set item tags as this set
+	 * @param currentTags
+	 * @param tag
+	 */
+	void addTagToItem(Set<String> currentTags, String tag) {
+		currentTags.add(tag);
+		item.setTags(currentTags);
+	}
+
+	/**
+	 * Throws exception if error messages for invalid tags or duplicate tags are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	void errorDuplicateORInvalidTags() throws Exception {
+		if(!duplicateTags.equals(STRING_EMPTY) && !invalidTags.equals(STRING_EMPTY)){
+			throw new Exception(duplicateTags + " AND " + invalidTags);
+		} else if (!duplicateTags.equals(STRING_EMPTY)){
+			throw new Exception(duplicateTags);
+		} else if (!invalidTags.equals(STRING_EMPTY)){
+			throw new Exception(invalidTags);
+		}
+	}
+	
+	/**
+	 * Check if a tag is restricted and add to return message invalidTags 
+	 * if it is. Returns true if tag is restricted, or false otherwise.
+	 * 
+	 * @param currentTags
+	 * @param tag
+	 * @return boolean
+	 */
+	private boolean checkRestricted(Set<String> currentTags, String tag) {
+		if (RESTRICTED.contains(tag.toLowerCase())){
+			if(invalidTags.equals(STRING_EMPTY)){
+				invalidTags = String.format(MESSAGE_TAG_RESTRICTED, itemID) + tag;
+			} else {
+				invalidTags += ", " + tag;
+			}
+		}
+		System.out.println("fuck rest");
+		return false;
+	}
+
+	/**
+	 * Check if a tag is already inside a set of tags and add to return message duplicateTags 
+	 * if it is. Returns true if there are duplicates, or false otherwise.
+	 * 
+	 * @param currentTags
+	 * @param tag
+	 * @return boolean
+	 */
+	private boolean checkTags(Set<String> currentTags, String tag) {
+		if (currentTags.contains(tag)) {
+			if(duplicateTags.equals(STRING_EMPTY)){ 
+				duplicateTags = String.format(MESSAGE_TAG_CONTAINED, itemID) + tag;
+				return true;
+			} else {
+				duplicateTags += ", " + tag;
+				return true;
+			}
+		} 
+		System.out.println("fuck dupl");
+		return false;
+	}
+
+	/**
+	 * Make 2 copies of the item to be stored in prevItem and item
+	 */
+	void duplicateItem() {
+		prevItem = item;
+		item = prevItem.copy();
+	}
+
+	/**
+     * Updates the original item with the new modified item
+	 * 
+	 * @throws IOException
+	 */
+	void updateItem() throws IOException {
+		int listIndex = Storage.getListIndex(argsArray.get(0));
+		Magical.getStorage().update(listIndex, prevItem, item);
+	}
+	
+	/**
+	 * Updates the new view in the GUI
+	 */
+	void updateView() {
+		GUIModel.setTaskList(Magical.getStorage().getList(
+				Storage.TASKS_INDEX));
+		GUIModel.setTaskDoneList(Magical.getStorage().getList(
+				Storage.TASKS_DONE_INDEX));
+		GUIModel.setEventList(Magical.getStorage().getList(
+				Storage.EVENTS_INDEX));
+		GUIModel.setEventDoneList(Magical.getStorage().getList(
+				Storage.EVENTS_DONE_INDEX));
 	}
 
 	@Override
 	public boolean isUndoable() {
 		return true;
 	}
+	
 	public static void main(String[] args) throws Exception {
-		TagCommand t = new TagCommand("uasgg asdgna");
+		ArrayList<Item> msg = new ArrayList<Item>();
+		Item t1 = new Item();
+		Set<String> set = new HashSet<String>();
+		set.add("tag1");
+		set.add("tag2");
+		t1.setTags(set);
+		msg.add(t1);
+		GUIModel.setTaskList(msg);
+		
+		TagCommand tag1 = new TagCommand("t1 tag1 tag2");
+		System.out.println(tag1.execute());
 	}
 }

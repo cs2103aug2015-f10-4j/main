@@ -20,9 +20,10 @@ public abstract class Command {
 
 	/** Checking */
 	protected static final String STRING_EMPTY = "";
+	protected static final CustomDate today = new CustomDate(Chronic.parse("today").getEndCalendar().getTime());
 	
 	/** Messaging */
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %s";
 	protected TreeSet<String> invalidArgs = new TreeSet<String>();
 	protected String returnMsg = STRING_EMPTY;
 
@@ -67,9 +68,68 @@ public abstract class Command {
 	 */
 	protected CustomDate getDate(String date) {
 		assertNotNull(date);
+		date = formatDate(date);
+		return dateWithTime(date);
+	}
+
+	/**
+	 * Ensure that all correct input are properly formatted for the jChronic parser
+	 * @param date
+	 * @return
+	 */
+	String formatDate(String date) {
 		date = formatCorrectTime(date);
 		date = dateWithYear(date);
-		return dateWithTime(date);
+		date = swapDayMonth(date);
+		date = swapDayMonthFlexi(date);
+		return date;
+	}
+
+	/**
+	 * Swaps the day and the month for flexicommands in order to parse properly
+	 * @param date
+	 * @return
+	 */
+	private String swapDayMonthFlexi(String date) {
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}\\s[A-z]{3,}(?=\\s{0,1})");
+		if(m.find()){
+			String s = m.group(0);
+			String[] splitS = s.split(" ", 2);
+			String newS = splitS[1] + " " + splitS[0]; 
+			date = date.replace(s, newS);
+		}
+		return date;
+	}
+	
+	/**
+	 * Swaps the day and the month for non-flexi in order to parse properly
+	 * @param date
+	 * @return
+	 */
+	private String swapDayMonth (String date){
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}(/|-)\\d{1,2}(?=\\s{0,1}|/)");
+		if(m.find()){
+			String s = m.group(0);
+			String token = getToken(s);
+			String[] splitS = s.split(token, 2);
+			String newS = splitS[1] + token + splitS[0]; 
+			date = date.replace(s, newS);
+		}
+		return date;
+	}
+
+	/**
+	 * Get the token for a date string
+	 * @param s
+	 * @return
+	 */
+	private String getToken(String s) {
+		assert(s.contains("/")|s.contains("-"));
+		if(s.contains("/")){
+			return "/";
+		} else {
+			return "-";
+		}
 	}
 
 	/**
@@ -124,7 +184,6 @@ public abstract class Command {
 	 * @return String priority
 	 */
 	protected String getPriority(String priority) {
-		System.out.println(priority);
 		assertNotNull(priority);
 		if (priority.equals("high") || priority.equals("medium") || priority.equals("low") || priority.equals("")) {
 			return priority;
@@ -141,7 +200,7 @@ public abstract class Command {
 	 */
 	private String formatCorrectTime(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "\\D*\\d{4}\\D*");
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<!/|-)\\d{4}(?=\\s{0,1})");
 		assertNotNull(m);
 
 		if (m.find()) {
@@ -164,14 +223,21 @@ public abstract class Command {
 	 */
 	private String dateWithYear(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "\\D*\\d{2}(/|-)\\d{2}\\D*");
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}(/|-)\\d{1,2}(?=\\s{0,1})(?!(/|-|\\d))");
 		assertNotNull(m);
 
 		if (m.find()) {
 			String s = m.group(0);
 			assertNotNull(s);
-			date = date.replaceAll(s, s.trim() + "/"
-					+ new CustomDate(new Date()).getYear() + " ");
+			String temp = date.replaceAll(s, s + "/"
+					+ new CustomDate(new Date()).getYear());
+			if(getDate(temp).compareTo(today) == -1){
+				date = date.replaceAll(s, s + "/"
+						+ (new CustomDate(new Date()).getYear()+1));
+			} else {
+				date = temp;
+			}
+			
 		}
 		return date;
 	}

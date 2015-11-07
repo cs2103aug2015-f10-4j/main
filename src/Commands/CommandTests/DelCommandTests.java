@@ -16,10 +16,7 @@ import main.Item;
 
 public class DelCommandTests {
 
-	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n";
-	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"
-			+"Use Format: delete <task_id>";
-	private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
+	protected static final String MESSAGE_INVALID_PARAMS = "Invalid arguments: %sitemID";
 
 	@Before
 	public void setUp() {
@@ -48,7 +45,7 @@ public class DelCommandTests {
 		try {
 			Command noArgs = new DelCommand("");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
+			assertTrue(e instanceof StringIndexOutOfBoundsException);
 		}
 		try {
 			Command moreArgs = new DelCommand("t1 t2 t3 t4 t5 t6");
@@ -59,31 +56,30 @@ public class DelCommandTests {
 
 	@Test
 	public void testInvalidId() {
-		final String ERROR_MESSAGE = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_ID;
 		try {
 			Command wrongLetter = new DelCommand("a1");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "a1"), e.getMessage());
+			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 		try {
 			DoneCommand invalidID = new DoneCommand("t100");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "t100"), e.getMessage());
+			assertTrue(e instanceof IndexOutOfBoundsException);
 		}
 		try {
 			Command tooLong = new DelCommand("abcdefghijklmnop");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "abcdefghijklmnop"), e.getMessage());
+			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 		try {
 			Command tooShort = new DelCommand("a");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "a"), e.getMessage());
+			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 		try {
 			Command justNumber = new DelCommand("1");
 		} catch (Exception e) {
-			assertEquals(String.format(ERROR_MESSAGE, "1"), e.getMessage());
+			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 	}
 

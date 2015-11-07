@@ -15,7 +15,7 @@ import main.Item;
 
 public class UntagCommandTest {
 
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %staskID";
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %sitemID";
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: untag <task_id> <tag name>";
 
 	@Before
