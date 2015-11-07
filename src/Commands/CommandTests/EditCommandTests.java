@@ -4,9 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -63,8 +61,7 @@ public class EditCommandTests {
 
 	@Test
 	public void testEditDateNormalInputs() throws Exception {
-		Command normalEdit = new EditCommand("t1 date November 7 2015");
-		Command normalEditPastDate = new EditCommand("t1 date January 1 1915");
+		Command normalEdit = new EditCommand("t1 date today");
 	}
 
 	@AfterClass
