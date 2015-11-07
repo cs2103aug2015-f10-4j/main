@@ -68,17 +68,17 @@ public class StorageTest {
 		
 		for (int i = 0; i < NUM_LISTS; i++) {
 			localLists.add(new ArrayList<Item>());
-		}
-		
+		}	
 		localLists.get(0).add(task1);
 		localLists.get(0).add(task2);
 		localLists.get(2).add(event1); // adding the updated element into localArray
 		localLists.get(2).add(event2); // adding items into local array
 	}
 
-	
-	// this method helps to add everything into the testing array using createTask()
-	// method in Storage.java
+	/*
+	* this method helps to add everything into the testing array using create()
+	* method in Storage.java
+	*/
 	private void creatingTasks(Storage testStorage) {
 		try {
 			testStorage.create(0, task1);
@@ -90,8 +90,6 @@ public class StorageTest {
 		}
 	}
 	
-	
-	// creates localArray by adding default tasks to test against
 	private CustomDate createDateObjects(int year, int month, int day, int hour, int min, int sec) {
 		Calendar date = Calendar.getInstance();
 		date.clear();
@@ -110,29 +108,28 @@ public class StorageTest {
 	/******************* END OF HELPER METHODS *******************/
 
 	/******************* UNIT TEST CASES *******************/
-	// tests whether the file specified will be created when the constructor is called
-	// successfully tested
+	// tests whether the file specified will be created when the constructor is called.
 	@Test
 	public void testStorageConstructor() throws IOException {
 		Storage testStorage = new Storage();
 		assertTrue(testStorage.fileExist());
 	}
 	
-	// tests whether the magical folder will be created
-	// test successful
+	// tests whether the magical folder will be created.
 	@Test
 	public void testCreateFolder() {
 		Storage testStorage = new Storage();
 		assertTrue(testStorage.createFolder());
 	}
 	
-	// tests whether file path is written into .properties file
+	// tests whether file path is written into .properties file.
 	@Test
 	public void testWriteToProperties() {
 		Storage testStorage = new Storage();
 		assertTrue(testStorage.writeToProperties(DEFAULT_FILE_PATH));
 	}
 	
+	// tests whether Items will be created.
 	@Test
 	public void testCreateTask() throws IOException {
 
@@ -148,7 +145,7 @@ public class StorageTest {
 		assertEquals(localLists, testingLists);	
 	}
 
-	
+	// tests whether Items list can be retrieved.
 	@Test
 	public void testGetTaskList() throws IOException {
 
@@ -165,45 +162,47 @@ public class StorageTest {
 		assertEquals(localList, testingList);
 	}
 
-	/*
+	// tests whether Items can be updated.
 	@Test
 	public void testUpdateTask() throws IOException {
 
-		Storage testStorage = new Storage("mytasks.txt");
-		testStorage.clearTaskList(); // clears previous content	
+		Storage testStorage = new Storage();
+		testStorage.clear(0); // clears previous tasks content
+		testStorage.clear(2); // clears previous events content
 		creatingTasks(testStorage);
 		
+		Item oldEvent = event1;
+		
 		event1.setType("event");
-		event1.setTitle("friend's birthday");
-		event1.setRecurrence(RecurrencePeriod.YEARLY); // updating the content of event1
+		event1.setTitle("friend's birthday"); // updating the content of event1
 		
-		ArrayList<Task> localArray = new ArrayList<Task> ();
-		createLocalArray(localArray);
+		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
+		createLocalArray(localLists);
 		
-		testStorage.updateTask(event1); // updating with the newly updated event1
-		//ArrayList<Task> testingArray = testStorage.readTaskList();
-		// System.out.println("size of array read from file - updateTask: " + testingArray.size());
-		//assertEquals(localArray, testingArray);
+		testStorage.update(2, oldEvent, event1); // updating with the newly updated event1
+		List<ArrayList<Item>> testingLists = testStorage.getLists(); // get updated lists
+		assertEquals(localLists, testingLists);
 	}
 	
+	// tests whether Items can be deleted.
 	@Test
 	public void testDeleteTask() throws IOException {
 		
-		ArrayList<Task> localArray = new ArrayList<Task> ();
-		createLocalArray(localArray);
-		localArray.remove(2);
+		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
+		createLocalArray(localLists);
+		localLists.get(2).remove(0);
 		
-		Storage testStorage = new Storage("mytasks.txt");	
-		testStorage.clearTaskList(); // clears previous content	
+		Storage testStorage = new Storage();
+		testStorage.clear(0); // clears previous tasks content
+		testStorage.clear(2); // clears previous events content
 		creatingTasks(testStorage);
 		
-		testStorage.deleteTask(event1);
-		//ArrayList<Task> testingArray = testStorage.readTaskList();
-		// System.out.println("size of array read from file - deleteTask " + testingArray.size());
-		//assertEquals(localArray, testingArray);
+		testStorage.delete(2, event1);
+		List<ArrayList<Item>> testingLists = testStorage.getLists(); // get updated lists
+		assertEquals(localLists, testingLists);
 	}
 	
-	
+	/*
 	@Test
 	public void testClearTaskList() throws IOException {
 
