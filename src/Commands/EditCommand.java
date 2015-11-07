@@ -12,7 +12,7 @@ import gui.GUIModel;
 public class EditCommand extends Command {
 	
 	/** Messaging **/
-	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <task_id> <field> <value>";
+	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <item_id> <field> <value>";
 	private static final String MESSAGE_INVALID_FIELD = "Unknown field";
 	private static final String MESSAGE_INVALID_TASK_START = "Task cannot have start time";
 	private static final String MESSAGE_INVALID_DATE = "Date";
@@ -20,7 +20,7 @@ public class EditCommand extends Command {
 	private static final String MESSAGE_INVALID_TIME_START = "Start time";
 	private static final String MESSAGE_INVALID_ITEM_ID = "taskID";
 	private static final String MESSAGE_INVALID_TITLE = "Title";
-	private static final String MESSAGE_ITEM_ERROR = "Unable to edit task.";
+	private static final String MESSAGE_ITEM_ERROR = "Unable to edit item %s";
 	private static final String MESSAGE_ITEM_EDITED = "Item edited.";
 	
 	/** For checking **/
@@ -33,6 +33,7 @@ public class EditCommand extends Command {
 	/** Command parameters **/
 	private String field;
 	private String value;
+	private String itemID;
 	private Item item;
 	private Item prevItem;
 	private boolean toFloat;
@@ -53,7 +54,7 @@ public class EditCommand extends Command {
 		args = args + " ";
 		
 		this.argsArray = splitArgs(args, "(?<!end|start)\\s(?!time|date)", 3);
-		
+		System.out.println(argsArray);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
@@ -61,6 +62,8 @@ public class EditCommand extends Command {
 
 			checkItemExists();
 
+			errorInvalidArgs();
+			
 			isTask = item.getType().equals("task");
 			
 			switch(field.toLowerCase()){
@@ -169,7 +172,8 @@ public class EditCommand extends Command {
 	 * Set the relevant parameters of AddCommand to that of the specified task
 	 */
 	private void setProperParams() {
-		this.item = getItemByID(argsArray.get(0).trim());
+		this.itemID = argsArray.get(0).trim();
+		this.item = getItemByID(itemID);
 		this.field = argsArray.get(1).trim();
 		this.value = argsArray.get(2).trim();
 	}
@@ -226,7 +230,7 @@ public class EditCommand extends Command {
 		try {
 			updateItem();
 		} catch (IOException e) {
-			return MESSAGE_ITEM_ERROR;
+			return String.format(MESSAGE_ITEM_ERROR, argsArray.get(0).trim());
 		} finally {
 			updateView();
 		}
@@ -262,7 +266,6 @@ public class EditCommand extends Command {
 		CustomDate date;
 		if (item.getEndDate() == null) {
 			date = today;
-			// normal changing of date object
 		} else {
 			date = item.getEndDate();
 		}
