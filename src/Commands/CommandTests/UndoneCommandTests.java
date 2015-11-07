@@ -17,7 +17,7 @@ import main.Item;
 public class UndoneCommandTests {
 
 	// protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
-	// private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <task_id>";
+	// private static final String MESSAGE_INVALID_PARAMS = "Use Format: undone <task_id>";
 	// private static final String MESSAGE_INVALID_ID = "Task ID: %s\n";
 
 	@Before
@@ -43,9 +43,7 @@ public class UndoneCommandTests {
 		try {
 			UndoneCommand noArgs = new UndoneCommand("");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertTrue(e instanceof StringIndexOutOfBoundsException);
-			// assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 		try {
 			UndoneCommand tooManyArgs = new UndoneCommand("d1 d2");
@@ -81,9 +79,6 @@ public class UndoneCommandTests {
 			Command youCantUndoneAUndone = new UndoneCommand("t1");
 		} catch (Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
-			// System.out.println("e: " + e);
-			// System.out.println("stringformat: " + String.format(ERROR_MESSAGE, "d1"));
-			// assertEquals(String.format(ERROR_MESSAGE, "d1"), e.getMessage());
 		}
 	}
 
