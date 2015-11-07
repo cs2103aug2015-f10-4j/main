@@ -3,6 +3,7 @@ package Commands;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import gui.GUIModel;
@@ -122,11 +123,11 @@ public class TagCommand extends Command {
 		
 		for(String tag : tags){
 			
-			if(checkTags(currentTags, tag)||checkRestricted(currentTags, tag)){
+			if(!checkTags(currentTags, tag)&&!checkRestricted(currentTags, tag)){
 				addTagToItem(currentTags, tag);
 			}
 		}
-		
+		System.out.println(currentTags);
 		errorDuplicateORInvalidTags();
 
 		try {
@@ -136,7 +137,7 @@ public class TagCommand extends Command {
 		} finally {
 			updateView();
 		}
-
+		
 		return String.format(MESSAGE_TAG_ADDED, tags, itemID);
 	}
 
@@ -156,8 +157,12 @@ public class TagCommand extends Command {
 	 * @throws IllegalArgumentException
 	 */
 	void errorDuplicateORInvalidTags() throws Exception {
-		if(duplicateTags.equals(STRING_EMPTY)||invalidTags.equals(STRING_EMPTY)){
-			throw new Exception(duplicateTags + " " + invalidTags);
+		if(!duplicateTags.equals(STRING_EMPTY) && !invalidTags.equals(STRING_EMPTY)){
+			throw new Exception(duplicateTags + " AND " + invalidTags);
+		} else if (!duplicateTags.equals(STRING_EMPTY)){
+			throw new Exception(duplicateTags);
+		} else if (!invalidTags.equals(STRING_EMPTY)){
+			throw new Exception(invalidTags);
 		}
 	}
 	
@@ -177,6 +182,7 @@ public class TagCommand extends Command {
 				invalidTags += ", " + tag;
 			}
 		}
+		System.out.println("fuck rest");
 		return false;
 	}
 
@@ -198,6 +204,7 @@ public class TagCommand extends Command {
 				return true;
 			}
 		} 
+		System.out.println("fuck dupl");
 		return false;
 	}
 
@@ -236,5 +243,19 @@ public class TagCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return true;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		ArrayList<Item> msg = new ArrayList<Item>();
+		Item t1 = new Item();
+		Set<String> set = new HashSet<String>();
+		set.add("tag1");
+		set.add("tag2");
+		t1.setTags(set);
+		msg.add(t1);
+		GUIModel.setTaskList(msg);
+		
+		TagCommand tag1 = new TagCommand("t1 tag1 tag2");
+		System.out.println(tag1.execute());
 	}
 }
