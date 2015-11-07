@@ -53,7 +53,7 @@ public abstract class Command {
 	 * @return ArrayList of args
 	 */
 	protected ArrayList<String> splitArgs(String args, String regex, int limit) {
-		return new ArrayList<String>(Arrays.asList(args.split(regex, 2)));
+		return new ArrayList<String>(Arrays.asList(args.split(regex, limit)));
 	}
 
 	/**
