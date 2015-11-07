@@ -14,6 +14,7 @@ import main.Item;
 
 public class EventCommandTests {
 
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "
 			+ "from <start date> <start time> "
 			+ "to <end date> <end time>";
@@ -33,6 +34,7 @@ public class EventCommandTests {
 	private static final String LONG_STRING = "This is a very long string made out of multiple words that can go on forever and ever and ever and ever";
 	private static final String WEIRD_STRING = "T#is str/ng h@s we!rd $ymb^\\s. And punc!tuat!ion?";
 	private static final String QUOTES_STRING = "\"This string has 'quotes' of both kinds\"";
+	private static final String DATE_STRING = " from January 1 12pm to January 1 1pm";
 
 
 	@BeforeClass
@@ -57,11 +59,56 @@ public class EventCommandTests {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		String fromWhentoWhen = " from January 1 2015 12pm to January 1 2015 1pm";
-		EventCommand normalEvent = new EventCommand("Event" + fromWhentoWhen);
+		EventCommand normalEvent = new EventCommand("Event" + DATE_STRING);
+		EventCommand normalEventDateFlipped = new EventCommand("Event from 1 Jan 12pm to 1 Jan 1pm");
+		EventCommand normalEventWithYear = new EventCommand("Event from January 1 2016 12pm to January 1 2016 1pm");
 		EventCommand normalEventToday = new EventCommand("Event from today 12pm to today 1pm");
-		EventCommand normalEventLongTitle = new EventCommand(LONG_STRING + fromWhentoWhen);
-		EventCommand normalEventWeirdTitle = new EventCommand(WEIRD_STRING + fromWhentoWhen);
+		EventCommand normalEventLongPeriod = new EventCommand("Event from today 12pm to Jan 1 2115 1pm");
+		EventCommand normalEventLongTitle = new EventCommand(LONG_STRING + DATE_STRING);
+		EventCommand normalEventWeirdTitle = new EventCommand(WEIRD_STRING + DATE_STRING);
+	}
+
+	@Test
+	public void testWrongNumInputs() throws Exception {
+		try {
+			EventCommand noInput = new EventCommand("");
+		} catch (Exception e) {
+			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
+		}
+		try {
+			EventCommand justID = new EventCommand("t1");
+		} catch (Exception e) {
+			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
+		}
+		try {
+			EventCommand noFrom = new EventCommand("t1 January 1 12pm to January 1 1pm");
+		} catch (Exception e) {
+			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
+		}
+		try {
+			EventCommand noTo = new EventCommand("t1 from January 1 12pm January 1 1pm");
+		} catch (Exception e) {
+			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
+		}
+	}
+
+	@Test
+	public void testInvalidInputs() throws Exception {
+		try {
+			EventCommand noTitle = new EventCommand(EMPTY_STRING + DATE_STRING);
+		} catch (Exception e) {
+			assertEquals(MESSAGE_HEADER_INVALID + MESSAGE_INVALID_TITLE, e.getMessage());
+		}
+		try {
+			EventCommand nonExistentDate = new EventCommand("Event from January 32 12pm to January 32 1pm");
+		} catch (Exception e) {
+			assertEquals(MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START, e.getMessage());
+		}
+		try {
+			EventCommand nonExistentTime = new EventCommand("Event from January 1 25pm to January 1 26pm");
+		} catch (Exception e) {
+			assertEquals(MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START, e.getMessage());
+		}
 	}
 
 	@AfterClass
