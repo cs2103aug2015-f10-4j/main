@@ -11,7 +11,7 @@ import main.Item;
 
 public class UndoneCommand extends Command {
 
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: undone <task_id>";
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: undone <item_id>";
 
 	private Item item;
 	private String itemID;
@@ -28,7 +28,7 @@ public class UndoneCommand extends Command {
 			item = getItemByID(itemID);
 
 			if (item == null) {
-				invalidArgs.add("itemID");
+				invalidArgs.add("item_id");
 			} else if (argsArray.get(0).trim().contains("t")
 					|| argsArray.get(0).trim().contains("e")) {
 				invalidArgs.add("Undone tasks cannot be undone!");

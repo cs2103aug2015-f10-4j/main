@@ -10,7 +10,7 @@ import main.Storage;
 import main.Item;
 
 public class DoneCommand extends Command {
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <task_id>";
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <item_id>";
 
 	private Item item;
 	private String itemID;
@@ -27,7 +27,7 @@ public class DoneCommand extends Command {
 			item = getItemByID(itemID);
 
 			if (item == null) {
-				invalidArgs.add("taskID");
+				invalidArgs.add("item_id");
 			} else if (argsArray.get(0).trim().contains("d")
 					|| argsArray.get(0).trim().contains("p")) {
 				invalidArgs.add(itemID + " is already done!");

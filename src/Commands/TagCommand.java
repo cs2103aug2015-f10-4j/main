@@ -13,8 +13,8 @@ import main.Item;
 public class TagCommand extends Command {
 
 	/** Messaging **/
-	private static final String MESSAGE_INVALID_FORMAT = "Use Format: tag <task_id> <tag name>";
-	private static final String MESSAGE_INVALID_ITEM_ID = "itemID";
+	private static final String MESSAGE_INVALID_FORMAT = "Use Format: tag <item_id> <tag name>";
+	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
 	private static final String MESSAGE_TAG_PRESENT = "%s already has tag: ";
 	private static final String MESSAGE_TAG_RESTRICTED = "%s cannot have tag: ";
 	private static final String MESSAGE_TAG_ERROR = "Unable to add tag to %s";

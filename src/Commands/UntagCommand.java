@@ -13,8 +13,8 @@ import main.Item;
 public class UntagCommand extends Command {
 
 	/** Messaging **/
-	private static final String MESSAGE_INVALID_FORMAT = "Use Format: untag <task_id> <tag name>";
-	private static final String MESSAGE_INVALID_ITEM_ID = "itemID";
+	private static final String MESSAGE_INVALID_FORMAT = "Use Format: untag <item_id> <tag name>";
+	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
 	private static final String MESSAGE_TAG_ABSENT = "%s does not have tag: ";
 	private static final String MESSAGE_TAG_ERROR = "Unable to remove tag to %s";
 	private static final String MESSAGE_TAG_REMOVED = "%s removed from %s";

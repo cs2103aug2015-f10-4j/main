@@ -11,7 +11,7 @@ import main.Item;
 
 public class PriorityCommand extends Command {
 
-	private static final String MESSAGE_ARGUMENT_PARAMS = "Use Format: set <task id> <priority>";
+	private static final String MESSAGE_ARGUMENT_PARAMS = "Use Format: set <item_id> <priority>";
 
 	private Item item;
 	private String itemID;
@@ -35,7 +35,7 @@ public class PriorityCommand extends Command {
 				priority = getPriority(argsArray.get(1).trim());
 			}
 			if (item == null) {
-				invalidArgs.add("itemID");
+				invalidArgs.add("item_id");
 			}
 			if (priority == null) {
 				invalidArgs.add("priority");

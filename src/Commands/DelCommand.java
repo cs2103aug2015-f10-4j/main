@@ -11,7 +11,7 @@ import main.Item;
 
 public class DelCommand extends Command {
 
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: delete <task_id>";
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: delete <item_id>";
 
 	private Item item;
 	private String itemID;
@@ -28,7 +28,7 @@ public class DelCommand extends Command {
 			item = getItemByID(itemID);
 
 			if (item == null) {
-				invalidArgs.add("itemID");
+				invalidArgs.add("item_id");
 			}
 			if (invalidArgs.size() > 0) {
 				throw new IllegalArgumentException(String.format(
