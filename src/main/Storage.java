@@ -29,24 +29,28 @@ public class Storage {
 	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + SETTINGS_FILE_NAME;
 	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
 
-	private List<ArrayList<Item>> lists;
-	ObjectMapper mapper = new ObjectMapper();
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
 	private static File file =  new File(DEFAULT_FILE_PATH);
 	private String storedFilePath;
+	private List<ArrayList<Item>> lists;
+	private ObjectMapper mapper = new ObjectMapper();
 
 	/**
 	 * This is the Storage constructor which makes use of createFolder, writeToProperties, readFileSettings
 	 * and initFile methods. This constructor creates a default folder in where the program is run.
 	 * In this folder, a .properties file is created to store default program settings and a default
 	 * .txt file to store task data.
-	 * @param None.
-	 * @return Nothing.
+	 * 
+	 * @param 	None.
+	 * @return 	Nothing.
 	 */
 	public Storage () {
+		
 		createFolder();
+		
 		storedFilePath = readFileSettings();
+		
 		if (storedFilePath == null) {
 			writeToProperties(DEFAULT_FILE_PATH);
 			initFile();
@@ -55,10 +59,11 @@ public class Storage {
 			initFile();
 		}
 	}
-	
+
 	/**
 	 * This method returns the current path of the of the storage file.
-	 * @return location of storage file.
+	 * 
+	 * @return Location of storage file.
 	 */
 	public String getFilePath() {
 		return storedFilePath;
@@ -66,24 +71,26 @@ public class Storage {
 
 	/**
 	 * This method creates a default folder if it does not exist in where the program is run.
-	 * @param None.
-	 * @return whether the folder is created successfully or not
-	 * @exception Exception when the folder is not successfully created
-	 * @see Exception
+	 * 
+	 * @param 		None.
+	 * @return 		Whether the folder is created successfully or not.
 	 */
 	protected static boolean createFolder() {
+		
 		if (!newFolder.exists()) {
 			newFolder.mkdir();
 		}
+		
 		return true;
 	}
 
 	/**
 	 * This is method reads the file path stored in the program's properties file.
-	 * @param None
-	 * @return String	file path of where the data file is stored
-	 * @exception IOException On input error.
-	 * @see IOException
+	 * 
+	 * @param 			None
+	 * @return String	File path of where the data file is stored.
+	 * @exception 		IOException On file reading error.
+	 * @see 			IOException.
 	 */
 	protected String readFileSettings() {
 
@@ -106,26 +113,35 @@ public class Storage {
 	/**
 	 * This method changes the file path stored in the properties file and moves
 	 * the .txt data file to the specified new file path.
-	 * @param newFilePath New file path specified by user.
-	 * @return whether the file path is changed successfully or not
-	 * @throws IOException, FileNotFoundException
+	 * 
+	 * @param newFilePath 				New file path specified by user.
+	 * @return 							Whether the file path is changed successfully or not.
+	 * @throws IOException.
+	 * @throws FileNotFoundException.
 	 */
-	public void changeFilePath(String newFilePath) throws IOException, FileNotFoundException {
+	public void changeFilePath(String newFilePath) 
+			throws IOException, FileNotFoundException {
+		
 		String oldFilePath = readFileSettings();
+		
 		moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
+		
 		newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
 		moveFile(oldFilePath, newFilePath);
+		
 		writeToProperties(newFilePath);
 	}
 
 	/**
 	 * This method writes the specified file path into the default properties file.
-	 * @param filePath File path to be stored.
-	 * @return whether the file path is written successfully or not
-	 * @exception IOException On input error.
-	 * @see IOException
+	 * 
+	 * @param filePath 	File path to be stored.
+	 * @return 			Whether the file path is written successfully or not.
+	 * @exception 		IOException On input error.
+	 * @see 			IOException.
 	 */
 	protected boolean writeToProperties (String filePath) {
+
 		Properties prop = new Properties();
 		OutputStream output = null;
 
@@ -142,27 +158,35 @@ public class Storage {
 
 	/**
 	 * This method creates a folder in the new file path specified.
-	 * @param newFilePath New file path to create the folder in.
-	 * @return Nothing.
+	 * 
+	 * @param newFilePath 	New file path to create the folder in.
+	 * @return 				Nothing.
 	 */
-	protected void moveFolder(String newFilePath) {
+	protected boolean moveFolder(String newFilePath) {
+		
 		File file = new File(newFilePath);
 
 		if (!file.exists()) {
 			file = new File(newFilePath);
 			file.mkdir();
+			return true;
 		}
+		
+		return false;
 	}
 
 	/**
 	 * This method copies content from a source .txt file to another destination .txt file.
 	 * The source .txt file will be deleted at the end of this method.
-	 * @param oldFilePath File path of the source .txt file.
-	 * @param newFilePath File path of the destination .txt file.
-	 * @return Nothing.
-	 * @throws IOException, FileNotFoundException
+	 * 
+	 * @param oldFilePath 				File path of the source .txt file.
+	 * @param newFilePath 				File path of the destination .txt file.
+	 * @return 							Nothing.
+	 * @throws IOException.
+	 * @throws FileNotFoundException.
 	 */
-	protected void moveFile(String oldFilePath, String newFilePath) throws IOException, FileNotFoundException {
+	protected void moveFile(String oldFilePath, String newFilePath) 
+			throws IOException, FileNotFoundException {
 
 		InputStream inStream = null;
 		OutputStream outStream = null;
@@ -176,7 +200,6 @@ public class Storage {
 		byte[] buffer = new byte[1024];
 
 		int length;
-
 		while ((length = inStream.read(buffer)) > 0){
 			outStream.write(buffer, 0, length); // copy file contents over
 		}
@@ -191,10 +214,11 @@ public class Storage {
 	/**
 	 * This method initialises the .txt data file. If the file doesn't exist, the data file is created and
 	 * data is written into it. Else if the data file exist, data is being read and stored in the program.
-	 * @param None.
-	 * @return Nothing.
-	 * @exception IOException On input error.
-	 * @see IOException
+	 * 
+	 * @param 		None.
+	 * @return 		Nothing.
+	 * @exception 	IOException On file input error.
+	 * @see 		IOException.
 	 */
 	protected void initFile() {
 
@@ -208,7 +232,6 @@ public class Storage {
 			try {
 				writeLists();
 			} catch (IOException e) {
-				System.out.println("Storage IOException: File not created successfully");
 				return;
 			}
 		} else {
@@ -218,22 +241,26 @@ public class Storage {
 
 	/**
 	 * This method checks whether the data file exist or not.
-	 * @param None.
-	 * @return Nothing.
+	 * 
+	 * @param 	None.
+	 * @return 	Nothing.
 	 */
 	protected boolean fileExist() {
+		
 		if (file.exists()) {
 			return true;
 		}
 		else {
 			return false;
 		}
+		
 	}
 
 	/**
 	 * This method retrieves the list index of the list wanted.
-	 * @param id ID of the list wanted.
-	 * @return integer value of list index.
+	 * 
+	 * @param id 	ID of the list wanted.
+	 * @return  	Integer value of list index.
 	 */
 	public static int getListIndex(String id) {
 		switch(id.charAt(0)) {
@@ -252,8 +279,9 @@ public class Storage {
 
 	/**
 	 * This method retrieves the index of the list complementing to the original list.
-	 * @param index index of the original list.
-	 * @return integer value of the complementing list.
+	 * 
+	 * @param index Index of the original list.
+	 * @return 		Integer value of the complementing list.
 	 */
 	public static int getComplementListIndex(int index) {
 		switch(index) {
@@ -271,10 +299,12 @@ public class Storage {
 	}
 
 	/**
-	 * This method stores a Task object into the specified list and updates the data file.
-	 * @param listIndex list index of the list to store the task into.
-	 * @param t Task object to store into the list.
-	 * @return Nothing.
+	 * This method stores a Item object into the specified list and updates the data file.
+	 * 
+	 * @param listIndex 	list index of the list to store the Item into.
+	 * @param t 			Item object to store into the list.
+	 * @return 				Nothing.
+	 * @throws IOException	On file input error.
 	 */
 	public void create(int listIndex, Item t) throws IOException {
 		lists.get(listIndex).add(t);
@@ -282,22 +312,36 @@ public class Storage {
 	}
 
 	/**
-	 * This method retrieves the list of Task objects specified by the list index.
+	 * This method retrieves the list of Item objects specified by the list index.
+	 * 
 	 * @param listIndex Index of the list wanted.
-	 * @return the list specified.
+	 * @return 			The list specified.
 	 */
 	public ArrayList<Item> getList(int listIndex) {
 		return lists.get(listIndex);
 	}
+	
+	/**
+	 * This method retrieves the list containing all lists of Item objects.
+	 * 
+	 * @param 	None.
+	 * @return 	The list containing all lists of Item objects.
+	 */
+	protected List<ArrayList<Item>> getLists() {
+		return lists;
+	}
 
 	/**
-	   * This method updates a specified Task in the list of tasks where the task is stored in
-	   * and updates the data file.
-	   * @param listIndex Index of the list where the Task to be updated is stored in.
-	   * @param t The updated Task to be stored.
-	   * @return Nothing.
-	   */
-	public void update(int listIndex, Item oldTask, Item newTask) throws IOException {
+	 * This method updates a specified Item in the list of Items where the Item is stored in
+	 * and updates the data file.
+	 * 
+	 * @param listIndex 	Index of the list where the Item to be updated is stored in.
+	 * @param t 			The updated Item to be stored.
+	 * @return 				Nothing.
+	 * @throws IOException	On file input error.
+	 */
+	public void update(int listIndex, Item oldTask, Item newTask) 
+			throws IOException {
 		int pos = getPos(listIndex, oldTask);
 		if (pos > -1) {
 			lists.get(listIndex).set(pos, newTask);
@@ -306,11 +350,13 @@ public class Storage {
 	}
 
 	/**
-	 * This method deletes the specified Task in the list of tasks where the task is stored in
+	 * This method deletes the specified Item in the list of Items where the Item is stored in
 	 * and updates the data file.
-	 * @param listIndex Index of the list where the Task to be deleted is stored in.
-	 * @param t Task to be deleted.
-	 * @return Nothing.
+	 * 
+	 * @param listIndex 	Index of the list where the Item to be deleted is stored in.
+	 * @param t 			Item to be deleted.
+	 * @return 				Nothing.
+	 * @throws IOException 	On file input error.
 	 */
 	public void delete(int listIndex, Item t) throws IOException {
 		int pos = getPos(listIndex, t);
@@ -321,9 +367,11 @@ public class Storage {
 	}
 
 	/**
-	 * This method clears a list of tasks of all content and updates the data file.
-	 * @param listIndex Index of the list to be cleared.
-	 * @return Nothing.
+	 * This method clears a list of Items of all content and updates the data file.
+	 * 
+	 * @param listIndex 	Index of the list to be cleared.
+	 * @return 				Nothing.
+	 * @throws IOException	On file input error.
 	 */
 	protected void clear(int listIndex) throws IOException {
 		lists.set(listIndex, new ArrayList<Item>());
@@ -331,31 +379,37 @@ public class Storage {
 	}
 
 	/**
-	 * This method retrieves the position of a specified task in the list it is stored in.
-	 * @param listIndex Index of the list that the Task is stored in.
-	 * @param t Task object that you want to get the position of.
-	 * @return position of the Task in the list it is stored in. (0-based)
+	 * This method retrieves the position of a specified Item in the list it is stored in.
+	 * 
+	 * @param listIndex Index of the list that the Item is stored in.
+	 * @param t 		Item object that you want to get the position of.
+	 * @return 			Position of the Item in the list it is stored in. (0-based)
 	 */
 	protected int getPos(int listIndex, Item t) {
 		return lists.get(listIndex).indexOf(t);
 	}
 
 	/**
-	 * This method stores the list of tasks into the parent list of tasks that contains
-	 * all the different lists of tasks.
-	 * @param listIndex Index of the list to be set into the parent array.
-	 * @param list The list to be set into the parent array.
-	 * @return Nothing.
+	 * This method stores the list of Items into the parent list of Items that contains
+	 * all the different lists of Items.
+	 * 
+	 * @param listIndex 	Index of the list to be set into the parent array.
+	 * @param list 			The list to be set into the parent array.
+	 * @return 				Nothing.
+	 * @throws IOException	On file input error.
 	 */
-	public void setList(int listIndex, ArrayList<Item> list) throws IOException {
+	public void setList(int listIndex, ArrayList<Item> list) 
+			throws IOException {
 		lists.set(listIndex, list);
 		writeLists();
 	}
 
 	/**
 	 * This method writes all current content from the program into the .txt data file.
-	 * @param None.
-	 * @return Nothing.
+	 * 
+	 * @param 	None.
+	 * @return 	Nothing.
+	 * @throws 	IOException		On file input error.
 	 */
 	protected void writeLists() throws IOException {
 		mapper.writerWithDefaultPrettyPrinter().writeValue(file, lists);
@@ -365,12 +419,14 @@ public class Storage {
 	 * This method reads content from the .txt data file and stores the data into the
 	 * program. If the content is empty or the file does not exist, default lists with empty
 	 * content will be stored in the program.
-	 * @param None.
-	 * @return Nothing.
-	 * @exception Exception
-	 * @see Exception
+	 * 
+	 * @param 		None.
+	 * @return 		Nothing.
+	 * @exception 	Exception	On file reading error.
+	 * @see 		Exception.
 	 */
 	protected void readLists() {
+		
 		try {
 			lists = mapper.readValue(file, new TypeReference<List<ArrayList<Item>>>() { });
 		} catch (Exception e) {
