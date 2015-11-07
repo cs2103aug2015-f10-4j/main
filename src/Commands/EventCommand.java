@@ -24,9 +24,6 @@ public class EventCommand extends Command {
 	private static final String MESSAGE_EVENT_ADDED = "event added";
 	private static final String MESSAGE_EVENT_CLASH = ". Another event exists on the same date.";
 	private static final String MESSAGE_EVENT_ERROR = "unable to add event";
-
-	/** For checking **/
-	private final CustomDate today = getDate("today");
 	
 	/** Command parameters **/
 	protected String title;
@@ -76,6 +73,7 @@ public class EventCommand extends Command {
 			checkDateRange();
 			
 			errorInvalidArgs();
+
 			
 		} else {
 			errorInvalidFormat();
