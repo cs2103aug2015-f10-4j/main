@@ -3,13 +3,13 @@ package main;
 import java.util.Calendar;
 import java.util.Date;
 
-public class CustomDate {
+public class CustomDate implements Comparable {
 
 	private static final String DATE_FORMAT = "%04d on %d %s %s, %s";
 
-	private static String[] dayArray = { "Sunday", "Monday", "Tuesday",
+	private static final String[] dayArray = { "Sunday", "Monday", "Tuesday",
 			"Wednesday", "Thursday", "Friday", "Saturday" };
-	private static String[] monthArray = { "Jan", "Feb", "Mar", "Apr", "May",
+	private static final String[] monthArray = { "Jan", "Feb", "Mar", "Apr", "May",
 			"Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
 	private Date date;
@@ -19,6 +19,7 @@ public class CustomDate {
 	}
 
 	public CustomDate() {
+		this.date = new Date();
 	}
 
 	@Override
@@ -123,5 +124,4 @@ public class CustomDate {
 		}
 		this.date = cal.getTime();
 	}
-
 }

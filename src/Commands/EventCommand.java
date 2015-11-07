@@ -1,6 +1,6 @@
 package Commands;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import gui.GUIModel;
 public class EventCommand extends Command {
 
 	
-	/** Messaging */
+	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "
 			+ "from <start date> <start time> "
 			+ "to <end date> <end time>";
@@ -25,7 +25,7 @@ public class EventCommand extends Command {
 	private static final String MESSAGE_EVENT_CLASH = ". Another event exists on the same date.";
 	private static final String MESSAGE_EVENT_ERROR = "unable to add event";
 
-	/** For checking */
+	/** For checking **/
 	private final CustomDate today = getDate("today");
 	
 	/** Command parameters **/
@@ -128,10 +128,11 @@ public class EventCommand extends Command {
 	 * is the start or end date.
 	 */
 	private void checkDateTime(CustomDate date, int type) {
+		assert(type == 0 || type == 1);
 		if (date == null) {
 			if(type == 0){
 				invalidArgs.add(MESSAGE_INVALID_DATETIME_START);
-			} else if (type == 1){
+			} else {
 				invalidArgs.add(MESSAGE_INVALID_DATETIME_END);
 			}
 		}
