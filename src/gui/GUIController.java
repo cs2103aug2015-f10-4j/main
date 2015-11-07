@@ -15,6 +15,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -28,6 +29,11 @@ import javafx.stage.Stage;
 import main.Item;
 
 public class GUIController {
+
+	private static final String TASK_TABLE_LETTER = "t";
+	private static final String TASK_DONE_TABLE_LETTER = "d";
+	private static final String EVENT_TABLE_LETTER = "e";
+	private static final String EVENT_DONE_TABLE_LETTER = "p";
 
 	@FXML private TitledPane toDoPane;
 
@@ -88,47 +94,46 @@ public class GUIController {
 		// Populate task table columns
 
 		taskIDCol.setCellFactory(col -> {
-		    TableCell<Item, String> cell = new TableCell<>();
-		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
-		        .then("")
-		        .otherwise(Bindings.concat("t", cell.indexProperty().add(1).asString())));
-		    return cell ;
+		    return makeIndex(TASK_TABLE_LETTER);
 		});
-
 
 		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
 
 		taskTagsCol.setCellValueFactory(col -> {
-			SimpleStringProperty finalResult = new SimpleStringProperty();
-			Set<String> tagSet = col.getValue().getTags();
-			String result = makeTagString(tagSet);
-			finalResult.setValue(result);
-			return finalResult;
+			return makeTagCellValue(col);
 		});
 
 		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
 		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
+		// Populate done task table columns
+
+		taskDoneIDCol.setCellFactory(col -> {
+			return makeIndex(TASK_DONE_TABLE_LETTER);
+		});
+
+		taskDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
+
+		taskDoneTagsCol.setCellValueFactory(col -> {
+			return makeTagCellValue(col);
+		});
+
+		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
+		taskDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
+
+
+
 
 		// Populate event table columns
 
 		eventIDCol.setCellFactory(col -> {
-		    TableCell<Item, String> cell = new TableCell<>();
-		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
-		        .then("")
-		        .otherwise(Bindings.concat("e", cell.indexProperty().add(1).asString())));
-		    return cell ;
+			return makeIndex(EVENT_TABLE_LETTER);
 		});
-
 
 		eventTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
 
 		eventTagsCol.setCellValueFactory(col -> {
-			SimpleStringProperty finalResult = new SimpleStringProperty();
-			Set<String> tagSet = col.getValue().getTags();
-			String result = makeTagString(tagSet);
-			finalResult.setValue(result);
-			return finalResult;
+			return makeTagCellValue(col);
 		});
 
 		eventStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("startDate"));
@@ -136,48 +141,17 @@ public class GUIController {
 		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
 
-		// Populate done task table columns
-
-		taskDoneIDCol.setCellFactory(col -> {
-		    TableCell<Item, String> cell = new TableCell<>();
-		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
-		        .then("")
-		        .otherwise(Bindings.concat("d", cell.indexProperty().add(1).asString())));
-		    return cell;
-		});
-
-		taskDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
-
-		taskDoneTagsCol.setCellValueFactory(col -> {
-			SimpleStringProperty finalResult = new SimpleStringProperty();
-			Set<String> tagSet = col.getValue().getTags();
-			String result = makeTagString(tagSet);
-			finalResult.setValue(result);
-			return finalResult;
-		});
-
-		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
-		taskDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
-
 
 		// Populate done event table columns
 
 		eventDoneIDCol.setCellFactory(col -> {
-		    TableCell<Item, String> cell = new TableCell<>();
-		    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
-		        .then("")
-		        .otherwise(Bindings.concat("p", cell.indexProperty().add(1).asString())));
-		    return cell;
+			return makeIndex(EVENT_DONE_TABLE_LETTER);
 		});
 
 		eventDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
 
 		eventDoneTagsCol.setCellValueFactory(col -> {
-			SimpleStringProperty finalResult = new SimpleStringProperty();
-			Set<String> tagSet = col.getValue().getTags();
-			String result = makeTagString(tagSet);
-			finalResult.setValue(result);
-			return finalResult;
+			return makeTagCellValue(col);
 		});
 
 		eventDoneStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("startDate"));
@@ -225,6 +199,34 @@ public class GUIController {
 			result = result.substring(0, result.lastIndexOf(","));
 		}
 		return result;
+	}
+
+	/**
+	 * This method returns a SimpleStringProperty of a cell's Item's tags.
+	 * @param col
+	 * @return SimpleStringProperty
+	 */
+
+	private SimpleStringProperty makeTagCellValue(CellDataFeatures<Item, String> col) {
+		SimpleStringProperty finalResult = new SimpleStringProperty();
+		Set<String> tagSet = col.getValue().getTags();
+		String result = makeTagString(tagSet);
+		finalResult.setValue(result);
+		return finalResult;
+	}
+
+	/**
+	 * This method
+	 * @param character - depending on table
+	 * @return
+	 */
+
+	private TableCell<Item, String> makeIndex(String character) {
+	    TableCell<Item, String> cell = new TableCell<>();
+	    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
+	        .then("")
+	        .otherwise(Bindings.concat(character, cell.indexProperty().add(1).asString())));
+	    return cell ;
 	}
 
 
@@ -276,6 +278,7 @@ public class GUIController {
 	 * These methods set the current tab of the GUIModel to the
 	 * tab last clicked by the user. They are assigned to their
 	 * respective tabs in the FXML file.
+	 * @return nothing
 	 */
 	@FXML
 	protected void handleTaskTabClicked() {
