@@ -15,7 +15,7 @@ import main.Item;
 
 public class TagCommandTest {
 
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: taskID";
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [itemID]";
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: tag <task_id> <tag name>";
 
 	@Before
@@ -32,6 +32,7 @@ public class TagCommandTest {
 	public void testNormalInputs() throws Exception {
 		TagCommand tagTask = new TagCommand("t1 CS2103");
 		TagCommand tagTaskAgain = new TagCommand("t1 CS2105");
+		TagCommand tagManyTagsAtOnce = new TagCommand("t1 t2 t3 t4");
 		TagCommand tagNextTask = new TagCommand("t2 CS2102");
 		TagCommand tagLastTask = new TagCommand("t7 CS2010");
 	}
@@ -40,12 +41,6 @@ public class TagCommandTest {
 	public void testWrongNumArgs() {
 		try {
 			TagCommand noArgs = new TagCommand("");
-		} catch (Exception e) {
-			// System.out.println("e: " + e);
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
-		}
-		try {
-			TagCommand tooManyArgs = new TagCommand("t1 t2 t3 t4");
 		} catch (Exception e) {
 			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
