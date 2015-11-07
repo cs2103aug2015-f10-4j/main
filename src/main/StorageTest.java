@@ -3,17 +3,12 @@ package main;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
-import java.io.File;
-
-import junit.framework.TestCase;
 
 public class StorageTest {
 	
@@ -34,28 +29,28 @@ public class StorageTest {
 	public void setUp() {
 		task1.setType("task");
 		task1.setTitle("help mum buy groceries");
-		// task1.setEndDate(createDateObjects(1992, 3, 17, 15, 9, 17));
-		task1.setStartTime(900);
+		task1.setEndDate(createDateObjects(1992, 3, 17, 22, 0, 0));
 		task1.setEndTime(2200);
 		task1.setPriority("medium");
 		
 		task2.setType("task");
 		task2.setTitle("study for midterms");
-		// task2.setEndDate(createDateObjects(1993, 10, 12, 3, 8, 16));
-		task2.setStartTime(800);
+		task2.setEndDate(createDateObjects(1993, 10, 12, 20, 0, 0));
 		task2.setEndTime(2000);
 		task2.setPriority("high");
 		
 		event1.setType("event");
 		event1.setTitle("my birthday");
-		// event1.setEndDate(createDateObjects(1988, 2, 16, 8, 18, 58));
+		event1.setStartDate(createDateObjects(1988, 2, 12, 7, 0, 0));
+		event1.setEndDate(createDateObjects(1988, 2, 16, 18, 0, 0));
 		event1.setStartTime(700);
 		event1.setEndTime(1800);
 		event1.setPriority("medium");
 		
 		event2.setType("event");
 		event2.setTitle("eat dinner at utown");
-		// event2.setEndDate(createDateObjects(1988, 8, 18, 3, 19, 16));
+		event2.setStartDate(createDateObjects(1988, 2, 12, 5, 0, 0));
+		event2.setEndDate(createDateObjects(1988, 8, 18, 14, 0, 0));
 		event2.setStartTime(500);
 		event2.setEndTime(1400);
 		event2.setPriority("low");
