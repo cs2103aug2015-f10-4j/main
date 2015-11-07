@@ -14,9 +14,10 @@ public class TagCommand extends Command {
 
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: tag <task_id> <tag name>";
 
-	private Item task;
+	private Item item;
+	private String itemID;
 	private String tag;
-	private Item prevTask;
+	private Item prevItem;
 
 	public TagCommand(String args) throws Exception {
 		super(args);
@@ -26,11 +27,12 @@ public class TagCommand extends Command {
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			task = getItemByID(argsArray.get(0).trim());
+			itemID = argsArray.get(0).trim();
+			item = getItemByID(itemID);
 			tag = argsArray.get(1).trim();
 
-			if (task == null) {
-				invalidArgs.add("taskID");
+			if (item == null) {
+				invalidArgs.add("itemID");
 			}
 
 			if (invalidArgs.size() > 0) {
@@ -56,21 +58,25 @@ public class TagCommand extends Command {
 	 * 
 	 * @param None
 	 * @return message to show user
+	 * @throws Exception 
 	 */
 	@Override
-	public String execute() {
-		prevTask = task;
-		task = prevTask.copy();
+	public String execute() throws Exception {
+		prevItem = item;
+		item = prevItem.copy();
 
-		Set<String> tags = task.getTags();
+		Set<String> tags = item.getTags();
+		if (tags.contains(tag)) {
+			throw new Exception(itemID + " already has tag: " + tag);
+		}
 		tags.add(tag);
-		task.setTags(tags);
+		item.setTags(tags);
 
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.getStorage().update(listIndex, prevTask, task);
+			Magical.getStorage().update(listIndex, prevItem, item);
 		} catch (IOException e) {
-			return "unable to add tag to task";
+			throw new Exception("unable to add tag to " + itemID);
 		} finally {
 			GUIModel.setTaskList(Magical.getStorage().getList(
 					Storage.TASKS_INDEX));
@@ -82,7 +88,7 @@ public class TagCommand extends Command {
 					Storage.EVENTS_DONE_INDEX));
 		}
 
-		return tag + " added to task";
+		return tag + " added to " + itemID;
 	}
 
 	@Override

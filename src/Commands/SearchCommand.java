@@ -47,24 +47,24 @@ public class SearchCommand extends Command {
 		ArrayList<Item> filteredEventList = new ArrayList<Item>();
 		ArrayList<Item> filteredEventDoneList = new ArrayList<Item>();
 
-		for (Item t : taskList) {
-			if (t.getTitle().contains(query)) {
-				filteredTaskList.add(t);
+		for (Item i : taskList) {
+			if (i.getTitle().contains(query)) {
+				filteredTaskList.add(i);
 			}
 		}
-		for (Item t : taskDoneList) {
-			if (t.getTitle().contains(query)) {
-				filteredTaskDoneList.add(t);
+		for (Item i : taskDoneList) {
+			if (i.getTitle().contains(query)) {
+				filteredTaskDoneList.add(i);
 			}
 		}
-		for (Item t : eventList) {
-			if (t.getTitle().contains(query)) {
-				filteredEventList.add(t);
+		for (Item i : eventList) {
+			if (i.getTitle().contains(query)) {
+				filteredEventList.add(i);
 			}
 		}
-		for (Item t : eventDoneList) {
-			if (t.getTitle().contains(query)) {
-				filteredEventDoneList.add(t);
+		for (Item i : eventDoneList) {
+			if (i.getTitle().contains(query)) {
+				filteredEventDoneList.add(i);
 			}
 		}
 

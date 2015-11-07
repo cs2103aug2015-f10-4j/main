@@ -12,7 +12,8 @@ import main.Item;
 public class DoneCommand extends Command {
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <task_id>";
 
-	private Item task;
+	private Item item;
+	private String itemID;
 
 	public DoneCommand(String args) throws Exception {
 		super(args);
@@ -22,13 +23,14 @@ public class DoneCommand extends Command {
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			task = getItemByID(argsArray.get(0).trim());
+			itemID = argsArray.get(0).trim();
+			item = getItemByID(itemID);
 
-			if (task == null) {
+			if (item == null) {
 				invalidArgs.add("taskID");
 			} else if (argsArray.get(0).trim().contains("d")
 					|| argsArray.get(0).trim().contains("p")) {
-				invalidArgs.add("Done tasks cannot be done!");
+				invalidArgs.add(itemID + " is already done!");
 			}
 			if (invalidArgs.size() > 0) {
 				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
@@ -60,10 +62,10 @@ public class DoneCommand extends Command {
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
 			int complementListIndex = Storage.getComplementListIndex(listIndex);
-			Magical.getStorage().delete(listIndex, task);
-			Magical.getStorage().create(complementListIndex, task);
+			Magical.getStorage().delete(listIndex, item);
+			Magical.getStorage().create(complementListIndex, item);
 		} catch (IOException e) {
-			return "unable to archive item";
+			return "unable to archive " + itemID;
 		} finally {
 			GUIModel.setTaskList(Magical.getStorage().getList(
 					Storage.TASKS_INDEX));
@@ -75,7 +77,7 @@ public class DoneCommand extends Command {
 					Storage.EVENTS_DONE_INDEX));
 		}
 
-		return "item archived";
+		return itemID + " archived";
 	}
 
 	@Override

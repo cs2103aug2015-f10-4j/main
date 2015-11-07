@@ -13,7 +13,8 @@ public class UndoneCommand extends Command {
 
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: undone <task_id>";
 
-	private Item task;
+	private Item item;
+	private String itemID;
 
 	public UndoneCommand(String args) throws Exception {
 		super(args);
@@ -23,10 +24,11 @@ public class UndoneCommand extends Command {
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			task = getItemByID(argsArray.get(0).trim());
+			itemID = argsArray.get(0).trim();
+			item = getItemByID(itemID);
 
-			if (task == null) {
-				invalidArgs.add("taskID");
+			if (item == null) {
+				invalidArgs.add("itemID");
 			} else if (argsArray.get(0).trim().contains("t")
 					|| argsArray.get(0).trim().contains("e")) {
 				invalidArgs.add("Undone tasks cannot be undone!");
@@ -60,10 +62,10 @@ public class UndoneCommand extends Command {
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
 			int complementListIndex = Storage.getComplementListIndex(listIndex);
-			Magical.getStorage().delete(listIndex, task);
-			Magical.getStorage().create(complementListIndex, task);
+			Magical.getStorage().delete(listIndex, item);
+			Magical.getStorage().create(complementListIndex, item);
 		} catch (IOException e) {
-			return "unable to un-archive task";
+			return "unable to un-archive " + itemID;
 		} finally {
 			GUIModel.setTaskList(Magical.getStorage().getList(
 					Storage.TASKS_INDEX));
@@ -75,7 +77,7 @@ public class UndoneCommand extends Command {
 					Storage.EVENTS_DONE_INDEX));
 		}
 
-		return "task un-archived";
+		return "item un-archived";
 	}
 
 	@Override

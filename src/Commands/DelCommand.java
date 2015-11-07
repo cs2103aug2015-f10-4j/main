@@ -13,7 +13,8 @@ public class DelCommand extends Command {
 
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: delete <task_id>";
 
-	private Item task;
+	private Item item;
+	private String itemID;
 
 	public DelCommand(String args) throws Exception {
 		super(args);
@@ -23,11 +24,11 @@ public class DelCommand extends Command {
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
+			itemID = argsArray.get(0).trim();
+			item = getItemByID(itemID);
 
-			task = getItemByID(argsArray.get(0).trim());
-
-			if (task == null) {
-				invalidArgs.add("TaskID");
+			if (item == null) {
+				invalidArgs.add("itemID");
 			}
 			if (invalidArgs.size() > 0) {
 				throw new IllegalArgumentException(MESSAGE_HEADER_INVALID
@@ -58,10 +59,10 @@ public class DelCommand extends Command {
 	public String execute() {
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.getStorage().delete(listIndex, task);
-			return "task deleted";
+			Magical.getStorage().delete(listIndex, item);
+			return "item deleted";
 		} catch (IOException e) {
-			return "unable to delete task";
+			return "unable to delete " + itemID;
 		} finally {
 			GUIModel.setTaskList(Magical.getStorage().getList(
 					Storage.TASKS_INDEX));

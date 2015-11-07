@@ -86,24 +86,24 @@ public class ShowCommand extends Command {
 			showEventList = new ArrayList<Item>();
 			showEventDoneList = new ArrayList<Item>();
 			Set<String> queryTags = new HashSet<String>(tags);
-			for (Item t : taskList) {
-				if (t.getTags().containsAll(queryTags)) {
-					showTaskList.add(t);
+			for (Item i : taskList) {
+				if (i.getTags().containsAll(queryTags)) {
+					showTaskList.add(i);
 				}
 			}
-			for (Item t : taskDoneList) {
-				if (t.getTags().containsAll(queryTags)) {
-					showTaskDoneList.add(t);
+			for (Item i : taskDoneList) {
+				if (i.getTags().containsAll(queryTags)) {
+					showTaskDoneList.add(i);
 				}
 			}
-			for (Item t : eventList) {
-				if (t.getTags().containsAll(queryTags)) {
-					showEventList.add(t);
+			for (Item i : eventList) {
+				if (i.getTags().containsAll(queryTags)) {
+					showEventList.add(i);
 				}
 			}
-			for (Item t : eventDoneList) {
-				if (t.getTags().containsAll(queryTags)) {
-					showEventDoneList.add(t);
+			for (Item i : eventDoneList) {
+				if (i.getTags().containsAll(queryTags)) {
+					showEventDoneList.add(i);
 				}
 			}
 			break;

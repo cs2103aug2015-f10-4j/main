@@ -13,9 +13,10 @@ public class PriorityCommand extends Command {
 
 	private static final String MESSAGE_ARGUMENT_PARAMS = "Use Format: set <task id> <priority>";
 
-	private Item task;
+	private Item item;
+	private String itemID;
 	private int priority;
-	private Item prevTask;
+	private Item prevItem;
 
 	public PriorityCommand(String args) throws Exception {
 		super(args);
@@ -25,11 +26,12 @@ public class PriorityCommand extends Command {
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			task = getItemByID(argsArray.get(0).trim());
+			itemID = argsArray.get(0).trim();
+			item = getItemByID(itemID);
 			priority = getPriority(argsArray.get(1).trim());
 
-			if (task == null) {
-				invalidArgs.add("taskID");
+			if (item == null) {
+				invalidArgs.add("itemID");
 			}
 			if (priority == -1) {
 				invalidArgs.add("priority");
@@ -60,15 +62,15 @@ public class PriorityCommand extends Command {
 	 */
 	@Override
 	public String execute() {
-		prevTask = task;
-		task = prevTask.copy();
-		task.setPriority(priority);
+		prevItem = item;
+		item = prevItem.copy();
+		item.setPriority(priority);
 
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.getStorage().update(listIndex, prevTask, task);
+			Magical.getStorage().update(listIndex, prevItem, item);
 		} catch (IOException e) {
-			return "unable to change priority";
+			return "unable to change priority for " + itemID;
 		} finally {
 			GUIModel.setTaskList(Magical.getStorage().getList(
 					Storage.TASKS_INDEX));
@@ -80,7 +82,7 @@ public class PriorityCommand extends Command {
 					Storage.EVENTS_DONE_INDEX));
 		}
 
-		return "Priority updated.";
+		return "priority updated for " + itemID;
 	}
 
 	@Override
