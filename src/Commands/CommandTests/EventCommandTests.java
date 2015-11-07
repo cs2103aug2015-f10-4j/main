@@ -14,13 +14,6 @@ import main.Item;
 
 public class EventCommandTests {
 
-	private static final String EMPTY_STRING = "";
-	private static final String WHITESPACE_STRING = "                ";
-	private static final String NUMBER_STRING = "1234567890";
-	private static final String LONG_STRING = "This is a very long string made out of multiple words that can go on forever and ever and ever and ever";
-	private static final String WEIRD_STRING = "T#is str/ng h@s we!rd $ymb^\\s. And punc!tuat!ion?";
-	private static final String QUOTES_STRING = "\"This string has 'quotes' of both kinds\"";
-
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "
 			+ "from <start date> <start time> "
 			+ "to <end date> <end time>";
@@ -31,6 +24,16 @@ public class EventCommandTests {
 	private static final String MESSAGE_EVENT_ADDED = "event added";
 	private static final String MESSAGE_EVENT_CLASH = ". Another event exists on the same date.";
 	private static final String MESSAGE_EVENT_ERROR = "unable to add event";
+
+
+	/** Strings to test with **/
+	private static final String EMPTY_STRING = "";
+	private static final String WHITESPACE_STRING = "                ";
+	private static final String NUMBER_STRING = "1234567890";
+	private static final String LONG_STRING = "This is a very long string made out of multiple words that can go on forever and ever and ever and ever";
+	private static final String WEIRD_STRING = "T#is str/ng h@s we!rd $ymb^\\s. And punc!tuat!ion?";
+	private static final String QUOTES_STRING = "\"This string has 'quotes' of both kinds\"";
+
 
 	@BeforeClass
 	public static void setUp() {
