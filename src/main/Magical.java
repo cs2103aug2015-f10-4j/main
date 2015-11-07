@@ -1,6 +1,8 @@
 package main;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
@@ -25,8 +27,33 @@ public class Magical {
 	 */
 	public static void init() {
 		storage = new Storage();
+		archivePastEvents();
 		for (int i = 0; i < Storage.NUM_LISTS; i++) {
 			undoLists.add(new Stack<ArrayList<Item>>());
+		}
+	}
+
+	/**
+	 * This method archives all events that ended before the current date.
+	 */
+	private static void archivePastEvents() {
+		ArrayList<Item> eventList = storage.getList(Storage.EVENTS_INDEX);
+		ArrayList<Item> newEventList = new ArrayList<Item>();
+		ArrayList<Item> newEventDoneList = new ArrayList<Item>();
+		CustomDate today = new CustomDate();
+		for (int i = 0; i < eventList.size(); i++) {
+			Item item = eventList.get(i);
+			CustomDate d = item.getEndDate();
+			if (d.compareTo(today) < 0) {
+				newEventDoneList.add(item);
+			} else {
+				newEventList.add(item);
+			}
+		}
+		try {
+			storage.setList(Storage.EVENTS_INDEX, newEventList);
+			storage.setList(Storage.EVENTS_DONE_INDEX, newEventDoneList);
+		} catch (IOException e) {
 		}
 	}
 
