@@ -69,7 +69,24 @@ public abstract class Command {
 		assertNotNull(date);
 		date = formatCorrectTime(date);
 		date = dateWithYear(date);
+		date = swapDayMonth(date);
 		return dateWithTime(date);
+	}
+
+	/**
+	 * Swaps the day and the month for flexicommands in order to parse properly
+	 * @param date
+	 * @return
+	 */
+	private String swapDayMonth(String date) {
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})\\d{1,2}\\s\\w{3,}(?=\\s{0,1})");
+		if(m.find()){
+			String s = m.group(0);
+			String[] splitS = s.split(" ", 2);
+			String newS = splitS[1] + " " + splitS[0]; 
+			date = date.replace(s, newS);
+		}
+		return date;
 	}
 
 	/**
@@ -265,4 +282,9 @@ public abstract class Command {
 	 * @return boolean true/false
 	 */
 	protected abstract boolean validNumArgs();
+	
+	public static void main(String[] args) throws Exception {
+		ExitCommand e = new ExitCommand("");
+		System.out.println(e.getDate("5 November"));
+	}
 }
