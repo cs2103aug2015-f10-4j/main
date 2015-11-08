@@ -14,7 +14,7 @@ import main.Item;
 public class PriorityCommandTest {
 
 	private static final String MESSAGE_ID_INVALID = "Invalid arguments: [item_id]";
-	private static final String MESSAGE_VALUE_INVALID = "Invalid arguments: [priority]";
+	private static final String MESSAGE_VALUE_INVALID = "Invalid arguments: [Priority]";
 	@Before
 	public void setUp() {
 		ArrayList<Item> testList = new ArrayList<Item>();
