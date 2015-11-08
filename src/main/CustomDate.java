@@ -7,8 +7,8 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/** Messaging **/
 	private static final String DATE_FORMAT = "%04d on %d %s %s, %s";
-	private static final String[] dayArray = { "Sunday", "Monday", "Tuesday",
-			"Wednesday", "Thursday", "Friday", "Saturday" };
+	private static final String[] dayArray = { "Sun", "Mon", "Tue",
+			"Wed", "Thu", "Fri", "Sat" };
 
 	private static final String[] monthArray = { "Jan", "Feb", "Mar", "Apr",
 			"May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
@@ -27,7 +27,7 @@ public class CustomDate implements Comparable<CustomDate> {
 	/**
 	 * Constructor for CustomDate. Takes in a date object for use by the
 	 * CustomDate.
-	 * 
+	 *
 	 * @param date
 	 */
 	public CustomDate(Date date) {
@@ -47,7 +47,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Create a calendar for get methods
-	 * 
+	 *
 	 * @return
 	 */
 	Calendar createCal() {
@@ -80,7 +80,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Returns date object of the CustomDate
-	 * 
+	 *
 	 * @return
 	 */
 	public Date getDate() {
@@ -89,7 +89,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Returns the date as a string in dd/MM/yyyy format
-	 * 
+	 *
 	 * @return
 	 */
 	public String getDateString() {
@@ -99,7 +99,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Gets the day of the date object in CustomDate
-	 * 
+	 *
 	 * @return
 	 */
 	public int getDay() {
@@ -110,7 +110,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Gets the month of the date object in CustomDate
-	 * 
+	 *
 	 * @return
 	 */
 	public int getMonth() {
@@ -121,7 +121,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Gets the time of the date object in CustomDate
-	 * 
+	 *
 	 * @return
 	 */
 	public int getTime() {
@@ -131,7 +131,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Gets the year of the date object in CustomDate
-	 * 
+	 *
 	 * @return
 	 */
 	public int getYear() {
@@ -150,7 +150,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Empty command for storage compatibility purposes
-	 * 
+	 *
 	 * @param dateString
 	 */
 	public void setDateString(String dateString) {
@@ -158,7 +158,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Set day of the customdate using the value
-	 * 
+	 *
 	 * @param field
 	 * @param val
 	 */
@@ -170,7 +170,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Set month of the customdate using the value
-	 * 
+	 *
 	 * @param field
 	 * @param val
 	 */
@@ -182,7 +182,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Set a time of the customdate using the value
-	 * 
+	 *
 	 * @param field
 	 * @param val
 	 */
@@ -196,7 +196,7 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	/**
 	 * Set year of the customdate using the value
-	 * 
+	 *
 	 * @param field
 	 * @param val
 	 */
