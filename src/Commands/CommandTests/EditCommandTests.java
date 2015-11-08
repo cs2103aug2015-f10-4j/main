@@ -78,7 +78,36 @@ public class EditCommandTests {
 		Command normalEditEvent = new EditCommand("e1 date 1 January 2015");
 		Command normalEditDoneTask = new EditCommand("d1 date 1 January 2015");
 		Command normalEditDoneEvent = new EditCommand("p1 date 1 January 2015");
+	}
 
+	@Test
+	public void testEditStartTimeNormalInputs() throws Exception {
+		Command normalEdit = new EditCommand("e1 start time 12pm");
+		Command normalEditDiffFormat = new EditCommand("e1 start time 1200");
+		Command normalEditDiffFormat2 = new EditCommand("e1 start time 12:00");
+		Command normalEditDiffFormat3 = new EditCommand("e1 start time 12 p.m.");
+		Command normalEditDiffFormat4 = new EditCommand("e1 start time 12 pm");
+		Command normalEditDoneTask = new EditCommand("p1 start time 12pm");
+	}
+
+	@Test
+	public void testEditEndTime() throws Exception {
+		Command normalEdit = new EditCommand("e1 end time 12pm");
+		Command normalEditDiffFormat = new EditCommand("e1 end time 1200");
+		Command normalEditDiffFormat2 = new EditCommand("e1 end time 12:00");
+		Command normalEditDiffFormat3 = new EditCommand("e1 end time 12 p.m.");
+		Command normalEditDiffFormat4 = new EditCommand("e1 end time 12 pm");
+		Command normalEditDoneTask = new EditCommand("p1 end time 12pm");
+	}
+
+	@Test
+	public void testEditTime() throws Exception {
+		Command normalEdit = new EditCommand("t1 time 12pm");
+		Command normalEditDiffFormat = new EditCommand("t1 time 1200");
+		Command normalEditDiffFormat2 = new EditCommand("t1 time 12:00");
+		Command normalEditDiffFormat3 = new EditCommand("t1 time 12 p.m.");
+		Command normalEditDiffFormat4 = new EditCommand("t1 time 12 pm");
+		Command normalEditDoneTask = new EditCommand("d1 time 12pm");
 	}
 
 	@AfterClass
