@@ -72,7 +72,7 @@ public class SearchCommand extends Command {
 		GUIModel.setTaskDoneList(filteredTaskDoneList);
 		GUIModel.setEventList(filteredEventList);
 		GUIModel.setEventDoneList(filteredEventDoneList);
-		return "search successful";
+		return "search results for: [" + query + "]";
 	}
 
 	@Override
