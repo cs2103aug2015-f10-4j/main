@@ -394,7 +394,9 @@ public class GUIController {
 				}
 				else {
 					setText(item);
-					if (item.equals(PRIORITY_HIGH)) {
+					if (!getTableRow().getStyle().isEmpty()) {
+						return;
+					} else if (item.equals(PRIORITY_HIGH)) {
 						setStyle("-fx-background-color: " + PRIORITY_HIGH_COLOR);
 					} else if (item.equals(PRIORITY_MEDIUM)) {
 						setStyle("-fx-background-color: " + PRIORITY_MEDIUM_COLOR);
@@ -415,6 +417,12 @@ public class GUIController {
 	 */
 
 	private void updateTableColors() {
+		taskDueDateCol.setCellFactory(col -> {
+			return makeDateCellFactory();
+		});
+		eventStartDateCol.setCellFactory(col -> {
+			return makeDateCellFactory();
+		});
 		taskPriorityCol.setCellFactory(col -> {
 			return makePriorityCellFactory();
 		});
@@ -427,12 +435,7 @@ public class GUIController {
 		eventDonePriorityCol.setCellFactory(col -> {
 			return makePriorityCellFactory();
 		});
-		taskDueDateCol.setCellFactory(col -> {
-			return makeDateCellFactory();
-		});
-		eventStartDateCol.setCellFactory(col -> {
-			return makeDateCellFactory();
-		});
+
 	}
 
 
