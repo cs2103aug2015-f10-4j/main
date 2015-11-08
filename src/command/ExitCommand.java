@@ -14,7 +14,7 @@ public class ExitCommand extends Command {
 	}
 
 	/**
-	 * This method executes the exit command. Which terminates the program.
+	 * This method executes the exit command which terminates the program.
 	 * 
 	 * @param None
 	 * @return None

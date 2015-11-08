@@ -30,7 +30,8 @@ public class AddCommand extends Command {
 	/**
 	 * Constructor for AddCommand objects.
 	 * Checks if arguments are valid and stores the correct arguments properly.
-	 * Throws the appropriate exception if arguments are invalid
+	 * Throws the appropriate exception if arguments are invalid. Contains methods to 
+	 * add a task to storage.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -251,6 +252,9 @@ public class AddCommand extends Command {
 		}
 	}
 
+	/**
+	 * Adds a new task to the storage using the parameters stored 
+	 */
 	public String execute() {
 		setTaskParams();
 

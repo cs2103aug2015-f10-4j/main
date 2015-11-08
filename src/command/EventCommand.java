@@ -8,7 +8,6 @@ import main.CustomDate;
 import main.Magical;
 import main.Storage;
 import main.Item;
-import gui.GUIModel;
 
 public class EventCommand extends Command {
 
@@ -36,7 +35,8 @@ public class EventCommand extends Command {
 	/**
 	 * Constructor for EventCommand objects.
 	 * Checks if arguments are valid and stores the correct arguments properly.
-	 * Throws the appropriate exception if arguments are invalid
+	 * Throws the appropriate exception if arguments are invalid. Contains 
+	 * methods to add an event to storage.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -235,6 +235,9 @@ public class EventCommand extends Command {
 		return events;
 	}
 	
+	/**
+	 * Adds a new event to the storage using the parameters stored 
+	 */
 	public String execute() {
 		setEventParams();
 

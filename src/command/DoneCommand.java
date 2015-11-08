@@ -1,7 +1,6 @@
 package command;
 
 import java.io.IOException;
-import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Item;
@@ -19,7 +18,7 @@ public class DoneCommand extends Command {
 	/**
 	 * Constructor for DoneCommand objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
-	 * if arguments are invalid
+	 * if arguments are invalid. Contains methods to move item to done list.
 	 * 
 	 * @param args
 	 * @throws Exception

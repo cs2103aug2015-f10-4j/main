@@ -25,7 +25,8 @@ public class DateCommand extends Command {
 	/**
 	 * Constructor for DateCommand objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
-	 * if arguments are invalid
+	 * if arguments are invalid. Contains methods to display the date within the 
+	 * time range.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -104,9 +105,8 @@ public class DateCommand extends Command {
 	}
 
 	/**
-	 * This method executes the date command. Which simply filters through all
-	 * the tasks and events and lists only those that fall within the specified
-	 * date range.
+	 * This method executes the date command, which filters through all the tasks 
+	 * and events and lists only those that fall within the specified date range.
 	 * 
 	 * @param None
 	 *            .
