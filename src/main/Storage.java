@@ -29,7 +29,6 @@ public class Storage {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + SETTINGS_FILE_NAME;
 
-
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
 	private static File file =  new File(DEFAULT_FILE_PATH);
