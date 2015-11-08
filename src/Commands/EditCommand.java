@@ -60,7 +60,7 @@ public class EditCommand extends Command {
 		//For empty sting value when only 2 args are provided
 		args = args + " ";
 
-		this.argsArray = splitArgs(args, "(?<!end|start)\\s", 3);
+		this.argsArray = splitArgs("(?<!end|start)\\s", 3);
 
 		this.count = argsArray.size();
 

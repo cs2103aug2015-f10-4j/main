@@ -38,7 +38,7 @@ public class AddCommand extends Command {
 	public AddCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = splitArgs(args, "\\s+by\\s+", 2);
+		this.argsArray = splitArgs("\\sby\\s", 2);
 		removeEscapeCharacters();
 
 		this.count = argsArray.size();

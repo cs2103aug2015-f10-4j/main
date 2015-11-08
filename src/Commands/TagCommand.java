@@ -43,7 +43,7 @@ public class TagCommand extends Command {
 	public TagCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = splitArgs(args, " ", -1);
+		this.argsArray = splitArgs(" ", -1);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {

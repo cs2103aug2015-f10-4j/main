@@ -54,7 +54,7 @@ public abstract class Command {
 	 * @param limit
 	 * @return ArrayList of args
 	 */
-	protected ArrayList<String> splitArgs(String args, String regex, int limit) {
+	protected ArrayList<String> splitArgs(String regex, int limit) {
 		return new ArrayList<String>(Arrays.asList(args.split(regex, limit)));
 	}
 
@@ -81,10 +81,16 @@ public abstract class Command {
 	 * @return
 	 */
 	String formatDate(String date) {
+		date = date.trim();
+		System.out.println("Date 1: " + date);
 		date = formatCorrectTime(date);
+		System.out.println("Date 2 " + date);
 		date = dateWithYear(date);
+		System.out.println("Date 3: " + date);
 		date = swapDayMonth(date);
+		System.out.println("Date 4: " + date);
 		date = swapDayMonthFlexi(date);
+		System.out.println("Date 5: " + date);
 		return date;
 	}
 
@@ -212,7 +218,7 @@ public abstract class Command {
 	 */
 	private String formatCorrectTime(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<!/|-)\\d{4}(?=\\s{0,1})");
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<!/|-)\\d{4}(?=\\s{1})");
 		assertNotNull(m);
 
 		if (m.find()) {

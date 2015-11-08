@@ -12,7 +12,7 @@ import main.Item;
 
 public class DateCommand extends Command {
 
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: date <start date> <end date>";
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: date <start date> to <end date>";
 
 	private CustomDate startDate;
 	private CustomDate endDate;
@@ -20,25 +20,10 @@ public class DateCommand extends Command {
 	public DateCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = new ArrayList(Arrays.asList(args.split("\\s")));
+		this.argsArray = splitArgs("\\sto\\s", -1);
 
 		System.out.println(argsArray);
 
-		// checking if the 2 consecutive elements belong together as a date
-		if (argsArray.size() > 1) {
-			int i = 0;
-			while (i + 1 < argsArray.size()) {
-
-				if (getDate(argsArray.get(i)) == null
-						&& getDate(argsArray.get(i + 1)) != null) {
-					argsArray.set(i,
-							argsArray.get(i) + " " + argsArray.get(i + 1));
-					argsArray.remove(i + 1);
-				}
-				i++;
-				System.out.println(argsArray);
-			}
-		}
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
@@ -144,5 +129,9 @@ public class DateCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return false;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		DateCommand d = new DateCommand("Jan 1 2015 to Feb 1 2015");
 	}
 }

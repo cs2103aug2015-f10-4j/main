@@ -44,7 +44,7 @@ public class EventCommand extends Command {
 	public EventCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = splitArgs(args, "(?<=\\s)to(?=\\s)|(?<=\\s)from(?=\\s)", -1);
+		this.argsArray = splitArgs("\\sto\\s|\\sfrom\\s", -1);
 		
 		removeEscapeCharacters();
 		
