@@ -6,7 +6,8 @@ public class Help {
 
 	public static final String HEADER_TEXT = "Magical User Guide";
 
-	public static final String BODY_TEXT = ENDL + "To add a task:" + ENDL +
+	public static final String BODY_TEXT = "Press any key to close this window." + ENDL +
+			ENDL + "To add a task:" + ENDL +
 			"> add [task title] by [due date] [recurrence]" + ENDL +
 			ENDL +
 			"To add an event:" + ENDL +

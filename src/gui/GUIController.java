@@ -38,6 +38,8 @@ public class GUIController {
 
 	private static final String OVERDUE_ROW_COLOR = "lightpink";
 
+	@FXML private AnchorPane rootPane;
+	@FXML private AnchorPane mainPane;
 	@FXML private AnchorPane helpPane;
 
 	/** Task Table Elements **/
@@ -164,6 +166,7 @@ public class GUIController {
 		    public void run() {
 		        commandLineField.requestFocus();
 		        helpPane.setVisible(false);
+		        mainPane.toFront();
 		    }
 		});
 
@@ -203,8 +206,9 @@ public class GUIController {
 
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {
+		helpPane.setVisible(false);
+		mainPane.toFront();
 		if (event.getCode() == KeyCode.ENTER) {
-			helpPane.setVisible(false);
 			String userInput = commandLineField.getText();
 			try {
 				messageLabel.setTextFill(Color.web("#0000ff"));
@@ -225,6 +229,7 @@ public class GUIController {
 
 		if (GUIModel.showHelpWindow) {
 			helpPane.setVisible(true);
+			helpPane.toFront();
 //			Stage helpStage = new Stage();
 //			helpStage.setTitle("Help");
 //			AnchorPane myPane = (AnchorPane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
@@ -233,6 +238,7 @@ public class GUIController {
 //			helpStage.show();
 			GUIModel.showHelpWindow = false;
 		}
+		commandLineField.requestFocus();
 	}
 
 	/**
