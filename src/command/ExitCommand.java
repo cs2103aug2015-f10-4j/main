@@ -16,8 +16,7 @@ public class ExitCommand extends Command {
 	/**
 	 * This method executes the exit command which terminates the program.
 	 * 
-	 * @param None
-	 * @return None
+	 * @return message to show user
 	 */
 	@Override
 	public String execute() {

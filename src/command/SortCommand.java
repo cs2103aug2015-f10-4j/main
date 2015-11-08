@@ -7,12 +7,12 @@ import gui.GUIModel;
 import main.Item;
 
 public class SortCommand extends Command {
-	
+
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: sort <parameter> (upto 3 parameters)";
 	private static final String MESSAGE_INVALID_PARAMS = "Parameters";
 	private static final String MESSAGE_SORT_SUCCESS = "sort successful";
-	
+
 	/** Command parameters **/
 	private ArrayList<String> sortParams;
 
@@ -29,7 +29,7 @@ public class SortCommand extends Command {
 
 		this.argsArray = splitArgs(" ", 3);
 		this.count = argsArray.size();
-		
+
 		setProperParams();
 
 		if (validNumArgs()) {
@@ -41,8 +41,8 @@ public class SortCommand extends Command {
 	}
 
 	/**
-	 * Set the sorting parameters to all types if none are specified, else 
-	 * add error message
+	 * Set the sorting parameters to all types if none are specified, else add
+	 * error message
 	 */
 	void checkParams() {
 		if (sortParams.size() == 1 && sortParams.get(0).isEmpty()) {
@@ -63,12 +63,16 @@ public class SortCommand extends Command {
 	 */
 	@Override
 	public String execute() throws Exception {
-		
-		ArrayList<Item> sortedTaskList = new ArrayList<Item>(GUIModel.getTaskList());
-		ArrayList<Item> sortedTaskDoneList = new ArrayList<Item>(GUIModel.getTaskDoneList());
-		ArrayList<Item> sortedEventList = new ArrayList<Item>(GUIModel.getEventList());
-		ArrayList<Item> sortedEventDoneList = new ArrayList<Item>(GUIModel.getEventDoneList());
-		
+
+		ArrayList<Item> sortedTaskList = new ArrayList<Item>(
+				GUIModel.getTaskList());
+		ArrayList<Item> sortedTaskDoneList = new ArrayList<Item>(
+				GUIModel.getTaskDoneList());
+		ArrayList<Item> sortedEventList = new ArrayList<Item>(
+				GUIModel.getEventList());
+		ArrayList<Item> sortedEventDoneList = new ArrayList<Item>(
+				GUIModel.getEventDoneList());
+
 		if (sortParams.contains("title")) {
 			Collections.sort(sortedTaskList, Item.Comparators.TITLE);
 			Collections.sort(sortedTaskDoneList, Item.Comparators.TITLE);
@@ -87,9 +91,10 @@ public class SortCommand extends Command {
 			Collections.sort(sortedEventList, Item.Comparators.PRIORITY);
 			Collections.sort(sortedEventDoneList, Item.Comparators.PRIORITY);
 		}
-		
-		updateView(sortedTaskList, sortedTaskDoneList, sortedEventList, sortedEventDoneList);
-		
+
+		updateView(sortedTaskList, sortedTaskDoneList, sortedEventList,
+				sortedEventDoneList);
+
 		return MESSAGE_SORT_SUCCESS;
 	}
 
@@ -99,12 +104,15 @@ public class SortCommand extends Command {
 	}
 
 	/**
-	 * Returns true if sort parameters are valid (priority, title, date), or false otherwise
+	 * Returns true if sort parameters are valid (priority, title, date), or
+	 * false otherwise
+	 * 
 	 * @return whether sort paramters are valid
 	 */
 	private boolean isValidSortParams() {
 		for (String param : sortParams) {
-			if (!(param.equals("priority") || param.equals("title") || param.equals("date"))) {
+			if (!(param.equals("priority") || param.equals("title") || param
+					.equals("date"))) {
 				return false;
 			}
 		}

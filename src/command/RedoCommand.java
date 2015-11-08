@@ -30,58 +30,6 @@ public class RedoCommand extends Command {
 	}
 
 	/**
-	 * This method executes the redo command. This command changes the storage
-	 * to the version before undo was called. It fails if undo was never called
-	 * or undo history got edited.
-	 * 
-	 * @param None
-	 * @return message to show user
-	 * @throws Exception
-	 */
-	@Override
-	public String execute() throws Exception {
-
-		redoLayersSize = Magical.redoLists.get(0).size();
-		checkNumRedo();
-		checkCanRedo();
-
-		try {
-			Magical.pushUndoLayer();
-			String folderPath = Magical.redoFolderPaths.pop();
-			Magical.getStorage().changeFolderPath(folderPath);
-			
-			ArrayList<Item> nextTasksList = Magical.redoLists.get(Storage.TASKS_INDEX).pop();
-			ArrayList<Item> nextTasksDoneList = Magical.redoLists.get(Storage.TASKS_DONE_INDEX).pop();
-			ArrayList<Item> nextEventsList = Magical.redoLists.get(Storage.EVENTS_INDEX).pop();
-			ArrayList<Item> nextEventsDoneList = Magical.redoLists.get(Storage.EVENTS_DONE_INDEX).pop();
-			
-			setStorageLists(nextTasksList, nextTasksDoneList, nextEventsList, nextEventsDoneList);
-
-			return MESSAGE_REDO_SUCCESS;
-		} catch (Exception e) {
-			throw new Exception(MESSAGE_REDO_ERROR);
-		} finally {
-			updateView();
-		}
-	}
-
-	/**
-	 * Set the storage with the specified lists 
-	 * @param nextTasksList
-	 * @param nextTasksDoneList
-	 * @param nextEventsList
-	 * @param nextEventsDoneList
-	 * @throws IOException
-	 */
-	void setStorageLists(ArrayList<Item> nextTasksList, ArrayList<Item> nextTasksDoneList,
-			ArrayList<Item> nextEventsList, ArrayList<Item> nextEventsDoneList) throws IOException {
-		Magical.getStorage().setList(Storage.TASKS_INDEX, nextTasksList);
-		Magical.getStorage().setList(Storage.TASKS_DONE_INDEX, nextTasksDoneList);
-		Magical.getStorage().setList(Storage.EVENTS_INDEX, nextEventsList);
-		Magical.getStorage().setList(Storage.EVENTS_DONE_INDEX, nextEventsDoneList);
-	}
-
-	/**
 	 * Check if the last command is undoable. If it is, then storage was
 	 * updated. Therefore, redo history should be reset and empty redo history
 	 * message should be thrown.
@@ -115,18 +63,78 @@ public class RedoCommand extends Command {
 		}
 	}
 
+	/**
+	 * This method executes the redo command. This command changes the storage
+	 * to the version before undo was called. It fails if undo was never called
+	 * or undo history got edited.
+	 * 
+	 * @return message to show user
+	 * @throws Exception
+	 */
+	@Override
+	public String execute() throws Exception {
+
+		redoLayersSize = Magical.redoLists.get(0).size();
+		checkNumRedo();
+		checkCanRedo();
+
+		try {
+			Magical.pushUndoLayer();
+			String folderPath = Magical.redoFolderPaths.pop();
+			Magical.getStorage().changeFolderPath(folderPath);
+
+			ArrayList<Item> nextTasksList = Magical.redoLists.get(
+					Storage.TASKS_INDEX).pop();
+			ArrayList<Item> nextTasksDoneList = Magical.redoLists.get(
+					Storage.TASKS_DONE_INDEX).pop();
+			ArrayList<Item> nextEventsList = Magical.redoLists.get(
+					Storage.EVENTS_INDEX).pop();
+			ArrayList<Item> nextEventsDoneList = Magical.redoLists.get(
+					Storage.EVENTS_DONE_INDEX).pop();
+
+			setStorageLists(nextTasksList, nextTasksDoneList, nextEventsList,
+					nextEventsDoneList);
+
+			return MESSAGE_REDO_SUCCESS;
+		} catch (Exception e) {
+			throw new Exception(MESSAGE_REDO_ERROR);
+		} finally {
+			updateView();
+		}
+	}
+
 	@Override
 	public boolean isUndoable() {
 		return false;
 	}
 
 	@Override
-	public boolean validNumArgs() {
-		return true;
+	void setProperParams() {
+
+	}
+
+	/**
+	 * Set the storage with the specified lists
+	 * 
+	 * @param nextTasksList
+	 * @param nextTasksDoneList
+	 * @param nextEventsList
+	 * @param nextEventsDoneList
+	 * @throws IOException
+	 */
+	void setStorageLists(ArrayList<Item> nextTasksList,
+			ArrayList<Item> nextTasksDoneList, ArrayList<Item> nextEventsList,
+			ArrayList<Item> nextEventsDoneList) throws IOException {
+		Magical.getStorage().setList(Storage.TASKS_INDEX, nextTasksList);
+		Magical.getStorage().setList(Storage.TASKS_DONE_INDEX,
+				nextTasksDoneList);
+		Magical.getStorage().setList(Storage.EVENTS_INDEX, nextEventsList);
+		Magical.getStorage().setList(Storage.EVENTS_DONE_INDEX,
+				nextEventsDoneList);
 	}
 
 	@Override
-	void setProperParams() {
-
+	public boolean validNumArgs() {
+		return true;
 	}
 }

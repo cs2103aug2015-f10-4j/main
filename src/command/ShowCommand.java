@@ -13,16 +13,15 @@ public class ShowCommand extends Command {
 
 	/** Messaging **/
 	private static final String MESSAGE_SHOW_RESULTS = "Show results for: %s";
-	
+
 	/** Command parameters **/
 	private ArrayList<String> tags;
 	private String type;
 
 	/**
-	 * Constructor for ShowCommand objects.
-	 * Sets the command parameters with the proper inputs. Contains methods to
-	 * display items that are tasks, events, containing specified tags, or all 
-	 * items
+	 * Constructor for ShowCommand objects. Sets the command parameters with the
+	 * proper inputs. Contains methods to display items that are tasks, events,
+	 * containing specified tags, or all items
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -32,19 +31,12 @@ public class ShowCommand extends Command {
 
 		this.argsArray = splitArgs(" ", -1);
 		this.count = argsArray.size();
-		
-		setProperParams();		
-	}
 
-	void setProperParams() {
-		this.type = argsArray.get(0).trim();
-		this.tags = null;
-		checkType();
-		this.tags = this.argsArray;
+		setProperParams();
 	}
 
 	/**
-	 * Sets the type of the show command to be all if no arguments are given, or 
+	 * Sets the type of the show command to be all if no arguments are given, or
 	 * to display tags if event/task is not given as the argument.
 	 */
 	void checkType() {
@@ -58,34 +50,31 @@ public class ShowCommand extends Command {
 		}
 	}
 
-	public boolean validNumArgs() {
-		return true;
-	}
-
 	/**
 	 * This method executes the show command. Which filters the database
 	 * according to the parameters specified. It then shows a subset of tasks
 	 * and events to the GUI. The valid parameters are either (1) "title" (2)
 	 * "event" OR (3) a list of tags.
 	 * 
-	 * @param None
 	 * @return message to show user
 	 */
 	@Override
 	public String execute() {
-		
-		//Get unfiltered lists
-		ArrayList<Item> taskList = Magical.getStorage().getList(Storage.TASKS_INDEX);
-		ArrayList<Item> taskDoneList = Magical.getStorage().getList(Storage.TASKS_DONE_INDEX);
-		ArrayList<Item> eventList = Magical.getStorage().getList(Storage.EVENTS_INDEX);
-		ArrayList<Item> eventDoneList = Magical.getStorage().getList(Storage.EVENTS_DONE_INDEX);
-		
-		//Generated filtered lists
+
+		ArrayList<Item> taskList = Magical.getStorage().getList(
+				Storage.TASKS_INDEX);
+		ArrayList<Item> taskDoneList = Magical.getStorage().getList(
+				Storage.TASKS_DONE_INDEX);
+		ArrayList<Item> eventList = Magical.getStorage().getList(
+				Storage.EVENTS_INDEX);
+		ArrayList<Item> eventDoneList = Magical.getStorage().getList(
+				Storage.EVENTS_DONE_INDEX);
+
 		ArrayList<Item> showTaskList = new ArrayList<Item>(taskList);
 		ArrayList<Item> showTaskDoneList = new ArrayList<Item>(taskDoneList);
 		ArrayList<Item> showEventList = new ArrayList<Item>(eventList);
 		ArrayList<Item> showEventDoneList = new ArrayList<Item>(eventDoneList);
-		
+
 		switch (type) {
 		case "all":
 			showTaskList = taskList;
@@ -114,16 +103,18 @@ public class ShowCommand extends Command {
 		default:
 			break;
 		}
-		
-		updateView(showTaskList, showTaskDoneList, showEventList, showEventDoneList);
-		
+
+		updateView(showTaskList, showTaskDoneList, showEventList,
+				showEventDoneList);
+
 		return String.format(MESSAGE_SHOW_RESULTS, tags);
 	}
 
 	/**
 	 * Filter items according to tag in the given list and return it
+	 * 
 	 * @param itemList
-	 * @return
+	 * @return filtered list to show user
 	 */
 	private ArrayList<Item> filterList(ArrayList<Item> itemList) {
 		ArrayList<Item> filteredItemList = new ArrayList<Item>();
@@ -135,9 +126,20 @@ public class ShowCommand extends Command {
 		}
 		return filteredItemList;
 	}
-	
+
 	@Override
 	public boolean isUndoable() {
 		return false;
+	}
+
+	void setProperParams() {
+		this.type = argsArray.get(0).trim();
+		this.tags = null;
+		checkType();
+		this.tags = this.argsArray;
+	}
+
+	public boolean validNumArgs() {
+		return true;
 	}
 }

@@ -12,8 +12,8 @@ public class SearchCommand extends Command {
 	private String query;
 
 	/**
-	 * Constructor for SearchCommand objects.
-	 * Stores the correct arguments properly. Contains methods to display items containing query
+	 * Constructor for SearchCommand objects. Stores the correct arguments
+	 * properly. Contains methods to display items containing query
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -26,46 +26,41 @@ public class SearchCommand extends Command {
 		setProperParams();
 	}
 
-	void setProperParams() {
-		this.query = args.trim();
-	}
-
-	public boolean validNumArgs() {
-		return true;
-	}
-
 	/**
 	 * This method executes the search command. Which searches for the specified
 	 * query text in the titles of all events and tasks. It then displays the
 	 * found tasks and events to the GUI.
 	 * 
-	 * @param None
 	 * @return message to show user
 	 */
 	@Override
 	public String execute() {
-		
-		//Get unfiltered lists
-		ArrayList<Item> taskList = Magical.getStorage().getList(Storage.TASKS_INDEX);
-		ArrayList<Item> taskDoneList = Magical.getStorage().getList(Storage.TASKS_DONE_INDEX);
-		ArrayList<Item> eventList = Magical.getStorage().getList(Storage.EVENTS_INDEX);
-		ArrayList<Item> eventDoneList = Magical.getStorage().getList(Storage.EVENTS_DONE_INDEX);
-		
-		//Generated filtered lists
+
+		ArrayList<Item> taskList = Magical.getStorage().getList(
+				Storage.TASKS_INDEX);
+		ArrayList<Item> taskDoneList = Magical.getStorage().getList(
+				Storage.TASKS_DONE_INDEX);
+		ArrayList<Item> eventList = Magical.getStorage().getList(
+				Storage.EVENTS_INDEX);
+		ArrayList<Item> eventDoneList = Magical.getStorage().getList(
+				Storage.EVENTS_DONE_INDEX);
+
 		ArrayList<Item> filteredTaskList = filterList(taskList);
 		ArrayList<Item> filteredTaskDoneList = filterList(taskDoneList);
 		ArrayList<Item> filteredEventList = filterList(eventList);
 		ArrayList<Item> filteredEventDoneList = filterList(eventDoneList);
 
-		updateView(filteredTaskList, filteredTaskDoneList, filteredEventList, filteredEventDoneList);
-		
+		updateView(filteredTaskList, filteredTaskDoneList, filteredEventList,
+				filteredEventDoneList);
+
 		return String.format(MESSAGE_SEARCH_SUCCESS, query);
 	}
 
 	/**
 	 * Filter items according to query in the given list and return it
+	 * 
 	 * @param itemList
-	 * @return
+	 * @return filtered list to show user
 	 */
 	private ArrayList<Item> filterList(ArrayList<Item> itemList) {
 		ArrayList<Item> filteredItemList = new ArrayList<Item>();
@@ -80,5 +75,13 @@ public class SearchCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return false;
+	}
+
+	void setProperParams() {
+		this.query = args.trim();
+	}
+
+	public boolean validNumArgs() {
+		return true;
 	}
 }
