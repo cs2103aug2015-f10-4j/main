@@ -78,10 +78,7 @@ public class DoneCommand extends Command {
 	@Override
 	public String execute() {
 		try {
-			int listIndex = Storage.getListIndex(argsArray.get(0));
-			int complementListIndex = Storage.getComplementListIndex(listIndex);
-			Magical.getStorage().delete(listIndex, item);
-			Magical.getStorage().create(complementListIndex, item);
+			doneItem();
 		} catch (IOException e) {
 			return "unable to archive " + itemID;
 		} finally {
@@ -89,6 +86,17 @@ public class DoneCommand extends Command {
 		}
 
 		return itemID + " archived";
+	}
+
+	/**
+	 * Removes item from list and adds to complement(done) list
+	 * @throws IOException
+	 */
+	void doneItem() throws IOException {
+		int listIndex = Storage.getListIndex(argsArray.get(0));
+		int complementListIndex = Storage.getComplementListIndex(listIndex);
+		Magical.getStorage().delete(listIndex, item);
+		Magical.getStorage().create(complementListIndex, item);
 	}
 
 	@Override
