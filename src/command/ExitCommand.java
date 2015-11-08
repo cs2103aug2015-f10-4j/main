@@ -3,8 +3,8 @@ package command;
 public class ExitCommand extends Command {
 
 	/**
-	 * Constructor for ExitCommand objects. Arguments are stored but have no impact on
-	 * command's functionality.
+	 * Constructor for ExitCommand objects. Arguments are stored but have no
+	 * impact on command's functionality.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -30,12 +30,12 @@ public class ExitCommand extends Command {
 	}
 
 	@Override
-	public boolean validNumArgs() {
-		return true;
+	void setProperParams() {
+
 	}
 
 	@Override
-	void setProperParams() {
-		
+	public boolean validNumArgs() {
+		return true;
 	}
 }
