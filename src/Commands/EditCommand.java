@@ -61,7 +61,7 @@ public class EditCommand extends Command {
 		args = args + " ";
 
 		this.argsArray = splitArgs(args, "(?<!end|start)\\s", 3);
-		System.out.println(argsArray);
+
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
