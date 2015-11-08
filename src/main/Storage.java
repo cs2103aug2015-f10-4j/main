@@ -25,9 +25,10 @@ public class Storage {
 
 	private static final String DEFAULT_FILE_DIRECTORY = "magical";
 	private static final String DEFAULT_FILE_NAME = "storage.txt";
+	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + SETTINGS_FILE_NAME;
-	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
+
 
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
@@ -47,10 +48,10 @@ public class Storage {
 	 * @return 	Nothing.
 	 */
 	public Storage () {
-		
+
 		createFolder();
 		storedFilePath = readFileSettings();
-		
+
 		if (storedFilePath == null) {
 			writeToProperties(DEFAULT_FILE_PATH);
 			initFile();
@@ -58,38 +59,8 @@ public class Storage {
 			file = new File(storedFilePath);
 			initFile();
 		}
-		
-		folderPath = getFolderPath(storedFilePath);		
-	}
 
-	/**
-	 * This method returns the current path of the of the storage file.
-	 * 
-	 * @return Location of storage file.
-	 */
-	public String getFilePath() {
-		return storedFilePath;
-	}
-	
-	/**
-	 * This method returns the current path of the of the storage folder.
-	 * 
-	 * @return Location of storage folder.
-	 */
-	public String getFolderPath() {
-		return folderPath;
-	}
-	
-	/**
-	 * This method returns the current path of the of the file specified.
-	 * 
-	 * @return Location of folder.
-	 */
-	public String getFolderPath(String storageFile) {
-		if (storageFile.equals(DEFAULT_FILE_PATH)) {
-			return ".";
-		}
-		return storageFile.substring(0, storageFile.length() - DEFAULT_FILE_PATH.length());
+		folderPath = getFolderPath(storedFilePath);		
 	}
 
 	/**
@@ -99,11 +70,11 @@ public class Storage {
 	 * @return 		Whether the folder is created successfully or not.
 	 */
 	protected static boolean createFolder() {
-		
+
 		if (!newFolder.exists()) {
 			newFolder.mkdir();
 		}
-		
+
 		return true;
 	}
 
@@ -134,29 +105,6 @@ public class Storage {
 	}
 
 	/**
-	 * This method changes the file path stored in the properties file and moves
-	 * the .txt data file to the specified new file path.
-	 * 
-	 * @param newFolderPath 			New file path specified by user.
-	 * @return 							Whether the file path is changed successfully or not.
-	 * @throws IOException.
-	 * @throws FileNotFoundException.
-	 */
-	public void changeFolderPath(String newFolderPath) 
-			throws IOException, FileNotFoundException {
-		System.out.println(newFolderPath);
-		String oldFilePath = readFileSettings();
-		
-		moveFolder(newFolderPath + "/" + DEFAULT_FILE_DIRECTORY + "/");
-		
-		String newFilePath = newFolderPath + "/" + DEFAULT_FILE_PATH;
-		moveFile(oldFilePath, newFilePath);
-		
-		writeToProperties(newFilePath);
-		folderPath = newFolderPath;
-	}
-
-	/**
 	 * This method writes the specified file path into the default properties file.
 	 * 
 	 * @param filePath 	File path to be stored.
@@ -182,13 +130,36 @@ public class Storage {
 	}
 
 	/**
+	 * This method changes the file path stored in the properties file and moves
+	 * the .txt data file to the specified new file path.
+	 * 
+	 * @param newFolderPath 			New file path specified by user.
+	 * @return 							Whether the file path is changed successfully or not.
+	 * @throws IOException.
+	 * @throws FileNotFoundException.
+	 */
+	public void changeFolderPath(String newFolderPath) 
+			throws IOException, FileNotFoundException {
+		System.out.println(newFolderPath);
+		String oldFilePath = readFileSettings();
+
+		moveFolder(newFolderPath + "/" + DEFAULT_FILE_DIRECTORY + "/");
+
+		String newFilePath = newFolderPath + "/" + DEFAULT_FILE_PATH;
+		moveFile(oldFilePath, newFilePath);
+
+		writeToProperties(newFilePath);
+		folderPath = newFolderPath;
+	}
+
+	/**
 	 * This method creates a folder in the new file path specified.
 	 * 
 	 * @param newFilePath 	New file path to create the folder in.
 	 * @return 				Nothing.
 	 */
 	protected boolean moveFolder(String newFilePath) {
-		
+
 		File file = new File(newFilePath);
 
 		if (!file.exists()) {
@@ -196,7 +167,7 @@ public class Storage {
 			file.mkdir();
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -271,14 +242,44 @@ public class Storage {
 	 * @return 	Nothing.
 	 */
 	protected boolean fileExist() {
-		
+
 		if (file.exists()) {
 			return true;
 		}
 		else {
 			return false;
 		}
-		
+
+	}
+
+	/**
+	 * This method returns the current path of the of the storage file.
+	 * 
+	 * @return Location of storage file.
+	 */
+	public String getFilePath() {
+		return storedFilePath;
+	}
+
+	/**
+	 * This method returns the current path of the of the storage folder.
+	 * 
+	 * @return Location of storage folder.
+	 */
+	public String getFolderPath() {
+		return folderPath;
+	}
+
+	/**
+	 * This method returns the current path of the of the file specified.
+	 * 
+	 * @return Location of folder.
+	 */
+	public String getFolderPath(String storageFile) {
+		if (storageFile.equals(DEFAULT_FILE_PATH)) {
+			return ".";
+		}
+		return storageFile.substring(0, storageFile.length() - DEFAULT_FILE_PATH.length());
 	}
 
 	/**
@@ -324,6 +325,26 @@ public class Storage {
 	}
 
 	/**
+	 * This method retrieves the list of Item objects specified by the list index.
+	 * 
+	 * @param listIndex Index of the list wanted.
+	 * @return 			The list specified.
+	 */
+	public ArrayList<Item> getList(int listIndex) {
+		return lists.get(listIndex);
+	}
+
+	/**
+	 * This method retrieves the list containing all lists of Item objects.
+	 * 
+	 * @param 	None.
+	 * @return 	The list containing all lists of Item objects.
+	 */
+	protected List<ArrayList<Item>> getLists() {
+		return lists;
+	}
+
+	/**
 	 * This method stores a Item object into the specified list and updates the data file.
 	 * 
 	 * @param listIndex 	list index of the list to store the Item into.
@@ -334,26 +355,6 @@ public class Storage {
 	public void create(int listIndex, Item t) throws IOException {
 		lists.get(listIndex).add(t);
 		writeLists();
-	}
-
-	/**
-	 * This method retrieves the list of Item objects specified by the list index.
-	 * 
-	 * @param listIndex Index of the list wanted.
-	 * @return 			The list specified.
-	 */
-	public ArrayList<Item> getList(int listIndex) {
-		return lists.get(listIndex);
-	}
-	
-	/**
-	 * This method retrieves the list containing all lists of Item objects.
-	 * 
-	 * @param 	None.
-	 * @return 	The list containing all lists of Item objects.
-	 */
-	protected List<ArrayList<Item>> getLists() {
-		return lists;
 	}
 
 	/**
@@ -451,7 +452,7 @@ public class Storage {
 	 * @see 		Exception.
 	 */
 	protected void readLists() {
-		
+
 		try {
 			lists = mapper.readValue(file, new TypeReference<List<ArrayList<Item>>>() { });
 		} catch (Exception e) {
