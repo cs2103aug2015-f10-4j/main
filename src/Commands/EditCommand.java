@@ -57,9 +57,10 @@ public class EditCommand extends Command {
 	public EditCommand(String args) throws Exception {
 		super(args);
 
+		//For empty sting value when only 2 args are provided
 		args = args + " ";
 
-		this.argsArray = splitArgs(args, "(?<!end|start)\\s(?!time|date)", 3);
+		this.argsArray = splitArgs(args, "(?<!end|start)\\s", 3);
 		System.out.println(argsArray);
 		this.count = argsArray.size();
 
@@ -353,6 +354,6 @@ public class EditCommand extends Command {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		new EditCommand("t1  date today");
+		new EditCommand("t1 time today");
 	}
 }
