@@ -1,6 +1,7 @@
 package command;
 
 import java.io.IOException;
+
 import main.Magical;
 import main.Storage;
 import main.Item;
@@ -74,13 +75,14 @@ public class DoneCommand extends Command {
 	 * to its corresponding done task or done event pile. .
 	 * 
 	 * @return message to show user
+	 * @throws Exception 
 	 */
 	@Override
-	public String execute() {
+	public String execute() throws Exception {
 		try {
 			doneItem();
 		} catch (IOException e) {
-			return String.format(MESSAGE_DONE_ERROR, itemID);
+			throw new Exception(String.format(MESSAGE_DONE_ERROR, itemID));
 		} finally {
 			updateView();
 		}

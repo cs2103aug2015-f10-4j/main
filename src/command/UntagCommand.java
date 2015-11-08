@@ -129,20 +129,21 @@ public class UntagCommand extends Command {
 	 */
 	@Override
 	public String execute() throws Exception {
-
 		duplicateItem();
 		Set<String> currentTags = item.getTags();
+		
 		for (String tag : tags) {
 			if (!checkTags(currentTags, tag)) {
 				removeTagFromItem(currentTags, tag);
 			}
 		}
+		
 		errorAbsentTags();
 
 		try {
 			updateItem();
 		} catch (IOException e) {
-			return String.format(MESSAGE_TAG_ERROR, itemID);
+			throw new Exception(String.format(MESSAGE_TAG_ERROR, itemID));
 		} finally {
 			updateView();
 		}

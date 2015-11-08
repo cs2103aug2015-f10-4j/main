@@ -197,7 +197,6 @@ public class EditCommand extends Command {
 	 * @throws Exception
 	 */
 	public String execute() throws Exception {
-
 		duplicateItem();
 
 		switch (field.toLowerCase()) {

@@ -28,7 +28,6 @@ public class UndoneCommand extends Command {
 	 */
 	public UndoneCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs(" ", -1);
 		this.count = argsArray.size();
 

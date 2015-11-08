@@ -1,6 +1,7 @@
 package command;
 
 import java.io.IOException;
+
 import main.Magical;
 import main.Storage;
 import main.Item;
@@ -53,14 +54,15 @@ public class DelCommand extends Command {
 	 * or event from the database.
 	 * 
 	 * @return message to show user
+	 * @throws Exception 
 	 */
 	@Override
-	public String execute() {
+	public String execute() throws Exception {
 		try {
 			removeItem();
 			return String.format(MESSAGE_ITEM_DELETED, itemID);
 		} catch (IOException e) {
-			return MESSAGE_ITEM_ERROR_DELETE;
+			throw new Exception(MESSAGE_ITEM_ERROR_DELETE);
 		} finally {
 			updateView();
 		}

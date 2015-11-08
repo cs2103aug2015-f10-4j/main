@@ -7,7 +7,6 @@ import main.Magical;
 public class PathCommand extends Command {
 
 	private static final String MESSAGE_DIRECTORY_CHANGED = "Path changed to: %s";
-
 	private static final String MESSAGE_DIRECTORY_MISSING = "%s (no such directory)";
 
 	/** Messaging **/

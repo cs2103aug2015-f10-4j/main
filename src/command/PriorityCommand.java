@@ -1,6 +1,7 @@
 package command;
 
 import java.io.IOException;
+
 import main.Magical;
 import main.Storage;
 import main.Item;
@@ -76,16 +77,17 @@ public class PriorityCommand extends Command {
 	 * priority of the selected task or event to the new priority specified.
 	 * 
 	 * @return message to show user
+	 * @throws Exception 
 	 */
 	@Override
-	public String execute() {
+	public String execute() throws Exception {
 		duplicateItem();
 		item.setPriority(priority);
 
 		try {
 			updateItem();
 		} catch (IOException e) {
-			return String.format(MESSAGE_PRIORITY_ERROR, itemID);
+			throw new Exception(String.format(MESSAGE_PRIORITY_ERROR, itemID));
 		} finally {
 			updateView();
 		}

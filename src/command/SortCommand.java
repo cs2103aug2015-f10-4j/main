@@ -26,10 +26,8 @@ public class SortCommand extends Command {
 	 */
 	public SortCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs(" ", 3);
 		this.count = argsArray.size();
-
 		setProperParams();
 
 		if (validNumArgs()) {

@@ -60,7 +60,6 @@ public class ShowCommand extends Command {
 	 */
 	@Override
 	public String execute() {
-
 		ArrayList<Item> taskList = Magical.getStorage().getList(
 				Storage.TASKS_INDEX);
 		ArrayList<Item> taskDoneList = Magical.getStorage().getList(
