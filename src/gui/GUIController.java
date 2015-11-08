@@ -159,8 +159,6 @@ public class GUIController {
 
 	}
 
-
-
 	/**
 	 * This method switches the currently selected tab.
 	 * @param type either "tasks" or "events"
@@ -258,12 +256,12 @@ public class GUIController {
 	 * @return nothing
 	 */
 	@FXML
-	protected void handleTaskTabClicked() {
+	private void handleTaskTabClicked() {
 		GUIModel.setCurrentTab("tasks");
 	}
 
 	@FXML
-	protected void handleEventTabClicked() {
+	private void handleEventTabClicked() {
 		GUIModel.setCurrentTab("events");
 	}
 
