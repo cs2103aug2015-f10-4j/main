@@ -12,7 +12,7 @@ import org.junit.Test;
 import gui.GUIModel;
 import main.Item;
 
-public class EditCommandTests {
+public class EditCommandTest {
 
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %s";
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <item_id> <field> <value>";
