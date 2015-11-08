@@ -119,7 +119,7 @@ public class DateCommand extends Command {
 	 * @return
 	 */
 	public boolean validDateRange() {
-		return dateEnd.compareTo(dateStart) != -1;
+		return dateEnd.compareTo(dateStart) < 0;
 	}
 
 	/**

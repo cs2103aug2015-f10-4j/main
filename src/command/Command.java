@@ -88,10 +88,10 @@ public abstract class Command {
 			String s = m.group(0);
 			assertNotNull(s);
 			String temp = date.replaceAll(s, s + "/"
-					+ new CustomDate(new Date()).getYear());
+					+ new CustomDate().getYear());
 			if (getDate(temp).compareTo(today) == -1) {
 				date = date.replaceAll(s,
-						s + "/" + (new CustomDate(new Date()).getYear() + 1));
+						s + "/" + (new CustomDate().getYear() + 1));
 			} else {
 				date = temp;
 			}

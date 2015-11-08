@@ -82,13 +82,13 @@ public class EventCommand extends Command {
 	}
 
 	/** 
-	 * Set the default day to start day if unspecified
+	 * Set the default day to be start day if unspecified
 	 */
 	private void setDefaultEndDay() {
 		if (dateEnd.getDateString().equals(today.getDateString())) {
-			dateEnd.set("day", dateStart.getDay());
-			dateEnd.set("month", dateStart.getMonth() - 1);
-			dateEnd.set("year", dateStart.getYear());
+			dateEnd.setDay(dateStart.getDay());
+			dateEnd.setMonth(dateStart.getMonth());
+			dateEnd.setYear(dateStart.getYear());
 		}
 	}
 	
@@ -175,7 +175,7 @@ public class EventCommand extends Command {
 	 * @return
 	 */
 	public boolean validDateRange() {
-		return dateEnd.compareTo(dateStart) != -1;
+		return dateEnd.compareTo(dateStart) < 0;
 	}
 	
 	/**
