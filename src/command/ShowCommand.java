@@ -1,7 +1,6 @@
 package command;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +11,9 @@ import main.Item;
 
 public class ShowCommand extends Command {
 
+	/** Messaging **/
+	private static final String MESSAGE_SHOW_RESULTS = "Show results for: %s";
+	
 	/** Command parameters **/
 	private ArrayList<String> tags;
 	private String type;
@@ -108,15 +110,14 @@ public class ShowCommand extends Command {
 			showTaskDoneList = filterList(taskDoneList);
 			showEventList = filterList(eventList);
 			showEventDoneList = filterList(eventDoneList);
-
 			break;
 		default:
 			break;
 		}
 		
-		updateView();
+		updateView(showTaskList, showTaskDoneList, showEventList, showEventDoneList);
 		
-		return "show results for: " + tags;
+		return String.format(MESSAGE_SHOW_RESULTS, tags);
 	}
 
 	/**
