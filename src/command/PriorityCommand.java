@@ -1,19 +1,20 @@
 package command;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Item;
 
 public class PriorityCommand extends Command {
 
+
+	
 	/** Messaging **/
-	private static final String MESSAGE_ARGUMENT_PARAMS = "Use Format: set <item_id> <priority>";
+	private static final String MESSAGE_ARGUMENT_FORMAT = "Use Format: set <item_id> <priority>";
 	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
+	private static final String MESSAGE_INVALID_PRIORITY = "Priority";
+	private static final String MESSAGE_PRIORITY_UPDATED = "Priority updated for %s";
+	private static final String MESSAGE_PRIORITY_ERROR = "Unable to change priority for %s";
 
 	/** Command parameters **/
 	private Item item;
@@ -44,12 +45,9 @@ public class PriorityCommand extends Command {
 			
 			checkPriorityValid();
 			
-			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(String.format(
-						MESSAGE_HEADER_INVALID, invalidArgs));
-			}
+			 errorInvalidArgs();
 		} else {
-			throw new IllegalArgumentException(MESSAGE_ARGUMENT_PARAMS);
+			errorInvalidFormat(MESSAGE_ARGUMENT_FORMAT);
 		}
 	}
 
@@ -58,7 +56,7 @@ public class PriorityCommand extends Command {
 	 */
 	void checkPriorityValid() {
 		if (priority == null) {
-			invalidArgs.add("Priority");
+			invalidArgs.add(MESSAGE_INVALID_PRIORITY);
 		}
 	}
 
@@ -67,7 +65,7 @@ public class PriorityCommand extends Command {
 	 */
 	void checkItemExists() {
 		if (item == null) {
-			invalidArgs.add("item_id");
+			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
 
@@ -75,7 +73,7 @@ public class PriorityCommand extends Command {
 		itemID = argsArray.get(0).trim();
 		item = getItemByID(itemID);
 		if (argsArray.size() == 1) {
-			priority = "";
+			priority = STRING_EMPTY;
 		} else {
 			priority = getPriority(argsArray.get(1).trim());
 		}
@@ -98,27 +96,37 @@ public class PriorityCommand extends Command {
 	 */
 	@Override
 	public String execute() {
-		prevItem = item;
-		item = prevItem.copy();
+		
+		duplicateItem();
 		item.setPriority(priority);
 
 		try {
-			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.getStorage().update(listIndex, prevItem, item);
+			updateItem();
 		} catch (IOException e) {
-			return "unable to change priority for " + itemID;
+			return String.format(MESSAGE_PRIORITY_ERROR, itemID);
 		} finally {
-			GUIModel.setTaskList(Magical.getStorage().getList(
-					Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.getStorage().getList(
-					Storage.TASKS_DONE_INDEX));
-			GUIModel.setEventList(Magical.getStorage().getList(
-					Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.getStorage().getList(
-					Storage.EVENTS_DONE_INDEX));
+			updateView();
 		}
 
-		return "priority updated for " + itemID;
+		return String.format(MESSAGE_PRIORITY_UPDATED, itemID);
+	}
+
+	/**
+	 * Make 2 copies of the item to be stored in prevItem and item
+	 */
+	void duplicateItem() {
+		prevItem = item;
+		item = prevItem.copy();
+	}
+	
+	/**
+	 * Updates the original item with the new modified item
+	 * 
+	 * @throws IOException
+	 */
+	void updateItem() throws IOException {
+		int listIndex = Storage.getListIndex(argsArray.get(0));
+		Magical.getStorage().update(listIndex, prevItem, item);
 	}
 
 	@Override

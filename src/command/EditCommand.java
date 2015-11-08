@@ -8,7 +8,6 @@ import main.CustomDate;
 import main.Magical;
 import main.Storage;
 import main.Item;
-import gui.GUIModel;
 
 public class EditCommand extends Command {
 
@@ -335,19 +334,6 @@ public class EditCommand extends Command {
 	void updateItem() throws IOException {
 		int listIndex = Storage.getListIndex(argsArray.get(0));
 		Magical.getStorage().update(listIndex, prevItem, item);
-	}
-
-	/**
-	 * Updates the new view in the GUI
-	 */
-	void updateView() {
-		GUIModel.setTaskList(Magical.getStorage().getList(Storage.TASKS_INDEX));
-		GUIModel.setTaskDoneList(Magical.getStorage().getList(
-				Storage.TASKS_DONE_INDEX));
-		GUIModel.setEventList(Magical.getStorage()
-				.getList(Storage.EVENTS_INDEX));
-		GUIModel.setEventDoneList(Magical.getStorage().getList(
-				Storage.EVENTS_DONE_INDEX));
 	}
 
 	@Override
