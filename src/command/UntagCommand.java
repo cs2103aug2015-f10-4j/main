@@ -72,7 +72,7 @@ public class UntagCommand extends Command {
 	 * 
 	 * @throws IllegalArgumentException
 	 */
-	private void errorInvalidArgs() throws IllegalArgumentException {
+	protected void errorInvalidArgs() throws IllegalArgumentException {
 		if (invalidArgs.size() > 0) {
 			throw new IllegalArgumentException(String.format(
 					MESSAGE_HEADER_INVALID, invalidArgs));

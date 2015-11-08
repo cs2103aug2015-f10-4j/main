@@ -13,8 +13,8 @@ import main.Item;
 
 public class UntagCommandTest {
 
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %sitemID";
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: untag <task_id> <tag name>";
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: untag <item_id> <tag name>";
 
 	@Before
 	public void setUp() {
@@ -32,6 +32,7 @@ public class UntagCommandTest {
 		UntagCommand untagTaskAgain = new UntagCommand("t1 CS2105");
 		UntagCommand untagNextTask = new UntagCommand("t2 CS2102");
 		UntagCommand untagLastTask = new UntagCommand("t7 CS2010");
+		UntagCommand multipleUntags = new UntagCommand("t1 t2 t3 t4");
 	}
 
 	@Test
@@ -39,13 +40,6 @@ public class UntagCommandTest {
 		try {
 			UntagCommand noArgs = new UntagCommand("");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
-		}
-		try {
-			UntagCommand tooManyArgs = new UntagCommand("t1 t2 t3 t4");
-		} catch (Exception e) {
-			System.out.println("e: " + e);
 			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 		try {
@@ -58,16 +52,14 @@ public class UntagCommandTest {
 
 	@Test
 	public void testInvalidID() {
-		// final String ERROR_MESSAGE = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_ID;
 		try {
 			UntagCommand invalidID = new UntagCommand("t11 CS2103");
 		} catch (Exception e) {
-			assertTrue(e instanceof IndexOutOfBoundsException);
+			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			UntagCommand noLetter = new UntagCommand("1 CS2103");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
@@ -79,11 +71,6 @@ public class UntagCommandTest {
 			Command tooShort = new UntagCommand("t CS2103");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
-		}
-		try {
-			Command cannotUntagSameTag = new UntagCommand("t1 CS2103");
-		} catch (Exception e) {
-			System.out.println("e: " + e);
 		}
 	}
 
