@@ -1,4 +1,4 @@
-package Commands;
+package command;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,8 +30,8 @@ public class ShowCommand extends Command {
 				&& !type.equalsIgnoreCase("event")
 				&& !type.equalsIgnoreCase("events")) {
 			this.type = "tag";
-			this.tags = this.argsArray;
 		}
+		this.tags = this.argsArray;
 	}
 
 	public boolean validNumArgs() {
@@ -114,7 +114,7 @@ public class ShowCommand extends Command {
 		GUIModel.setTaskDoneList(showTaskDoneList);
 		GUIModel.setEventList(showEventList);
 		GUIModel.setEventDoneList(showEventDoneList);
-		return "show successful";
+		return "show results for: " + tags;
 	}
 
 	@Override

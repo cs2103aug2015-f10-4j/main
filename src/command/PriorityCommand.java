@@ -1,4 +1,4 @@
-package Commands;
+package command;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,38 +9,48 @@ import main.Magical;
 import main.Storage;
 import main.Item;
 
-public class DelCommand extends Command {
+public class PriorityCommand extends Command {
 
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: delete <item_id>";
+	private static final String MESSAGE_ARGUMENT_PARAMS = "Use Format: set <item_id> <priority>";
 
 	private Item item;
 	private String itemID;
+	private String priority;
+	private Item prevItem;
 
-	public DelCommand(String args) throws Exception {
+	public PriorityCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(
-				STRING_EMPTY, 1)));
+		this.argsArray = new ArrayList<String>(
+				Arrays.asList(args.split(" ", 2)));
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
 			itemID = argsArray.get(0).trim();
 			item = getItemByID(itemID);
-
+			
+			if (argsArray.size() == 1) {
+				priority = "";
+			} else {
+				priority = getPriority(argsArray.get(1).trim());
+			}
 			if (item == null) {
 				invalidArgs.add("item_id");
+			}
+			if (priority == null) {
+				invalidArgs.add("priority");
 			}
 			if (invalidArgs.size() > 0) {
 				throw new IllegalArgumentException(String.format(
 						MESSAGE_HEADER_INVALID, invalidArgs));
 			}
 		} else {
-			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
+			throw new IllegalArgumentException(MESSAGE_ARGUMENT_PARAMS);
 		}
 	}
 
 	public boolean validNumArgs() {
-		if (this.count != 1) {
+		if (this.count > 2 && this.count < 0) {
 			return false;
 		} else {
 			return true;
@@ -48,19 +58,23 @@ public class DelCommand extends Command {
 	}
 
 	/**
-	 * This method executes the delete command. Which simply deletes the
-	 * specified task or event from the database.
+	 * This method executes the priority command. Which simply changes the
+	 * priority of the selected task or event to the new priority specified.
 	 * 
+	 * @param None
 	 * @return message to show user
 	 */
 	@Override
 	public String execute() {
+		prevItem = item;
+		item = prevItem.copy();
+		item.setPriority(priority);
+
 		try {
 			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.getStorage().delete(listIndex, item);
-			return itemID + " deleted";
+			Magical.getStorage().update(listIndex, prevItem, item);
 		} catch (IOException e) {
-			return "unable to delete " + itemID;
+			return "unable to change priority for " + itemID;
 		} finally {
 			GUIModel.setTaskList(Magical.getStorage().getList(
 					Storage.TASKS_INDEX));
@@ -71,6 +85,8 @@ public class DelCommand extends Command {
 			GUIModel.setEventDoneList(Magical.getStorage().getList(
 					Storage.EVENTS_DONE_INDEX));
 		}
+
+		return "priority updated for " + itemID;
 	}
 
 	@Override

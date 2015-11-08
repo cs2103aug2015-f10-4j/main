@@ -1,13 +1,10 @@
-package Commands.CommandTests;
+package command;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import Commands.AddCommand;
-import Commands.Command;
-
-public class AddCommandTests {
+public class AddCommandTest {
 
 	protected static final String MESSAGE_HEADER_INVALID = "\n----- Invalid arguments ---- \n";
 	private static final String MESSAGE_INVALID_PARAMS = "Number of Arguments\n"

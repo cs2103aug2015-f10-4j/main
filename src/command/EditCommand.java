@@ -1,4 +1,4 @@
-package Commands;
+package command;
 
 import static org.junit.Assert.*;
 
@@ -30,8 +30,8 @@ public class EditCommand extends Command {
 	private static final String FIELD_TIME_END = "end time";
 	private static final String FIELD_TIME_START = "start time";
 	private static final String FIELD_TIME = "time";
-	private static final String FIELD_START_DATE = "start date";
-	private static final String FIELD_END_DATE = "end date";
+	private static final String FIELD_DATE_START = "start date";
+	private static final String FIELD_DATE_END = "end date";
 	private static final String FIELD_DATE = "date";
 	private static final String FIELD_TITLE = "title";
 	private final CustomDate today = getDate("today");
@@ -57,7 +57,7 @@ public class EditCommand extends Command {
 	public EditCommand(String args) throws Exception {
 		super(args);
 
-		//For empty sting value when only 2 args are provided
+		// For empty sting value when only 2 args are provided
 		args = args + " ";
 
 		this.argsArray = splitArgs("(?<!end|start)\\s", 3);
@@ -74,10 +74,10 @@ public class EditCommand extends Command {
 			case FIELD_TITLE:
 				checkTitle();
 				break;
-			case FIELD_START_DATE:
+			case FIELD_DATE_START:
 				checkDate(0);
 				break;
-			case FIELD_END_DATE:
+			case FIELD_DATE_END:
 				checkDate(1);
 				break;
 			case FIELD_DATE:
@@ -147,7 +147,7 @@ public class EditCommand extends Command {
 				} else {
 					invalidArgs.add(MESSAGE_INVALID_DATE_END);
 				}
-				
+
 			}
 		}
 	}
@@ -210,7 +210,7 @@ public class EditCommand extends Command {
 	}
 
 	@Override
-	public String execute() {
+	public String execute() throws Exception {
 
 		duplicateItem();
 
@@ -218,7 +218,7 @@ public class EditCommand extends Command {
 		case FIELD_TITLE:
 			item.setTitle(value);
 			break;
-		case FIELD_START_DATE:
+		case FIELD_DATE_START:
 			if (toFloat) {
 				floatItem();
 			} else {
@@ -229,7 +229,7 @@ public class EditCommand extends Command {
 				item.setStartDate(date);
 			}
 			break;
-		case FIELD_END_DATE:
+		case FIELD_DATE_END:
 			if (toFloat) {
 				floatItem();
 			} else {
@@ -253,10 +253,14 @@ public class EditCommand extends Command {
 			break;
 		case FIELD_TIME_START:
 			item.setStartTime((int) editObject);
+			CustomDate date = unfloatItemForTime();
+			assertNotNull(date);
+			date.setTime(item.getStartTime());
+			item.setStartDate(date);
 			break;
 		case FIELD_TIME_END:
 			item.setEndTime((int) editObject);
-			CustomDate date = unfloatItemForTime();
+			date = unfloatItemForTime();
 			assertNotNull(date);
 			date.setTime(item.getEndTime());
 			item.setEndDate(date);
@@ -273,14 +277,30 @@ public class EditCommand extends Command {
 		}
 
 		try {
+			checkTimeValidity();
 			updateItem();
 		} catch (IOException e) {
-			return String.format(MESSAGE_ITEM_ERROR, argsArray.get(0).trim());
+			throw new Exception(String.format(MESSAGE_ITEM_ERROR, itemID));
 		} finally {
 			updateView();
 		}
 
 		return MESSAGE_ITEM_EDITED;
+	}
+
+	/**
+	 * Checks whether the specified date range is valid for an event. If user tries to make
+	 * start date after end date, he should be prompted with an error.
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	private void checkTimeValidity() throws IllegalStateException {
+		if (!isTask && item.getEndDate().compareTo(item.getStartDate()) < 0) {
+			if (field.toLowerCase().equals(FIELD_TIME_START) || field.toLowerCase().equals(FIELD_DATE_START)) {
+				throw new IllegalStateException("Start Date should be before End Date");
+			}
+			throw new IllegalStateException("End Date should be after Start Date");
+		}
 	}
 
 	/**
@@ -351,9 +371,5 @@ public class EditCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return true;
-	}
-	
-	public static void main(String[] args) throws Exception {
-		new EditCommand("t1 time today");
 	}
 }

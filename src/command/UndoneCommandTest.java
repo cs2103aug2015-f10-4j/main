@@ -1,4 +1,4 @@
-package Commands.CommandTests;
+package command;
 
 import static org.junit.Assert.*;
 
@@ -8,13 +8,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import Commands.Command;
-import Commands.DelCommand;
-import Commands.UndoneCommand;
 import gui.GUIModel;
 import main.Item;
 
-public class UndoneCommandTests {
+public class UndoneCommandTest {
 
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %sitemID";
 

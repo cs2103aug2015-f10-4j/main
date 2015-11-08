@@ -1,4 +1,4 @@
-package Commands.CommandTests;
+package command;
 
 import static org.junit.Assert.*;
 
@@ -8,13 +8,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import Commands.Command;
-import Commands.DelCommand;
-import Commands.DoneCommand;
 import gui.GUIModel;
 import main.Item;
 
-public class DelCommandTests {
+public class DelCommandTest {
 
 	protected static final String MESSAGE_INVALID_PARAMS = "Invalid arguments: %sitemID";
 

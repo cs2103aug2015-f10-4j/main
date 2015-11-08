@@ -1,8 +1,8 @@
-package Commands;
+package command;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import gui.GUIModel;
@@ -10,37 +10,31 @@ import main.Magical;
 import main.Storage;
 import main.Item;
 
-public class TagCommand extends Command {
+public class UntagCommand extends Command {
 
 	/** Messaging **/
-	private static final String MESSAGE_INVALID_FORMAT = "Use Format: tag <item_id> <tag name>";
+	private static final String MESSAGE_INVALID_FORMAT = "Use Format: untag <item_id> <tag name>";
 	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
-	private static final String MESSAGE_TAG_PRESENT = "%s already has tag: ";
-	private static final String MESSAGE_TAG_RESTRICTED = "%s cannot have tag: ";
-	private static final String MESSAGE_TAG_ERROR = "Unable to add tag to %s";
-	private static final String MESSAGE_TAG_ADDED = "%s added to %s";
-
-	/** For Checking **/
-	private static final ArrayList<String> RESTRICTED = new ArrayList<String>(
-			Arrays.asList("event", "events", "task", "tasks", "done"));
+	private static final String MESSAGE_TAG_ABSENT = "%s does not have tag: ";
+	private static final String MESSAGE_TAG_ERROR = "Unable to remove tag to %s";
+	private static final String MESSAGE_TAG_REMOVED = "%s removed from %s";
 
 	/** Command Parameters **/
 	private Item item;
 	private String itemID;
 	private ArrayList<String> tags;
 	private Item prevItem;
-	private String presentTags = STRING_EMPTY;
-	private String invalidTags = STRING_EMPTY;
+	private String absentTags = STRING_EMPTY;
 
 	/**
-	 * Constructor for TagCommand objects. Checks if arguments are valid and
+	 * Constructor for UntagCommand objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid
 	 * 
 	 * @param args
 	 * @throws Exception
 	 */
-	public TagCommand(String args) throws Exception {
+	public UntagCommand(String args) throws Exception {
 		super(args);
 
 		this.argsArray = splitArgs(" ", -1);
@@ -86,7 +80,7 @@ public class TagCommand extends Command {
 	}
 
 	/**
-	 * Set the relevant parameters of TagCommand to that of the specified task
+	 * Set the relevant parameters of UntagCommand to that of the specified task
 	 */
 	void setProperParams() {
 		this.itemID = argsArray.get(0).trim();
@@ -103,8 +97,8 @@ public class TagCommand extends Command {
 	}
 
 	/**
-	 * This method executes the tag command. Which simply adds the specified tag
-	 * to a task or event's tag set.
+	 * This method executes the untag command. Which simply removes the
+	 * specified tags from a task or event's tag set.
 	 * 
 	 * @param None
 	 * @return message to show user
@@ -116,12 +110,11 @@ public class TagCommand extends Command {
 		duplicateItem();
 		Set<String> currentTags = item.getTags();
 		for (String tag : tags) {
-			if (!checkTags(currentTags, tag)
-					&& !checkRestricted(currentTags, tag)) {
-				addTagToItem(currentTags, tag);
+			if (!checkTags(currentTags, tag)) {
+				removeTagFromItem(currentTags, tag);
 			}
 		}
-		errorPresentORInvalidTags();
+		errorAbsentTags();
 
 		try {
 			updateItem();
@@ -131,60 +124,34 @@ public class TagCommand extends Command {
 			updateView();
 		}
 
-		return String.format(MESSAGE_TAG_ADDED, tags, itemID);
+		return String.format(MESSAGE_TAG_REMOVED, tags, itemID);
 	}
 
 	/**
-	 * Adds given tag to set of tags and set item tags as this set
+	 * Removes given tag from set of tags and set item tags as this set
 	 * 
 	 * @param currentTags
 	 * @param tag
 	 */
-	void addTagToItem(Set<String> currentTags, String tag) {
-		currentTags.add(tag);
+	void removeTagFromItem(Set<String> currentTags, String tag) {
+		currentTags.remove(tag);
 		item.setTags(currentTags);
 	}
 
 	/**
-	 * Throws exception if error messages for invalid tags or tags that are
-	 * already present
+	 * Throws exception if error messages if tags are absent
 	 * 
 	 * @throws IllegalArgumentException
 	 */
-	void errorPresentORInvalidTags() throws Exception {
-		if (!presentTags.equals(STRING_EMPTY)
-				&& !invalidTags.equals(STRING_EMPTY)) {
-			throw new Exception(presentTags + " AND " + invalidTags);
-		} else if (!presentTags.equals(STRING_EMPTY)) {
-			throw new Exception(presentTags);
-		} else if (!invalidTags.equals(STRING_EMPTY)) {
-			throw new Exception(invalidTags);
+	void errorAbsentTags() throws Exception {
+		if (!absentTags.equals(STRING_EMPTY)) {
+			throw new Exception(absentTags);
 		}
 	}
 
 	/**
-	 * Check if a tag is restricted and add to return message invalidTags if it
-	 * is. Returns true if tag is restricted, or false otherwise.
-	 * 
-	 * @param currentTags
-	 * @param tag
-	 * @return boolean
-	 */
-	private boolean checkRestricted(Set<String> currentTags, String tag) {
-		if (RESTRICTED.contains(tag.toLowerCase())) {
-			if (invalidTags.equals(STRING_EMPTY)) {
-				invalidTags = String.format(MESSAGE_TAG_RESTRICTED, itemID)
-						+ tag;
-			} else {
-				invalidTags += ", " + tag;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Check if a tag is present inside a set of tags and add to return message
-	 * presentTags if it is. Returns true if there are present tags, or false
+	 * Check if a tag is absent in a set of tags and add to return message
+	 * absentTags if it is not. Returns true if there are absent tags, or false
 	 * otherwise.
 	 * 
 	 * @param currentTags
@@ -192,12 +159,12 @@ public class TagCommand extends Command {
 	 * @return boolean
 	 */
 	private boolean checkTags(Set<String> currentTags, String tag) {
-		if (currentTags.contains(tag)) {
-			if (presentTags.equals(STRING_EMPTY)) {
-				presentTags = String.format(MESSAGE_TAG_PRESENT, itemID) + tag;
+		if (!currentTags.contains(tag)) {
+			if (absentTags.equals(STRING_EMPTY)) {
+				absentTags = String.format(MESSAGE_TAG_ABSENT, itemID) + tag;
 				return true;
 			} else {
-				presentTags += ", " + tag;
+				absentTags += ", " + tag;
 				return true;
 			}
 		}
@@ -238,5 +205,19 @@ public class TagCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return true;
+	}
+
+	public static void main(String[] args) throws Exception {
+		ArrayList<Item> msg = new ArrayList<Item>();
+		Item t1 = new Item();
+		Set<String> set = new HashSet<String>();
+		set.add("tag1");
+		set.add("tag2");
+		t1.setTags(set);
+		msg.add(t1);
+		GUIModel.setTaskList(msg);
+
+		TagCommand tag1 = new TagCommand("t1 tag1 tag2");
+		System.out.println(tag1.execute());
 	}
 }
