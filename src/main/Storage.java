@@ -33,6 +33,7 @@ public class Storage {
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
 	private static File file =  new File(DEFAULT_FILE_PATH);
 	private String storedFilePath;
+	private String folderPath;
 	private List<ArrayList<Item>> lists;
 	private ObjectMapper mapper = new ObjectMapper();
 
@@ -48,7 +49,6 @@ public class Storage {
 	public Storage () {
 		
 		createFolder();
-		
 		storedFilePath = readFileSettings();
 		
 		if (storedFilePath == null) {
@@ -58,6 +58,8 @@ public class Storage {
 			file = new File(storedFilePath);
 			initFile();
 		}
+		
+		folderPath = getFolderPath(storedFilePath);		
 	}
 
 	/**
@@ -67,6 +69,27 @@ public class Storage {
 	 */
 	public String getFilePath() {
 		return storedFilePath;
+	}
+	
+	/**
+	 * This method returns the current path of the of the storage folder.
+	 * 
+	 * @return Location of storage folder.
+	 */
+	public String getFolderPath() {
+		return folderPath;
+	}
+	
+	/**
+	 * This method returns the current path of the of the file specified.
+	 * 
+	 * @return Location of folder.
+	 */
+	public String getFolderPath(String storageFile) {
+		if (storageFile.equals(DEFAULT_FILE_PATH)) {
+			return ".";
+		}
+		return storageFile.substring(0, storageFile.length() - DEFAULT_FILE_PATH.length());
 	}
 
 	/**
@@ -114,22 +137,23 @@ public class Storage {
 	 * This method changes the file path stored in the properties file and moves
 	 * the .txt data file to the specified new file path.
 	 * 
-	 * @param newFilePath 				New file path specified by user.
+	 * @param newFolderPath 			New file path specified by user.
 	 * @return 							Whether the file path is changed successfully or not.
 	 * @throws IOException.
 	 * @throws FileNotFoundException.
 	 */
-	public void changeFilePath(String newFilePath) 
+	public void changeFolderPath(String newFolderPath) 
 			throws IOException, FileNotFoundException {
-		
+		System.out.println(newFolderPath);
 		String oldFilePath = readFileSettings();
 		
-		moveFolder(newFilePath + "/" + DEFAULT_FILE_DIRECTORY + "/");
+		moveFolder(newFolderPath + "/" + DEFAULT_FILE_DIRECTORY + "/");
 		
-		newFilePath = newFilePath + "/" + DEFAULT_FILE_PATH;
+		String newFilePath = newFolderPath + "/" + DEFAULT_FILE_PATH;
 		moveFile(oldFilePath, newFilePath);
 		
 		writeToProperties(newFilePath);
+		folderPath = newFolderPath;
 	}
 
 	/**
@@ -148,7 +172,8 @@ public class Storage {
 		try {
 			output = new FileOutputStream(SETTINGS_FILE_PATH);
 			prop.setProperty("filePath", filePath);
-			prop.store(output, null); // save properties to project root folder
+			prop.store(output, null);
+			storedFilePath = filePath;
 			return true;
 		} catch (IOException io) {
 			io.printStackTrace();

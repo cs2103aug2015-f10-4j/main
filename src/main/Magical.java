@@ -20,6 +20,8 @@ public class Magical {
 			Storage.NUM_LISTS);
 	public static List<Stack<ArrayList<Item>>> redoLists = new ArrayList<Stack<ArrayList<Item>>>(
 			Storage.NUM_LISTS);
+	public static Stack<String> undoFolderPaths = new Stack<String>();
+	public static Stack<String> redoFolderPaths = new Stack<String>();
 	public static Command lastCommand;
 	
 	private static Storage storage;
@@ -96,6 +98,7 @@ public class Magical {
 	 * pushing an undo layer onto the undo history stack.
 	 */
 	public static void pushUndoLayer() {
+		undoFolderPaths.push(storage.getFolderPath());
 		ArrayList<Item> prevTasksList = listClone(storage
 				.getList(Storage.TASKS_INDEX));
 		ArrayList<Item> prevTasksDoneList = listClone(storage

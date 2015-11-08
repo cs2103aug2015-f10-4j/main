@@ -29,7 +29,7 @@ public class PathCommand extends Command {
 	@Override
 	public String execute() throws Exception {
 		try {
-			Magical.getStorage().changeFilePath(location);
+			Magical.getStorage().changeFolderPath(location);
 		} catch (FileNotFoundException fnfe) {
 			throw new Exception(location + " (no such directory)");
 		}

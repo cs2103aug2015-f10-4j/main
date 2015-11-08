@@ -25,20 +25,25 @@ public class RedoCommand extends Command {
 	 */
 	@Override
 	public String execute() throws Exception {
-		if (Magical.lastCommand.isUndoable()) {
-			Magical.redoLists.set(Storage.TASKS_INDEX, new Stack<ArrayList<Item>>());
-			Magical.redoLists.set(Storage.TASKS_DONE_INDEX, new Stack<ArrayList<Item>>());
-			Magical.redoLists.set(Storage.EVENTS_INDEX, new Stack<ArrayList<Item>>());
-			Magical.redoLists.set(Storage.EVENTS_DONE_INDEX, new Stack<ArrayList<Item>>());
-		}
-		
 		int redoLayersSize = Magical.redoLists.get(0).size();
 		if (redoLayersSize <= 0) {
 			throw new Exception("nothing to redo");
 		}
+		
+		if (Magical.lastCommand.isUndoable()) {
+			Magical.redoFolderPaths = new Stack<String>();
+			Magical.redoLists.set(Storage.TASKS_INDEX, new Stack<ArrayList<Item>>());
+			Magical.redoLists.set(Storage.TASKS_DONE_INDEX, new Stack<ArrayList<Item>>());
+			Magical.redoLists.set(Storage.EVENTS_INDEX, new Stack<ArrayList<Item>>());
+			Magical.redoLists.set(Storage.EVENTS_DONE_INDEX, new Stack<ArrayList<Item>>());
+			throw new Exception("nothing to redo");
+		}
+		
 
 		try {
 			Magical.pushUndoLayer();
+			String folderPath = Magical.redoFolderPaths.pop();
+			Magical.getStorage().changeFolderPath(folderPath);
 			ArrayList<Item> nextTasksList = Magical.redoLists.get(
 					Storage.TASKS_INDEX).pop();
 			ArrayList<Item> nextTasksDoneList = Magical.redoLists.get(

@@ -31,10 +31,16 @@ public class UndoCommand extends Command {
 		}
 
 		try {
+			/** Back up storage to redo stack **/
+			Magical.redoFolderPaths.push(Magical.getStorage().getFolderPath());
 			Magical.redoLists.get(Storage.TASKS_INDEX).push(Magical.getStorage().getList(Storage.TASKS_INDEX));
 			Magical.redoLists.get(Storage.TASKS_DONE_INDEX).push(Magical.getStorage().getList(Storage.TASKS_DONE_INDEX));
 			Magical.redoLists.get(Storage.EVENTS_INDEX).push(Magical.getStorage().getList(Storage.EVENTS_INDEX));
 			Magical.redoLists.get(Storage.EVENTS_DONE_INDEX).push(Magical.getStorage().getList(Storage.EVENTS_DONE_INDEX));
+			
+			/** Move undo stack to storage **/
+			String folderPath = Magical.undoFolderPaths.pop();
+			Magical.getStorage().changeFolderPath(folderPath);
 			ArrayList<Item> lastTasksList = Magical.undoLists.get(
 					Storage.TASKS_INDEX).pop();
 			ArrayList<Item> lastTasksDoneList = Magical.undoLists.get(
