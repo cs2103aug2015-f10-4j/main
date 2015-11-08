@@ -153,14 +153,6 @@ public class DateCommand extends Command {
 		return filteredItemList;
 	}
 
-	void updateView(ArrayList<Item> filteredTaskList, ArrayList<Item> filteredTaskDoneList,
-			ArrayList<Item> filteredEventList, ArrayList<Item> filteredEventDoneList) {
-		GUIModel.setTaskList(filteredTaskList);
-		GUIModel.setTaskDoneList(filteredTaskDoneList);
-		GUIModel.setEventList(filteredEventList);
-		GUIModel.setEventDoneList(filteredEventDoneList);
-	}
-
 	@Override
 	public boolean isUndoable() {
 		return false;
