@@ -1,9 +1,6 @@
 package command;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import gui.GUIModel;
 import main.Magical;
 import main.Storage;
@@ -11,12 +8,13 @@ import main.Item;
 
 public class DelCommand extends Command {
 
-	private static final String MESSAGE_ITEM_DELETED = "%s deleted";
-
-	private static final String MESSAGE_ERROR_DELETE = "Unable to delete";
-
+	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: delete <item_id>";
+	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
+	private static final String MESSAGE_ITEM_DELETED = "%s deleted";
+	private static final String MESSAGE_ITEM_ERROR_DELETE = "Unable to delete";
 
+	/** Command Parameters **/
 	private Item item;
 	private String itemID;
 
@@ -42,43 +40,20 @@ public class DelCommand extends Command {
 			errorInvalidArgs();
 			
 		} else {
-			errorInvalidFormat();
+			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
 
-	/**
-	 * Throws exception if error messages for format are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
-	}
-
-	/**
-	 * Throws exception if error messages for invalid arguments are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	void errorInvalidArgs() throws IllegalArgumentException {
-		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(
-					MESSAGE_HEADER_INVALID, invalidArgs));
-		}
-	}
 
 	/**
 	 * Adds error message if item does not exist or unable to get
 	 */
 	void checkItemExists() {
 		if (item == null) {
-			invalidArgs.add("item_id");
+			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
 	
-	/**
-	 * Set the relevant parameters of DelCommand to that of the specified task
-	 */
 	void setProperParams() {
 		itemID = argsArray.get(0).trim();
 		item = getItemByID(itemID);
@@ -104,7 +79,7 @@ public class DelCommand extends Command {
 			removeItem();
 			return String.format(MESSAGE_ITEM_DELETED, itemID);
 		} catch (IOException e) {
-			return MESSAGE_ERROR_DELETE;
+			return MESSAGE_ITEM_ERROR_DELETE;
 		} finally {
 			updateView();
 		}
@@ -117,20 +92,6 @@ public class DelCommand extends Command {
 	void removeItem() throws IOException {
 		int listIndex = Storage.getListIndex(itemID);
 		Magical.getStorage().delete(listIndex, item);
-	}
-
-	/**
-	 * Updates the new view in the GUI
-	 */
-	void updateView() {
-		GUIModel.setTaskList(Magical.getStorage().getList(
-				Storage.TASKS_INDEX));
-		GUIModel.setTaskDoneList(Magical.getStorage().getList(
-				Storage.TASKS_DONE_INDEX));
-		GUIModel.setEventList(Magical.getStorage().getList(
-				Storage.EVENTS_INDEX));
-		GUIModel.setEventDoneList(Magical.getStorage().getList(
-				Storage.EVENTS_DONE_INDEX));
 	}
 
 	@Override

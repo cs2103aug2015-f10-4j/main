@@ -51,7 +51,7 @@ public class TagCommand extends Command {
 			checkItemExists();
 			errorInvalidArgs();
 		} else {
-			errorInvalidFormat();
+			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
 
@@ -64,30 +64,6 @@ public class TagCommand extends Command {
 		}
 	}
 
-	/**
-	 * Throws exception if error messages for format are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
-	}
-
-	/**
-	 * Throws exception if error messages for invalid arguments are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidArgs() throws IllegalArgumentException {
-		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(
-					MESSAGE_HEADER_INVALID, invalidArgs));
-		}
-	}
-
-	/**
-	 * Set the relevant parameters of TagCommand to that of the specified task
-	 */
 	void setProperParams() {
 		this.itemID = argsArray.get(0).trim();
 		this.item = getItemByID(itemID);
@@ -220,19 +196,6 @@ public class TagCommand extends Command {
 	void updateItem() throws IOException {
 		int listIndex = Storage.getListIndex(argsArray.get(0));
 		Magical.getStorage().update(listIndex, prevItem, item);
-	}
-
-	/**
-	 * Updates the new view in the GUI
-	 */
-	void updateView() {
-		GUIModel.setTaskList(Magical.getStorage().getList(Storage.TASKS_INDEX));
-		GUIModel.setTaskDoneList(Magical.getStorage().getList(
-				Storage.TASKS_DONE_INDEX));
-		GUIModel.setEventList(Magical.getStorage()
-				.getList(Storage.EVENTS_INDEX));
-		GUIModel.setEventDoneList(Magical.getStorage().getList(
-				Storage.EVENTS_DONE_INDEX));
 	}
 
 	@Override

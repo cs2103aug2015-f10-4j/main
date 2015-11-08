@@ -13,6 +13,8 @@ import com.mdimension.jchronic.utils.Span;
 
 import gui.GUIModel;
 import main.Item;
+import main.Magical;
+import main.Storage;
 import main.CustomDate;
 
 public abstract class Command {
@@ -98,14 +100,6 @@ public abstract class Command {
 		}
 		return date;
 	}
-
-	/**
-	 * Implements functionality for each Command subclass.
-	 * 
-	 * @return String success/failure
-	 * @throws Exception
-	 */
-	public abstract String execute() throws Exception;
 
 	/**
 	 * Formats the time in a given string properly for parsing, if present.
@@ -288,13 +282,6 @@ public abstract class Command {
 	}
 
 	/**
-	 * Indicates if the command can be undone or not
-	 * 
-	 * @return boolean true/false
-	 */
-	public abstract boolean isUndoable();
-
-	/**
 	 * Create an ArrayList of Strings that is split into arguments according to
 	 * the regex and into maximum number of elements specified in the limit.
 	 * 
@@ -344,11 +331,77 @@ public abstract class Command {
 		}
 		return date;
 	}
+	
+	/**
+	 * Throws exception if error messages for format are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	protected void errorInvalidFormat(String msg) throws IllegalArgumentException {
+		throw new IllegalArgumentException(msg);
+	}
 
+	/**
+	 * Throws exception if error messages for invalid arguments are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	protected void errorInvalidArgs() throws IllegalArgumentException {
+		if (invalidArgs.size() > 0) {
+			throw new IllegalArgumentException(String.format(
+					MESSAGE_HEADER_INVALID, invalidArgs));
+		}
+	}
+	
+	/**
+	 * Updates the new view in the GUI
+	 */
+	void updateView(ArrayList<Item> filteredTaskList, ArrayList<Item> filteredTaskDoneList,
+			ArrayList<Item> filteredEventList, ArrayList<Item> filteredEventDoneList) {
+		GUIModel.setTaskList(filteredTaskList);
+		GUIModel.setTaskDoneList(filteredTaskDoneList);
+		GUIModel.setEventList(filteredEventList);
+		GUIModel.setEventDoneList(filteredEventDoneList);
+	}
+
+	/**
+	 * Updates the new view in the GUI
+	 */
+	void updateView() {
+		GUIModel.setTaskList(Magical.getStorage().getList(
+				Storage.TASKS_INDEX));
+		GUIModel.setTaskDoneList(Magical.getStorage().getList(
+				Storage.TASKS_DONE_INDEX));
+		GUIModel.setEventList(Magical.getStorage().getList(
+				Storage.EVENTS_INDEX));
+		GUIModel.setEventDoneList(Magical.getStorage().getList(
+				Storage.EVENTS_DONE_INDEX));
+	}
+	
 	/**
 	 * Checks if the correct number of arguments are provided
 	 * 
 	 * @return boolean true/false
 	 */
 	protected abstract boolean validNumArgs();
+	
+	/**
+	 * Indicates if the command can be undone or not
+	 * 
+	 * @return boolean true/false
+	 */
+	public abstract boolean isUndoable();
+	
+	/**
+	 * Implements functionality for each Command subclass.
+	 * 
+	 * @return String success/failure
+	 * @throws Exception
+	 */
+	public abstract String execute() throws Exception;
+	
+	/**
+	 * Set the relevant parameters of Command to that of the specified Command variables
+	 */
+	abstract void setProperParams();
 }

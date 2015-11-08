@@ -11,9 +11,6 @@ import main.Item;
 
 public class DateCommand extends Command {
 
-	
-
-	
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: date <start date> to <end date>";
 	private static final String MESSAGE_INVALID_DATETIME_END = "End date/time";
@@ -52,28 +49,7 @@ public class DateCommand extends Command {
 			errorInvalidArgs();
 			
 		} else {
-			errorInvalidFormat();
-		}
-	}
-
-	/**
-	 * Throws exception if error messages for format are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
-	}
-
-	/**
-	 * Throws exception if error messages for invalid arguments are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	void errorInvalidArgs() throws IllegalArgumentException {
-		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(
-					MESSAGE_HEADER_INVALID, invalidArgs));
+			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
 
@@ -101,9 +77,6 @@ public class DateCommand extends Command {
 		}
 	}
 
-	/**
-	 * Set the relevant parameters of DateCommand to that of the specified task
-	 */
 	void setProperParams() {
 		String start = argsArray.get(0).trim();
 		String end = count == 2 ? argsArray.get(1).trim() : STRING_EMPTY;
@@ -180,9 +153,6 @@ public class DateCommand extends Command {
 		return filteredItemList;
 	}
 
-	/**
-	 * Updates the new view in the GUI
-	 */
 	void updateView(ArrayList<Item> filteredTaskList, ArrayList<Item> filteredTaskDoneList,
 			ArrayList<Item> filteredEventList, ArrayList<Item> filteredEventDoneList) {
 		GUIModel.setTaskList(filteredTaskList);

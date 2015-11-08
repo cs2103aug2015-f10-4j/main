@@ -96,7 +96,7 @@ public class EditCommand extends Command {
 			}
 			errorInvalidArgs();
 		} else {
-			errorInvalidFormat();
+			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
 
@@ -170,30 +170,9 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Throws exception if error messages for invalid arguments are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidArgs() throws IllegalArgumentException {
-		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(
-					MESSAGE_HEADER_INVALID, invalidArgs));
-		}
-	}
-
-	/**
-	 * Throws exception if error messages for format are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
-	}
-
-	/**
 	 * Set the relevant parameters of EditCommand to that of the specified task
 	 */
-	private void setProperParams() {
+	void setProperParams() {
 		this.itemID = argsArray.get(0).trim();
 		this.item = getItemByID(itemID);
 		this.field = argsArray.get(1).trim();

@@ -76,7 +76,7 @@ public class EventCommand extends Command {
 
 			
 		} else {
-			errorInvalidFormat();
+			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 		
 	}
@@ -89,26 +89,6 @@ public class EventCommand extends Command {
 			dateEnd.setDay(dateStart.getDay());
 			dateEnd.setMonth(dateStart.getMonth());
 			dateEnd.setYear(dateStart.getYear());
-		}
-	}
-	
-	/**
-	 * Throws exception if error messages for format are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
-	}
-
-	/**
-	 * Throws exception if error messages for invalid arguments are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidArgs() throws IllegalArgumentException {
-		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
 		}
 	}
 	
@@ -145,10 +125,7 @@ public class EventCommand extends Command {
 		}
 	}
 
-	/**
-	 * Set the relevant parameters of EventCommand to that of the specified event
-	 */
-	private void setProperParams() {
+	void setProperParams() {
 		this.title = getTitle(argsArray.get(0).trim());
 		this.dateStart = getDate(argsArray.get(1).trim());
 		this.dateEnd = getDate(argsArray.get(2).trim());
@@ -271,17 +248,6 @@ public class EventCommand extends Command {
 		} finally {
 			updateView();
 		}
-	}
-
-	/**
-	 * Updates the new view in the GUI
-	 */
-	private void updateView() {
-		GUIModel.setEventList(Magical.getStorage().getList(
-				Storage.EVENTS_INDEX));
-		GUIModel.setEventDoneList(Magical.getStorage().getList(
-				Storage.EVENTS_DONE_INDEX));
-		GUIModel.setCurrentTab("events");
 	}
 
 	/**
