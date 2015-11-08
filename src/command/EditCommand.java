@@ -289,13 +289,13 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Checks whether the specified date range is valid. If user tries to make
+	 * Checks whether the specified date range is valid for an event. If user tries to make
 	 * start date after end date, he should be prompted with an error.
 	 * 
 	 * @throws IllegalArgumentException
 	 */
 	private void checkTimeValidity() throws IllegalStateException {
-		if (item.getEndDate().compareTo(item.getStartDate()) < 0) {
+		if (!isTask && item.getEndDate().compareTo(item.getStartDate()) < 0) {
 			if (field.toLowerCase().equals(FIELD_TIME_START) || field.toLowerCase().equals(FIELD_DATE_START)) {
 				throw new IllegalStateException("Start Date should be before End Date");
 			}
