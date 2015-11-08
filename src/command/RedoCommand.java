@@ -9,18 +9,17 @@ import main.Item;
 
 public class RedoCommand extends Command {
 
-
 	/** Messaging **/
 	private static final String MESSAGE_REDO_ERROR = "Unable to redo";
 	private static final String MESSAGE_REDO_SUCCESS = "Redo successful";
 	private static final String MESSAGE_REDO_NONE = "Nothing to redo";
-	
+
 	/** Command parameters **/
 	private int redoLayersSize;
-	
+
 	/**
-	 * Constructor for RedoCommand objects. Arguments are stored but have no impact on
-	 * command's functionality.
+	 * Constructor for RedoCommand objects. Arguments are stored but have no
+	 * impact on command's functionality.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -36,24 +35,19 @@ public class RedoCommand extends Command {
 	 * 
 	 * @param None
 	 * @return message to show user
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Override
 	public String execute() throws Exception {
-		
+
 		redoLayersSize = Magical.redoLists.get(0).size();
-		
 		checkNumRedo();
-		
 		checkCanRedo();
-		
 
 		try {
 			Magical.pushUndoLayer();
-			
 			String folderPath = Magical.redoFolderPaths.pop();
 			Magical.getStorage().changeFolderPath(folderPath);
-			
 			ArrayList<Item> nextTasksList = Magical.redoLists.get(
 					Storage.TASKS_INDEX).pop();
 			ArrayList<Item> nextTasksDoneList = Magical.redoLists.get(
@@ -62,14 +56,13 @@ public class RedoCommand extends Command {
 					Storage.EVENTS_INDEX).pop();
 			ArrayList<Item> nextEventsDoneList = Magical.redoLists.get(
 					Storage.EVENTS_DONE_INDEX).pop();
-			
 			Magical.getStorage().setList(Storage.TASKS_INDEX, nextTasksList);
 			Magical.getStorage().setList(Storage.TASKS_DONE_INDEX,
 					nextTasksDoneList);
 			Magical.getStorage().setList(Storage.EVENTS_INDEX, nextEventsList);
 			Magical.getStorage().setList(Storage.EVENTS_DONE_INDEX,
 					nextEventsDoneList);
-			
+
 			return MESSAGE_REDO_SUCCESS;
 		} catch (Exception e) {
 			throw new Exception(MESSAGE_REDO_ERROR);
@@ -79,22 +72,30 @@ public class RedoCommand extends Command {
 	}
 
 	/**
-	 * Throw exception if last entered command can be undone
+	 * Check if the last command is undoable. If it is, then storage was
+	 * updated. Therefore, redo history should be reset and empty redo history
+	 * message should be thrown.
+	 * 
 	 * @throws Exception
 	 */
 	void checkCanRedo() throws Exception {
 		if (Magical.lastCommand.isUndoable()) {
 			Magical.redoFolderPaths = new Stack<String>();
-			Magical.redoLists.set(Storage.TASKS_INDEX, new Stack<ArrayList<Item>>());
-			Magical.redoLists.set(Storage.TASKS_DONE_INDEX, new Stack<ArrayList<Item>>());
-			Magical.redoLists.set(Storage.EVENTS_INDEX, new Stack<ArrayList<Item>>());
-			Magical.redoLists.set(Storage.EVENTS_DONE_INDEX, new Stack<ArrayList<Item>>());
+			Magical.redoLists.set(Storage.TASKS_INDEX,
+					new Stack<ArrayList<Item>>());
+			Magical.redoLists.set(Storage.TASKS_DONE_INDEX,
+					new Stack<ArrayList<Item>>());
+			Magical.redoLists.set(Storage.EVENTS_INDEX,
+					new Stack<ArrayList<Item>>());
+			Magical.redoLists.set(Storage.EVENTS_DONE_INDEX,
+					new Stack<ArrayList<Item>>());
 			throw new Exception(MESSAGE_REDO_NONE);
 		}
 	}
 
 	/**
 	 * Throw exception if there is nothing to redo
+	 * 
 	 * @param redoLayersSize
 	 * @throws Exception
 	 */
@@ -116,6 +117,6 @@ public class RedoCommand extends Command {
 
 	@Override
 	void setProperParams() {
-		
+
 	}
 }
