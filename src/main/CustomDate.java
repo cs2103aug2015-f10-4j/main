@@ -191,6 +191,13 @@ public class CustomDate implements Comparable<CustomDate> {
 
 	
 	public int compareTo(CustomDate that) {
+		if (this.getDate() == null && that.getDate() == null) {
+			return 0;
+		} else if (this.getDate() == null) {
+			return -1;
+		} else if (that.getDate() == null) {
+			return 1;
+		}
 		return this.getDate().compareTo(that.getDate());
 	}
 }
