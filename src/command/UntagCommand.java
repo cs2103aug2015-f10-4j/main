@@ -2,7 +2,6 @@ package command;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 import gui.GUIModel;
@@ -59,12 +58,44 @@ public class UntagCommand extends Command {
 	}
 
 	/**
-	 * Throws exception if error messages for format are present
+	 * Check if a tag is absent in a set of tags and add to return message
+	 * absentTags if it is not. Returns true if there are absent tags, or false
+	 * otherwise.
+	 * 
+	 * @param currentTags
+	 * @param tag
+	 * @return boolean
+	 */
+	private boolean checkTags(Set<String> currentTags, String tag) {
+		if (!currentTags.contains(tag)) {
+			if (absentTags.equals(STRING_EMPTY)) {
+				absentTags = String.format(MESSAGE_TAG_ABSENT, itemID) + tag;
+				return true;
+			} else {
+				absentTags += ", " + tag;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Make 2 copies of the item to be stored in prevItem and item
+	 */
+	void duplicateItem() {
+		prevItem = item;
+		item = prevItem.copy();
+	}
+
+	/**
+	 * Throws exception if error messages if tags are absent
 	 * 
 	 * @throws IllegalArgumentException
 	 */
-	private void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
+	void errorAbsentTags() throws Exception {
+		if (!absentTags.equals(STRING_EMPTY)) {
+			throw new Exception(absentTags);
+		}
 	}
 
 	/**
@@ -80,20 +111,12 @@ public class UntagCommand extends Command {
 	}
 
 	/**
-	 * Set the relevant parameters of UntagCommand to that of the specified task
+	 * Throws exception if error messages for format are present
+	 * 
+	 * @throws IllegalArgumentException
 	 */
-	void setProperParams() {
-		this.itemID = argsArray.get(0).trim();
-		this.item = getItemByID(itemID);
-		this.tags = new ArrayList<String>(argsArray.subList(1, count));
-	}
-
-	public boolean validNumArgs() {
-		if (this.count < 2) {
-			return false;
-		} else {
-			return true;
-		}
+	private void errorInvalidFormat() throws IllegalArgumentException {
+		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
 	}
 
 	/**
@@ -127,6 +150,11 @@ public class UntagCommand extends Command {
 		return String.format(MESSAGE_TAG_REMOVED, tags, itemID);
 	}
 
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
+
 	/**
 	 * Removes given tag from set of tags and set item tags as this set
 	 * 
@@ -139,44 +167,12 @@ public class UntagCommand extends Command {
 	}
 
 	/**
-	 * Throws exception if error messages if tags are absent
-	 * 
-	 * @throws IllegalArgumentException
+	 * Set the relevant parameters of UntagCommand to that of the specified task
 	 */
-	void errorAbsentTags() throws Exception {
-		if (!absentTags.equals(STRING_EMPTY)) {
-			throw new Exception(absentTags);
-		}
-	}
-
-	/**
-	 * Check if a tag is absent in a set of tags and add to return message
-	 * absentTags if it is not. Returns true if there are absent tags, or false
-	 * otherwise.
-	 * 
-	 * @param currentTags
-	 * @param tag
-	 * @return boolean
-	 */
-	private boolean checkTags(Set<String> currentTags, String tag) {
-		if (!currentTags.contains(tag)) {
-			if (absentTags.equals(STRING_EMPTY)) {
-				absentTags = String.format(MESSAGE_TAG_ABSENT, itemID) + tag;
-				return true;
-			} else {
-				absentTags += ", " + tag;
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Make 2 copies of the item to be stored in prevItem and item
-	 */
-	void duplicateItem() {
-		prevItem = item;
-		item = prevItem.copy();
+	void setProperParams() {
+		this.itemID = argsArray.get(0).trim();
+		this.item = getItemByID(itemID);
+		this.tags = new ArrayList<String>(argsArray.subList(1, count));
 	}
 
 	/**
@@ -202,22 +198,11 @@ public class UntagCommand extends Command {
 				Storage.EVENTS_DONE_INDEX));
 	}
 
-	@Override
-	public boolean isUndoable() {
-		return true;
-	}
-
-	public static void main(String[] args) throws Exception {
-		ArrayList<Item> msg = new ArrayList<Item>();
-		Item t1 = new Item();
-		Set<String> set = new HashSet<String>();
-		set.add("tag1");
-		set.add("tag2");
-		t1.setTags(set);
-		msg.add(t1);
-		GUIModel.setTaskList(msg);
-
-		TagCommand tag1 = new TagCommand("t1 tag1 tag2");
-		System.out.println(tag1.execute());
+	public boolean validNumArgs() {
+		if (this.count < 2) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

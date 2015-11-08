@@ -34,9 +34,7 @@ public class UndoneCommand extends Command {
 
 		if (validNumArgs()) {
 			setProperParams();
-
 			checkItemUndone();
-
 			errorInvalidArgs();
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
@@ -44,7 +42,8 @@ public class UndoneCommand extends Command {
 	}
 
 	/**
-	 * Adds error message if item does not exist or unable to get or is already done
+	 * Adds error message if item does not exist or unable to get or is already
+	 * done
 	 */
 	void checkItemUndone() {
 		if (item == null) {
@@ -54,26 +53,12 @@ public class UndoneCommand extends Command {
 			invalidArgs.add(MESSAGE_INVALID_UNDONE);
 		}
 	}
-	
-	void setProperParams() {
-		itemID = argsArray.get(0).trim();
-		item = getItemByID(itemID);
-	}
-
-	public boolean validNumArgs() {
-		if (this.count != 1) {
-			return false;
-		} else {
-			return true;
-		}
-	}
 
 	/**
 	 * This method creates a executes the undone command. Which simply moves
 	 * either (1) a done task to the not-done pile or (2) a done event to the
 	 * not-done pile
 	 * 
-	 * @param None
 	 * @return message to show user
 	 */
 	public String execute() {
@@ -88,13 +73,19 @@ public class UndoneCommand extends Command {
 		return MESSAGE_UNDONE_SUCCESS;
 	}
 
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
+
+	void setProperParams() {
+		itemID = argsArray.get(0).trim();
+		item = getItemByID(itemID);
+	}
+
 	/**
-	 * This method executes the undone command. Which either moves a task or event
-	 * to its corresponding undone task or undone event pile.
-	 * 
-	 * @param None
-	 *            .
-	 * @return None
+	 * This method executes the undone command. Which either moves a task or
+	 * event to its corresponding undone task or undone event pile.
 	 */
 	void undoneItem() throws IOException {
 		int listIndex = Storage.getListIndex(argsArray.get(0));
@@ -103,8 +94,11 @@ public class UndoneCommand extends Command {
 		Magical.getStorage().create(complementListIndex, item);
 	}
 
-	@Override
-	public boolean isUndoable() {
-		return true;
+	public boolean validNumArgs() {
+		if (this.count != 1) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

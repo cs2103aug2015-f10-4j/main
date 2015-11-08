@@ -54,41 +54,21 @@ public class SortCommand extends Command {
 		}
 	}
 
-	void setProperParams() {
-		this.sortParams = argsArray;
-	}
-
-	/**
-	 * Returns true if sort parameters are valid (priority, title, date), or false otherwise
-	 * @return
-	 */
-	private boolean isValidSortParams() {
-		for (String param : sortParams) {
-			if (!(param.equals("priority") || param.equals("title") || param.equals("date"))) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	/**
 	 * This method executes the sort command. Which sorts all the tasks and
 	 * events currently displayed by the GUI. Sorting is done using the
 	 * parameter specified.
 	 * 
-	 * @param None
 	 * @return message to show user
 	 */
 	@Override
 	public String execute() throws Exception {
 		
-		//Get unfiltered lists
 		ArrayList<Item> sortedTaskList = new ArrayList<Item>(GUIModel.getTaskList());
 		ArrayList<Item> sortedTaskDoneList = new ArrayList<Item>(GUIModel.getTaskDoneList());
 		ArrayList<Item> sortedEventList = new ArrayList<Item>(GUIModel.getEventList());
 		ArrayList<Item> sortedEventDoneList = new ArrayList<Item>(GUIModel.getEventDoneList());
 		
-		//sort lists
 		if (sortParams.contains("title")) {
 			Collections.sort(sortedTaskList, Item.Comparators.TITLE);
 			Collections.sort(sortedTaskDoneList, Item.Comparators.TITLE);
@@ -114,17 +94,34 @@ public class SortCommand extends Command {
 	}
 
 	@Override
+	public boolean isUndoable() {
+		return false;
+	}
+
+	/**
+	 * Returns true if sort parameters are valid (priority, title, date), or false otherwise
+	 * @return whether sort paramters are valid
+	 */
+	private boolean isValidSortParams() {
+		for (String param : sortParams) {
+			if (!(param.equals("priority") || param.equals("title") || param.equals("date"))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	void setProperParams() {
+		this.sortParams = argsArray;
+	}
+
+	@Override
 	public boolean validNumArgs() {
 		if (count > 3) {
 			return false;
 		} else {
 			return true;
 		}
-	}
-
-	@Override
-	public boolean isUndoable() {
-		return false;
 	}
 
 }
