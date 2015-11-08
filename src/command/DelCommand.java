@@ -29,7 +29,7 @@ public class DelCommand extends Command {
 	public DelCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = splitArgs(STRING_EMPTY, -1);
+		this.argsArray = splitArgs(" ", -1);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
