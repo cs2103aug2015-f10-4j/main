@@ -11,11 +11,9 @@ import main.Item;
 
 public class EventCommand extends Command {
 
-	
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "
-			+ "from <start date> <start time> "
-			+ "to <end date> <end time>";
+			+ "from <start date> <start time> " + "to <end date> <end time>";
 	private static final String MESSAGE_INVALID_DATETIME_END = "End date/time";
 	private static final String MESSAGE_INVALID_DATETIME_START = "Start date/time";
 	private static final String MESSAGE_INVALID_DATETIME_RANGE = "End date/time is earlier than Start date/time";
@@ -23,7 +21,7 @@ public class EventCommand extends Command {
 	private static final String MESSAGE_EVENT_ADDED = "event added";
 	private static final String MESSAGE_EVENT_CLASH = ". Another event exists on the same date.";
 	private static final String MESSAGE_EVENT_ERROR = "unable to add event";
-	
+
 	/** Command parameters **/
 	protected String title;
 	protected CustomDate dateStart;
@@ -33,10 +31,9 @@ public class EventCommand extends Command {
 	private Item event;
 
 	/**
-	 * Constructor for EventCommand objects.
-	 * Checks if arguments are valid and stores the correct arguments properly.
-	 * Throws the appropriate exception if arguments are invalid. Contains 
-	 * methods to add an event to storage.
+	 * Constructor for EventCommand objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid. Contains methods to add an event to storage.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -48,7 +45,7 @@ public class EventCommand extends Command {
 		this.count = argsArray.size();
 		splitArgsAfterDateTime();
 		this.count = argsArray.size();
-		
+
 		for (int i = 0; i < count; i++) {
 			assertNotNull(argsArray.get(i));
 		}
@@ -74,15 +71,15 @@ public class EventCommand extends Command {
 			invalidArgs.add(MESSAGE_INVALID_DATETIME_RANGE);
 		}
 	}
-	
+
 	/**
-	 * Adds error message if invalid date and time specified, according to if the date
-	 * is the start or end date.
+	 * Adds error message if invalid date and time specified, according to if
+	 * the date is the start or end date.
 	 */
 	private void checkDateTime(CustomDate date, int type) {
-		assert(type == 0 || type == 1);
+		assert (type == 0 || type == 1);
 		if (date == null) {
-			if(type == 0){
+			if (type == 0) {
 				invalidArgs.add(MESSAGE_INVALID_DATETIME_START);
 			} else {
 				invalidArgs.add(MESSAGE_INVALID_DATETIME_END);
@@ -91,15 +88,15 @@ public class EventCommand extends Command {
 	}
 
 	/**
-	 * Checks if the event to be added clashes with another event and adds to the return
-	 * message to inform the user
+	 * Checks if the event to be added clashes with another event and adds to
+	 * the return message to inform the user
 	 */
 	private void checkEventClash() {
 		if (isClashing()) {
 			returnMsg += MESSAGE_EVENT_CLASH;
 		}
 	}
-	
+
 	/**
 	 * Adds error message if title is invalid
 	 */
@@ -110,7 +107,9 @@ public class EventCommand extends Command {
 	}
 
 	/**
-	 * Adds a new event to the storage using the parameters stored 
+	 * Adds a new event to the storage using the parameters stored
+	 * 
+	 * @return message to show user
 	 */
 	public String execute() {
 		setEventParams();
@@ -129,6 +128,7 @@ public class EventCommand extends Command {
 
 	/**
 	 * get events list from storage
+	 * 
 	 * @return
 	 */
 	private ArrayList<Item> getEvents() {
@@ -146,9 +146,10 @@ public class EventCommand extends Command {
 	private String getLastWord(String string) {
 		return string.split("\\s(?=\\S+$)")[1];
 	}
-	
+
 	/**
 	 * Checks if the current event to be added clashes with another event
+	 * 
 	 * @return
 	 */
 	private boolean isClashing() {
@@ -163,6 +164,7 @@ public class EventCommand extends Command {
 
 	/**
 	 * Checks if events overlap
+	 * 
 	 * @param t
 	 * @return
 	 */
@@ -175,14 +177,20 @@ public class EventCommand extends Command {
 	}
 
 	/**
-	 * Replaces characters that were used for escaping the keyword argument
-	 * that was used for splitting
+	 * Replaces characters that were used for escaping the keyword argument that
+	 * was used for splitting
 	 */
 	private void removeEscapeCharacters() {
 		for (int i = 0; i < argsArray.size(); i++) {
-			argsArray.set(i,
-						  argsArray.get(i).trim().replaceAll("(?<=from)\"|\"(?=from)"
-						  		+ "(?<=to)\"|\"(?=to)", STRING_EMPTY));
+			argsArray.set(
+					i,
+					argsArray
+							.get(i)
+							.trim()
+							.replaceAll(
+									"(?<=from)\"|\"(?=from)"
+											+ "(?<=to)\"|\"(?=to)",
+									STRING_EMPTY));
 		}
 	}
 
@@ -196,7 +204,7 @@ public class EventCommand extends Command {
 		return string.split("\\s(?=\\S+$)")[0];
 	}
 
-	/** 
+	/**
 	 * Set the default day to be start day if unspecified
 	 */
 	private void setDefaultEndDay() {
@@ -206,7 +214,7 @@ public class EventCommand extends Command {
 			dateEnd.setYear(dateStart.getYear());
 		}
 	}
-	
+
 	/**
 	 * Create an Item object with the correct argument parameters for an event
 	 */
@@ -219,7 +227,7 @@ public class EventCommand extends Command {
 		event.setEndDate(dateEnd);
 		event.setEndTime(endTime);
 	}
-	
+
 	void setProperParams() {
 		this.title = getTitle(argsArray.get(0).trim());
 		this.dateStart = getDate(argsArray.get(1).trim());
@@ -229,8 +237,8 @@ public class EventCommand extends Command {
 	}
 
 	/**
-	 * Date/time argument might be concatenated with other arguments, thus
-	 * the method splits the arguments properly
+	 * Date/time argument might be concatenated with other arguments, thus the
+	 * method splits the arguments properly
 	 */
 	private void splitArgsAfterDateTime() {
 		if (argsArray.size() > 1 && argsArray.get(count - 1).contains(" ")) {
@@ -246,7 +254,8 @@ public class EventCommand extends Command {
 	}
 
 	/**
-	 * Adds last word to the argsArray and removes it from the date/time argument
+	 * Adds last word to the argsArray and removes it from the date/time
+	 * argument
 	 * 
 	 * @param last
 	 */
@@ -256,7 +265,7 @@ public class EventCommand extends Command {
 	}
 
 	/**
-     * Stores the created Item Object as event
+	 * Stores the created Item Object as event
 	 * 
 	 * @throws IOException
 	 */
@@ -266,6 +275,7 @@ public class EventCommand extends Command {
 
 	/**
 	 * Check if the end date given is after the start date
+	 * 
 	 * @return
 	 */
 	public boolean validDateRange() {
