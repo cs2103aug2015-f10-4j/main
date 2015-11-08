@@ -17,10 +17,11 @@ public class EventCommandTest {
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "
 			+ "from <start date> <start time> "
 			+ "to <end date> <end time>";
-	private static final String MESSAGE_INVALID_DATETIME_END = "End time";
-	private static final String MESSAGE_INVALID_DATETIME_START = "Start time";
-	private static final String MESSAGE_INVALID_DATETIME_RANGE = "End date/time is earlier than Start date/time";
-	private static final String MESSAGE_INVALID_TITLE = "Title";
+	private static final String MESSAGE_INVALID_DATETIME_END = "[End date/time]";
+	private static final String MESSAGE_INVALID_DATETIME_START = "[Start date/time]";
+	private static final String MESSAGE_INVALID_DATETIME_START_END = "[End date/time, Start date/time]";
+	private static final String MESSAGE_INVALID_DATETIME_RANGE = "[End date/time is earlier than Start date/time]";
+	private static final String MESSAGE_INVALID_TITLE = "[Title]";
 	private static final String MESSAGE_EVENT_ADDED = "event added";
 	private static final String MESSAGE_EVENT_CLASH = ". Another event exists on the same date.";
 	private static final String MESSAGE_EVENT_ERROR = "unable to add event";
@@ -103,12 +104,12 @@ public class EventCommandTest {
 		try {
 			EventCommand nonExistentDate = new EventCommand("Event from January 32 12pm to January 32 1pm");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START, e.getMessage());
+			assertEquals(MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START_END, e.getMessage());
 		}
 		try {
 			EventCommand nonExistentTime = new EventCommand("Event from January 1 25pm to January 1 26pm");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START, e.getMessage());
+			assertEquals(MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START_END, e.getMessage());
 		}
 	}
 

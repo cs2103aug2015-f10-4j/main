@@ -208,10 +208,12 @@ public class EventCommand extends Command {
 	 * Set the default day to be start day if unspecified
 	 */
 	private void setDefaultEndDay() {
-		if (dateEnd.getDateString().equals(today.getDateString())) {
-			dateEnd.setDay(dateStart.getDay());
-			dateEnd.setMonth(dateStart.getMonth());
-			dateEnd.setYear(dateStart.getYear());
+		if(dateEnd != null){
+			if (dateEnd.getDateString().equals(today.getDateString())) {
+				dateEnd.setDay(dateStart.getDay());
+				dateEnd.setMonth(dateStart.getMonth());
+				dateEnd.setYear(dateStart.getYear());
+			}
 		}
 	}
 
@@ -246,8 +248,10 @@ public class EventCommand extends Command {
 				String last = getLastWord(argsArray.get(count - 1));
 				if (getDate(last) != null) {
 					break;
-				} else {
+				} else if(!last.matches(".*\\d+.*")){
 					splitOnce(last);
+				} else {
+					break;
 				}
 			}
 		}
@@ -288,5 +292,9 @@ public class EventCommand extends Command {
 		} else {
 			return true;
 		}
+	}
+	
+	public static void main(String[] args) throws Exception {
+		EventCommand nonExistentTime = new EventCommand("Event from January 1 25pm to January 1 26pm");
 	}
 }

@@ -139,7 +139,7 @@ public abstract class Command {
 	 */
 	private String formatCorrectTime(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<!/|-)\\d{4}(?=\\s{1})");
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<!/|-)\\d{4}(?=\\s)(?!\\s\\d+(am|pm))");
 		assertNotNull(m);
 
 		if (m.find()) {
@@ -161,15 +161,38 @@ public abstract class Command {
 	 */
 	String formatDate(String date) {
 		date = date.trim();
-		System.out.println("Date 1: " + date);
+		//System.out.println("Date 1: " + date);
 		date = formatCorrectTime(date);
-		System.out.println("Date 2 " + date);
+		//System.out.println("Date 2: " + date);
 		date = dateWithYear(date);
-		System.out.println("Date 3: " + date);
+		//System.out.println("Date 3: " + date);
 		date = swapDayMonth(date);
-		System.out.println("Date 4: " + date);
+		//System.out.println("Date 4: " + date);
+		date = placeTimeBehind(date);
+		//System.out.println("Date 5: " + date);
 		date = swapDayMonthFlexi(date);
-		System.out.println("Date 5: " + date);
+		//System.out.println("Date 6: " + date);
+		return date;
+	}
+
+	/**
+	 * Moves time parameter from front of the date string to back
+	 * @param date
+	 * @return
+	 */
+	private String placeTimeBehind(String date) {
+		ArrayList<String> temp = new ArrayList<String>(Arrays.asList(date.split(" ")));
+		if(temp.get(0).contains(":")
+				||temp.get(0).contains("am")
+				||temp.get(0).contains("pm")){
+			temp.add(temp.get(0));
+			temp.remove(0);
+			date = "";
+			for(String s : temp){
+				date += s + " ";
+			}
+			date = date.trim();
+		}
 		return date;
 	}
 
