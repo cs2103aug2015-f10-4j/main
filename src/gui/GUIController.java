@@ -50,6 +50,7 @@ public class GUIController {
 	/** Shortcuts **/
 	private static final String UNDO_COMMAND = "undo";
 	private static final String REDO_COMMAND = "redo";
+	private static final KeyCodeCombination SWITCH_TAB_SHORTCUT = new KeyCodeCombination(KeyCode.TAB, KeyCombination.CONTROL_DOWN);
 	private static final KeyCodeCombination UNDO_SHORTCUT = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
 	private static final KeyCodeCombination REDO_SHORTCUT = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
 	private static final KeyCodeCombination GOTO_COMMANDLINE_SHORTCUT = new KeyCodeCombination(KeyCode.ENTER);
@@ -63,6 +64,16 @@ public class GUIController {
     			handleUserInput(REDO_COMMAND);
     		} else if (GOTO_COMMANDLINE_SHORTCUT.match(ke)) {
     			commandLineField.requestFocus();
+    		} else if (SWITCH_TAB_SHORTCUT.match(ke)) {
+    			if (GUIModel.getCurrentTab() == "events") {
+    				switchToTab("tasks");
+    				GUIModel.setCurrentTab("tasks");
+    			} else if (GUIModel.getCurrentTab() == "tasks") {
+    				switchToTab("events");
+    				GUIModel.setCurrentTab("events");
+    			} else {
+
+    			}
     		} else {
     			return;
     		}
@@ -189,7 +200,7 @@ public class GUIController {
 	 * @throws Exception
 	 */
 	@FXML
-	protected void onEnterPressed(KeyEvent event) throws Exception {
+	protected void handleKeyPressed(KeyEvent event) throws Exception {
 		helpPane.setVisible(false);
 		mainPane.toFront();
 		if (event.getCode() == KeyCode.ENTER) {
