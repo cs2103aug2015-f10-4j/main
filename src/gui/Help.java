@@ -49,7 +49,7 @@ public class Help {
 			"> search [query]" + ENDL +
 			ENDL +
 			"To change an item's priority:" + ENDL +
-			"> set [task ID] [number from 1 to 10]" + ENDL +
+			"> set [item ID] [high / medium / low / empty]" + ENDL +
 			ENDL +
 			"To undo a previous action:" + ENDL +
 			"> undo" + ENDL +

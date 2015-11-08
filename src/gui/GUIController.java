@@ -25,7 +25,9 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import main.CustomDate;
 import main.Item;
 
@@ -121,7 +123,7 @@ public class GUIController {
 
 	/** Help Elements **/
 	@FXML private Label headerLabel;
-	@FXML private Label bodyLabel;
+	@FXML private VBox helpVBox;
 
 	/** Other Controls **/
 	@FXML private TabPane tabPane;
@@ -153,9 +155,10 @@ public class GUIController {
 
 		updateTableColors();
 
+
 		/**Help Controls**/
 		headerLabel.setText(Help.HEADER_TEXT);
-		bodyLabel.setText(Help.BODY_TEXT);
+		helpVBox.getChildren().add(new Text(Help.BODY_TEXT));
 
 		/** For dealing with controls that need to be initialized first**/
 		Platform.runLater(new Runnable() {

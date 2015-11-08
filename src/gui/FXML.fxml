@@ -30,7 +30,7 @@
                                                 </Label>
                                                 <TableView fx:id="taskTable" VBox.vgrow="ALWAYS">
                                                   <columns>
-                                                    <TableColumn fx:id="taskIDCol" maxWidth="-1.0" minWidth="40.0" prefWidth="40.0" text="ID" />
+                                                    <TableColumn fx:id="taskIDCol" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" sortable="false" text="ID" />
                                                     <TableColumn fx:id="taskTitleCol" minWidth="250.0" prefWidth="250.0" sortable="false" text="Title" />
                                                       <TableColumn fx:id="taskDueDateCol" minWidth="150.0" prefWidth="150.0" sortable="false" text="Due Date" />
                                                       <TableColumn fx:id="taskTagsCol" minWidth="125.0" prefWidth="150.0" sortable="false" text="Tags" />
@@ -50,7 +50,7 @@
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                                    </columnResizePolicy>
                                                    <columns>
-                                                      <TableColumn fx:id="taskDoneIDCol" maxWidth="-1.0" minWidth="40.0" prefWidth="40.0" text="ID" />
+                                                      <TableColumn fx:id="taskDoneIDCol" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" sortable="false" text="ID" />
                                                       <TableColumn fx:id="taskDoneTitleCol" minWidth="250.0" prefWidth="250.0" sortable="false" text="Title" />
                                                       <TableColumn fx:id="taskDoneDueDateCol" minWidth="150.0" prefWidth="150.0" sortable="false" text="Due Date" />
                                                       <TableColumn fx:id="taskDoneTagsCol" minWidth="125.0" prefWidth="150.0" sortable="false" text="Tags" />
@@ -76,7 +76,7 @@
                                                 </Label>
                                                 <TableView fx:id="eventTable" VBox.vgrow="ALWAYS">
                                                    <columns>
-                                                      <TableColumn fx:id="eventIDCol" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" text="ID" />
+                                                      <TableColumn fx:id="eventIDCol" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" sortable="false" text="ID" />
                                                       <TableColumn fx:id="eventTitleCol" minWidth="225.0" prefWidth="300.0" sortable="false" text="Title" />
                                                       <TableColumn fx:id="eventStartDateCol" minWidth="175.0" prefWidth="175.0" sortable="false" text="Start Date" />
                                                       <TableColumn fx:id="eventEndDateCol" minWidth="175.0" prefWidth="175.0" sortable="false" text="End Date" />
@@ -125,27 +125,15 @@
                      </padding>
                   </VBox>
                </children></AnchorPane>
-            <AnchorPane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" stylesheets="@help.css" visible="false" StackPane.alignment="CENTER">
+            <AnchorPane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" stylesheets="@help.css" StackPane.alignment="CENTER">
                <children>
                   <ScrollPane focusTraversable="false" prefHeight="442.0" prefWidth="439.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <content>
-                      <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="380.0">
+                      <AnchorPane maxHeight="5000.0" minHeight="0.0" minWidth="0.0" prefWidth="380.0">
                            <children>
-                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox fx:id="helpVBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <AnchorPane>
-                                       <children>
-                                          <Label fx:id="headerLabel" focusTraversable="false" styleClass="header-style" text="Label" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <Label fx:id="bodyLabel" focusTraversable="false" styleClass="body-style" text="Label" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </AnchorPane>
+                                    <Label fx:id="headerLabel" focusTraversable="false" styleClass="header-style" text="Label" wrapText="true" />
                                  </children>
                               </VBox>
                            </children>
