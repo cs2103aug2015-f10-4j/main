@@ -36,6 +36,13 @@ public class GUIController {
 	private static final String EVENT_TABLE_LETTER = "e";
 	private static final String EVENT_DONE_TABLE_LETTER = "p";
 
+	private static final String PRIORITY_HIGH_COLOR = "lightsalmon";
+	private static final String PRIORITY_MEDIUM_COLOR = "moccasin";
+	private static final String PRIORITY_LOW_COLOR = "lemonchiffon";
+	private static final String PRIORITY_HIGH = "high";
+	private static final String PRIORITY_MEDIUM = "medium";
+	private static final String PRIORITY_LOW = "low";
+
 	private static final String OVERDUE_ROW_COLOR = "lightpink";
 	private static final Color SUCCESS_MESSAGE_COLOR = Color.BLUE;
 	private static final Color ERROR_MESSAGE_COLOR = Color.RED;
@@ -161,8 +168,6 @@ public class GUIController {
 		eventEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
 		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
-
-
 		/** Done Event Table Columns **/
 		eventDoneIDCol.setCellFactory(col -> {
 			return makeIndex(EVENT_DONE_TABLE_LETTER);
@@ -175,7 +180,7 @@ public class GUIController {
 		eventDoneEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
 		eventDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
 
-		updateRowColor();
+		updateTableColors();
 
 		/**Help Controls**/
 		headerLabel.setText(Help.HEADER_TEXT);
@@ -252,7 +257,7 @@ public class GUIController {
 			messageLabel.setText(message);
 			updateTables();
 			commandLineField.clear();
-			updateRowColor();
+			updateTableColors();
 			switchToTab(GUIModel.getCurrentTab());
 		} catch (Exception e) {
 			messageLabel.setTextFill(ERROR_MESSAGE_COLOR);
@@ -345,11 +350,11 @@ public class GUIController {
 	}
 
 	/**
-	 * Creates a table cell for dates in tables that colors
+	 * Creates a table cell for dates in columns that colors
 	 * the whole row red if the date is past.
 	 * As such, this method is only used for the undone
 	 * event and task tables.
-	 * @return TableCell<Item, CustomDate> colors the row depending on date
+	 * @return TableCell<Item, CustomDate> with a colored row depending on date
 	 */
 
 	private TableCell<Item, CustomDate> makeDateCellFactory() {
@@ -374,12 +379,54 @@ public class GUIController {
 	}
 
 	/**
+	 * Creates a table cell for priority columns that colors
+	 * the cell depending on priority.
+	 * @return TableCell<Item, CustomDate> with a colored row depending on date
+	 */
+	private TableCell<Item, String> makePriorityCellFactory() {
+		return new TableCell<Item, String>() {
+			@Override
+			protected void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+				if (item == null || empty) {
+					setText("");
+					setStyle("");
+				}
+				else {
+					setText(item);
+					if (item.equals(PRIORITY_HIGH)) {
+						setStyle("-fx-background-color: " + PRIORITY_HIGH_COLOR);
+					} else if (item.equals(PRIORITY_MEDIUM)) {
+						setStyle("-fx-background-color: " + PRIORITY_MEDIUM_COLOR);
+					} else if (item.equals(PRIORITY_LOW)) {
+						setStyle("-fx-background-color: " + PRIORITY_LOW_COLOR);
+					} else {
+					}
+					return;
+				}
+			}
+		};
+	}
+
+	/**
 	 * Updates row colors of the task table and event table.
 	 * Needs to be called after every command.
 	 * @return nothing
 	 */
 
-	private void updateRowColor() {
+	private void updateTableColors() {
+		taskPriorityCol.setCellFactory(col -> {
+			return makePriorityCellFactory();
+		});
+		taskDonePriorityCol.setCellFactory(col -> {
+			return makePriorityCellFactory();
+		});
+		eventPriorityCol.setCellFactory(col -> {
+			return makePriorityCellFactory();
+		});
+		eventDonePriorityCol.setCellFactory(col -> {
+			return makePriorityCellFactory();
+		});
 		taskDueDateCol.setCellFactory(col -> {
 			return makeDateCellFactory();
 		});
