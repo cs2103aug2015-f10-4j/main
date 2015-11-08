@@ -37,7 +37,7 @@ public class UntagCommand extends Command {
 	public UntagCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = splitArgs(args, " ", -1);
+		this.argsArray = splitArgs(" ", -1);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
