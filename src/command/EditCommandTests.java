@@ -1,4 +1,4 @@
-package Commands.CommandTests;
+package command;
 
 import static org.junit.Assert.*;
 
@@ -8,8 +8,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Commands.Command;
-import Commands.EditCommand;
 import gui.GUIModel;
 import main.Item;
 

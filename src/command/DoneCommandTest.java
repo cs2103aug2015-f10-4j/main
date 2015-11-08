@@ -1,4 +1,4 @@
-package Commands.CommandTests;
+package command;
 
 import static org.junit.Assert.*;
 
@@ -8,12 +8,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import Commands.Command;
-import Commands.DoneCommand;
 import gui.GUIModel;
 import main.Item;
 
-public class DoneCommandTests {
+public class DoneCommandTest {
 
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %staskID";
 	// private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <task_id>";

@@ -1,4 +1,4 @@
-package Commands;
+package command;
 
 import static org.junit.Assert.*;
 

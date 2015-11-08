@@ -1,4 +1,4 @@
-package Commands.CommandTests;
+package command;
 
 import static org.junit.Assert.*;
 
@@ -8,11 +8,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Commands.EventCommand;
 import gui.GUIModel;
 import main.Item;
 
-public class EventCommandTests {
+public class EventCommandTest {
 
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "

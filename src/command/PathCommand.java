@@ -1,4 +1,4 @@
-package Commands;
+package command;
 
 import java.io.FileNotFoundException;
 

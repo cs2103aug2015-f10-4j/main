@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import Commands.Command;
+import command.Command;
 
 /**
  * Magical is the used to logic behind the application. It acts as a

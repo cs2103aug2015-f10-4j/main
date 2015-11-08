@@ -1,6 +1,7 @@
 package main;
 
-import Commands.Command;
+import command.Command;
+
 import junit.framework.TestCase;
 
 public class ParserTest extends TestCase {
