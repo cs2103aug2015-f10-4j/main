@@ -11,41 +11,73 @@ import main.Item;
 
 public class PriorityCommand extends Command {
 
+	/** Messaging **/
 	private static final String MESSAGE_ARGUMENT_PARAMS = "Use Format: set <item_id> <priority>";
+	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
 
+	/** Command parameters **/
 	private Item item;
 	private String itemID;
 	private String priority;
 	private Item prevItem;
 
+	/**
+	 * Constructor for PriorityCommand objects.
+	 * Checks if arguments are valid and stores the correct arguments properly.
+	 * Throws the appropriate exception if arguments are invalid. Contains methods to 
+	 * change the priority of an item.
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public PriorityCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = new ArrayList<String>(
-				Arrays.asList(args.split(" ", 2)));
+		this.argsArray = splitArgs(" ", 2);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			itemID = argsArray.get(0).trim();
-			item = getItemByID(itemID);
 			
-			if (argsArray.size() == 1) {
-				priority = "";
-			} else {
-				priority = getPriority(argsArray.get(1).trim());
-			}
-			if (item == null) {
-				invalidArgs.add("item_id");
-			}
-			if (priority == null) {
-				invalidArgs.add("priority");
-			}
+			setProperParams();
+			
+			checkItemExists();
+			
+			checkPriorityValid();
+			
 			if (invalidArgs.size() > 0) {
 				throw new IllegalArgumentException(String.format(
 						MESSAGE_HEADER_INVALID, invalidArgs));
 			}
 		} else {
 			throw new IllegalArgumentException(MESSAGE_ARGUMENT_PARAMS);
+		}
+	}
+
+	/**
+	 *  Adds error message if priority given is invalid
+	 */
+	void checkPriorityValid() {
+		if (priority == null) {
+			invalidArgs.add("Priority");
+		}
+	}
+
+	/**
+	 * Adds error message if item does not exist or unable to get
+	 */
+	void checkItemExists() {
+		if (item == null) {
+			invalidArgs.add("item_id");
+		}
+	}
+
+	void setProperParams() {
+		itemID = argsArray.get(0).trim();
+		item = getItemByID(itemID);
+		if (argsArray.size() == 1) {
+			priority = "";
+		} else {
+			priority = getPriority(argsArray.get(1).trim());
 		}
 	}
 

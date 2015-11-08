@@ -6,8 +6,14 @@ import main.Magical;
 
 public class PathCommand extends Command {
 
-	private static final String MESSAGE_ARGUMENT_PARAMS = "Use Format: path <location>";
+	private static final String MESSAGE_DIRECTORY_CHANGED = "Path changed to: %s";
+
+	private static final String MESSAGE_DIRECTORY_MISSING = "%s (no such directory)";
+
+	/** Messaging **/
+	private static final String MESSAGE_ARGUMENT_FORMAT = "Use Format: path <location>";
 	
+	/** Command parameters **/
 	private String location;
 
 	/**
@@ -24,8 +30,17 @@ public class PathCommand extends Command {
 
 		setProperParams();
 		
-		if (args.isEmpty()) {
-			throw new IllegalArgumentException(MESSAGE_ARGUMENT_PARAMS);
+		checkLocation();
+	}
+
+	/**
+	 * Throw exception if no location was specified
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	void checkLocation() throws IllegalArgumentException {
+		if (location.isEmpty()) {
+			throw new IllegalArgumentException(MESSAGE_ARGUMENT_FORMAT);
 		}
 	}
 
@@ -41,9 +56,9 @@ public class PathCommand extends Command {
 		try {
 			Magical.getStorage().changeFolderPath(location);
 		} catch (FileNotFoundException fnfe) {
-			throw new Exception(location + " (no such directory)");
+			throw new Exception(String.format(MESSAGE_DIRECTORY_MISSING, location));
 		}
-		return "Path changed to: " + location;
+		return String.format(MESSAGE_DIRECTORY_CHANGED, location);
 	}
 
 	@Override
