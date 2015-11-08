@@ -13,8 +13,8 @@ import main.Item;
 
 public class DoneCommandTest {
 
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %staskID";
-	// private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <task_id>";
+	private static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <item_id>";
 
 	@Before
 	public void setUp() {
@@ -39,53 +39,41 @@ public class DoneCommandTest {
 		try {
 			DoneCommand noArgs = new DoneCommand("");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
-			assertTrue(e instanceof StringIndexOutOfBoundsException);
-			// assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
+			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			DoneCommand tooManyArgs = new DoneCommand("t1 t2");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
-			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
+			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 	}
 
 	@Test
 	public void testInvalidID() {
-		// final String ERROR_MESSAGE = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_ID;
 		try {
 			DoneCommand invalidID = new DoneCommand("t11");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
-			assertTrue(e instanceof IndexOutOfBoundsException);
+			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			DoneCommand noLetter = new DoneCommand("1");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			DoneCommand wrongLetter = new DoneCommand("a1");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			Command tooShort = new DoneCommand("a");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			Command youCantDoneADone = new DoneCommand("d1");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertTrue(e instanceof IllegalArgumentException);
-			// System.out.println("e: " + e);
-			// System.out.println("stringformat: " + String.format(ERROR_MESSAGE, "d1"));
-			// assertEquals(String.format(ERROR_MESSAGE, "d1"), e.getMessage());
 		}
 	}
 

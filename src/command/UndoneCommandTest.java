@@ -13,8 +13,9 @@ import main.Item;
 
 public class UndoneCommandTest {
 
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
-	protected static final String MESSAGE_UNDONE_INVALID = "Invalid arguments: [Undone tasks cannot be undone!]";
+	private static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
+	private static final String MESSAGE_UNDONE_INVALID = 
+			"Invalid arguments: [Undone tasks cannot be undone!]";
 
 	@Before
 	public void setUp() {

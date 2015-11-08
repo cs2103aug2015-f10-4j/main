@@ -13,7 +13,7 @@ import main.Item;
 
 public class UntagCommandTest {
 
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
+	private static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: untag <item_id> <tag name>";
 
 	@Before
@@ -45,7 +45,6 @@ public class UntagCommandTest {
 		try {
 			UntagCommand tooFewArgs = new UntagCommand("t1");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 	}
