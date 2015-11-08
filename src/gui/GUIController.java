@@ -49,6 +49,7 @@ public class GUIController {
 	private static final String REDO_COMMAND = "redo";
 	private static final KeyCodeCombination UNDO_SHORTCUT = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
 	private static final KeyCodeCombination REDO_SHORTCUT = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
+	private static final KeyCodeCombination GOTO_COMMANDLINE_SHORTCUT = new KeyCodeCombination(KeyCode.ENTER);
     private final EventHandler<KeyEvent> shortcutHandler = new EventHandler<KeyEvent>() {
     	@Override
     	public void handle(KeyEvent ke) {
@@ -57,6 +58,8 @@ public class GUIController {
     		}
     		else if (REDO_SHORTCUT.match(ke)) {
     			handleUserInput(REDO_COMMAND);
+    		} else if (GOTO_COMMANDLINE_SHORTCUT.match(ke)) {
+    			commandLineField.requestFocus();
     		} else {
     			return;
     		}
