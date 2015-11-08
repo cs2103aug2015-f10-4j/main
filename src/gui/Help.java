@@ -9,6 +9,7 @@ public class Help {
 	public static final String BODY_TEXT = "Press any key to close this window." + ENDL +
 			ENDL + "Sample formats for dates and times:" +
 			ENDL + "- today" +
+			ENDL + "- today 2359" +
 			ENDL + "- tomorrow 5pm" +
 			ENDL + "- Jan 1 10am" +
 			ENDL + "- 31 December 5.30pm" + ENDL +
@@ -63,6 +64,7 @@ public class Help {
 			"> path [filepath]" + ENDL +
 			ENDL +
 			"To exit the application:" + ENDL +
-			"> exit";
+			"> exit" + ENDL +
+			ENDL + ENDL;
 
 }
