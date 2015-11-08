@@ -67,7 +67,7 @@ public class EventCommandTest {
 		EventCommand normalEventLongPeriod = new EventCommand("Event from today 12pm to Jan 1 2115 1pm");
 		EventCommand normalEventLongTitle = new EventCommand(LONG_STRING + DATE_STRING);
 		EventCommand normalEventWeirdTitle = new EventCommand(WEIRD_STRING + DATE_STRING);
-		EventCommand nonExistentTime = new EventCommand("Grad trip with Harry Potter from 17 Dec 11pm to 10 January 12am");
+		EventCommand normalEventPastYear = new EventCommand("Grad trip with Harry Potter from 17 Dec 11pm to 10 January 12am");
 	}
 
 	@Test
@@ -75,22 +75,22 @@ public class EventCommandTest {
 		try {
 			EventCommand noInput = new EventCommand("");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
+			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
 		try {
 			EventCommand justID = new EventCommand("t1");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
+			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
 		try {
 			EventCommand noFrom = new EventCommand("t1 January 1 12pm to January 1 1pm");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
+			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
 		try {
 			EventCommand noTo = new EventCommand("t1 from January 1 12pm January 1 1pm");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
+			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
 	}
 
@@ -99,17 +99,17 @@ public class EventCommandTest {
 		try {
 			EventCommand noTitle = new EventCommand(EMPTY_STRING + DATE_STRING);
 		} catch (Exception e) {
-			assertEquals(MESSAGE_HEADER_INVALID + MESSAGE_INVALID_TITLE, e.getMessage());
+			assertEquals(e.getMessage(), MESSAGE_HEADER_INVALID + MESSAGE_INVALID_TITLE);
 		}
 		try {
 			EventCommand nonExistentDate = new EventCommand("Event from January 32 12pm to January 32 1pm");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START_END, e.getMessage());
+			assertEquals(e.getMessage(), MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START_END);
 		}
 		try {
 			EventCommand nonExistentTime = new EventCommand("Event from January 1 25pm to January 1 26pm");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START_END, e.getMessage());
+			assertEquals(e.getMessage(), MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START_END);
 		}
 	}
 
