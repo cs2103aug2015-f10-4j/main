@@ -37,14 +37,10 @@ public class AddCommand extends Command {
 	 */
 	public AddCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs("\\sby\\s", 2);
 		removeEscapeCharacters();
-
 		this.count = argsArray.size();
-
 		splitArgsAfterDateTime();
-
 		this.count = argsArray.size();
 		this.isFloat = false;
 
@@ -53,7 +49,6 @@ public class AddCommand extends Command {
 		}
 
 		if (validNumArgs()) {
-
 			if (count == 1) {
 				setFloatParams();
 			} else {
@@ -61,11 +56,8 @@ public class AddCommand extends Command {
 			}
 
 			checkTitle();
-
 			checkDateTime();
-
 			errorInvalidArgs();
-
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
