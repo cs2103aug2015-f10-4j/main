@@ -11,11 +11,11 @@
    <children>
       <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane fx:id="mainPane">
                <children>
                   <VBox focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <TabPane fx:id="tabPane" prefHeight="772.0" prefWidth="701.0" tabClosingPolicy="UNAVAILABLE">
+                        <TabPane fx:id="tabPane" prefHeight="772.0" prefWidth="701.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                           <tabs>
                             <Tab fx:id="taskTab" onSelectionChanged="#handleTaskTabClicked" text="Tasks">
                               <content>
@@ -33,8 +33,8 @@
                                                     <TableColumn fx:id="taskIDCol" maxWidth="-1.0" minWidth="40.0" prefWidth="40.0" text="ID" />
                                                     <TableColumn fx:id="taskTitleCol" minWidth="250.0" prefWidth="300.0" sortable="false" text="Title" />
                                                       <TableColumn fx:id="taskDueDateCol" minWidth="150.0" prefWidth="200.0" sortable="false" text="Due Date" />
-                                                      <TableColumn fx:id="taskTagsCol" minWidth="150.0" prefWidth="200.0" sortable="false" text="Tags" />
-                                                      <TableColumn fx:id="taskPriorityCol" maxWidth="-1.0" minWidth="60.0" prefWidth="100.0" sortable="false" text="Priority" />
+                                                      <TableColumn fx:id="taskTagsCol" minWidth="125.0" prefWidth="200.0" sortable="false" text="Tags" />
+                                                      <TableColumn fx:id="taskPriorityCol" maxWidth="-1.0" minWidth="80.0" prefWidth="100.0" sortable="false" text="Priority" />
                                                   </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -45,13 +45,13 @@
                                                       <Font name="System Bold" size="20.0" />
                                                    </font>
                                                 </Label>
-                                                <TableView fx:id="taskDoneTable" fixedCellSize="0.0" layoutX="10.0" layoutY="45.0" VBox.vgrow="ALWAYS">
+                                                <TableView fx:id="taskDoneTable" fixedCellSize="0.0" layoutX="10.0" layoutY="45.0" prefHeight="250.0" VBox.vgrow="ALWAYS">
                                                    <columns>
                                                       <TableColumn fx:id="taskDoneIDCol" maxWidth="-1.0" minWidth="40.0" prefWidth="40.0" sortable="false" text="ID" />
                                                       <TableColumn fx:id="taskDoneTitleCol" minWidth="250.0" prefWidth="300.0" sortable="false" text="Title" />
                                                       <TableColumn fx:id="taskDoneDueDateCol" minWidth="150.0" prefWidth="200.0" sortable="false" text="Due Date" />
-                                                      <TableColumn fx:id="taskDoneTagsCol" minWidth="150.0" prefWidth="200.0" sortable="false" text="Tags" />
-                                                      <TableColumn fx:id="taskDonePriorityCol" maxWidth="-1.0" minWidth="60.0" prefWidth="100.0" resizable="false" sortable="false" text="Priority" />
+                                                      <TableColumn fx:id="taskDoneTagsCol" minWidth="125.0" prefWidth="200.0" sortable="false" text="Tags" />
+                                                      <TableColumn fx:id="taskDonePriorityCol" maxWidth="-1.0" minWidth="80.0" prefWidth="100.0" resizable="false" sortable="false" text="Priority" />
                                                    </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -77,11 +77,11 @@
                                                 <TableView fx:id="eventTable" VBox.vgrow="ALWAYS">
                                                    <columns>
                                                       <TableColumn fx:id="eventIDCol" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" text="ID" />
-                                                      <TableColumn fx:id="eventTitleCol" minWidth="250.0" prefWidth="300.0" sortable="false" text="Title" />
+                                                      <TableColumn fx:id="eventTitleCol" minWidth="225.0" prefWidth="300.0" sortable="false" text="Title" />
                                                       <TableColumn fx:id="eventStartDateCol" minWidth="125.0" prefWidth="125.0" sortable="false" text="Start Date" />
                                                       <TableColumn fx:id="eventEndDateCol" minWidth="125.0" prefWidth="125.0" sortable="false" text="End Date" />
                                                       <TableColumn fx:id="eventTagsCol" minWidth="100.0" prefWidth="100.0" sortable="false" text="Tags" />
-                                                      <TableColumn fx:id="eventPriorityCol" minWidth="30.0" prefWidth="30.0" sortable="false" text="Priority" />
+                                                      <TableColumn fx:id="eventPriorityCol" minWidth="80.0" sortable="false" text="Priority" />
                                                    </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -92,14 +92,14 @@
                                                       <Font name="System Bold" size="20.0" />
                                                    </font>
                                                 </Label>
-                                                <TableView fx:id="eventDoneTable" layoutX="10.0" layoutY="45.0">
+                                                <TableView fx:id="eventDoneTable" layoutX="10.0" layoutY="45.0" prefHeight="250.0">
                                                    <columns>
                                                       <TableColumn fx:id="eventDoneIDCol" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" sortable="false" text="ID" />
-                                                      <TableColumn fx:id="eventDoneTitleCol" minWidth="250.0" prefWidth="300.0" sortable="false" text="Title" />
+                                                      <TableColumn fx:id="eventDoneTitleCol" minWidth="225.0" prefWidth="300.0" sortable="false" text="Title" />
                                                       <TableColumn fx:id="eventDoneStartDateCol" minWidth="125.0" prefWidth="125.0" sortable="false" text="Start Date" />
                                                       <TableColumn fx:id="eventDoneEndDateCol" minWidth="125.0" prefWidth="125.0" sortable="false" text="End Date" />
                                                       <TableColumn fx:id="eventDoneTagsCol" minWidth="100.0" prefWidth="100.0" sortable="false" text="Tags" />
-                                                      <TableColumn fx:id="eventDonePriorityCol" minWidth="30.0" prefWidth="30.0" sortable="false" text="Priority" />
+                                                      <TableColumn fx:id="eventDonePriorityCol" minWidth="80.0" sortable="false" text="Priority" />
                                                    </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -113,12 +113,12 @@
                             </Tab>
                           </tabs>
                         </TabPane>
-                        <Label fx:id="messageLabel" focusTraversable="false" prefHeight="31.0" prefWidth="1141.0" wrapText="true">
+                        <Label fx:id="messageLabel" focusTraversable="false" wrapText="true">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="commandLineField" onKeyPressed="#onEnterPressed" prefHeight="31.0" prefWidth="1019.0" />
+                        <TextField fx:id="commandLineField" onKeyPressed="#onEnterPressed" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
