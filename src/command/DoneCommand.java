@@ -10,6 +10,9 @@ public class DoneCommand extends Command {
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: done <item_id>";
 	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
+	private static final String MESSAGE_INVALID_DONE = "%s is already done!";
+	private static final String MESSAGE_DONE_ERROR = "Unable to archive %s";
+	private static final String MESSAGE_DONE_SUCCESS = "%s archived";
 
 	/** Command Parameters **/
 	private Item item;
@@ -49,7 +52,7 @@ public class DoneCommand extends Command {
 			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		} else if (argsArray.get(0).trim().contains("d")
 				|| argsArray.get(0).trim().contains("p")) {
-			invalidArgs.add(itemID + " is already done!");
+			invalidArgs.add(String.format(MESSAGE_INVALID_DONE, itemID));
 		}
 	}
 
@@ -79,12 +82,12 @@ public class DoneCommand extends Command {
 		try {
 			doneItem();
 		} catch (IOException e) {
-			return "unable to archive " + itemID;
+			return String.format(MESSAGE_DONE_ERROR, itemID);
 		} finally {
 			updateView();
 		}
 
-		return itemID + " archived";
+		return String.format(MESSAGE_DONE_SUCCESS, itemID);
 	}
 
 	/**
