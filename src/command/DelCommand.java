@@ -11,32 +11,77 @@ import main.Item;
 
 public class DelCommand extends Command {
 
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: delete <item_id>";
+	private static final String MESSAGE_ITEM_DELETED = "%s deleted";
+
+	private static final String MESSAGE_ERROR_DELETE = "Unable to delete";
+
+	private static final String MESSAGE_INVALID_FORMAT = "Use Format: delete <item_id>";
 
 	private Item item;
 	private String itemID;
 
+	/**
+	 * Constructor for DelCommand objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public DelCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = new ArrayList<String>(Arrays.asList(args.split(
-				STRING_EMPTY, 1)));
+		this.argsArray = splitArgs(STRING_EMPTY, -1);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			itemID = argsArray.get(0).trim();
-			item = getItemByID(itemID);
+			setProperParams();
 
-			if (item == null) {
-				invalidArgs.add("item_id");
-			}
-			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(String.format(
-						MESSAGE_HEADER_INVALID, invalidArgs));
-			}
+			checkItemExists();
+			
+			errorInvalidArgs();
+			
 		} else {
-			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
+			errorInvalidFormat();
 		}
+	}
+
+	/**
+	 * Throws exception if error messages for format are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	void errorInvalidFormat() throws IllegalArgumentException {
+		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
+	}
+
+	/**
+	 * Throws exception if error messages for invalid arguments are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	void errorInvalidArgs() throws IllegalArgumentException {
+		if (invalidArgs.size() > 0) {
+			throw new IllegalArgumentException(String.format(
+					MESSAGE_HEADER_INVALID, invalidArgs));
+		}
+	}
+
+	/**
+	 * Adds error message if item does not exist or unable to get
+	 */
+	void checkItemExists() {
+		if (item == null) {
+			invalidArgs.add("item_id");
+		}
+	}
+	
+	/**
+	 * Set the relevant parameters of DelCommand to that of the specified task
+	 */
+	void setProperParams() {
+		itemID = argsArray.get(0).trim();
+		item = getItemByID(itemID);
 	}
 
 	public boolean validNumArgs() {
@@ -56,21 +101,36 @@ public class DelCommand extends Command {
 	@Override
 	public String execute() {
 		try {
-			int listIndex = Storage.getListIndex(argsArray.get(0));
-			Magical.getStorage().delete(listIndex, item);
-			return itemID + " deleted";
+			removeItem();
+			return String.format(MESSAGE_ITEM_DELETED, itemID);
 		} catch (IOException e) {
-			return "unable to delete " + itemID;
+			return MESSAGE_ERROR_DELETE;
 		} finally {
-			GUIModel.setTaskList(Magical.getStorage().getList(
-					Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.getStorage().getList(
-					Storage.TASKS_DONE_INDEX));
-			GUIModel.setEventList(Magical.getStorage().getList(
-					Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.getStorage().getList(
-					Storage.EVENTS_DONE_INDEX));
+			updateView();
 		}
+	}
+
+	/**
+	 * Removes the item from storage
+	 * @throws IOException
+	 */
+	void removeItem() throws IOException {
+		int listIndex = Storage.getListIndex(itemID);
+		Magical.getStorage().delete(listIndex, item);
+	}
+
+	/**
+	 * Updates the new view in the GUI
+	 */
+	void updateView() {
+		GUIModel.setTaskList(Magical.getStorage().getList(
+				Storage.TASKS_INDEX));
+		GUIModel.setTaskDoneList(Magical.getStorage().getList(
+				Storage.TASKS_DONE_INDEX));
+		GUIModel.setEventList(Magical.getStorage().getList(
+				Storage.EVENTS_INDEX));
+		GUIModel.setEventDoneList(Magical.getStorage().getList(
+				Storage.EVENTS_DONE_INDEX));
 	}
 
 	@Override

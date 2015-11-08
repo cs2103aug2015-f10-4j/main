@@ -1,7 +1,6 @@
 package command;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import gui.GUIModel;
@@ -14,17 +13,26 @@ public class DateCommand extends Command {
 
 	
 
-	private static final String MESSAGE_DATE_SUCCESS = "Date command successful";
+	
 	/** Messaging **/
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: date <start date> to <end date>";
+	private static final String MESSAGE_INVALID_FORMAT = "Use Format: date <start date> to <end date>";
 	private static final String MESSAGE_INVALID_DATETIME_END = "End date/time";
 	private static final String MESSAGE_INVALID_DATETIME_START = "Start date/time";
 	private static final String MESSAGE_INVALID_DATETIME_RANGE = "End date/time is earlier than Start date/time";
+	private static final String MESSAGE_DATE_SUCCESS = "Date command successful";
 	
 	/** Command parameters **/
 	private CustomDate dateStart;
 	private CustomDate dateEnd;
 
+	/**
+	 * Constructor for DateCommand objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public DateCommand(String args) throws Exception {
 		super(args);
 
@@ -54,7 +62,7 @@ public class DateCommand extends Command {
 	 * @throws IllegalArgumentException
 	 */
 	void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
+		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
 	}
 
 	/**
@@ -94,7 +102,7 @@ public class DateCommand extends Command {
 	}
 
 	/**
-	 * Set the relevant parameters of AddCommand to that of the specified task
+	 * Set the relevant parameters of DateCommand to that of the specified task
 	 */
 	void setProperParams() {
 		String start = argsArray.get(0).trim();
@@ -186,9 +194,5 @@ public class DateCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return false;
-	}
-	
-	public static void main(String[] args) throws Exception {
-		DateCommand d = new DateCommand("Jan 1 2015 to Feb 1 2015");
 	}
 }
