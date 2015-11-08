@@ -27,22 +27,17 @@ public class DelCommand extends Command {
 	 */
 	public DelCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs(" ", -1);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
 			setProperParams();
-
 			checkItemExists();
-			
 			errorInvalidArgs();
-			
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
-
 
 	/**
 	 * Adds error message if item does not exist or unable to get
@@ -52,23 +47,10 @@ public class DelCommand extends Command {
 			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
-	
-	void setProperParams() {
-		itemID = argsArray.get(0).trim();
-		item = getItemByID(itemID);
-	}
-
-	public boolean validNumArgs() {
-		if (this.count != 1) {
-			return false;
-		} else {
-			return true;
-		}
-	}
 
 	/**
-	 * This method executes the delete command, which deletes the
-	 * specified task or event from the database.
+	 * This method executes the delete command, which deletes the specified task
+	 * or event from the database.
 	 * 
 	 * @return message to show user
 	 */
@@ -84,8 +66,14 @@ public class DelCommand extends Command {
 		}
 	}
 
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
+
 	/**
 	 * Removes the item from storage
+	 * 
 	 * @throws IOException
 	 */
 	void removeItem() throws IOException {
@@ -93,8 +81,16 @@ public class DelCommand extends Command {
 		Magical.getStorage().delete(listIndex, item);
 	}
 
-	@Override
-	public boolean isUndoable() {
-		return true;
+	void setProperParams() {
+		itemID = argsArray.get(0).trim();
+		item = getItemByID(itemID);
+	}
+
+	public boolean validNumArgs() {
+		if (this.count != 1) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

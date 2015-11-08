@@ -100,10 +100,34 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Adds invalid field message to error messages
+	 * Adds error message if date is invalid or if task is to be made floating,
+	 * sets toFloat to true.
 	 */
-	void invalidField() {
-		invalidArgs.add(MESSAGE_INVALID_FIELD);
+	void checkDate(int type) {
+		assert (type == 0 || type == 1);
+		if (isTask && type == 0) {
+			invalidArgs.add(MESSAGE_INVALID_TASK_START_DATE);
+		} else {
+			if (value.equals(STRING_EMPTY) && isTask) {
+				toFloat = true;
+			} else if ((editObject = getDate(value)) == null) {
+				if (type == 0) {
+					invalidArgs.add(MESSAGE_INVALID_DATE_START);
+				} else {
+					invalidArgs.add(MESSAGE_INVALID_DATE_END);
+				}
+
+			}
+		}
+	}
+
+	/**
+	 * Adds error message if item does not exist or unable to get
+	 */
+	void checkItemExists() {
+		if (item == null) {
+			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
+		}
 	}
 
 	/**
@@ -129,24 +153,21 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Adds error message if date is invalid or if task is to be made floating,
-	 * sets toFloat to true.
+	 * Checks whether the specified date range is valid for an event. If user
+	 * tries to make start date after end date, he should be prompted with an
+	 * error.
+	 * 
+	 * @throws IllegalArgumentException
 	 */
-	void checkDate(int type) {
-		assert (type == 0 || type == 1);
-		if (isTask && type == 0) {
-			invalidArgs.add(MESSAGE_INVALID_TASK_START_DATE);
-		} else {
-			if (value.equals(STRING_EMPTY) && isTask) {
-				toFloat = true;
-			} else if ((editObject = getDate(value)) == null) {
-				if (type == 0) {
-					invalidArgs.add(MESSAGE_INVALID_DATE_START);
-				} else {
-					invalidArgs.add(MESSAGE_INVALID_DATE_END);
-				}
-
+	private void checkTimeValidity() throws IllegalStateException {
+		if (!isTask && item.getEndDate().compareTo(item.getStartDate()) < 0) {
+			if (field.toLowerCase().equals(FIELD_TIME_START)
+					|| field.toLowerCase().equals(FIELD_DATE_START)) {
+				throw new IllegalStateException(
+						"Start Date should be before End Date");
 			}
+			throw new IllegalStateException(
+					"End Date should be after Start Date");
 		}
 	}
 
@@ -160,36 +181,20 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Adds error message if item does not exist or unable to get
+	 * Make 2 copies of the item to be stored in prevItem and item
 	 */
-	void checkItemExists() {
-		if (item == null) {
-			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
-		}
-	}
-
-	/**
-	 * Set the relevant parameters of EditCommand to that of the specified task
-	 */
-	void setProperParams() {
-		this.itemID = argsArray.get(0).trim();
-		this.item = getItemByID(itemID);
-		this.field = argsArray.get(1).trim();
-		this.value = argsArray.get(2).trim();
-	}
-
-	public boolean validNumArgs() {
-		if (this.count != 3) {
-			return false;
-		} else {
-			return true;
-		}
+	void duplicateItem() {
+		prevItem = item;
+		item = prevItem.copy();
 	}
 
 	@Override
 	/**
 	 * Clones the current item and changes the value in the field specified. Updates
 	 * storage with the new item.
+	 * 
+	 * @return message to show user
+	 * @throws Exception
 	 */
 	public String execute() throws Exception {
 
@@ -270,34 +275,33 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Checks whether the specified date range is valid for an event. If user tries to make
-	 * start date after end date, he should be prompted with an error.
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void checkTimeValidity() throws IllegalStateException {
-		if (!isTask && item.getEndDate().compareTo(item.getStartDate()) < 0) {
-			if (field.toLowerCase().equals(FIELD_TIME_START) || field.toLowerCase().equals(FIELD_DATE_START)) {
-				throw new IllegalStateException("Start Date should be before End Date");
-			}
-			throw new IllegalStateException("End Date should be after Start Date");
-		}
-	}
-
-	/**
-	 * Make 2 copies of the item to be stored in prevItem and item
-	 */
-	void duplicateItem() {
-		prevItem = item;
-		item = prevItem.copy();
-	}
-
-	/**
 	 * Set item with float parameters
 	 */
 	void floatItem() {
 		item.setEndDate(null);
 		item.setEndTime(-1);
+	}
+
+	/**
+	 * Adds invalid field message to error messages
+	 */
+	void invalidField() {
+		invalidArgs.add(MESSAGE_INVALID_FIELD);
+	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
+
+	/**
+	 * Set the relevant parameters of EditCommand to that of the specified task
+	 */
+	void setProperParams() {
+		this.itemID = argsArray.get(0).trim();
+		this.item = getItemByID(itemID);
+		this.field = argsArray.get(1).trim();
+		this.value = argsArray.get(2).trim();
 	}
 
 	/**
@@ -336,8 +340,11 @@ public class EditCommand extends Command {
 		Magical.getStorage().update(listIndex, prevItem, item);
 	}
 
-	@Override
-	public boolean isUndoable() {
-		return true;
+	public boolean validNumArgs() {
+		if (this.count != 3) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
