@@ -17,9 +17,6 @@ public class StorageTest {
 	private static final String DEFAULT_FILE_DIRECTORY = "magical";
 	private static final String DEFAULT_FILE_NAME = "storage.txt";
 	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
-	private static final String SETTINGS_FILE_NAME = "settings.properties";
-	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + SETTINGS_FILE_NAME;
-	
 
 	Item task1 = new Item();
 	Item event1 = new Item();
