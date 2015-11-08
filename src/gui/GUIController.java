@@ -7,7 +7,10 @@ import java.util.Set;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -21,6 +24,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -37,6 +42,26 @@ public class GUIController {
 	private static final String EVENT_DONE_TABLE_LETTER = "p";
 
 	private static final String OVERDUE_ROW_COLOR = "lightpink";
+	private static final Color SUCCESS_MESSAGE_COLOR = Color.BLUE;
+	private static final Color ERROR_MESSAGE_COLOR = Color.RED;
+
+	private static final String UNDO_COMMAND = "undo";
+	private static final String REDO_COMMAND = "redo";
+	private static final KeyCodeCombination UNDO_SHORTCUT = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+	private static final KeyCodeCombination REDO_SHORTCUT = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
+    private final EventHandler<KeyEvent> shortcutHandler = new EventHandler<KeyEvent>() {
+    	@Override
+    	public void handle(KeyEvent ke) {
+    		if (UNDO_SHORTCUT.match(ke)) {
+    			handleUserInput(UNDO_COMMAND);
+    		}
+    		else if (REDO_SHORTCUT.match(ke)) {
+    			handleUserInput(REDO_COMMAND);
+    		} else {
+    			return;
+    		}
+    	}
+    };
 
 	@FXML private AnchorPane rootPane;
 	@FXML private AnchorPane mainPane;
@@ -101,10 +126,7 @@ public class GUIController {
 		main.Magical.init();
 		gui.GUIModel.init();
 
-		taskTable.setItems(GUIModel.getTaskList());
-		taskDoneTable.setItems(GUIModel.getTaskDoneList());
-		eventTable.setItems(GUIModel.getEventList());
-		eventDoneTable.setItems(GUIModel.getEventDoneList());
+		updateTables();
 
 		/** Task Table Columns **/
 		taskIDCol.setCellFactory(col -> {
@@ -160,13 +182,14 @@ public class GUIController {
 		headerLabel.setText(Help.HEADER_TEXT);
 		bodyLabel.setText(Help.BODY_TEXT);
 
-		/** For dealing with controls that need to be initialized first **/
+		/** For dealing with controls that need to be initialized first**/
 		Platform.runLater(new Runnable() {
 			@Override
 		    public void run() {
 		        commandLineField.requestFocus();
 		        helpPane.setVisible(false);
 		        mainPane.toFront();
+		        initializeSceneShortcuts();
 		    }
 		});
 
@@ -189,9 +212,6 @@ public class GUIController {
 		return;
 	}
 
-
-
-
 	/**
 	 * This method handles input from commandLineField by checking if the
 	 * Enter key has been pressed, reading user input and passing it to
@@ -210,35 +230,49 @@ public class GUIController {
 		mainPane.toFront();
 		if (event.getCode() == KeyCode.ENTER) {
 			String userInput = commandLineField.getText();
-			try {
-				messageLabel.setTextFill(Color.web("#0000ff"));
-				String message = main.Magical.execute(userInput);
-				messageLabel.setText(message);
-				taskTable.setItems(GUIModel.getTaskList());
-				taskDoneTable.setItems(GUIModel.getTaskDoneList());
-				eventTable.setItems(GUIModel.getEventList());
-				eventDoneTable.setItems(GUIModel.getEventDoneList());
-				commandLineField.clear();
-				updateRowColor();
-				switchToTab(GUIModel.getCurrentTab());
-			} catch (Exception e) {
-				messageLabel.setTextFill(Color.web("#ff0000"));
-				messageLabel.setText(e.getMessage());
-			}
+			handleUserInput(userInput);
 		}
 
 		if (GUIModel.showHelpWindow) {
 			helpPane.setVisible(true);
 			helpPane.toFront();
-//			Stage helpStage = new Stage();
-//			helpStage.setTitle("Help");
-//			AnchorPane myPane = (AnchorPane) FXMLLoader.load(getClass().getResource("/gui/HelpFXML.fxml"))	;
-//			Scene myScene = new Scene(myPane);
-//			helpStage.setScene(myScene);
-//			helpStage.show();
 			GUIModel.showHelpWindow = false;
 		}
 		commandLineField.requestFocus();
+	}
+
+
+
+	private void handleUserInput(String userInput) {
+		try {
+			messageLabel.setTextFill(SUCCESS_MESSAGE_COLOR);
+			String message = main.Magical.execute(userInput);
+			messageLabel.setText(message);
+			updateTables();
+			commandLineField.clear();
+			updateRowColor();
+			switchToTab(GUIModel.getCurrentTab());
+		} catch (Exception e) {
+			messageLabel.setTextFill(ERROR_MESSAGE_COLOR);
+			messageLabel.setText(e.getMessage());
+		}
+	}
+
+	private void initializeSceneShortcuts() {
+		Scene scene = rootPane.getScene();
+        scene.setOnKeyPressed(shortcutHandler);
+        commandLineField.addEventHandler(KeyEvent.KEY_PRESSED, shortcutHandler);
+	}
+
+	/**
+	 * Updates tables with their respective counterparts in GUIModel.
+	 *@return nothing
+	 */
+	private void updateTables() {
+		taskTable.setItems(GUIModel.getTaskList());
+		taskDoneTable.setItems(GUIModel.getTaskDoneList());
+		eventTable.setItems(GUIModel.getEventList());
+		eventDoneTable.setItems(GUIModel.getEventDoneList());
 	}
 
 	/**
