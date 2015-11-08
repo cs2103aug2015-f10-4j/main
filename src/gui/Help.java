@@ -10,7 +10,7 @@ public class Help {
 			ENDL + "Sample formats for dates and times:" +
 			ENDL + "- today" +
 			ENDL + "- tomorrow 5pm" +
-			ENDL + "- Jan 1 10am" + ENDL +
+			ENDL + "- Jan 1 10am" +
 			ENDL + "- 31 December 5.30pm" + ENDL +
 			ENDL + "To add a task:" + ENDL +
 			"> add [task title] by [due date]" + ENDL +
@@ -54,6 +54,7 @@ public class Help {
 			"To undo a previous action:" + ENDL +
 			"> undo" + ENDL +
 			"or use the shortcut Ctrl + Z" + ENDL +
+			ENDL +
 			"To redo an undone action:" + ENDL +
 			"> redo" + ENDL +
 			"or use the shortcut Ctrl + Y" + ENDL +
