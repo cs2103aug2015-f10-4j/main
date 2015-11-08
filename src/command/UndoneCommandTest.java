@@ -13,7 +13,8 @@ import main.Item;
 
 public class UndoneCommandTest {
 
-	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %sitemID";
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
+	protected static final String MESSAGE_UNDONE_INVALID = "Invalid arguments: [Undone tasks cannot be undone!]";
 
 	@Before
 	public void setUp() {
@@ -38,49 +39,41 @@ public class UndoneCommandTest {
 		try {
 			UndoneCommand noArgs = new UndoneCommand("");
 		} catch (Exception e) {
-			System.out.println("e: " + e);
-			assertTrue(e instanceof StringIndexOutOfBoundsException);
+			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			UndoneCommand tooManyArgs = new UndoneCommand("d1 d2");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 	}
 
 	@Test
 	public void testInvalidID() {
-		// final String ERROR_MESSAGE = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_ID;
 		try {
 			UndoneCommand invalidID = new UndoneCommand("d11");
 		} catch (Exception e) {
-			System.out.println("e: " + e);
-			assertTrue(e instanceof IndexOutOfBoundsException);
+			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			UndoneCommand noLetter = new UndoneCommand("1");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			UndoneCommand wrongLetter = new UndoneCommand("a1");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			Command tooShort = new UndoneCommand("a");
 		} catch (Exception e) {
-			// System.out.println("e: " + e);
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
 			Command youCantUndoneAUndone = new UndoneCommand("t1");
 		} catch (Exception e) {
-			System.out.println("e: " + e);
-			assertTrue(e instanceof IllegalArgumentException);
+			assertEquals(MESSAGE_UNDONE_INVALID, e.getMessage());
 		}
 	}
 
