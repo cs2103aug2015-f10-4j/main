@@ -65,6 +65,7 @@ public class EventCommandTest {
 		EventCommand normalEventLongPeriod = new EventCommand("Event from today 12pm to Jan 1 2115 1pm");
 		EventCommand normalEventLongTitle = new EventCommand(LONG_STRING + DATE_STRING);
 		EventCommand normalEventWeirdTitle = new EventCommand(WEIRD_STRING + DATE_STRING);
+		EventCommand nonExistentTime = new EventCommand("Grad trip with Harry Potter from 17 Dec 11pm to 10 January 12am");
 	}
 
 	@Test
