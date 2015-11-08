@@ -34,7 +34,6 @@ public class EditCommand extends Command {
 	private static final String FIELD_DATE_END = "end date";
 	private static final String FIELD_DATE = "date";
 	private static final String FIELD_TITLE = "title";
-	private final CustomDate today = getDate("today");
 
 	/** Command parameters **/
 	private String field;
@@ -192,7 +191,7 @@ public class EditCommand extends Command {
 	}
 
 	/**
-	 * Set the relevant parameters of AddCommand to that of the specified task
+	 * Set the relevant parameters of EditCommand to that of the specified task
 	 */
 	private void setProperParams() {
 		this.itemID = argsArray.get(0).trim();

@@ -17,8 +17,8 @@ public class EventCommand extends Command {
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "
 			+ "from <start date> <start time> "
 			+ "to <end date> <end time>";
-	private static final String MESSAGE_INVALID_DATETIME_END = "End time";
-	private static final String MESSAGE_INVALID_DATETIME_START = "Start time";
+	private static final String MESSAGE_INVALID_DATETIME_END = "End date/time";
+	private static final String MESSAGE_INVALID_DATETIME_START = "Start date/time";
 	private static final String MESSAGE_INVALID_DATETIME_RANGE = "End date/time is earlier than Start date/time";
 	private static final String MESSAGE_INVALID_TITLE = "Title";
 	private static final String MESSAGE_EVENT_ADDED = "event added";
