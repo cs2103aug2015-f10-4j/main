@@ -134,51 +134,11 @@ public class GUIController {
 
 		updateTables();
 
-		/** Task Table Columns **/
-		taskIDCol.setCellFactory(col -> {
-		    return makeIndex(TASK_TABLE_LETTER);
-		});
-		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
-		taskTagsCol.setCellValueFactory(col -> {
-			return makeTagCellValue(col);
-		});
-		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, CustomDate>("endDate"));
-		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
+		initializeTaskTableColumns();
+		initializeTaskDoneTableColumns();
 
-		/** Done Task Table Columns **/
-		taskDoneIDCol.setCellFactory(col -> {
-			return makeIndex(TASK_DONE_TABLE_LETTER);
-		});
-		taskDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
-		taskDoneTagsCol.setCellValueFactory(col -> {
-			return makeTagCellValue(col);
-		});
-		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
-		taskDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
-
-		/** Event Table Columns **/
-		eventIDCol.setCellFactory(col -> {
-			return makeIndex(EVENT_TABLE_LETTER);
-		});
-		eventTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
-		eventTagsCol.setCellValueFactory(col -> {
-			return makeTagCellValue(col);
-		});
-		eventStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, CustomDate>("startDate"));
-		eventEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
-		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
-
-		/** Done Event Table Columns **/
-		eventDoneIDCol.setCellFactory(col -> {
-			return makeIndex(EVENT_DONE_TABLE_LETTER);
-		});
-		eventDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
-		eventDoneTagsCol.setCellValueFactory(col -> {
-			return makeTagCellValue(col);
-		});
-		eventDoneStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("startDate"));
-		eventDoneEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
-		eventDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
+		initializeEventTableColumns();
+		initializeEventDoneTableColumns();
 
 		updateTableColors();
 
@@ -216,12 +176,16 @@ public class GUIController {
 	}
 
 	/**
-	 * This method handles input from commandLineField by checking if the
+	 * Hides the help pane if any key is pressed when the command line
+	 * is in focus.
+	 *
+	 * Handles input from commandLineField by checking if the
 	 * Enter key has been pressed, reading user input and passing it to
 	 * the main application logic via main.Magical.parseCommand. If the
 	 * user input throws an exception, the error message is printed into
 	 * the label above the command line.
-	 * This method also checks if GUIModel.showHelpWindow is true, and
+	 *
+	 * Also checks if GUIModel.showHelpWindow is true, and
 	 * opens the help window accordingly.
 	 * @param      event a key event in the commandLineField
 	 * @throws Exception
@@ -234,7 +198,6 @@ public class GUIController {
 			String userInput = commandLineField.getText();
 			handleUserInput(userInput);
 		}
-
 		if (GUIModel.showHelpWindow) {
 			helpPane.setVisible(true);
 			helpPane.toFront();
@@ -303,6 +266,76 @@ public class GUIController {
 	protected void handleEventTabClicked() {
 		GUIModel.setCurrentTab("events");
 	}
+
+	/**
+	 * Initializes table columns for the done event table.
+	 * @return nothing
+	 */
+	private void initializeEventDoneTableColumns() {
+		eventDoneIDCol.setCellFactory(col -> {
+			return makeIndex(EVENT_DONE_TABLE_LETTER);
+		});
+		eventDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
+		eventDoneTagsCol.setCellValueFactory(col -> {
+			return makeTagCellValue(col);
+		});
+		eventDoneStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("startDate"));
+		eventDoneEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
+		eventDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
+	}
+
+
+	/**
+	 * Initializes table columns for the event table.
+	 * @return nothing
+	 */
+	private void initializeEventTableColumns() {
+		eventIDCol.setCellFactory(col -> {
+			return makeIndex(EVENT_TABLE_LETTER);
+		});
+		eventTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
+		eventTagsCol.setCellValueFactory(col -> {
+			return makeTagCellValue(col);
+		});
+		eventStartDateCol.setCellValueFactory(new PropertyValueFactory<Item, CustomDate>("startDate"));
+		eventEndDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
+		eventPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
+	}
+
+
+	/**
+	 * Initializes table columns for the done task table.
+	 * @return nothing
+	 */
+	private void initializeTaskDoneTableColumns() {
+		taskDoneIDCol.setCellFactory(col -> {
+			return makeIndex(TASK_DONE_TABLE_LETTER);
+		});
+		taskDoneTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
+		taskDoneTagsCol.setCellValueFactory(col -> {
+			return makeTagCellValue(col);
+		});
+		taskDoneDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, String>("endDate"));
+		taskDonePriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
+	}
+
+
+	/**
+	 * Initializes table columns for task table.
+	 * @return nothing
+	 */
+	private void initializeTaskTableColumns() {
+		taskIDCol.setCellFactory(col -> {
+		    return makeIndex(TASK_TABLE_LETTER);
+		});
+		taskTitleCol.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
+		taskTagsCol.setCellValueFactory(col -> {
+			return makeTagCellValue(col);
+		});
+		taskDueDateCol.setCellValueFactory(new PropertyValueFactory<Item, CustomDate>("endDate"));
+		taskPriorityCol.setCellValueFactory(new PropertyValueFactory<Item, String>("priority"));
+	}
+
 
 	/**
 	 * This method converts a tagSet into a printable String to populate
@@ -410,12 +443,12 @@ public class GUIController {
 		};
 	}
 
+
 	/**
 	 * Updates row colors of the task table and event table.
 	 * Needs to be called after every command.
 	 * @return nothing
 	 */
-
 	private void updateTableColors() {
 		taskDueDateCol.setCellFactory(col -> {
 			return makeDateCellFactory();
