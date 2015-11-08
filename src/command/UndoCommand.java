@@ -1,14 +1,30 @@
 package command;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Item;
 
 public class UndoCommand extends Command {
 
+	/** Messaging **/
+	private static final String MESSAGE_UNDO_ERROR = "Unable to undo";
+	private static final String MESSAGE_UNDO_SUCCESS = "Undo successful";
+	private static final String MESSAGE_UNDO_NONE = "nothing to undo";
+
+	/** Command parameters **/
+	private int undoLayersSize;
+
+	/**
+	 * Constructor for UndoCommand objects. Arguments are stored but have no
+	 * impact on command's functionality.
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public UndoCommand(String args) {
 		super(args);
 	}
@@ -19,28 +35,18 @@ public class UndoCommand extends Command {
 	 * command's actions can be undo. If a previous version of the database
 	 * exists, this command reverts the database to the previous version.
 	 * 
-	 * @param None
 	 * @return message to show user
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Override
 	public String execute() throws Exception {
-		int undoLayersSize = Magical.undoLists.get(0).size();
-		if (undoLayersSize <= 0) {
-			throw new Exception("nothing to undo");
-		}
+		undoLayersSize = Magical.undoLists.get(0).size();
+		checkNumUndo();
 
 		try {
-			/** Back up storage to redo stack **/
-			Magical.redoFolderPaths.push(Magical.getStorage().getFolderPath());
-			Magical.redoLists.get(Storage.TASKS_INDEX).push(Magical.getStorage().getList(Storage.TASKS_INDEX));
-			Magical.redoLists.get(Storage.TASKS_DONE_INDEX).push(Magical.getStorage().getList(Storage.TASKS_DONE_INDEX));
-			Magical.redoLists.get(Storage.EVENTS_INDEX).push(Magical.getStorage().getList(Storage.EVENTS_INDEX));
-			Magical.redoLists.get(Storage.EVENTS_DONE_INDEX).push(Magical.getStorage().getList(Storage.EVENTS_DONE_INDEX));
-			
-			/** Move undo stack to storage **/
-			String folderPath = Magical.undoFolderPaths.pop();
-			Magical.getStorage().changeFolderPath(folderPath);
+			backUpToRedo();
+			moveUndoToStorage();
+
 			ArrayList<Item> lastTasksList = Magical.undoLists.get(
 					Storage.TASKS_INDEX).pop();
 			ArrayList<Item> lastTasksDoneList = Magical.undoLists.get(
@@ -49,24 +55,73 @@ public class UndoCommand extends Command {
 					Storage.EVENTS_INDEX).pop();
 			ArrayList<Item> lastEventsDoneList = Magical.undoLists.get(
 					Storage.EVENTS_DONE_INDEX).pop();
-			Magical.getStorage().setList(Storage.TASKS_INDEX, lastTasksList);
-			Magical.getStorage().setList(Storage.TASKS_DONE_INDEX,
-					lastTasksDoneList);
-			Magical.getStorage().setList(Storage.EVENTS_INDEX, lastEventsList);
-			Magical.getStorage().setList(Storage.EVENTS_DONE_INDEX,
+
+			setStorage(lastTasksList, lastTasksDoneList, lastEventsList,
 					lastEventsDoneList);
-			return "undo successful";
+
+			return MESSAGE_UNDO_SUCCESS;
 		} catch (Exception e) {
-			throw new Exception("unable to undo");
+			throw new Exception(MESSAGE_UNDO_ERROR);
 		} finally {
-			GUIModel.setTaskList(Magical.getStorage().getList(
-					Storage.TASKS_INDEX));
-			GUIModel.setTaskDoneList(Magical.getStorage().getList(
-					Storage.TASKS_DONE_INDEX));
-			GUIModel.setEventList(Magical.getStorage().getList(
-					Storage.EVENTS_INDEX));
-			GUIModel.setEventDoneList(Magical.getStorage().getList(
-					Storage.EVENTS_DONE_INDEX));
+			updateView();
+		}
+	}
+
+	/**
+	 * Move undo stack to storage
+	 * 
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
+	void moveUndoToStorage() throws IOException, FileNotFoundException {
+		String folderPath = Magical.undoFolderPaths.pop();
+		Magical.getStorage().changeFolderPath(folderPath);
+	}
+
+	/**
+	 * Back up storage to redo stack
+	 */
+	void backUpToRedo() {
+		Magical.redoFolderPaths.push(Magical.getStorage().getFolderPath());
+		Magical.redoLists.get(Storage.TASKS_INDEX).push(
+				Magical.getStorage().getList(Storage.TASKS_INDEX));
+		Magical.redoLists.get(Storage.TASKS_DONE_INDEX).push(
+				Magical.getStorage().getList(Storage.TASKS_DONE_INDEX));
+		Magical.redoLists.get(Storage.EVENTS_INDEX).push(
+				Magical.getStorage().getList(Storage.EVENTS_INDEX));
+		Magical.redoLists.get(Storage.EVENTS_DONE_INDEX).push(
+				Magical.getStorage().getList(Storage.EVENTS_DONE_INDEX));
+	}
+
+	/**
+	 * Set the storage with the specified lists
+	 * 
+	 * @param lastTasksList
+	 * @param lastTasksDoneList
+	 * @param lastEventsList
+	 * @param lastEventsDoneList
+	 * @throws IOException
+	 */
+	void setStorage(ArrayList<Item> lastTasksList,
+			ArrayList<Item> lastTasksDoneList, ArrayList<Item> lastEventsList,
+			ArrayList<Item> lastEventsDoneList) throws IOException {
+		Magical.getStorage().setList(Storage.TASKS_INDEX, lastTasksList);
+		Magical.getStorage().setList(Storage.TASKS_DONE_INDEX,
+				lastTasksDoneList);
+		Magical.getStorage().setList(Storage.EVENTS_INDEX, lastEventsList);
+		Magical.getStorage().setList(Storage.EVENTS_DONE_INDEX,
+				lastEventsDoneList);
+	}
+
+	/**
+	 * Throw exception if there is nothing to undo
+	 * 
+	 * @param redoLayersSize
+	 * @throws Exception
+	 */
+	void checkNumUndo() throws Exception {
+		if (undoLayersSize <= 0) {
+			throw new Exception(MESSAGE_UNDO_NONE);
 		}
 	}
 
@@ -78,5 +133,10 @@ public class UndoCommand extends Command {
 	@Override
 	public boolean validNumArgs() {
 		return true;
+	}
+
+	@Override
+	void setProperParams() {
+
 	}
 }

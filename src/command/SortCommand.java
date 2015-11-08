@@ -8,41 +8,48 @@ import main.Item;
 
 public class SortCommand extends Command {
 
+	/** Messaging **/
+	private static final String MESSAGE_INVALID_FORMAT = "Use Format: sort <parameter> (upto 3 parameters)";
+	private static final String MESSAGE_INVALID_PARAMS = "Parameters";
+	private static final String MESSAGE_SORT_SUCCESS = "sort successful";
+
+	/** Command parameters **/
 	private ArrayList<String> sortParams;
 
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: sort <parameter> (upto 3 parameters)";
-
+	/**
+	 * Constructor for SortCommand objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid. Contains methods to sort the displayed tasks.
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public SortCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs(" ", 3);
 		this.count = argsArray.size();
-		this.sortParams = argsArray;
+		setProperParams();
 
 		if (validNumArgs()) {
-			if (sortParams.size() == 1 && sortParams.get(0).isEmpty()) {
-				sortParams.add("priority");
-				sortParams.add("date");
-				sortParams.add("title");
-			} else if (!isValidSortParams()) {
-				invalidArgs.add("parameters");
-			}
-			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(String.format(
-						MESSAGE_HEADER_INVALID, invalidArgs));
-			}
+			checkParams();
+			errorInvalidArgs();
 		} else {
-			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
+			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
 
-	private boolean isValidSortParams() {
-		for (String param : sortParams) {
-			if (!(param.equals("priority") || param.equals("title") || param.equals("date"))) {
-				return false;
-			}
+	/**
+	 * Set the sorting parameters to all types if none are specified, else add
+	 * error message
+	 */
+	void checkParams() {
+		if (sortParams.size() == 1 && sortParams.get(0).isEmpty()) {
+			sortParams.add("priority");
+			sortParams.add("date");
+			sortParams.add("title");
+		} else if (!isValidSortParams()) {
+			invalidArgs.add(MESSAGE_INVALID_PARAMS);
 		}
-		return true;
 	}
 
 	/**
@@ -50,11 +57,11 @@ public class SortCommand extends Command {
 	 * events currently displayed by the GUI. Sorting is done using the
 	 * parameter specified.
 	 * 
-	 * @param None
 	 * @return message to show user
 	 */
 	@Override
 	public String execute() throws Exception {
+
 		ArrayList<Item> sortedTaskList = new ArrayList<Item>(
 				GUIModel.getTaskList());
 		ArrayList<Item> sortedTaskDoneList = new ArrayList<Item>(
@@ -63,7 +70,7 @@ public class SortCommand extends Command {
 				GUIModel.getEventList());
 		ArrayList<Item> sortedEventDoneList = new ArrayList<Item>(
 				GUIModel.getEventDoneList());
-		
+
 		if (sortParams.contains("title")) {
 			Collections.sort(sortedTaskList, Item.Comparators.TITLE);
 			Collections.sort(sortedTaskDoneList, Item.Comparators.TITLE);
@@ -82,12 +89,36 @@ public class SortCommand extends Command {
 			Collections.sort(sortedEventList, Item.Comparators.PRIORITY);
 			Collections.sort(sortedEventDoneList, Item.Comparators.PRIORITY);
 		}
-		
-		GUIModel.setTaskList(sortedTaskList);
-		GUIModel.setTaskDoneList(sortedTaskDoneList);
-		GUIModel.setEventList(sortedEventList);
-		GUIModel.setEventDoneList(sortedEventDoneList);
-		return "sort successful";
+
+		updateView(sortedTaskList, sortedTaskDoneList, sortedEventList,
+				sortedEventDoneList);
+
+		return MESSAGE_SORT_SUCCESS;
+	}
+
+	@Override
+	public boolean isUndoable() {
+		return false;
+	}
+
+	/**
+	 * Returns true if sort parameters are valid (priority, title, date), or
+	 * false otherwise
+	 * 
+	 * @return whether sort paramters are valid
+	 */
+	private boolean isValidSortParams() {
+		for (String param : sortParams) {
+			if (!(param.equals("priority") || param.equals("title") || param
+					.equals("date"))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	void setProperParams() {
+		this.sortParams = argsArray;
 	}
 
 	@Override
@@ -97,11 +128,6 @@ public class SortCommand extends Command {
 		} else {
 			return true;
 		}
-	}
-
-	@Override
-	public boolean isUndoable() {
-		return false;
 	}
 
 }

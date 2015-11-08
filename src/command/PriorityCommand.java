@@ -1,14 +1,13 @@
 package command;
 
 import java.io.IOException;
+
 import main.Magical;
 import main.Storage;
 import main.Item;
 
 public class PriorityCommand extends Command {
 
-
-	
 	/** Messaging **/
 	private static final String MESSAGE_ARGUMENT_FORMAT = "Use Format: set <item_id> <priority>";
 	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
@@ -23,10 +22,10 @@ public class PriorityCommand extends Command {
 	private Item prevItem;
 
 	/**
-	 * Constructor for PriorityCommand objects.
-	 * Checks if arguments are valid and stores the correct arguments properly.
-	 * Throws the appropriate exception if arguments are invalid. Contains methods to 
-	 * change the priority of an item.
+	 * Constructor for PriorityCommand objects. Checks if arguments are valid
+	 * and stores the correct arguments properly. Throws the appropriate
+	 * exception if arguments are invalid. Contains methods to change the
+	 * priority of an item.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -38,25 +37,12 @@ public class PriorityCommand extends Command {
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
-			
 			setProperParams();
-			
 			checkItemExists();
-			
 			checkPriorityValid();
-			
-			 errorInvalidArgs();
+			errorInvalidArgs();
 		} else {
 			errorInvalidFormat(MESSAGE_ARGUMENT_FORMAT);
-		}
-	}
-
-	/**
-	 *  Adds error message if priority given is invalid
-	 */
-	void checkPriorityValid() {
-		if (priority == null) {
-			invalidArgs.add(MESSAGE_INVALID_PRIORITY);
 		}
 	}
 
@@ -69,6 +55,51 @@ public class PriorityCommand extends Command {
 		}
 	}
 
+	/**
+	 * Adds error message if priority given is invalid
+	 */
+	void checkPriorityValid() {
+		if (priority == null) {
+			invalidArgs.add(MESSAGE_INVALID_PRIORITY);
+		}
+	}
+
+	/**
+	 * Make 2 copies of the item to be stored in prevItem and item
+	 */
+	void duplicateItem() {
+		prevItem = item;
+		item = prevItem.copy();
+	}
+
+	/**
+	 * This method executes the priority command. Which simply changes the
+	 * priority of the selected task or event to the new priority specified.
+	 * 
+	 * @return message to show user
+	 * @throws Exception 
+	 */
+	@Override
+	public String execute() throws Exception {
+		duplicateItem();
+		item.setPriority(priority);
+
+		try {
+			updateItem();
+		} catch (IOException e) {
+			throw new Exception(String.format(MESSAGE_PRIORITY_ERROR, itemID));
+		} finally {
+			updateView();
+		}
+
+		return String.format(MESSAGE_PRIORITY_UPDATED, itemID);
+	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
+
 	void setProperParams() {
 		itemID = argsArray.get(0).trim();
 		item = getItemByID(itemID);
@@ -79,46 +110,6 @@ public class PriorityCommand extends Command {
 		}
 	}
 
-	public boolean validNumArgs() {
-		if (this.count > 2 && this.count < 0) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/**
-	 * This method executes the priority command. Which simply changes the
-	 * priority of the selected task or event to the new priority specified.
-	 * 
-	 * @param None
-	 * @return message to show user
-	 */
-	@Override
-	public String execute() {
-		
-		duplicateItem();
-		item.setPriority(priority);
-
-		try {
-			updateItem();
-		} catch (IOException e) {
-			return String.format(MESSAGE_PRIORITY_ERROR, itemID);
-		} finally {
-			updateView();
-		}
-
-		return String.format(MESSAGE_PRIORITY_UPDATED, itemID);
-	}
-
-	/**
-	 * Make 2 copies of the item to be stored in prevItem and item
-	 */
-	void duplicateItem() {
-		prevItem = item;
-		item = prevItem.copy();
-	}
-	
 	/**
 	 * Updates the original item with the new modified item
 	 * 
@@ -129,8 +120,11 @@ public class PriorityCommand extends Command {
 		Magical.getStorage().update(listIndex, prevItem, item);
 	}
 
-	@Override
-	public boolean isUndoable() {
-		return true;
+	public boolean validNumArgs() {
+		if (this.count > 2 && this.count < 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

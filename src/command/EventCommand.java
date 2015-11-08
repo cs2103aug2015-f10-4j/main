@@ -11,11 +11,9 @@ import main.Item;
 
 public class EventCommand extends Command {
 
-	
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "
-			+ "from <start date> <start time> "
-			+ "to <end date> <end time>";
+			+ "from <start date> <start time> " + "to <end date> <end time>";
 	private static final String MESSAGE_INVALID_DATETIME_END = "End date/time";
 	private static final String MESSAGE_INVALID_DATETIME_START = "Start date/time";
 	private static final String MESSAGE_INVALID_DATETIME_RANGE = "End date/time is earlier than Start date/time";
@@ -23,7 +21,7 @@ public class EventCommand extends Command {
 	private static final String MESSAGE_EVENT_ADDED = "event added";
 	private static final String MESSAGE_EVENT_CLASH = ". Another event exists on the same date.";
 	private static final String MESSAGE_EVENT_ERROR = "unable to add event";
-	
+
 	/** Command parameters **/
 	protected String title;
 	protected CustomDate dateStart;
@@ -33,25 +31,19 @@ public class EventCommand extends Command {
 	private Item event;
 
 	/**
-	 * Constructor for EventCommand objects.
-	 * Checks if arguments are valid and stores the correct arguments properly.
-	 * Throws the appropriate exception if arguments are invalid. Contains 
-	 * methods to add an event to storage.
+	 * Constructor for EventCommand objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid. Contains methods to add an event to storage.
 	 * 
 	 * @param args
 	 * @throws Exception
 	 */
 	public EventCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs("\\sto\\s|\\sfrom\\s", -1);
-		
 		removeEscapeCharacters();
-		
 		this.count = argsArray.size();
-
 		splitArgsAfterDateTime();
-		
 		this.count = argsArray.size();
 
 		for (int i = 0; i < count; i++) {
@@ -59,39 +51,18 @@ public class EventCommand extends Command {
 		}
 
 		if (validNumArgs()) {
-
 			setProperParams();
-
 			setDefaultEndDay();
-			
 			checkTitle();
-
 			checkDateTime(dateStart, 0);
-			
 			checkDateTime(dateEnd, 1);
-
 			checkDateRange();
-			
 			errorInvalidArgs();
-
-			
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
-		
 	}
 
-	/** 
-	 * Set the default day to be start day if unspecified
-	 */
-	private void setDefaultEndDay() {
-		if (dateEnd.getDateString().equals(today.getDateString())) {
-			dateEnd.setDay(dateStart.getDay());
-			dateEnd.setMonth(dateStart.getMonth());
-			dateEnd.setYear(dateStart.getYear());
-		}
-	}
-	
 	/**
 	 * Adds error message if end date is before start date
 	 */
@@ -102,20 +73,30 @@ public class EventCommand extends Command {
 	}
 
 	/**
-	 * Adds error message if invalid date and time specified, according to if the date
-	 * is the start or end date.
+	 * Adds error message if invalid date and time specified, according to if
+	 * the date is the start or end date.
 	 */
 	private void checkDateTime(CustomDate date, int type) {
-		assert(type == 0 || type == 1);
+		assert (type == 0 || type == 1);
 		if (date == null) {
-			if(type == 0){
+			if (type == 0) {
 				invalidArgs.add(MESSAGE_INVALID_DATETIME_START);
 			} else {
 				invalidArgs.add(MESSAGE_INVALID_DATETIME_END);
 			}
 		}
 	}
-	
+
+	/**
+	 * Checks if the event to be added clashes with another event and adds to
+	 * the return message to inform the user
+	 */
+	private void checkEventClash() {
+		if (isClashing()) {
+			returnMsg += MESSAGE_EVENT_CLASH;
+		}
+	}
+
 	/**
 	 * Adds error message if title is invalid
 	 */
@@ -125,118 +106,10 @@ public class EventCommand extends Command {
 		}
 	}
 
-	void setProperParams() {
-		this.title = getTitle(argsArray.get(0).trim());
-		this.dateStart = getDate(argsArray.get(1).trim());
-		this.dateEnd = getDate(argsArray.get(2).trim());
-		assertNotNull(dateStart);
-		assertNotNull(dateEnd);
-		this.startTime = dateStart.getTime();
-		this.endTime = dateEnd.getTime();
-	}
-
 	/**
-	 * Replaces characters that were used for escaping the keyword argument
-	 * that was used for splitting
-	 */
-	private void removeEscapeCharacters() {
-		for (int i = 0; i < argsArray.size(); i++) {
-			argsArray.set(i,
-						  argsArray.get(i).trim().replaceAll("(?<=from)\"|\"(?=from)"
-						  		+ "(?<=to)\"|\"(?=to)", STRING_EMPTY));
-		}
-	}
-
-	/**
-	 * Check if the end date given is after the start date
-	 * @return
-	 */
-	public boolean validDateRange() {
-		return dateEnd.compareTo(dateStart) < 0;
-	}
-	
-	/**
-	 * Date/time argument might be concatenated with other arguments, thus
-	 * the method splits the arguments properly
-	 */
-	private void splitArgsAfterDateTime() {
-		if (argsArray.size() > 1 && argsArray.get(count - 1).contains(" ")) {
-			while (true) {
-				String last = getLastWord(argsArray.get(count - 1));
-				if (getDate(last) != null) {
-					break;
-				} else {
-					splitOnce(last);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Adds last word to the argsArray and removes it from the date/time argument
+	 * Adds a new event to the storage using the parameters stored
 	 * 
-	 * @param last
-	 */
-	private void splitOnce(String last) {
-		argsArray.add(count, last);
-		argsArray.set(count - 1, removeLastWord(argsArray.get(count - 1)));
-	}
-
-	/**
-	 * Removes last word from a string
-	 * 
-	 * @param string
-	 * @return String with last word removed
-	 */
-	private String removeLastWord(String string) {
-		return string.split("\\s(?=\\S+$)")[0];
-	}
-
-	/**
-	 * Gives last word of a string
-	 * 
-	 * @param string
-	 * @return String last word
-	 */
-	private String getLastWord(String string) {
-		return string.split("\\s(?=\\S+$)")[1];
-	}
-
-	/**
-	 * Checks if the current event to be added clashes with another event
-	 * @return
-	 */
-	private boolean isClashing() {
-		ArrayList<Item> events = getEvents();
-		for (Item t : events) {
-			if (isTimeOverlap(t)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Checks if events overlap
-	 * @param t
-	 * @return
-	 */
-	private boolean isTimeOverlap(Item t) {
-		return t.getEndDate().equals(event.getEndDate());
-	}
-	
-	/**
-	 * get events list from storage
-	 * @return
-	 */
-	private ArrayList<Item> getEvents() {
-		ArrayList<Item> events = Magical.getStorage().getList(
-				Storage.EVENTS_INDEX);
-		return events;
-	}
-	
-	/**
-	 * Adds a new event to the storage using the parameters stored 
+	 * @return message to show user
 	 */
 	public String execute() {
 		setEventParams();
@@ -254,21 +127,91 @@ public class EventCommand extends Command {
 	}
 
 	/**
-     * Stores the created Item Object as event
+	 * get events list from storage
 	 * 
-	 * @throws IOException
+	 * @return
 	 */
-	private void storeEvent() throws IOException {
-		Magical.getStorage().create(Storage.EVENTS_INDEX, event);
+	private ArrayList<Item> getEvents() {
+		ArrayList<Item> events = Magical.getStorage().getList(
+				Storage.EVENTS_INDEX);
+		return events;
 	}
 
 	/**
-	 * Checks if the event to be added clashes with another event and adds to the return
-	 * message to inform the user
+	 * Gives last word of a string
+	 * 
+	 * @param string
+	 * @return String last word
 	 */
-	private void checkEventClash() {
-		if (isClashing()) {
-			returnMsg += MESSAGE_EVENT_CLASH;
+	private String getLastWord(String string) {
+		return string.split("\\s(?=\\S+$)")[1];
+	}
+
+	/**
+	 * Checks if the current event to be added clashes with another event
+	 * 
+	 * @return
+	 */
+	private boolean isClashing() {
+		ArrayList<Item> events = getEvents();
+		for (Item t : events) {
+			if (isTimeOverlap(t)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if events overlap
+	 * 
+	 * @param t
+	 * @return
+	 */
+	private boolean isTimeOverlap(Item t) {
+		return t.getEndDate().equals(event.getEndDate());
+	}
+
+	public boolean isUndoable() {
+		return true;
+	}
+
+	/**
+	 * Replaces characters that were used for escaping the keyword argument that
+	 * was used for splitting
+	 */
+	private void removeEscapeCharacters() {
+		for (int i = 0; i < argsArray.size(); i++) {
+			argsArray.set(
+					i,
+					argsArray
+							.get(i)
+							.trim()
+							.replaceAll(
+									"(?<=from)\"|\"(?=from)"
+											+ "(?<=to)\"|\"(?=to)",
+									STRING_EMPTY));
+		}
+	}
+
+	/**
+	 * Removes last word from a string
+	 * 
+	 * @param string
+	 * @return String with last word removed
+	 */
+	private String removeLastWord(String string) {
+		return string.split("\\s(?=\\S+$)")[0];
+	}
+
+	/**
+	 * Set the default day to be start day if unspecified
+	 */
+	private void setDefaultEndDay() {
+		if (dateEnd.getDateString().equals(today.getDateString())) {
+			dateEnd.setDay(dateStart.getDay());
+			dateEnd.setMonth(dateStart.getMonth());
+			dateEnd.setYear(dateStart.getYear());
 		}
 	}
 
@@ -285,15 +228,65 @@ public class EventCommand extends Command {
 		event.setEndTime(endTime);
 	}
 
+	void setProperParams() {
+		this.title = getTitle(argsArray.get(0).trim());
+		this.dateStart = getDate(argsArray.get(1).trim());
+		this.dateEnd = getDate(argsArray.get(2).trim());
+		this.startTime = dateStart == null ? -1 : dateStart.getTime();
+		this.endTime = dateEnd == null ? -1 : dateEnd.getTime();
+	}
+
+	/**
+	 * Date/time argument might be concatenated with other arguments, thus the
+	 * method splits the arguments properly
+	 */
+	private void splitArgsAfterDateTime() {
+		if (argsArray.size() > 1 && argsArray.get(count - 1).contains(" ")) {
+			while (true) {
+				String last = getLastWord(argsArray.get(count - 1));
+				if (getDate(last) != null) {
+					break;
+				} else {
+					splitOnce(last);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Adds last word to the argsArray and removes it from the date/time
+	 * argument
+	 * 
+	 * @param last
+	 */
+	private void splitOnce(String last) {
+		argsArray.add(count, last);
+		argsArray.set(count - 1, removeLastWord(argsArray.get(count - 1)));
+	}
+
+	/**
+	 * Stores the created Item Object as event
+	 * 
+	 * @throws IOException
+	 */
+	private void storeEvent() throws IOException {
+		Magical.getStorage().create(Storage.EVENTS_INDEX, event);
+	}
+
+	/**
+	 * Check if the end date given is after the start date
+	 * 
+	 * @return
+	 */
+	public boolean validDateRange() {
+		return dateEnd.compareTo(dateStart) > 0;
+	}
+
 	public boolean validNumArgs() {
 		if (this.count != 3) {
 			return false;
 		} else {
 			return true;
 		}
-	}
-
-	public boolean isUndoable() {
-		return true;
 	}
 }

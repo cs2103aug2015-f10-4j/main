@@ -3,8 +3,8 @@ package command;
 public class HelpCommand extends Command {
 
 	/**
-	 * Constructor for HelpCommand objects. Arguments are stored but have no impact on
-	 * command's functionality.
+	 * Constructor for HelpCommand objects. Arguments are stored but have no
+	 * impact on command's functionality.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -17,8 +17,7 @@ public class HelpCommand extends Command {
 	 * This method executes the help command. Which triggers the GUI to launch
 	 * the help window.
 	 * 
-	 * @param None
-	 * @return None
+	 * @return message to show user
 	 */
 	@Override
 	public String execute() throws Exception {
@@ -32,12 +31,12 @@ public class HelpCommand extends Command {
 	}
 
 	@Override
-	public boolean validNumArgs() {
-		return true;
+	void setProperParams() {
+
 	}
 
 	@Override
-	void setProperParams() {
-
+	public boolean validNumArgs() {
+		return true;
 	}
 }

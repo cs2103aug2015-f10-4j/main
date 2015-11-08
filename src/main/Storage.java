@@ -25,10 +25,11 @@ public class Storage {
 
 	private static final String DEFAULT_FILE_DIRECTORY = "magical";
 	private static final String DEFAULT_FILE_NAME = "storage.txt";
-	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
+	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY 
+														+ "/" + DEFAULT_FILE_NAME;
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
-	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + SETTINGS_FILE_NAME;
-
+	private static final String SETTINGS_FILE_PATH = DEFAULT_FILE_DIRECTORY 
+														+ "/" + SETTINGS_FILE_NAME;
 
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
@@ -39,10 +40,10 @@ public class Storage {
 	private ObjectMapper mapper = new ObjectMapper();
 
 	/**
-	 * This is the Storage constructor which makes use of createFolder, writeToProperties, readFileSettings
-	 * and initFile methods. This constructor creates a default folder in where the program is run.
-	 * In this folder, a .properties file is created to store default program settings and a default
-	 * .txt file to store task data.
+	 * This is the Storage constructor which makes use of createFolder, writeToProperties, 
+	 * readFileSettings and initFile methods. This constructor creates a default folder 
+	 * in where the program is run. In this folder, a .properties file is created 
+	 * to store default program settings and a default .txt file to store task data.
 	 * 
 	 * @param 	None.
 	 * @return 	Nothing.
@@ -208,8 +209,9 @@ public class Storage {
 	}
 
 	/**
-	 * This method initialises the .txt data file. If the file doesn't exist, the data file is created and
-	 * data is written into it. Else if the data file exist, data is being read and stored in the program.
+	 * This method initialises the .txt data file. If the file doesn't exist, 
+	 * the data file is created and data is written into it. 
+	 * Else if the data file exist, data is being read and stored in the program.
 	 * 
 	 * @param 		None.
 	 * @return 		Nothing.

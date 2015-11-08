@@ -1,6 +1,7 @@
 package command;
 
 import java.io.IOException;
+
 import main.Magical;
 import main.Storage;
 import main.Item;
@@ -27,22 +28,17 @@ public class DelCommand extends Command {
 	 */
 	public DelCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs(" ", -1);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
 			setProperParams();
-
 			checkItemExists();
-			
 			errorInvalidArgs();
-			
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
-
 
 	/**
 	 * Adds error message if item does not exist or unable to get
@@ -52,7 +48,41 @@ public class DelCommand extends Command {
 			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
-	
+
+	/**
+	 * This method executes the delete command, which deletes the specified task
+	 * or event from the database.
+	 * 
+	 * @return message to show user
+	 * @throws Exception 
+	 */
+	@Override
+	public String execute() throws Exception {
+		try {
+			removeItem();
+			return String.format(MESSAGE_ITEM_DELETED, itemID);
+		} catch (IOException e) {
+			throw new Exception(MESSAGE_ITEM_ERROR_DELETE);
+		} finally {
+			updateView();
+		}
+	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
+
+	/**
+	 * Removes the item from storage
+	 * 
+	 * @throws IOException
+	 */
+	void removeItem() throws IOException {
+		int listIndex = Storage.getListIndex(itemID);
+		Magical.getStorage().delete(listIndex, item);
+	}
+
 	void setProperParams() {
 		itemID = argsArray.get(0).trim();
 		item = getItemByID(itemID);
@@ -64,37 +94,5 @@ public class DelCommand extends Command {
 		} else {
 			return true;
 		}
-	}
-
-	/**
-	 * This method executes the delete command, which deletes the
-	 * specified task or event from the database.
-	 * 
-	 * @return message to show user
-	 */
-	@Override
-	public String execute() {
-		try {
-			removeItem();
-			return String.format(MESSAGE_ITEM_DELETED, itemID);
-		} catch (IOException e) {
-			return MESSAGE_ITEM_ERROR_DELETE;
-		} finally {
-			updateView();
-		}
-	}
-
-	/**
-	 * Removes the item from storage
-	 * @throws IOException
-	 */
-	void removeItem() throws IOException {
-		int listIndex = Storage.getListIndex(itemID);
-		Magical.getStorage().delete(listIndex, item);
-	}
-
-	@Override
-	public boolean isUndoable() {
-		return true;
 	}
 }

@@ -7,29 +7,26 @@ import main.Magical;
 public class PathCommand extends Command {
 
 	private static final String MESSAGE_DIRECTORY_CHANGED = "Path changed to: %s";
-
 	private static final String MESSAGE_DIRECTORY_MISSING = "%s (no such directory)";
 
 	/** Messaging **/
 	private static final String MESSAGE_ARGUMENT_FORMAT = "Use Format: path <location>";
-	
+
 	/** Command parameters **/
 	private String location;
 
 	/**
-	 * Constructor for PathCommand objects.
-	 * Checks if arguments are valid and stores the correct arguments properly.
-	 * Throws the appropriate exception if arguments are invalid. Contains methods to 
-	 * change the file path location of storage textfile.
+	 * Constructor for PathCommand objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid. Contains methods to change the file path
+	 * location of storage textfile.
 	 * 
 	 * @param args
 	 * @throws Exception
 	 */
 	public PathCommand(String args) throws Exception {
 		super(args);
-
 		setProperParams();
-		
 		checkLocation();
 	}
 
@@ -48,7 +45,6 @@ public class PathCommand extends Command {
 	 * This method executes the path command. Which changes the file path of the
 	 * database file.
 	 * 
-	 * @param None
 	 * @return message to show user
 	 */
 	@Override
@@ -56,14 +52,10 @@ public class PathCommand extends Command {
 		try {
 			Magical.getStorage().changeFolderPath(location);
 		} catch (FileNotFoundException fnfe) {
-			throw new Exception(String.format(MESSAGE_DIRECTORY_MISSING, location));
+			throw new Exception(String.format(MESSAGE_DIRECTORY_MISSING,
+					location));
 		}
 		return String.format(MESSAGE_DIRECTORY_CHANGED, location);
-	}
-
-	@Override
-	public boolean validNumArgs() {
-		return true;
 	}
 
 	@Override
@@ -74,6 +66,11 @@ public class PathCommand extends Command {
 	@Override
 	void setProperParams() {
 		this.location = args;
+	}
+
+	@Override
+	public boolean validNumArgs() {
+		return true;
 	}
 
 }

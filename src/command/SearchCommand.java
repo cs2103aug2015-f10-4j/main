@@ -1,27 +1,29 @@
 package command;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Item;
 
 public class SearchCommand extends Command {
 
+	private static final String MESSAGE_SEARCH_SUCCESS = "search results for: [ %s ]";
+	/** Command parameters **/
 	private String query;
 
+	/**
+	 * Constructor for SearchCommand objects. Stores the correct arguments
+	 * properly. Contains methods to display items containing query
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public SearchCommand(String args) throws Exception {
 		super(args);
 
-		this.argsArray = new ArrayList<String>(Arrays.asList(args.split("", 1)));
+		this.argsArray = splitArgs("", 1);
 		this.count = argsArray.size();
-		this.query = args.trim();
-	}
-
-	public boolean validNumArgs() {
-		return true;
+		setProperParams();
 	}
 
 	/**
@@ -29,7 +31,6 @@ public class SearchCommand extends Command {
 	 * query text in the titles of all events and tasks. It then displays the
 	 * found tasks and events to the GUI.
 	 * 
-	 * @param None
 	 * @return message to show user
 	 */
 	@Override
@@ -42,41 +43,44 @@ public class SearchCommand extends Command {
 				Storage.EVENTS_INDEX);
 		ArrayList<Item> eventDoneList = Magical.getStorage().getList(
 				Storage.EVENTS_DONE_INDEX);
-		ArrayList<Item> filteredTaskList = new ArrayList<Item>();
-		ArrayList<Item> filteredTaskDoneList = new ArrayList<Item>();
-		ArrayList<Item> filteredEventList = new ArrayList<Item>();
-		ArrayList<Item> filteredEventDoneList = new ArrayList<Item>();
 
-		for (Item i : taskList) {
-			if (i.getTitle().contains(query)) {
-				filteredTaskList.add(i);
-			}
-		}
-		for (Item i : taskDoneList) {
-			if (i.getTitle().contains(query)) {
-				filteredTaskDoneList.add(i);
-			}
-		}
-		for (Item i : eventList) {
-			if (i.getTitle().contains(query)) {
-				filteredEventList.add(i);
-			}
-		}
-		for (Item i : eventDoneList) {
-			if (i.getTitle().contains(query)) {
-				filteredEventDoneList.add(i);
-			}
-		}
+		ArrayList<Item> filteredTaskList = filterList(taskList);
+		ArrayList<Item> filteredTaskDoneList = filterList(taskDoneList);
+		ArrayList<Item> filteredEventList = filterList(eventList);
+		ArrayList<Item> filteredEventDoneList = filterList(eventDoneList);
 
-		GUIModel.setTaskList(filteredTaskList);
-		GUIModel.setTaskDoneList(filteredTaskDoneList);
-		GUIModel.setEventList(filteredEventList);
-		GUIModel.setEventDoneList(filteredEventDoneList);
-		return "search results for: [" + query + "]";
+		updateView(filteredTaskList, filteredTaskDoneList, filteredEventList,
+				filteredEventDoneList);
+
+		return String.format(MESSAGE_SEARCH_SUCCESS, query);
+	}
+
+	/**
+	 * Filter items according to query in the given list and return it
+	 * 
+	 * @param itemList
+	 * @return filtered list to show user
+	 */
+	private ArrayList<Item> filterList(ArrayList<Item> itemList) {
+		ArrayList<Item> filteredItemList = new ArrayList<Item>();
+		for (Item i : itemList) {
+			if (i.getTitle().contains(query)) {
+				filteredItemList.add(i);
+			}
+		}
+		return filteredItemList;
 	}
 
 	@Override
 	public boolean isUndoable() {
 		return false;
+	}
+
+	void setProperParams() {
+		this.query = args.trim();
+	}
+
+	public boolean validNumArgs() {
+		return true;
 	}
 }

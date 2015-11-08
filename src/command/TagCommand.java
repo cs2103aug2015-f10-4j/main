@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
-import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Item;
@@ -42,7 +41,6 @@ public class TagCommand extends Command {
 	 */
 	public TagCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs(" ", -1);
 		this.count = argsArray.size();
 
@@ -53,61 +51,6 @@ public class TagCommand extends Command {
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
-	}
-
-	/**
-	 * Adds error message if item does not exist or unable to get
-	 */
-	void checkItemExists() {
-		if (item == null) {
-			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
-		}
-	}
-
-	void setProperParams() {
-		this.itemID = argsArray.get(0).trim();
-		this.item = getItemByID(itemID);
-		this.tags = new ArrayList<String>(argsArray.subList(1, count));
-	}
-
-	public boolean validNumArgs() {
-		if (this.count < 2) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/**
-	 * This method executes the tag command. Which simply adds the specified tag
-	 * to a task or event's tag set.
-	 * 
-	 * @param None
-	 * @return message to show user
-	 * @throws Exception
-	 */
-	@Override
-	public String execute() throws Exception {
-
-		duplicateItem();
-		Set<String> currentTags = item.getTags();
-		for (String tag : tags) {
-			if (!checkTags(currentTags, tag)
-					&& !checkRestricted(currentTags, tag)) {
-				addTagToItem(currentTags, tag);
-			}
-		}
-		errorPresentORInvalidTags();
-
-		try {
-			updateItem();
-		} catch (IOException e) {
-			return String.format(MESSAGE_TAG_ERROR, itemID);
-		} finally {
-			updateView();
-		}
-
-		return String.format(MESSAGE_TAG_ADDED, tags, itemID);
 	}
 
 	/**
@@ -122,19 +65,11 @@ public class TagCommand extends Command {
 	}
 
 	/**
-	 * Throws exception if error messages for invalid tags or tags that are
-	 * already present
-	 * 
-	 * @throws IllegalArgumentException
+	 * Adds error message if item does not exist or unable to get
 	 */
-	void errorPresentORInvalidTags() throws Exception {
-		if (!presentTags.equals(STRING_EMPTY)
-				&& !invalidTags.equals(STRING_EMPTY)) {
-			throw new Exception(presentTags + " AND " + invalidTags);
-		} else if (!presentTags.equals(STRING_EMPTY)) {
-			throw new Exception(presentTags);
-		} else if (!invalidTags.equals(STRING_EMPTY)) {
-			throw new Exception(invalidTags);
+	void checkItemExists() {
+		if (item == null) {
+			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
 
@@ -189,6 +124,65 @@ public class TagCommand extends Command {
 	}
 
 	/**
+	 * Throws exception if error messages for invalid tags or tags that are
+	 * already present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	void errorPresentORInvalidTags() throws Exception {
+		if (!presentTags.equals(STRING_EMPTY)
+				&& !invalidTags.equals(STRING_EMPTY)) {
+			throw new Exception(presentTags + " AND " + invalidTags);
+		} else if (!presentTags.equals(STRING_EMPTY)) {
+			throw new Exception(presentTags);
+		} else if (!invalidTags.equals(STRING_EMPTY)) {
+			throw new Exception(invalidTags);
+		}
+	}
+
+	/**
+	 * This method executes the tag command. Which simply adds the specified tag
+	 * to a task or event's tag set.
+	 * 
+	 * @return message to show user
+	 * @throws Exception
+	 */
+	@Override
+	public String execute() throws Exception {
+
+		duplicateItem();
+		Set<String> currentTags = item.getTags();
+		for (String tag : tags) {
+			if (!checkTags(currentTags, tag)
+					&& !checkRestricted(currentTags, tag)) {
+				addTagToItem(currentTags, tag);
+			}
+		}
+		errorPresentORInvalidTags();
+
+		try {
+			updateItem();
+		} catch (IOException e) {
+			return String.format(MESSAGE_TAG_ERROR, itemID);
+		} finally {
+			updateView();
+		}
+
+		return String.format(MESSAGE_TAG_ADDED, tags, itemID);
+	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
+
+	void setProperParams() {
+		this.itemID = argsArray.get(0).trim();
+		this.item = getItemByID(itemID);
+		this.tags = new ArrayList<String>(argsArray.subList(1, count));
+	}
+
+	/**
 	 * Updates the original item with the new modified item
 	 * 
 	 * @throws IOException
@@ -198,8 +192,11 @@ public class TagCommand extends Command {
 		Magical.getStorage().update(listIndex, prevItem, item);
 	}
 
-	@Override
-	public boolean isUndoable() {
-		return true;
+	public boolean validNumArgs() {
+		if (this.count < 2) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

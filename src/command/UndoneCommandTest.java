@@ -14,8 +14,9 @@ import main.Item;
 public class UndoneCommandTest {
 
 	private static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
+	private static final String MESSAGE_FORMAT_INVALID = "Use Format: undone <item_id>";
 	private static final String MESSAGE_UNDONE_INVALID = 
-			"Invalid arguments: [Undone tasks cannot be undone!]";
+			"Invalid arguments: [Undone tasks cannot be undone]";
 
 	@Before
 	public void setUp() {
@@ -45,7 +46,7 @@ public class UndoneCommandTest {
 		try {
 			UndoneCommand tooManyArgs = new UndoneCommand("d1 d2");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
+			assertEquals(MESSAGE_FORMAT_INVALID, e.getMessage());
 		}
 	}
 

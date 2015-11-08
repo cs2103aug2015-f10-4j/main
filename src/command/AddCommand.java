@@ -19,7 +19,7 @@ public class AddCommand extends Command {
 	private static final String MESSAGE_TASK_ADDED = "Task added";
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
 	private static final String MESSAGE_TASK_ERROR = "Unable to add task";
-	
+
 	/** Command parameters **/
 	private String title;
 	private CustomDate dueDate;
@@ -28,33 +28,27 @@ public class AddCommand extends Command {
 	private Item task;
 
 	/**
-	 * Constructor for AddCommand objects.
-	 * Checks if arguments are valid and stores the correct arguments properly.
-	 * Throws the appropriate exception if arguments are invalid. Contains methods to 
-	 * add a task to storage.
+	 * Constructor for AddCommand objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid. Contains methods to add a task to storage.
 	 * 
 	 * @param args
 	 * @throws Exception
 	 */
 	public AddCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs("\\sby\\s", 2);
 		removeEscapeCharacters();
-
 		this.count = argsArray.size();
-
 		splitArgsAfterDateTime();
-
 		this.count = argsArray.size();
 		this.isFloat = false;
-		
+
 		for (int i = 0; i < count; i++) {
 			assertNotNull(argsArray.get(i));
 		}
 
 		if (validNumArgs()) {
-
 			if (count == 1) {
 				setFloatParams();
 			} else {
@@ -62,23 +56,30 @@ public class AddCommand extends Command {
 			}
 
 			checkTitle();
-
 			checkDateTime();
-
 			errorInvalidArgs();
-			
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
 
 	/**
-	 * Adds error message if invalid date and time specified, and task to
-	 * be added is not a floating task
+	 * Adds error message if invalid date and time specified, and task to be
+	 * added is not a floating task
 	 */
 	private void checkDateTime() {
 		if (this.dueDate == null && !isFloat) {
 			invalidArgs.add(MESSAGE_INVALID_DATETIME);
+		}
+	}
+
+	/**
+	 * Checks if the task to be added clashes with another task and adds to the
+	 * return message to inform the user
+	 */
+	private void checkTaskClash() {
+		if (isClashing()) {
+			returnMsg += MESSAGE_TASK_CLASH;
 		}
 	}
 
@@ -92,60 +93,23 @@ public class AddCommand extends Command {
 	}
 
 	/**
-	 * Set the relevant parameters of AddCommand to that of the specified task
+	 * Adds a new task to the storage using the parameters stored
+	 * 
+	 * @return message to show user
 	 */
-	void setProperParams() {
-		this.title = getTitle(argsArray.get(0).trim());
-		this.dueDate = getDate(argsArray.get(1).trim());
-		this.endTime = dueDate == null ? -1 : dueDate.getTime();
-		assertFalse(isFloat);
-	}
+	public String execute() {
+		setTaskParams();
 
-	/**
-	 * Set the relevant parameters of AddCommand to that of a floating task
-	 */
-	private void setFloatParams() {
-		this.title = getTitle(argsArray.get(0).trim());
-		this.dueDate = null;
-		this.endTime = -1;
-		this.isFloat = true;
-	}
-
-	/**
-	 * Date/time argument might be concatenated with other arguments, thus
-	 * the method splits the arguments properly
-	 */
-	private void splitArgsAfterDateTime() {
-		if (argsArray.size() > 1 && argsArray.get(count - 1).contains(" ")) {
-			while (true) {
-				String last = getLastWord(argsArray.get(count - 1));
-				if (getDate(last) != null) {
-					break;
-				} else {
-					splitOnce(last);
-				}
-			}
+		try {
+			returnMsg = MESSAGE_TASK_ADDED;
+			checkTaskClash();
+			storeTask();
+			return returnMsg;
+		} catch (IOException e) {
+			return MESSAGE_TASK_ERROR;
+		} finally {
+			updateView();
 		}
-	}
-
-	/**
-	 * Adds last word to the argsArray and removes it from the date/time argument
-	 * 
-	 * @param last
-	 */
-	private void splitOnce(String last) {
-		argsArray.add(count, last);
-		argsArray.set(count - 1, removeLastWord(argsArray.get(count - 1)));
-	}
-
-	/**
-	 * Removes last word from a string
-	 * 
-	 * @param string
-	 * @return String with last word removed
-	 */
-	private String removeLastWord(String string) {
-		return string.split("\\s(?=\\S+$)")[0];
 	}
 
 	/**
@@ -159,42 +123,88 @@ public class AddCommand extends Command {
 	}
 
 	/**
-	 * Replaces characters that were used for escaping the keyword argument
-	 * that was used for splitting
+	 * get task list from storage
+	 * 
+	 * @return
+	 */
+	private ArrayList<Item> getTasks() {
+		ArrayList<Item> tasks = Magical.getStorage().getList(
+				Storage.TASKS_INDEX);
+		return tasks;
+	}
+
+	/**
+	 * Checks if the current task to be added clashes with another task
+	 * 
+	 * @return
+	 */
+	private boolean isClashing() {
+		ArrayList<Item> tasks = getTasks();
+		for (Item t : tasks) {
+			if (isSameEndDate(t)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if a given task has end date and is the same as the the created
+	 * task
+	 * 
+	 * @param t
+	 * @return
+	 */
+	private boolean isSameEndDate(Item t) {
+		return t.getEndDate() != null
+				&& t.getEndDate().equals(task.getEndDate());
+	}
+
+	public boolean isUndoable() {
+		return true;
+	}
+
+	/**
+	 * Replaces characters that were used for escaping the keyword argument that
+	 * was used for splitting
 	 */
 	private void removeEscapeCharacters() {
 		for (int i = 0; i < argsArray.size(); i++) {
-			argsArray.set(i,
-						  argsArray.get(i).trim().replaceAll("(?<=by)\"|\"(?=by)", 
-															 STRING_EMPTY));
+			argsArray.set(
+					i,
+					argsArray.get(i).trim()
+							.replaceAll("(?<=by)\"|\"(?=by)", STRING_EMPTY));
 		}
 	}
 
 	/**
-	 * Checks if the task to be added clashes with another task and adds to the return
-	 * message to inform the user
-	 */
-	private void checkTaskClash() {
-		if (isClashing()) {
-			returnMsg += MESSAGE_TASK_CLASH;
-		}
-	}
-
-	/**
-     * Stores the created Item Object as task
+	 * Removes last word from a string
 	 * 
-	 * @throws IOException
+	 * @param string
+	 * @return String with last word removed
 	 */
-	private void storeTask() throws IOException {
-		Magical.getStorage().create(Storage.TASKS_INDEX, task);
+	private String removeLastWord(String string) {
+		return string.split("\\s(?=\\S+$)")[0];
 	}
 
 	/**
-	 * Updates the new view in the GUI
+	 * Set the relevant parameters of AddCommand to that of a floating task
 	 */
-	void updateView() {
-		super.updateView();
-		GUIModel.setCurrentTab("tasks");
+	private void setFloatParams() {
+		this.title = getTitle(argsArray.get(0).trim());
+		this.dueDate = null;
+		this.endTime = -1;
+		this.isFloat = true;
+	}
+
+	/**
+	 * Set the relevant parameters of AddCommand to that of the specified task
+	 */
+	void setProperParams() {
+		this.title = getTitle(argsArray.get(0).trim());
+		this.dueDate = getDate(argsArray.get(1).trim());
+		this.endTime = dueDate == null ? -1 : dueDate.getTime();
+		assertFalse(isFloat);
 	}
 
 	/**
@@ -211,37 +221,48 @@ public class AddCommand extends Command {
 	}
 
 	/**
-	 * Checks if the current task to be added clashes with another task
-	 * @return
+	 * Date/time argument might be concatenated with other arguments, thus the
+	 * method splits the arguments properly
 	 */
-	private boolean isClashing() {
-		ArrayList<Item> tasks = getTasks();
-		for (Item t : tasks) {
-			if (isSameEndDate(t)) {
-				return true;
+	private void splitArgsAfterDateTime() {
+		if (argsArray.size() > 1 && argsArray.get(count - 1).contains(" ")) {
+			while (true) {
+				String last = getLastWord(argsArray.get(count - 1));
+				if (getDate(last) != null) {
+					break;
+				} else {
+					splitOnce(last);
+				}
 			}
 		}
-		return false;
 	}
 
 	/**
-	 * Checks if a given task has end date and is the same as the the created task
-	 * @param t
-	 * @return
+	 * Adds last word to the argsArray and removes it from the date/time
+	 * argument
+	 * 
+	 * @param last
 	 */
-	private boolean isSameEndDate(Item t) {
-		return t.getEndDate() != null
-				&& t.getEndDate().equals(task.getEndDate());
+	private void splitOnce(String last) {
+		argsArray.add(count, last);
+		argsArray.set(count - 1, removeLastWord(argsArray.get(count - 1)));
 	}
 
 	/**
-	 * get task list from storage
-	 * @return
+	 * Stores the created Item Object as task
+	 * 
+	 * @throws IOException
 	 */
-	private ArrayList<Item> getTasks() {
-		ArrayList<Item> tasks = Magical.getStorage().getList(
-				Storage.TASKS_INDEX);
-		return tasks;
+	private void storeTask() throws IOException {
+		Magical.getStorage().create(Storage.TASKS_INDEX, task);
+	}
+
+	/**
+	 * Updates the new view in the GUI
+	 */
+	void updateView() {
+		super.updateView();
+		GUIModel.setCurrentTab("tasks");
 	}
 
 	protected boolean validNumArgs() {
@@ -250,27 +271,5 @@ public class AddCommand extends Command {
 		} else {
 			return true;
 		}
-	}
-
-	/**
-	 * Adds a new task to the storage using the parameters stored 
-	 */
-	public String execute() {
-		setTaskParams();
-
-		try {
-			returnMsg = MESSAGE_TASK_ADDED;
-			checkTaskClash();
-			storeTask();
-			return returnMsg;
-		} catch (IOException e) {
-			return MESSAGE_TASK_ERROR;
-		} finally {
-			updateView();
-		}
-	}
-	
-	public boolean isUndoable() {
-		return true;
 	}
 }

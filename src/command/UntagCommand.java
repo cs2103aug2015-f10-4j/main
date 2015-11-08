@@ -2,7 +2,6 @@ package command;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 import gui.GUIModel;
@@ -59,97 +58,6 @@ public class UntagCommand extends Command {
 	}
 
 	/**
-	 * Throws exception if error messages for format are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
-	}
-
-	/**
-	 * Throws exception if error messages for invalid arguments are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	protected void errorInvalidArgs() throws IllegalArgumentException {
-		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(
-					MESSAGE_HEADER_INVALID, invalidArgs));
-		}
-	}
-
-	/**
-	 * Set the relevant parameters of UntagCommand to that of the specified task
-	 */
-	void setProperParams() {
-		this.itemID = argsArray.get(0).trim();
-		this.item = getItemByID(itemID);
-		this.tags = new ArrayList<String>(argsArray.subList(1, count));
-	}
-
-	public boolean validNumArgs() {
-		if (this.count < 2) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/**
-	 * This method executes the untag command. Which simply removes the
-	 * specified tags from a task or event's tag set.
-	 * 
-	 * @param None
-	 * @return message to show user
-	 * @throws Exception
-	 */
-	@Override
-	public String execute() throws Exception {
-
-		duplicateItem();
-		Set<String> currentTags = item.getTags();
-		for (String tag : tags) {
-			if (!checkTags(currentTags, tag)) {
-				removeTagFromItem(currentTags, tag);
-			}
-		}
-		errorAbsentTags();
-
-		try {
-			updateItem();
-		} catch (IOException e) {
-			return String.format(MESSAGE_TAG_ERROR, itemID);
-		} finally {
-			updateView();
-		}
-
-		return String.format(MESSAGE_TAG_REMOVED, tags, itemID);
-	}
-
-	/**
-	 * Removes given tag from set of tags and set item tags as this set
-	 * 
-	 * @param currentTags
-	 * @param tag
-	 */
-	void removeTagFromItem(Set<String> currentTags, String tag) {
-		currentTags.remove(tag);
-		item.setTags(currentTags);
-	}
-
-	/**
-	 * Throws exception if error messages if tags are absent
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	void errorAbsentTags() throws Exception {
-		if (!absentTags.equals(STRING_EMPTY)) {
-			throw new Exception(absentTags);
-		}
-	}
-
-	/**
 	 * Check if a tag is absent in a set of tags and add to return message
 	 * absentTags if it is not. Returns true if there are absent tags, or false
 	 * otherwise.
@@ -180,6 +88,95 @@ public class UntagCommand extends Command {
 	}
 
 	/**
+	 * Throws exception if error messages if tags are absent
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	void errorAbsentTags() throws Exception {
+		if (!absentTags.equals(STRING_EMPTY)) {
+			throw new Exception(absentTags);
+		}
+	}
+
+	/**
+	 * Throws exception if error messages for invalid arguments are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	protected void errorInvalidArgs() throws IllegalArgumentException {
+		if (invalidArgs.size() > 0) {
+			throw new IllegalArgumentException(String.format(
+					MESSAGE_HEADER_INVALID, invalidArgs));
+		}
+	}
+
+	/**
+	 * Throws exception if error messages for format are present
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	private void errorInvalidFormat() throws IllegalArgumentException {
+		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
+	}
+
+	/**
+	 * This method executes the untag command. Which simply removes the
+	 * specified tags from a task or event's tag set.
+	 * 
+	 * @param None
+	 * @return message to show user
+	 * @throws Exception
+	 */
+	@Override
+	public String execute() throws Exception {
+		duplicateItem();
+		Set<String> currentTags = item.getTags();
+		
+		for (String tag : tags) {
+			if (!checkTags(currentTags, tag)) {
+				removeTagFromItem(currentTags, tag);
+			}
+		}
+		
+		errorAbsentTags();
+
+		try {
+			updateItem();
+		} catch (IOException e) {
+			throw new Exception(String.format(MESSAGE_TAG_ERROR, itemID));
+		} finally {
+			updateView();
+		}
+
+		return String.format(MESSAGE_TAG_REMOVED, tags, itemID);
+	}
+
+	@Override
+	public boolean isUndoable() {
+		return true;
+	}
+
+	/**
+	 * Removes given tag from set of tags and set item tags as this set
+	 * 
+	 * @param currentTags
+	 * @param tag
+	 */
+	void removeTagFromItem(Set<String> currentTags, String tag) {
+		currentTags.remove(tag);
+		item.setTags(currentTags);
+	}
+
+	/**
+	 * Set the relevant parameters of UntagCommand to that of the specified task
+	 */
+	void setProperParams() {
+		this.itemID = argsArray.get(0).trim();
+		this.item = getItemByID(itemID);
+		this.tags = new ArrayList<String>(argsArray.subList(1, count));
+	}
+
+	/**
 	 * Updates the original item with the new modified item
 	 * 
 	 * @throws IOException
@@ -202,22 +199,11 @@ public class UntagCommand extends Command {
 				Storage.EVENTS_DONE_INDEX));
 	}
 
-	@Override
-	public boolean isUndoable() {
-		return true;
-	}
-
-	public static void main(String[] args) throws Exception {
-		ArrayList<Item> msg = new ArrayList<Item>();
-		Item t1 = new Item();
-		Set<String> set = new HashSet<String>();
-		set.add("tag1");
-		set.add("tag2");
-		t1.setTags(set);
-		msg.add(t1);
-		GUIModel.setTaskList(msg);
-
-		TagCommand tag1 = new TagCommand("t1 tag1 tag2");
-		System.out.println(tag1.execute());
+	public boolean validNumArgs() {
+		if (this.count < 2) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
