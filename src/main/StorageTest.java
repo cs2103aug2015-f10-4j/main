@@ -122,7 +122,9 @@ public class StorageTest {
 	@Test
 	public void testWriteToProperties() {
 		Storage testStorage = new Storage();
-		assertTrue(testStorage.writeToProperties(DEFAULT_FILE_PATH));
+		testStorage.writeToProperties(DEFAULT_FILE_PATH);
+		String defaultFileSettings = testStorage.readFileSettings();
+		assertEquals(DEFAULT_FILE_PATH, defaultFileSettings);
 	}
 
 	// tests whether stored file path is read from .properties file.
