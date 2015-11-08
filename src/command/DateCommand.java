@@ -3,7 +3,6 @@ package command;
 import java.util.ArrayList;
 import java.util.Date;
 
-import gui.GUIModel;
 import main.CustomDate;
 import main.Magical;
 import main.Storage;
@@ -116,14 +115,10 @@ public class DateCommand extends Command {
 	public String execute() {
 		
 		//Get unfiltered lists
-		ArrayList<Item> taskList = Magical.getStorage().getList(
-				Storage.TASKS_INDEX);
-		ArrayList<Item> taskDoneList = Magical.getStorage().getList(
-				Storage.TASKS_DONE_INDEX);
-		ArrayList<Item> eventList = Magical.getStorage().getList(
-				Storage.EVENTS_INDEX);
-		ArrayList<Item> eventDoneList = Magical.getStorage().getList(
-				Storage.EVENTS_DONE_INDEX);
+		ArrayList<Item> taskList = Magical.getStorage().getList(Storage.TASKS_INDEX);
+		ArrayList<Item> taskDoneList = Magical.getStorage().getList(Storage.TASKS_DONE_INDEX);
+		ArrayList<Item> eventList = Magical.getStorage().getList(Storage.EVENTS_INDEX);
+		ArrayList<Item> eventDoneList = Magical.getStorage().getList(Storage.EVENTS_DONE_INDEX);
 		
 		//Generated filtered lists
 		ArrayList<Item> filteredTaskList = filterItems(taskList);

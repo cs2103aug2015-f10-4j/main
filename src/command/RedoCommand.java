@@ -1,5 +1,6 @@
 package command;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -48,20 +49,13 @@ public class RedoCommand extends Command {
 			Magical.pushUndoLayer();
 			String folderPath = Magical.redoFolderPaths.pop();
 			Magical.getStorage().changeFolderPath(folderPath);
-			ArrayList<Item> nextTasksList = Magical.redoLists.get(
-					Storage.TASKS_INDEX).pop();
-			ArrayList<Item> nextTasksDoneList = Magical.redoLists.get(
-					Storage.TASKS_DONE_INDEX).pop();
-			ArrayList<Item> nextEventsList = Magical.redoLists.get(
-					Storage.EVENTS_INDEX).pop();
-			ArrayList<Item> nextEventsDoneList = Magical.redoLists.get(
-					Storage.EVENTS_DONE_INDEX).pop();
-			Magical.getStorage().setList(Storage.TASKS_INDEX, nextTasksList);
-			Magical.getStorage().setList(Storage.TASKS_DONE_INDEX,
-					nextTasksDoneList);
-			Magical.getStorage().setList(Storage.EVENTS_INDEX, nextEventsList);
-			Magical.getStorage().setList(Storage.EVENTS_DONE_INDEX,
-					nextEventsDoneList);
+			
+			ArrayList<Item> nextTasksList = Magical.redoLists.get(Storage.TASKS_INDEX).pop();
+			ArrayList<Item> nextTasksDoneList = Magical.redoLists.get(Storage.TASKS_DONE_INDEX).pop();
+			ArrayList<Item> nextEventsList = Magical.redoLists.get(Storage.EVENTS_INDEX).pop();
+			ArrayList<Item> nextEventsDoneList = Magical.redoLists.get(Storage.EVENTS_DONE_INDEX).pop();
+			
+			setStorageLists(nextTasksList, nextTasksDoneList, nextEventsList, nextEventsDoneList);
 
 			return MESSAGE_REDO_SUCCESS;
 		} catch (Exception e) {
@@ -69,6 +63,22 @@ public class RedoCommand extends Command {
 		} finally {
 			updateView();
 		}
+	}
+
+	/**
+	 * Set the storage with the specified lists 
+	 * @param nextTasksList
+	 * @param nextTasksDoneList
+	 * @param nextEventsList
+	 * @param nextEventsDoneList
+	 * @throws IOException
+	 */
+	void setStorageLists(ArrayList<Item> nextTasksList, ArrayList<Item> nextTasksDoneList,
+			ArrayList<Item> nextEventsList, ArrayList<Item> nextEventsDoneList) throws IOException {
+		Magical.getStorage().setList(Storage.TASKS_INDEX, nextTasksList);
+		Magical.getStorage().setList(Storage.TASKS_DONE_INDEX, nextTasksDoneList);
+		Magical.getStorage().setList(Storage.EVENTS_INDEX, nextEventsList);
+		Magical.getStorage().setList(Storage.EVENTS_DONE_INDEX, nextEventsDoneList);
 	}
 
 	/**

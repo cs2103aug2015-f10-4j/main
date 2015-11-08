@@ -7,35 +7,61 @@ import gui.GUIModel;
 import main.Item;
 
 public class SortCommand extends Command {
-
+	
+	/** Messaging **/
+	private static final String MESSAGE_INVALID_FORMAT = "Use Format: sort <parameter> (upto 3 parameters)";
+	private static final String MESSAGE_INVALID_PARAMS = "Parameters";
+	private static final String MESSAGE_SORT_SUCCESS = "sort successful";
+	
+	/** Command parameters **/
 	private ArrayList<String> sortParams;
 
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: sort <parameter> (upto 3 parameters)";
-
+	/**
+	 * Constructor for SortCommand objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid. Contains methods to sort the displayed tasks.
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public SortCommand(String args) throws Exception {
 		super(args);
 
 		this.argsArray = splitArgs(" ", 3);
 		this.count = argsArray.size();
-		this.sortParams = argsArray;
+		
+		setProperParams();
 
 		if (validNumArgs()) {
-			if (sortParams.size() == 1 && sortParams.get(0).isEmpty()) {
-				sortParams.add("priority");
-				sortParams.add("date");
-				sortParams.add("title");
-			} else if (!isValidSortParams()) {
-				invalidArgs.add("parameters");
-			}
-			if (invalidArgs.size() > 0) {
-				throw new IllegalArgumentException(String.format(
-						MESSAGE_HEADER_INVALID, invalidArgs));
-			}
+			checkParams();
+			errorInvalidArgs();
 		} else {
-			throw new IllegalArgumentException(MESSAGE_INVALID_PARAMS);
+			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
 
+	/**
+	 * Set the sorting parameters to all types if none are specified, else 
+	 * add error message
+	 */
+	void checkParams() {
+		if (sortParams.size() == 1 && sortParams.get(0).isEmpty()) {
+			sortParams.add("priority");
+			sortParams.add("date");
+			sortParams.add("title");
+		} else if (!isValidSortParams()) {
+			invalidArgs.add(MESSAGE_INVALID_PARAMS);
+		}
+	}
+
+	void setProperParams() {
+		this.sortParams = argsArray;
+	}
+
+	/**
+	 * Returns true if sort parameters are valid (priority, title, date), or false otherwise
+	 * @return
+	 */
 	private boolean isValidSortParams() {
 		for (String param : sortParams) {
 			if (!(param.equals("priority") || param.equals("title") || param.equals("date"))) {
@@ -55,15 +81,14 @@ public class SortCommand extends Command {
 	 */
 	@Override
 	public String execute() throws Exception {
-		ArrayList<Item> sortedTaskList = new ArrayList<Item>(
-				GUIModel.getTaskList());
-		ArrayList<Item> sortedTaskDoneList = new ArrayList<Item>(
-				GUIModel.getTaskDoneList());
-		ArrayList<Item> sortedEventList = new ArrayList<Item>(
-				GUIModel.getEventList());
-		ArrayList<Item> sortedEventDoneList = new ArrayList<Item>(
-				GUIModel.getEventDoneList());
 		
+		//Get unfiltered lists
+		ArrayList<Item> sortedTaskList = new ArrayList<Item>(GUIModel.getTaskList());
+		ArrayList<Item> sortedTaskDoneList = new ArrayList<Item>(GUIModel.getTaskDoneList());
+		ArrayList<Item> sortedEventList = new ArrayList<Item>(GUIModel.getEventList());
+		ArrayList<Item> sortedEventDoneList = new ArrayList<Item>(GUIModel.getEventDoneList());
+		
+		//sort lists
 		if (sortParams.contains("title")) {
 			Collections.sort(sortedTaskList, Item.Comparators.TITLE);
 			Collections.sort(sortedTaskDoneList, Item.Comparators.TITLE);
@@ -83,11 +108,9 @@ public class SortCommand extends Command {
 			Collections.sort(sortedEventDoneList, Item.Comparators.PRIORITY);
 		}
 		
-		GUIModel.setTaskList(sortedTaskList);
-		GUIModel.setTaskDoneList(sortedTaskDoneList);
-		GUIModel.setEventList(sortedEventList);
-		GUIModel.setEventDoneList(sortedEventDoneList);
-		return "sort successful";
+		updateView(sortedTaskList, sortedTaskDoneList, sortedEventList, sortedEventDoneList);
+		
+		return MESSAGE_SORT_SUCCESS;
 	}
 
 	@Override
