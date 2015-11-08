@@ -48,7 +48,7 @@ public class EditCommand extends Command {
 	/**
 	 * Constructor for EditCommand objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
-	 * if arguments are invalid
+	 * if arguments are invalid. Contains methods to update the item in storage.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -188,6 +188,10 @@ public class EditCommand extends Command {
 	}
 
 	@Override
+	/**
+	 * Clones the current item and changes the value in the field specified. Updates
+	 * storage with the new item.
+	 */
 	public String execute() throws Exception {
 
 		duplicateItem();

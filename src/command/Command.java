@@ -401,7 +401,7 @@ public abstract class Command {
 	public abstract String execute() throws Exception;
 	
 	/**
-	 * Set the relevant parameters of Command to that of the specified Command variables
+	 * Set the relevant arguments provided to corresponding command parameters
 	 */
 	abstract void setProperParams();
 }

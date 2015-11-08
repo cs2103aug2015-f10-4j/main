@@ -10,10 +10,20 @@ public class PathCommand extends Command {
 	
 	private String location;
 
+	/**
+	 * Constructor for PathCommand objects.
+	 * Checks if arguments are valid and stores the correct arguments properly.
+	 * Throws the appropriate exception if arguments are invalid. Contains methods to 
+	 * change the file path location of storage textfile.
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public PathCommand(String args) throws Exception {
 		super(args);
 
-		this.location = args;
+		setProperParams();
+		
 		if (args.isEmpty()) {
 			throw new IllegalArgumentException(MESSAGE_ARGUMENT_PARAMS);
 		}
@@ -44,6 +54,11 @@ public class PathCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return true;
+	}
+
+	@Override
+	void setProperParams() {
+		this.location = args;
 	}
 
 }

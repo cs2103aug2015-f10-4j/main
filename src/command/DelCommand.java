@@ -1,7 +1,6 @@
 package command;
 
 import java.io.IOException;
-import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Item;
@@ -21,7 +20,7 @@ public class DelCommand extends Command {
 	/**
 	 * Constructor for DelCommand objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
-	 * if arguments are invalid
+	 * if arguments are invalid. Contains methods to remove to item.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -68,7 +67,7 @@ public class DelCommand extends Command {
 	}
 
 	/**
-	 * This method executes the delete command. Which simply deletes the
+	 * This method executes the delete command, which deletes the
 	 * specified task or event from the database.
 	 * 
 	 * @return message to show user
