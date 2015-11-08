@@ -25,9 +25,7 @@ public class GUIModel {
 
 	/**
 	 * This method sets the current tab in the model.
-	 *
-	 * @param type
-	 *            - "tasks" or "events"
+	 * @param type "tasks" or "events"
 	 */
 
 	public static void setCurrentTab(String type) {
@@ -40,13 +38,16 @@ public class GUIModel {
 
 	/**
 	 * Returns the current tab in the model.
-	 *
-	 * @return String - "events" or "tasks"
+	 * @return String "events" or "tasks"
 	 */
 	public static String getCurrentTab() {
 		return currentTab;
 	}
 
+	/**
+	 * The methods below return the various lists stored in the model.
+	 * @return ObservableList<Item>
+	 */
 	public static ObservableList<Item> getTaskList() {
 		return taskList;
 	}
@@ -63,6 +64,11 @@ public class GUIModel {
 		return eventDoneList;
 	}
 
+	/**
+	 * The methods below allow the lists in the model to be
+	 * replaced.
+	 * @param newTaskList
+	 */
 	public static void setTaskList(ArrayList<Item> newTaskList) {
 		taskList = makeObservable(newTaskList);
 	}
@@ -82,10 +88,8 @@ public class GUIModel {
 	/**
 	 * This method initializes GUIModel by converting tasks lists from Storage
 	 * into ObservableLists usable by the controller.
-	 *
 	 * @return Nothing
 	 */
-
 	public static void init() {
 		taskList = makeObservable(main.Magical.getStorage().getList(
 				main.Storage.TASKS_INDEX));
@@ -99,10 +103,8 @@ public class GUIModel {
 	}
 
 	/**
-	 * This method converts an arraylist of tasks into an ObservableList.
-	 *
-	 * @param arrayList
-	 *            - list to convert
+	 * This method converts an ArrayList of tasks into an ObservableList.
+	 * @param  arrayList list to convert
 	 * @return ObservableList
 	 */
 	private static ObservableList<Item> makeObservable(ArrayList<Item> arrayList) {

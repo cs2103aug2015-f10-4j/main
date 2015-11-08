@@ -11,16 +11,19 @@ import javafx.stage.Stage;
 public class GUIView extends Application {
 
 	private static final String TITLE_FORMAT = "Magical v%s";
-	private static final String VERSION_NUMBER = "0.4";
+	private static final String VERSION_NUMBER = "0.5";
 
+	/**
+	 * Initializes the main scene of the application, by loading the FXML
+	 * file and its controller.
+	 * @return nothing
+	 */
 	public void start(Stage primaryStage) throws Exception {
-
 		primaryStage.setTitle(String.format(TITLE_FORMAT, VERSION_NUMBER));
 		Pane rootPane = (Pane) FXMLLoader.load(getClass().getResource("/gui/FXML.fxml"))	;
 		Scene scene = new Scene(rootPane);
 		primaryStage.setScene(scene);
 		primaryStage.show();
-
 	}
 
 	/**

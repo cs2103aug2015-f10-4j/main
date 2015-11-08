@@ -8,7 +8,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -19,18 +18,14 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import main.CustomDate;
 import main.Item;
 
@@ -45,6 +40,7 @@ public class GUIController {
 	private static final Color SUCCESS_MESSAGE_COLOR = Color.BLUE;
 	private static final Color ERROR_MESSAGE_COLOR = Color.RED;
 
+	/** Shortcuts **/
 	private static final String UNDO_COMMAND = "undo";
 	private static final String REDO_COMMAND = "redo";
 	private static final KeyCodeCombination UNDO_SHORTCUT = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
@@ -66,6 +62,7 @@ public class GUIController {
     	}
     };
 
+    /** Containers **/
 	@FXML private AnchorPane rootPane;
 	@FXML private AnchorPane mainPane;
 	@FXML private AnchorPane helpPane;
@@ -123,7 +120,6 @@ public class GUIController {
 	 * loaded by GUIView.
 	 * @throws Exception
 	 */
-
 	public void initialize() throws Exception {
 
 		main.Magical.init();
@@ -202,9 +198,8 @@ public class GUIController {
 
 	/**
 	 * This method switches the currently selected tab.
-	 * @param type - either "tasks" or "events"
+	 * @param type either "tasks" or "events"
 	 */
-
 	public void switchToTab(String type) {
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
 		if (type == "tasks") {
@@ -223,10 +218,9 @@ public class GUIController {
 	 * the label above the command line.
 	 * This method also checks if GUIModel.showHelpWindow is true, and
 	 * opens the help window accordingly.
-	 * @param event - Enter pressed
+	 * @param      event a key event in the commandLineField
 	 * @throws Exception
 	 */
-
 	@FXML
 	protected void onEnterPressed(KeyEvent event) throws Exception {
 		helpPane.setVisible(false);
@@ -245,7 +239,12 @@ public class GUIController {
 	}
 
 
-
+	/**
+	 * Passes userInput to the main application logic, printing an
+	 * error message when applicable. Also used when implementing
+	 * shortcuts that simulate user input.
+	 * @param userInput usually from commandLine
+	 */
 	private void handleUserInput(String userInput) {
 		try {
 			messageLabel.setTextFill(SUCCESS_MESSAGE_COLOR);
@@ -260,6 +259,12 @@ public class GUIController {
 			messageLabel.setText(e.getMessage());
 		}
 	}
+
+	/**
+	 * Initializes event handlers for the main scene. Must be called after
+	 * initialization of the controller.
+	 * @return nothing
+	 */
 
 	private void initializeSceneShortcuts() {
 		Scene scene = rootPane.getScene();
@@ -297,10 +302,9 @@ public class GUIController {
 	/**
 	 * This method converts a tagSet into a printable String to populate
 	 * Tags columns with.
-	 * @param tagSet - set of tags from a Task object
+	 * @param  tagSet set of tags from an Item
 	 * @return String
 	 */
-
 	private String makeTagString(Set<String> tagSet) {
 		String result = "";
 		if (!tagSet.isEmpty()) {
@@ -318,7 +322,6 @@ public class GUIController {
 	 * @param col
 	 * @return SimpleStringProperty
 	 */
-
 	private SimpleStringProperty makeTagCellValue(CellDataFeatures<Item, String> col) {
 		SimpleStringProperty finalResult = new SimpleStringProperty();
 		Set<String> tagSet = col.getValue().getTags();
@@ -329,7 +332,7 @@ public class GUIController {
 
 	/**
 	 * Makes the appropriate index cell for table columns.
-	 * @param character - depending on table
+	 * @param  character depending on table
 	 * @return TableCell
 	 */
 
@@ -346,7 +349,7 @@ public class GUIController {
 	 * the whole row red if the date is past.
 	 * As such, this method is only used for the undone
 	 * event and task tables.
-	 * @return TableCell<Item, CustomDate> - colors the row depending on date
+	 * @return TableCell<Item, CustomDate> colors the row depending on date
 	 */
 
 	private TableCell<Item, CustomDate> makeDateCellFactory() {
