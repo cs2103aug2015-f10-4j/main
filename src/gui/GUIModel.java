@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import main.Item;
 
 public class GUIModel {
@@ -18,9 +21,11 @@ public class GUIModel {
 	public static ObservableList<Item> eventList;
 	public static ObservableList<Item> eventDoneList;
 
+	@FXML private AnchorPane rootPane;
+
 	/**
 	 * This method sets the current tab in the model.
-	 * 
+	 *
 	 * @param type
 	 *            - "tasks" or "events"
 	 */
@@ -35,7 +40,7 @@ public class GUIModel {
 
 	/**
 	 * Returns the current tab in the model.
-	 * 
+	 *
 	 * @return String - "events" or "tasks"
 	 */
 	public static String getCurrentTab() {
@@ -77,7 +82,7 @@ public class GUIModel {
 	/**
 	 * This method initializes GUIModel by converting tasks lists from Storage
 	 * into ObservableLists usable by the controller.
-	 * 
+	 *
 	 * @return Nothing
 	 */
 
@@ -90,11 +95,12 @@ public class GUIModel {
 				main.Storage.EVENTS_INDEX));
 		eventDoneList = makeObservable(main.Magical.getStorage().getList(
 				main.Storage.EVENTS_DONE_INDEX));
+
 	}
 
 	/**
 	 * This method converts an arraylist of tasks into an ObservableList.
-	 * 
+	 *
 	 * @param arrayList
 	 *            - list to convert
 	 * @return ObservableList

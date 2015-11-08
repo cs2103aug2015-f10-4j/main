@@ -16,16 +16,19 @@ public class GUIView extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
 		primaryStage.setTitle(String.format(TITLE_FORMAT, VERSION_NUMBER));
-		Pane myPane = (Pane) FXMLLoader.load(getClass().getResource("/gui/FXML.fxml"))	;
-		Scene myScene = new Scene(myPane);
-		primaryStage.setScene(myScene);
+		Pane rootPane = (Pane) FXMLLoader.load(getClass().getResource("/gui/FXML.fxml"))	;
+		Scene scene = new Scene(rootPane);
+		primaryStage.setScene(scene);
 		primaryStage.show();
 
 	}
 
+	/**
+	 * Main method. Launches application.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		LauncherImpl.launchApplication(GUIView.class, args);
 	}
-
 
 }
