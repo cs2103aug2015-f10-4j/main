@@ -17,8 +17,8 @@ public class EventCommand extends Command {
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "
 			+ "from <start date> <start time> "
 			+ "to <end date> <end time>";
-	private static final String MESSAGE_INVALID_DATETIME_END = "End time";
-	private static final String MESSAGE_INVALID_DATETIME_START = "Start time";
+	private static final String MESSAGE_INVALID_DATETIME_END = "End date/time";
+	private static final String MESSAGE_INVALID_DATETIME_START = "Start date/time";
 	private static final String MESSAGE_INVALID_DATETIME_RANGE = "End date/time is earlier than Start date/time";
 	private static final String MESSAGE_INVALID_TITLE = "Title";
 	private static final String MESSAGE_EVENT_ADDED = "event added";
@@ -76,39 +76,19 @@ public class EventCommand extends Command {
 
 			
 		} else {
-			errorInvalidFormat();
+			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 		
 	}
 
 	/** 
-	 * Set the default day to start day if unspecified
+	 * Set the default day to be start day if unspecified
 	 */
 	private void setDefaultEndDay() {
 		if (dateEnd.getDateString().equals(today.getDateString())) {
-			dateEnd.set("day", dateStart.getDay());
-			dateEnd.set("month", dateStart.getMonth() - 1);
-			dateEnd.set("year", dateStart.getYear());
-		}
-	}
-	
-	/**
-	 * Throws exception if error messages for format are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
-	}
-
-	/**
-	 * Throws exception if error messages for invalid arguments are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidArgs() throws IllegalArgumentException {
-		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
+			dateEnd.setDay(dateStart.getDay());
+			dateEnd.setMonth(dateStart.getMonth());
+			dateEnd.setYear(dateStart.getYear());
 		}
 	}
 	
@@ -145,10 +125,7 @@ public class EventCommand extends Command {
 		}
 	}
 
-	/**
-	 * Set the relevant parameters of EventCommand to that of the specified event
-	 */
-	private void setProperParams() {
+	void setProperParams() {
 		this.title = getTitle(argsArray.get(0).trim());
 		this.dateStart = getDate(argsArray.get(1).trim());
 		this.dateEnd = getDate(argsArray.get(2).trim());
@@ -175,7 +152,7 @@ public class EventCommand extends Command {
 	 * @return
 	 */
 	public boolean validDateRange() {
-		return dateEnd.compareTo(dateStart) != -1;
+		return dateEnd.compareTo(dateStart) < 0;
 	}
 	
 	/**
@@ -271,17 +248,6 @@ public class EventCommand extends Command {
 		} finally {
 			updateView();
 		}
-	}
-
-	/**
-	 * Updates the new view in the GUI
-	 */
-	private void updateView() {
-		GUIModel.setEventList(Magical.getStorage().getList(
-				Storage.EVENTS_INDEX));
-		GUIModel.setEventDoneList(Magical.getStorage().getList(
-				Storage.EVENTS_DONE_INDEX));
-		GUIModel.setCurrentTab("events");
 	}
 
 	/**

@@ -67,27 +67,7 @@ public class AddCommand extends Command {
 			errorInvalidArgs();
 			
 		} else {
-			errorInvalidFormat();
-		}
-	}
-
-	/**
-	 * Throws exception if error messages for format are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
-	}
-
-	/**
-	 * Throws exception if error messages for invalid arguments are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidArgs() throws IllegalArgumentException {
-		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(MESSAGE_HEADER_INVALID, invalidArgs));
+			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
 
@@ -113,7 +93,7 @@ public class AddCommand extends Command {
 	/**
 	 * Set the relevant parameters of AddCommand to that of the specified task
 	 */
-	private void setProperParams() {
+	void setProperParams() {
 		this.title = getTitle(argsArray.get(0).trim());
 		this.dueDate = getDate(argsArray.get(1).trim());
 		this.endTime = dueDate == null ? -1 : dueDate.getTime();
@@ -211,11 +191,8 @@ public class AddCommand extends Command {
 	/**
 	 * Updates the new view in the GUI
 	 */
-	private void updateView() {
-		GUIModel.setTaskList(Magical.getStorage().getList(
-				Storage.TASKS_INDEX));
-		GUIModel.setTaskDoneList(Magical.getStorage().getList(
-				Storage.TASKS_DONE_INDEX));
+	void updateView() {
+		super.updateView();
 		GUIModel.setCurrentTab("tasks");
 	}
 
