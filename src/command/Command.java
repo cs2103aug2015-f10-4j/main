@@ -255,13 +255,17 @@ public abstract class Command {
 			if (index != -1) {
 				switch (type) {
 				case "t":
-					return Magical.getDisplayList(Storage.TASKS_INDEX).get(index);
+					return Magical.getDisplayList(Storage.TASKS_INDEX).get(
+							index);
 				case "d":
-					return Magical.getDisplayList(Storage.TASKS_DONE_INDEX).get(index);
+					return Magical.getDisplayList(Storage.TASKS_DONE_INDEX)
+							.get(index);
 				case "e":
-					return Magical.getDisplayList(Storage.EVENTS_INDEX).get(index);
+					return Magical.getDisplayList(Storage.EVENTS_INDEX).get(
+							index);
 				case "p":
-					return Magical.getDisplayList(Storage.EVENTS_DONE_INDEX).get(index);
+					return Magical.getDisplayList(Storage.EVENTS_DONE_INDEX)
+							.get(index);
 				default:
 					return null;
 				}
@@ -455,14 +459,13 @@ public abstract class Command {
 	 * Updates the new view in the GUI
 	 */
 	void updateView(ArrayList<Item> newTaskList,
-			ArrayList<Item> newTaskDoneList,
-			ArrayList<Item> newEventList,
+			ArrayList<Item> newTaskDoneList, ArrayList<Item> newEventList,
 			ArrayList<Item> newEventDoneList) {
 
 		Magical.setDisplayList(Storage.TASKS_INDEX, newTaskList);
-		Magical.setDisplayList(Storage.TASKS_DONE_INDEX, newTaskList);
-		Magical.setDisplayList(Storage.EVENTS_INDEX, newTaskList);
-		Magical.setDisplayList(Storage.EVENTS_DONE_INDEX, newTaskList);
+		Magical.setDisplayList(Storage.TASKS_DONE_INDEX, newTaskDoneList);
+		Magical.setDisplayList(Storage.EVENTS_INDEX, newEventList);
+		Magical.setDisplayList(Storage.EVENTS_DONE_INDEX, newEventDoneList);
 	}
 
 	/**
