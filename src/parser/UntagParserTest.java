@@ -44,8 +44,6 @@ public class UntagParserTest {
 	public void testNormalInputs() throws Exception {
 		UntagParser untagTask = new UntagParser("t1 CS2103");
 		UntagParser untagTaskAgain = new UntagParser("t1 CS2105");
-		// UntagParser untagNextTask = new UntagParser("t2 CS2102");
-		// UntagParser untagLastTask = new UntagParser("t7 CS2010");
 	}
 
 	@Test
