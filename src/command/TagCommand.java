@@ -60,7 +60,7 @@ public class TagCommand extends Command {
 	 * @param tag
 	 */
 	void addTagToItem(Set<String> currentTags, String tag) {
-		currentTags.add(tag);
+		currentTags.add(tag.toLowerCase());
 		item.setTags(currentTags);
 	}
 
