@@ -121,7 +121,7 @@ public class Magical {
 		currentTab = "tasks";
 		displayLists = new ArrayList<ArrayList<Item>>(Storage.NUM_LISTS);
 		for (int i = 0; i < Storage.NUM_LISTS; i++) {
-			displayLists.add(storage.getList(i));
+			displayLists.add(listClone(storage.getList(i)));
 		}
 		for (int i = 0; i < Storage.NUM_LISTS; i++) {
 			undoLists.add(new Stack<ArrayList<Item>>());
