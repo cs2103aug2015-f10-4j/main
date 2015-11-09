@@ -30,6 +30,9 @@ public class Parser {
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %s";
 	private static final String MESSAGE_INVALID_INPUT = "Please enter a command";
 
+	/** Parser Instance**/
+	private static Parser parser;
+	
 	/**
 	 * Splits a given string of user input and returns the words after the first
 	 * word of the input, which are the arguments of the command
@@ -60,9 +63,9 @@ public class Parser {
 
 	/**
 	 * Checks if the command is valid and returns the correct Command subclass
-	 * of the user's command. Passes the arguments to the Command subclass,
-	 * which will be checked for validity within the constructor. Exception
-	 * thrown if a command is not valid
+	 * of the user's command. Passes the arguments to an ArgsParserAbstract subclass,
+	 * which will check the arguments' validity within its constructor. Exception
+	 * thrown if a command is not valid.
 	 * 
 	 * @param command
 	 * @param args
@@ -115,8 +118,8 @@ public class Parser {
 	}
 
 	/**
-	 * Takes in an input from the user and returns the correct command object
-	 * for executing what the user wants. Calls the inputValidation method.
+	 * Takes in an input from the user and splits into command and command arguments, 
+	 * before verifying them and returning the corresponding Command object. 
 	 * Exception is thrown if no input is given.
 	 * 
 	 * @param userInput
@@ -135,5 +138,12 @@ public class Parser {
 		} else {
 			throw new Exception(MESSAGE_INVALID_INPUT);
 		}
+	}
+	
+	public static Parser getInstance(){
+		if(parser == null){
+			parser = new Parser();
+		}
+		return parser;
 	}
 }
