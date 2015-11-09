@@ -217,13 +217,32 @@ public class EventCommand extends Command {
 	 */
 	private void setDefaultEndDay() {
 		if(dateEnd != null){
-			if (dateEnd.getDateString().equals(today.getDateString())
-					&& !(dateStart.compareTo(today) < 0)) {
-				dateEnd.setDay(dateStart.getDay());
-				dateEnd.setMonth(dateStart.getMonth());
-				dateEnd.setYear(dateStart.getYear());
+			if (dateEnd.getDateString().equals(today.getDateString())) {
+				if(endIsTimeOnly()){
+					setFollowingStart();
+				}
 			}
 		}
+	}
+
+	/**
+	 * Set the date month and year according to that of the start day. Time
+	 * may still be different
+	 */
+	void setFollowingStart() {
+		dateEnd.setDay(dateStart.getDay());
+		dateEnd.setMonth(dateStart.getMonth());
+		dateEnd.setYear(dateStart.getYear());
+	}
+
+	/**
+	 * Check if only time was given for end date. Parsing with another date other than
+	 * default would give a customDate object, else null if not only time was given.
+	 * @return
+	 */
+	private boolean endIsTimeOnly() {
+		CustomDate temp = getDate("tomorrow " + argsArray.get(2).trim());
+		return temp != null;
 	}
 
 	/**
