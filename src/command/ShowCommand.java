@@ -117,7 +117,7 @@ public class ShowCommand extends Command {
 	 */
 	private ArrayList<Item> filterList(ArrayList<Item> itemList) {
 		ArrayList<Item> filteredItemList = new ArrayList<Item>();
-		Set<String> queryTags = new HashSet<String>(tags); 
+		Set<String> queryTags = new HashSet<String>(); 
 		for (String tag : tags) {
 			queryTags.add(tag.toLowerCase());
 		}
