@@ -16,16 +16,15 @@ import command.Command;
  */
 public class Magical {
 	private static List<ArrayList<Item>> displayLists;
-	public static String currentTab;
-
+	private static String currentTab;
 	public static List<Stack<ArrayList<Item>>> undoLists = new ArrayList<Stack<ArrayList<Item>>>(
 			Storage.NUM_LISTS);
 	public static List<Stack<ArrayList<Item>>> redoLists = new ArrayList<Stack<ArrayList<Item>>>(
 			Storage.NUM_LISTS);
+
 	public static Stack<String> undoFolderPaths = new Stack<String>();
 	public static Stack<String> redoFolderPaths = new Stack<String>();
 	public static Command lastCommand;
-
 	private static Storage storage;
 
 	/**
@@ -69,6 +68,15 @@ public class Magical {
 		String message = command.execute();
 		lastCommand = command;
 		return message;
+	}
+
+	/**
+	 * Getter for currentTab.
+	 * 
+	 * @return current tab
+	 */
+	public static String getCurrentTab() {
+		return currentTab;
 	}
 
 	/**
@@ -150,6 +158,15 @@ public class Magical {
 		undoLists.get(Storage.TASKS_DONE_INDEX).push(prevTasksDoneList);
 		undoLists.get(Storage.EVENTS_INDEX).push(prevEventsList);
 		undoLists.get(Storage.EVENTS_DONE_INDEX).push(prevEventsDoneList);
+	}
+
+	/**
+	 * Setter for currenTab.
+	 * 
+	 * @param currentTab
+	 */
+	public static void setCurrentTab(String currentTab) {
+		Magical.currentTab = currentTab;
 	}
 
 	/**
