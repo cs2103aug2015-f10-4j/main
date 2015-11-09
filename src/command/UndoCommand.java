@@ -58,7 +58,15 @@ public class UndoCommand extends Command {
 
 			setStorage(lastTasksList, lastTasksDoneList, lastEventsList,
 					lastEventsDoneList);
-
+			
+			System.out.println(Magical.lastCommand.getClass());
+			
+			if (!Magical.lastCommand.isUndoable()) {
+				System.out.println("HI");
+				
+				Magical.lastCommand.execute();
+			}
+			
 			return MESSAGE_UNDO_SUCCESS;
 		} catch (Exception e) {
 			throw new Exception(MESSAGE_UNDO_ERROR);

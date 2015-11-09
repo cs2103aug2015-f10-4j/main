@@ -339,6 +339,7 @@ public class EditCommand extends Command {
 	void updateItem() throws IOException {
 		int listIndex = Storage.getListIndex(argsArray.get(0));
 		Magical.getStorage().update(listIndex, prevItem, item);
+		Magical.updateDisplayList(listIndex, prevItem, item);
 	}
 
 	public boolean validNumArgs() {

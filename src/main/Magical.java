@@ -198,5 +198,20 @@ public class Magical {
 	public static void setShowHelpWindow(boolean showHelpWindow) {
 		Magical.showHelpWindow = showHelpWindow;
 	}
-
+	
+	/**
+	 * This method updates a specified Item in the list of Items where the Item is stored in
+	 * and updates the data file.
+	 * 
+	 * @param listIndex 	Index of the list where the Item to be updated is stored in.
+	 * @param t 			The updated Item to be stored.
+	 * @throws IOException	On file input error.
+	 */
+	public static void updateDisplayList(int listIndex, Item oldItem, Item newItem) 
+			throws IOException {
+		int pos = displayLists.get(listIndex).indexOf(oldItem);
+		if (pos > -1) {
+			displayLists.get(listIndex).set(pos, newItem);
+		}
+	}
 }

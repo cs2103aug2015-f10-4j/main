@@ -445,14 +445,18 @@ public abstract class Command {
 	 * Updates the new view in the GUI
 	 */
 	void updateView() {
-		Magical.setDisplayList(Storage.TASKS_INDEX, Magical.getStorage()
-				.getList(Storage.TASKS_INDEX));
-		Magical.setDisplayList(Storage.TASKS_DONE_INDEX, Magical.getStorage()
-				.getList(Storage.TASKS_DONE_INDEX));
-		Magical.setDisplayList(Storage.EVENTS_INDEX, Magical.getStorage()
-				.getList(Storage.EVENTS_INDEX));
-		Magical.setDisplayList(Storage.EVENTS_DONE_INDEX, Magical.getStorage()
-				.getList(Storage.EVENTS_DONE_INDEX));
+		ArrayList<Item> updatedTaskList = Magical
+				.getDisplayList(Storage.TASKS_INDEX);
+		ArrayList<Item> updatedTaskDoneList = Magical
+				.getDisplayList(Storage.TASKS_DONE_INDEX);
+		ArrayList<Item> updatedEventList = Magical
+				.getDisplayList(Storage.EVENTS_INDEX);
+		ArrayList<Item> updatedEventDoneList = Magical
+				.getDisplayList(Storage.EVENTS_DONE_INDEX);
+		Magical.setDisplayList(Storage.TASKS_INDEX, updatedTaskList);
+		Magical.setDisplayList(Storage.TASKS_DONE_INDEX, updatedTaskDoneList);
+		Magical.setDisplayList(Storage.EVENTS_INDEX, updatedEventList);
+		Magical.setDisplayList(Storage.EVENTS_DONE_INDEX, updatedEventDoneList);
 	}
 
 	/**
