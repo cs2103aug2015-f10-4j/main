@@ -37,6 +37,19 @@ public class Magical {
 	public static Command lastViewCommand;
 
 	/**
+	 * This method adds a specified Item in the list of Items where the Item is
+	 * stored in and updates the data file.
+	 * 
+	 * @param listIndex
+	 *            Index of the list where the Item to be updated is stored in.
+	 * @param t
+	 *            The updated Item to be stored.
+	 */
+	public static void addDisplayList(int listIndex, Item item) {
+		displayLists.get(listIndex).add(item);
+	}
+
+	/**
 	 * This method archives all events that ended before the current date.
 	 */
 	private static void archivePastEvents() {
@@ -58,6 +71,22 @@ public class Magical {
 			storage.setList(Storage.EVENTS_INDEX, newEventList);
 			storage.setList(Storage.EVENTS_DONE_INDEX, eventDoneList);
 		} catch (IOException e) {
+		}
+	}
+
+	/**
+	 * This method deletes a specified Item in the list of Items where the Item
+	 * is stored in and updates the data file.
+	 * 
+	 * @param listIndex
+	 *            Index of the list where the Item to be updated is stored in.
+	 * @param t
+	 *            The updated Item to be stored.
+	 */
+	public static void deleteDisplayList(int listIndex, Item item) {
+		int pos = displayLists.get(listIndex).indexOf(item);
+		if (pos > -1) {
+			displayLists.get(listIndex).remove(pos);
 		}
 	}
 
@@ -226,34 +255,5 @@ public class Magical {
 		if (pos > -1) {
 			displayLists.get(listIndex).set(pos, newItem);
 		}
-	}
-
-	/**
-	 * This method deletes a specified Item in the list of Items where the Item
-	 * is stored in and updates the data file.
-	 * 
-	 * @param listIndex
-	 *            Index of the list where the Item to be updated is stored in.
-	 * @param t
-	 *            The updated Item to be stored.
-	 */
-	public static void deleteDisplayList(int listIndex, Item item) {
-		int pos = displayLists.get(listIndex).indexOf(item);
-		if (pos > -1) {
-			displayLists.get(listIndex).remove(pos);
-		}
-	}
-
-	/**
-	 * This method adds a specified Item in the list of Items where the Item is
-	 * stored in and updates the data file.
-	 * 
-	 * @param listIndex
-	 *            Index of the list where the Item to be updated is stored in.
-	 * @param t
-	 *            The updated Item to be stored.
-	 */
-	public static void addDisplayList(int listIndex, Item item) {
-		displayLists.get(listIndex).add(item);
 	}
 }
