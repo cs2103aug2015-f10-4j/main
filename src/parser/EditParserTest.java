@@ -1,4 +1,4 @@
-package command;
+package parser;
 
 import static org.junit.Assert.*;
 
@@ -12,7 +12,7 @@ import org.junit.Test;
 import gui.GUIModel;
 import main.Item;
 
-public class EditCommandTest {
+public class EditParserTest {
 
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %s";
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <item_id> <field> <value>";
@@ -56,74 +56,74 @@ public class EditCommandTest {
 
 	@Test
 	public void testEditTitleNormalInputs() throws Exception {
-		Command normalEdit = new EditCommand("t1 title Title");
-		Command normalEditLong = new EditCommand("t1 title " + LONG_STRING);
-		Command normalEditWeird = new EditCommand("t1 title " + WEIRD_STRING);
-		Command normalEditDiffTask = new EditCommand("t2 title Title");
-		Command normalEditLastTask = new EditCommand("t10 title Title");
-		Command normalEditWithPunctuation = new EditCommand("t10 title Title");
-		Command normalEditDoneTask = new EditCommand("d1 title Title");
-		Command normalEditEvent = new EditCommand("e1 title Title");
-		Command normalEditDoneEvent = new EditCommand("p1 title Title");
+		ArgsParserSkeleton normalEdit = new EditParser("t1 title Title");
+		ArgsParserSkeleton normalEditLong = new EditParser("t1 title " + LONG_STRING);
+		ArgsParserSkeleton normalEditWeird = new EditParser("t1 title " + WEIRD_STRING);
+		ArgsParserSkeleton normalEditDiffTask = new EditParser("t2 title Title");
+		ArgsParserSkeleton normalEditLastTask = new EditParser("t10 title Title");
+		ArgsParserSkeleton normalEditWithPunctuation = new EditParser("t10 title Title");
+		ArgsParserSkeleton normalEditDoneTask = new EditParser("d1 title Title");
+		ArgsParserSkeleton normalEditEvent = new EditParser("e1 title Title");
+		ArgsParserSkeleton normalEditDoneEvent = new EditParser("p1 title Title");
 	}
 
 	@Test
 	public void testEditDateNormalInputs() throws Exception {
-		Command normalEdit = new EditCommand("t1 date 1 January 2015");
-		Command normalEditDateFormat = new EditCommand("t1 date January 1 2015");
-		Command normalEditShortDate = new EditCommand("t1 date Jan 1");
-		Command normalEditShortDateFormat = new EditCommand("t1 date 1 Jan");
-		Command normalEditDateNoYear = new EditCommand("t1 date January 1");
-		Command normalEditFlexiDate = new EditCommand("t1 date today");
-		Command normalEditEvent = new EditCommand("e1 date 1 January 2015");
-		Command normalEditDoneTask = new EditCommand("d1 date 1 January 2015");
-		Command normalEditDoneEvent = new EditCommand("p1 date 1 January 2015");
+		ArgsParserSkeleton normalEdit = new EditParser("t1 date 1 January 2015");
+		ArgsParserSkeleton normalEditDateFormat = new EditParser("t1 date January 1 2015");
+		ArgsParserSkeleton normalEditShortDate = new EditParser("t1 date Jan 1");
+		ArgsParserSkeleton normalEditShortDateFormat = new EditParser("t1 date 1 Jan");
+		ArgsParserSkeleton normalEditDateNoYear = new EditParser("t1 date January 1");
+		ArgsParserSkeleton normalEditFlexiDate = new EditParser("t1 date today");
+		ArgsParserSkeleton normalEditEvent = new EditParser("e1 date 1 January 2015");
+		ArgsParserSkeleton normalEditDoneTask = new EditParser("d1 date 1 January 2015");
+		ArgsParserSkeleton normalEditDoneEvent = new EditParser("p1 date 1 January 2015");
 	}
 
 	@Test
 	public void testEditStartTimeNormalInputs() throws Exception {
-		Command normalEdit = new EditCommand("e1 start time 12pm");
-		Command normalEditDiffFormat = new EditCommand("e1 start time 1200");
-		Command normalEditDiffFormat2 = new EditCommand("e1 start time 12:00");
-		Command normalEditDiffFormat3 = new EditCommand("e1 start time 12 p.m.");
-		Command normalEditDiffFormat4 = new EditCommand("e1 start time 12 pm");
-		Command normalEditDoneTask = new EditCommand("p1 start time 12pm");
+		ArgsParserSkeleton normalEdit = new EditParser("e1 start time 12pm");
+		ArgsParserSkeleton normalEditDiffFormat = new EditParser("e1 start time 1200");
+		ArgsParserSkeleton normalEditDiffFormat2 = new EditParser("e1 start time 12:00");
+		ArgsParserSkeleton normalEditDiffFormat3 = new EditParser("e1 start time 12 p.m.");
+		ArgsParserSkeleton normalEditDiffFormat4 = new EditParser("e1 start time 12 pm");
+		ArgsParserSkeleton normalEditDoneTask = new EditParser("p1 start time 12pm");
 	}
 
 	@Test
 	public void testEditEndTime() throws Exception {
-		Command normalEdit = new EditCommand("e1 end time 12pm");
-		Command normalEditDiffFormat = new EditCommand("e1 end time 1200");
-		Command normalEditDiffFormat2 = new EditCommand("e1 end time 12:00");
-		Command normalEditDiffFormat3 = new EditCommand("e1 end time 12 p.m.");
-		Command normalEditDiffFormat4 = new EditCommand("e1 end time 12 pm");
-		Command normalEditDoneTask = new EditCommand("p1 end time 12pm");
+		ArgsParserSkeleton normalEdit = new EditParser("e1 end time 12pm");
+		ArgsParserSkeleton normalEditDiffFormat = new EditParser("e1 end time 1200");
+		ArgsParserSkeleton normalEditDiffFormat2 = new EditParser("e1 end time 12:00");
+		ArgsParserSkeleton normalEditDiffFormat3 = new EditParser("e1 end time 12 p.m.");
+		ArgsParserSkeleton normalEditDiffFormat4 = new EditParser("e1 end time 12 pm");
+		ArgsParserSkeleton normalEditDoneTask = new EditParser("p1 end time 12pm");
 	}
 
 	@Test
 	public void testEditTime() throws Exception {
-		Command normalEdit = new EditCommand("t1 time 12pm");
-		Command normalEditDiffFormat = new EditCommand("t1 time 1200");
-		Command normalEditDiffFormat2 = new EditCommand("t1 time 12:00");
-		Command normalEditDiffFormat3 = new EditCommand("t1 time 12 p.m.");
-		Command normalEditDiffFormat4 = new EditCommand("t1 time 12 pm");
-		Command normalEditDoneTask = new EditCommand("d1 time 12pm");
+		ArgsParserSkeleton normalEdit = new EditParser("t1 time 12pm");
+		ArgsParserSkeleton normalEditDiffFormat = new EditParser("t1 time 1200");
+		ArgsParserSkeleton normalEditDiffFormat2 = new EditParser("t1 time 12:00");
+		ArgsParserSkeleton normalEditDiffFormat3 = new EditParser("t1 time 12 p.m.");
+		ArgsParserSkeleton normalEditDiffFormat4 = new EditParser("t1 time 12 pm");
+		ArgsParserSkeleton normalEditDoneTask = new EditParser("d1 time 12pm");
 	}
 
 	@Test
 	public void testWrongNumArgs() throws Exception {
 		try {
-			Command noInput = new EditCommand(EMPTY_STRING);
+			ArgsParserSkeleton noInput = new EditParser(EMPTY_STRING);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
 		try {
-			Command singleArg = new EditCommand("t1");
+			ArgsParserSkeleton singleArg = new EditParser("t1");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
 		try {
-			Command twoArgs = new EditCommand("t1 title");
+			ArgsParserSkeleton twoArgs = new EditParser("t1 title");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
@@ -135,7 +135,7 @@ public class EditCommandTest {
 		invalidMsg[0] = MESSAGE_INVALID_FIELD;
 		String result = String.format(MESSAGE_HEADER_INVALID, Arrays.toString(invalidMsg));
 		try {
-			Command noSuchField = new EditCommand("t1 invalidField invalid nonsense");
+			ArgsParserSkeleton noSuchField = new EditParser("t1 invalidField invalid nonsense");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), result);
 		}
@@ -147,7 +147,7 @@ public class EditCommandTest {
 		invalidMsg[0] = MESSAGE_INVALID_TASK_START;
 		String result = String.format(MESSAGE_HEADER_INVALID, Arrays.toString(invalidMsg));
 		try {
-			Command taskStartTime = new EditCommand("t1 start time 12pm");
+			ArgsParserSkeleton taskStartTime = new EditParser("t1 start time 12pm");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), result);
 		}
@@ -159,12 +159,12 @@ public class EditCommandTest {
 		invalidMsg[0] = MESSAGE_INVALID_ITEM_ID;
 		String result = String.format(MESSAGE_HEADER_INVALID, Arrays.toString(invalidMsg));
 		try {
-			Command itemOutOfBounds = new EditCommand("t100 title test");
+			ArgsParserSkeleton itemOutOfBounds = new EditParser("t100 title test");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), result);
 		}
 		try {
-			Command itemZero = new EditCommand("t0 title test");
+			ArgsParserSkeleton itemZero = new EditParser("t0 title test");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), result);
 		}
@@ -176,12 +176,12 @@ public class EditCommandTest {
 		invalidMsg[0] = MESSAGE_INVALID_DATE;
 		String result = String.format(MESSAGE_HEADER_INVALID, Arrays.toString(invalidMsg));
 		try {
-			Command taskInvalidDate = new EditCommand("t1 date Jan 32");
+			ArgsParserSkeleton taskInvalidDate = new EditParser("t1 date Jan 32");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), result);
 		}
 		try {
-			Command eventInvalidDate = new EditCommand("e1 date Jan 32");
+			ArgsParserSkeleton eventInvalidDate = new EditParser("e1 date Jan 32");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), result);
 		}
@@ -193,7 +193,7 @@ public class EditCommandTest {
 		invalidMsg[0] = MESSAGE_INVALID_TIME_START;
 		String result = String.format(MESSAGE_HEADER_INVALID, Arrays.toString(invalidMsg));
 		try {
-			Command eventStartTime = new EditCommand("e1 start time 25pm");
+			ArgsParserSkeleton eventStartTime = new EditParser("e1 start time 25pm");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), result);
 		}
@@ -205,12 +205,12 @@ public class EditCommandTest {
 		invalidMsg[0] = MESSAGE_INVALID_TIME_END;
 		String result = String.format(MESSAGE_HEADER_INVALID, Arrays.toString(invalidMsg));
 		try {
-			Command taskEndTime = new EditCommand("t1 end time 25pm");
+			ArgsParserSkeleton taskEndTime = new EditParser("t1 end time 25pm");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), result);
 		}
 		try {
-			Command eventEndTime = new EditCommand("e1 end time 25pm");
+			ArgsParserSkeleton eventEndTime = new EditParser("e1 end time 25pm");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), result);
 		}

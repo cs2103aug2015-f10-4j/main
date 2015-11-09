@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import gui.GUIModel;
 import main.CustomDate;
 import main.Magical;
 import main.Storage;

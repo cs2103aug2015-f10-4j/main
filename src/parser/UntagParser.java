@@ -37,9 +37,9 @@ public class UntagParser extends ArgsParserSkeleton {
 			setProperParams();
 			
 			checkItemExists();
+			errorInvalidArgs();
 			
 			checkTags();
-			
 			errorInvalidArgs();
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
@@ -54,6 +54,13 @@ public class UntagParser extends ArgsParserSkeleton {
 		for (String tag : tags) {
 			checkTagsNotExist(currentTags, tag);
 		}
+		addTagsAbsentError();
+	}
+
+	/**
+	 * Adds error message if given tags are absent from item
+	 */
+	void addTagsAbsentError() {
 		invalidArgs.add(absentTags);
 	}
 

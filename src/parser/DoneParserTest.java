@@ -1,4 +1,4 @@
-package command;
+package parser;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
 import gui.GUIModel;
 import main.Item;
 
-public class DoneCommandTest {
+public class DoneParserTest {
 
 	private static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
 	private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <item_id>";
@@ -28,21 +28,21 @@ public class DoneCommandTest {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		DoneCommand doneTask = new DoneCommand("t1");
-		DoneCommand doneTaskAgain = new DoneCommand("t1");
-		DoneCommand doneNextTask = new DoneCommand("t2");
-		DoneCommand doneLastTask = new DoneCommand("t7");
+		ArgsParserSkeleton doneTask = new DoneParser("t1");
+		ArgsParserSkeleton doneTaskAgain = new DoneParser("t1");
+		ArgsParserSkeleton doneNextTask = new DoneParser("t2");
+		ArgsParserSkeleton doneLastTask = new DoneParser("t7");
 	}
 
 	@Test
 	public void testWrongNumArgs() {
 		try {
-			DoneCommand noArgs = new DoneCommand("");
+			ArgsParserSkeleton noArgs = new DoneParser("");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			DoneCommand tooManyArgs = new DoneCommand("t1 t2");
+			ArgsParserSkeleton tooManyArgs = new DoneParser("t1 t2");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
@@ -51,27 +51,27 @@ public class DoneCommandTest {
 	@Test
 	public void testInvalidID() {
 		try {
-			DoneCommand invalidID = new DoneCommand("t11");
+			ArgsParserSkeleton invalidID = new DoneParser("t11");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			DoneCommand noLetter = new DoneCommand("1");
+			ArgsParserSkeleton noLetter = new DoneParser("1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			DoneCommand wrongLetter = new DoneCommand("a1");
+			ArgsParserSkeleton wrongLetter = new DoneParser("a1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			Command tooShort = new DoneCommand("a");
+			ArgsParserSkeleton tooShort = new DoneParser("a");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			Command youCantDoneADone = new DoneCommand("d1");
+			ArgsParserSkeleton youCantDoneADone = new DoneParser("d1");
 		} catch (Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}

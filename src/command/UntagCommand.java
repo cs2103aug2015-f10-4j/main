@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
-import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Item;

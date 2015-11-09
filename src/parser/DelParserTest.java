@@ -1,4 +1,4 @@
-package command;
+package parser;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
 import gui.GUIModel;
 import main.Item;
 
-public class DelCommandTest {
+public class DelParserTest {
 
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %s";
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: delete <item_id>";
@@ -30,25 +30,25 @@ public class DelCommandTest {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		Command deleteTask = new DelCommand("t1");
-		Command deleteTaskAgain = new DelCommand("t1");
-		Command deleteNextTask = new DelCommand("t2");
-		Command deleteLastTask = new DelCommand("t7");
-		Command delDone = new DelCommand("d1");
-		Command delDoneAgain = new DelCommand("d1");
-		Command delNextDone = new DelCommand("d2");
-		Command delLastDone = new DelCommand("d7");
+		ArgsParserSkeleton deleteTask = new DelParser("t1");
+		ArgsParserSkeleton deleteTaskAgain = new DelParser("t1");
+		ArgsParserSkeleton deleteNextTask = new DelParser("t2");
+		ArgsParserSkeleton deleteLastTask = new DelParser("t7");
+		ArgsParserSkeleton delDone = new DelParser("d1");
+		ArgsParserSkeleton delDoneAgain = new DelParser("d1");
+		ArgsParserSkeleton delNextDone = new DelParser("d2");
+		ArgsParserSkeleton delLastDone = new DelParser("d7");
 	}
 
 	@Test
 	public void testWrongNumArgs() {
 		try {
-			Command noArgs = new DelCommand("");
+			ArgsParserSkeleton noArgs = new DelParser("");
 		} catch (Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			Command moreArgs = new DelCommand("t1 t2 t3 t4 t5 t6");
+			ArgsParserSkeleton moreArgs = new DelParser("t1 t2 t3 t4 t5 t6");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
 		}
@@ -57,27 +57,27 @@ public class DelCommandTest {
 	@Test
 	public void testInvalidId() {
 		try {
-			Command wrongLetter = new DelCommand("a1");
+			ArgsParserSkeleton wrongLetter = new DelParser("a1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 		try {
-			DoneCommand invalidID = new DoneCommand("t100");
+			DoneParser invalidID = new DoneParser("t100");
 		} catch (Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			Command tooLong = new DelCommand("abcdefghijklmnop");
+			ArgsParserSkeleton tooLong = new DelParser("abcdefghijklmnop");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 		try {
-			Command tooShort = new DelCommand("a");
+			ArgsParserSkeleton tooShort = new DelParser("a");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 		try {
-			Command justNumber = new DelCommand("1");
+			ArgsParserSkeleton justNumber = new DelParser("1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}

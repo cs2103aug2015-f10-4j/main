@@ -1,25 +1,8 @@
-package main;
+package parser;
 
 import static org.junit.Assert.*;
-import command.AddCommand;
+
 import command.Command;
-import command.DateCommand;
-import command.DelCommand;
-import command.DoneCommand;
-import command.EditCommand;
-import command.EventCommand;
-import command.ExitCommand;
-import command.HelpCommand;
-import command.PathCommand;
-import command.PriorityCommand;
-import command.RedoCommand;
-import command.SearchCommand;
-import command.ShowCommand;
-import command.SortCommand;
-import command.TagCommand;
-import command.UndoCommand;
-import command.UndoneCommand;
-import command.UntagCommand;
 
 public class Parser {
 
@@ -86,46 +69,46 @@ public class Parser {
 	 * @return Command subclass object according to the user command
 	 * @throws Exception
 	 */
-	private static Command inputValidation(String command, String args)
+	private static ArgsParserSkeleton inputValidation(String command, String args)
 			throws Exception {
 		args = args == null ? "" : args;
 		switch (command) {
 		case CMD_ADD:
-			return new AddCommand(args);
+			return new AddParser(args);
 		case CMD_DATE:
-			return new DateCommand(args);
+			return new DateParser(args);
 		case CMD_DELETE:
-			return new DelCommand(args);
+			return new DelParser(args);
 		case CMD_DONE:
-			return new DoneCommand(args);
+			return new DoneParser(args);
 		case CMD_EDIT:
-			return new EditCommand(args);
+			return new EditParser(args);
 		case CMD_EVENT:
-			return new EventCommand(args);
+			return new EventParser(args);
 		case CMD_EXIT:
-			return new ExitCommand(args);
+			return new DefaultParser(args);
 		case CMD_HELP:
-			return new HelpCommand(args);
+			return new DefaultParser(args);
 		case CMD_PATH:
-			return new PathCommand(args);
+			return new PathParser(args);
 		case CMD_PRIORITY:
-			return new PriorityCommand(args);
+			return new PriorityParser(args);
 		case CMD_REDO:
-			return new RedoCommand(args);
+			return new DefaultParser(args);
 		case CMD_SEARCH:
-			return new SearchCommand(args);
+			return new SearchParser(args);
 		case CMD_SHOW:
-			return new ShowCommand(args);
+			return new ShowParser(args);
 		case CMD_SORT:
-			return new SortCommand(args);
+			return new SortParser(args);
 		case CMD_TAG:
-			return new TagCommand(args);
+			return new TagParser(args);
 		case CMD_UNDO:
-			return new UndoCommand(args);
+			return new DefaultParser(args);
 		case CMD_UNDONE:
-			return new UndoneCommand(args);
+			return new UndoneParser(args);
 		case CMD_UNTAG:
-			return new UntagCommand(args);
+			return new UntagParser(args);
 		default:
 			throw new Exception(String.format(MESSAGE_INVALID_COMMAND, command));
 		}
@@ -146,7 +129,7 @@ public class Parser {
 			String trimInput = userInput.trim();
 			String command = getCommand(trimInput);
 			String args = getArgs(trimInput);
-			return inputValidation(command, args);
+			return inputValidation(command, args).getCommand();
 		} else {
 			throw new Exception(MESSAGE_INVALID_INPUT);
 		}

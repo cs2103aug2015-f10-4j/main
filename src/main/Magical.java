@@ -9,6 +9,7 @@ import command.Command;
 import command.DateCommand;
 import command.SearchCommand;
 import command.ShowCommand;
+import parser.Parser;
 
 /**
  * Magical is the logic behind the application. It acts as an intermediary this
