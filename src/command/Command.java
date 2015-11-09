@@ -465,12 +465,5 @@ public abstract class Command {
 	 * 
 	 * @return boolean true/false
 	 */
-	protected abstract boolean validNumArgs();
-	
-	/*
-	public static void main(String[] args) {
-		Span s = Chronic.parse("25:78");
-		System.out.println(s.getBeginCalendar().getTime());
-	}
-	//*/
+	protected abstract boolean validNumArgs();	
 }
