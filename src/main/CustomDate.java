@@ -195,7 +195,7 @@ public class CustomDate implements Comparable<CustomDate> {
 	}
 
 	/**
-	 * Set year of the customdate using the value
+	 * Set year of the CustomDate using the value
 	 *
 	 * @param field
 	 * @param val
@@ -212,9 +212,10 @@ public class CustomDate implements Comparable<CustomDate> {
 		String day = dayArray[cal.get(Calendar.DAY_OF_WEEK) - 1];
 		String month = monthArray[getMonth() - 1];
 		int time = getTime();
-		int hour = time/100 - 12 <= 0 ? time/100 : time/100 - 12;
+		int hour = time/100 - 12 < 0 ? time/100 : time/100 - 12;
+		hour = (hour == 0) ? 12 : hour;
 		String timeString = String.format("%d.%02d", hour, time%100);
-		if (time/100 - 12 <= 0) {
+		if (time/100 - 12 < 0) {
 			timeString += " am";
 		} else {
 			timeString += " pm";
