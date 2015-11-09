@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import command.Command;
 import command.EventCommand;
 import main.CustomDate;
-import main.Item;
 
 public class EventParser extends ArgsParserAbstract {
 
@@ -49,11 +48,10 @@ public class EventParser extends ArgsParserAbstract {
 		}
 
 		if (validNumArgs()) {
-			setProperParams();
-			System.out.println(dateStart);
-			System.out.println(dateEnd);
 
-			setDefaultEndDay();
+			setProperParams();
+			
+			setDefaultEndDay();	
 			
 			checkTitle();
 			
@@ -241,6 +239,6 @@ public class EventParser extends ArgsParserAbstract {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		EventParser e = new EventParser("fuck this shit from 5/11/15 2pm to 3pm");
+		EventParser e = new EventParser("fuck this shit from 5/11/2015 2pm to 3pm");
 	}
 }
