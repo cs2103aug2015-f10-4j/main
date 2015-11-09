@@ -3,6 +3,7 @@ package parser;
 import static org.junit.Assert.*;
 
 import command.Command;
+import command.EventCommand;
 import main.CustomDate;
 import main.Item;
 
@@ -233,8 +234,8 @@ public class EventParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command event = new EventCommand(title, dateStart, dateEnd, startTime, endTime);
+		return event;
 	}
 }

@@ -8,11 +8,10 @@ public class HelpCommand extends Command {
 	 * Constructor for HelpCommand objects. Arguments are stored but have no
 	 * impact on command's functionality.
 	 * 
-	 * @param args
 	 * @throws Exception
 	 */
-	public HelpCommand(String args) throws Exception {
-		super(args);
+	public HelpCommand() {
+		
 	}
 
 	/**
@@ -30,15 +29,5 @@ public class HelpCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return false;
-	}
-
-	@Override
-	void setProperParams() {
-
-	}
-
-	@Override
-	public boolean validNumArgs() {
-		return true;
 	}
 }

@@ -1,6 +1,7 @@
 package parser;
 
 import command.Command;
+import command.DoneCommand;
 import main.Item;
 
 public class DoneParser extends ArgsParserAbstract {
@@ -65,9 +66,9 @@ public class DoneParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command done = new DoneCommand(this.itemID, this.item);
+		return done;
 	}
 	
 }

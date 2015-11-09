@@ -110,14 +110,14 @@ public class StorageTest {
 
 	// tests whether the magical folder will be created.
 	@Test
-	public void testCreateFolder() {
+	public void testCreateFolder() throws SecurityException, IOException {
 		Storage testStorage = new Storage();
 		assertTrue(testStorage.createFolder());
 	}
 
 	// tests whether file path is written into .properties file.
 	@Test
-	public void testWriteToProperties() {
+	public void testWriteToProperties() throws SecurityException, IOException {
 		Storage testStorage = new Storage();
 		testStorage.writeToProperties(DEFAULT_FILE_PATH);
 		String defaultFileSettings = testStorage.readFileSettings();
@@ -126,7 +126,7 @@ public class StorageTest {
 
 	// tests whether stored file path is read from .properties file.
 	@Test
-	public void testReadFileSettings() {
+	public void testReadFileSettings() throws SecurityException, IOException {
 		Storage testStorage = new Storage();
 		String defaultFileSettings = testStorage.readFileSettings();
 		assertEquals(DEFAULT_FILE_PATH, defaultFileSettings);

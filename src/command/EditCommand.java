@@ -11,17 +11,6 @@ import main.Item;
 
 public class EditCommand extends Command {
 
-	/** Messaging **/
-	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <item_id> <field> <value>";
-	private static final String MESSAGE_INVALID_FIELD = "Unknown field";
-	private static final String MESSAGE_INVALID_TASK_START_TIME = "Task cannot have start time";
-	private static final String MESSAGE_INVALID_TASK_START_DATE = "Task cannot have start date";
-	private static final String MESSAGE_INVALID_DATE_START = "Start date";
-	private static final String MESSAGE_INVALID_DATE_END = "End date";
-	private static final String MESSAGE_INVALID_TIME_START = "Start time";
-	private static final String MESSAGE_INVALID_TIME_END = "End time";
-	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
-	private static final String MESSAGE_INVALID_TITLE = "Title";
 	private static final String MESSAGE_ITEM_ERROR = "Unable to edit item %s";
 	private static final String MESSAGE_ITEM_EDITED = "Item edited.";
 
@@ -36,7 +25,6 @@ public class EditCommand extends Command {
 
 	/** Command parameters **/
 	private String field;
-	private String value;
 	private String itemID;
 	private Item item;
 	private Item prevItem;
@@ -50,106 +38,17 @@ public class EditCommand extends Command {
 	 * if arguments are invalid. Contains methods to update the item in storage.
 	 * 
 	 * @param args
+	 * @param editObject2 
+	 * @param item2 
+	 * @param itemID2 
 	 * @throws Exception
 	 */
-	public EditCommand(String args) throws Exception {
-		super(args);
-
-		// For empty sting value when only 2 args are provided
-		args = args + " ";
-
-		this.argsArray = splitArgs("(?<!end|start)\\s", 3);
-
-		this.count = argsArray.size();
-
-		if (validNumArgs()) {
-			setProperParams();
-			checkItemExists();
-			errorInvalidArgs();
-			isTask = item.getType().equals("task");
-
-			switch (field.toLowerCase()) {
-			case FIELD_TITLE:
-				checkTitle();
-				break;
-			case FIELD_DATE_START:
-				checkDate(0);
-				break;
-			case FIELD_DATE_END:
-				checkDate(1);
-				break;
-			case FIELD_DATE:
-				checkDate(1);
-				break;
-			case FIELD_TIME_START:
-				checkTime(0);
-				break;
-			case FIELD_TIME_END:
-				checkTime(1);
-				break;
-			case FIELD_TIME:
-				checkTime(1);
-				break;
-			default:
-				invalidField();
-			}
-			errorInvalidArgs();
-		} else {
-			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
-		}
-	}
-
-	/**
-	 * Adds error message if date is invalid or if task is to be made floating,
-	 * sets toFloat to true.
-	 */
-	void checkDate(int type) {
-		assert (type == 0 || type == 1);
-		if (isTask && type == 0) {
-			invalidArgs.add(MESSAGE_INVALID_TASK_START_DATE);
-		} else {
-			if (value.equals(STRING_EMPTY) && isTask) {
-				toFloat = true;
-			} else if ((editObject = getDate(value)) == null) {
-				if (type == 0) {
-					invalidArgs.add(MESSAGE_INVALID_DATE_START);
-				} else {
-					invalidArgs.add(MESSAGE_INVALID_DATE_END);
-				}
-
-			}
-		}
-	}
-
-	/**
-	 * Adds error message if item does not exist or unable to get
-	 */
-	void checkItemExists() {
-		if (item == null) {
-			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
-		}
-	}
-
-	/**
-	 * Adds error message if time is invalid, according to type, or error
-	 * message if the start time is provided for tasks, or get the correct time
-	 * if valid.
-	 */
-	void checkTime(int type) {
-		assert (type == 0 || type == 1);
-		if (isTask && type == 0) {
-			invalidArgs.add(MESSAGE_INVALID_TASK_START_TIME);
-		} else {
-			if ((editObject = getDate(value)) == null) {
-				if (type == 0) {
-					invalidArgs.add(MESSAGE_INVALID_TIME_START);
-				} else {
-					invalidArgs.add(MESSAGE_INVALID_TIME_END);
-				}
-			} else {
-				editObject = getDate(value).getTime();
-			}
-		}
+	public EditCommand(String field, Object editObject, String itemID, Item item, boolean isTask) throws Exception {
+		this.field = field;
+		this.editObject = editObject;
+		this.itemID = itemID;
+		this.item = item;
+		this.isTask = isTask;
 	}
 
 	/**
@@ -166,22 +65,11 @@ public class EditCommand extends Command {
 				throw new IllegalStateException(
 						"Start Date should be before End Date");
 			}
-			System.out.println(item.getEndDate());
-			System.out.println(item.getStartDate());
 			throw new IllegalStateException(
 					"End Date should be after Start Date");
 		}
 	}
-
-	/**
-	 * Adds error message if title is invalid
-	 */
-	void checkTitle() {
-		if (getTitle(value) == null) {
-			invalidArgs.add(MESSAGE_INVALID_TITLE);
-		}
-	}
-
+	
 	/**
 	 * Make 2 copies of the item to be stored in prevItem and item
 	 */
@@ -190,7 +78,55 @@ public class EditCommand extends Command {
 		item = prevItem.copy();
 	}
 
+	/**
+	 * Sets the end time of an item to be 2359, the default time, if item is
+	 * floating
+	 */
+	void unfloatItemForDate() {
+		if (item.getEndTime() == -1) {
+			item.setEndTime(2359);
+		}
+	}
+	
+	/**
+	 * Gives a CustomDate object if the item is floating or a CustomDate object
+	 * with the end date of the item
+	 * 
+	 * @return
+	 */
+	CustomDate unfloatItemForTime() {
+		CustomDate date;
+		if (item.getEndDate() == null) {
+			date = today;
+		} else {
+			date = item.getEndDate();
+		}
+		return date;
+	}
+
+	/**
+	 * Updates the original item with the new modified item
+	 * 
+	 * @throws IOException
+	 */
+	void updateItem() throws IOException {
+		int listIndex = Storage.getListIndex(itemID);
+		Magical.getStorage().update(listIndex, prevItem, item);
+	}
+
+	/**
+	 * Set item with float parameters
+	 */
+	void floatItem() {
+		item.setEndDate(null);
+		item.setEndTime(-1);
+	}
+	
 	@Override
+	public boolean isUndoable() {
+		return true;
+	}
+	
 	/**
 	 * Clones the current item and changes the value in the field specified. Updates
 	 * storage with the new item.
@@ -198,12 +134,13 @@ public class EditCommand extends Command {
 	 * @return message to show user
 	 * @throws Exception
 	 */
+	@Override
 	public String execute() throws Exception {
 		duplicateItem();
 
 		switch (field.toLowerCase()) {
 		case FIELD_TITLE:
-			item.setTitle(value);
+			item.setTitle((String) editObject);
 			break;
 		case FIELD_DATE_START:
 			if (toFloat) {
@@ -270,82 +207,13 @@ public class EditCommand extends Command {
 			throw new Exception(String.format(MESSAGE_ITEM_ERROR, itemID));
 		} finally {
 			updateView();
+			if(isTask){
+				Magical.setCurrentTab("tasks");
+			} else {
+				Magical.setCurrentTab("events");
+			}
 		}
 
 		return MESSAGE_ITEM_EDITED;
-	}
-
-	/**
-	 * Set item with float parameters
-	 */
-	void floatItem() {
-		item.setEndDate(null);
-		item.setEndTime(-1);
-	}
-
-	/**
-	 * Adds invalid field message to error messages
-	 */
-	void invalidField() {
-		invalidArgs.add(MESSAGE_INVALID_FIELD);
-	}
-
-	@Override
-	public boolean isUndoable() {
-		return true;
-	}
-
-	/**
-	 * Set the relevant parameters of EditCommand to that of the specified task
-	 */
-	void setProperParams() {
-		this.itemID = argsArray.get(0).trim();
-		this.item = getItemByID(itemID);
-		this.field = argsArray.get(1).trim();
-		this.value = argsArray.get(2).trim();
-	}
-
-	/**
-	 * Sets the end time of an item to be 2359, the default time, if item is
-	 * floating
-	 */
-	void unfloatItemForDate() {
-		if (item.getEndTime() == -1) {
-			item.setEndTime(2359);
-		}
-	}
-
-	/**
-	 * Gives a CustomDate object if the item is floating or a CustomDate object
-	 * with the end date of the item
-	 * 
-	 * @return
-	 */
-	CustomDate unfloatItemForTime() {
-		CustomDate date;
-		if (item.getEndDate() == null) {
-			date = today;
-		} else {
-			date = item.getEndDate();
-		}
-		return date;
-	}
-
-	/**
-	 * Updates the original item with the new modified item
-	 * 
-	 * @throws IOException
-	 */
-	void updateItem() throws IOException {
-		int listIndex = Storage.getListIndex(argsArray.get(0));
-		Magical.getStorage().update(listIndex, prevItem, item);
-	}
-
-	public boolean validNumArgs() {
-		if (this.count != 3) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 }

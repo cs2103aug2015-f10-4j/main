@@ -1,8 +1,10 @@
 package parser;
 
+import static org.junit.Assert.assertNotNull;
 import java.util.Date;
 
 import command.Command;
+import command.DateCommand;
 import main.CustomDate;
 
 public class DateParser extends ArgsParserAbstract {
@@ -72,7 +74,7 @@ public class DateParser extends ArgsParserAbstract {
 	 * @return
 	 */
 	public boolean validDateRange() {
-		return dateEnd.compareTo(dateStart) < 0;
+		return dateEnd.compareTo(dateStart) > 0;
 	}
 
 	@Override
@@ -97,7 +99,8 @@ public class DateParser extends ArgsParserAbstract {
 
 	@Override
 	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+		Command date = new DateCommand(this.dateStart, this.dateEnd);
+		assertNotNull(date);
+		return date;
 	}
 }

@@ -1,6 +1,7 @@
 package parser;
 
 import command.Command;
+import command.PriorityCommand;
 import main.Item;
 
 public class PriorityParser extends ArgsParserAbstract {
@@ -78,8 +79,8 @@ public class PriorityParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command priority = new PriorityCommand(this.itemID, this.item, this.priority); 
+		return priority;
 	}
 }

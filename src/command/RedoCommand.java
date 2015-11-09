@@ -25,8 +25,8 @@ public class RedoCommand extends Command {
 	 * @param args
 	 * @throws Exception
 	 */
-	public RedoCommand(String args) {
-		super(args);
+	public RedoCommand() {
+
 	}
 
 	/**
@@ -108,11 +108,6 @@ public class RedoCommand extends Command {
 		return false;
 	}
 
-	@Override
-	void setProperParams() {
-
-	}
-
 	/**
 	 * Set the storage with the specified lists
 	 * 
@@ -131,10 +126,5 @@ public class RedoCommand extends Command {
 		Magical.getStorage().setList(Storage.EVENTS_INDEX, nextEventsList);
 		Magical.getStorage().setList(Storage.EVENTS_DONE_INDEX,
 				nextEventsDoneList);
-	}
-
-	@Override
-	public boolean validNumArgs() {
-		return true;
 	}
 }

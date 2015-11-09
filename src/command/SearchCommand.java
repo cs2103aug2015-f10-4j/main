@@ -19,12 +19,8 @@ public class SearchCommand extends Command {
 	 * @param args
 	 * @throws Exception
 	 */
-	public SearchCommand(String args) throws Exception {
-		super(args);
-
-		this.argsArray = splitArgs("", 1);
-		this.count = argsArray.size();
-		setProperParams();
+	public SearchCommand(String query) throws Exception {
+		this.query = query;
 	}
 
 	/**
@@ -75,13 +71,5 @@ public class SearchCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return false;
-	}
-
-	void setProperParams() {
-		this.query = args.trim();
-	}
-
-	public boolean validNumArgs() {
-		return true;
 	}
 }
