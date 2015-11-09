@@ -120,9 +120,6 @@ public class Storage {
 		}
 	}
 
-
-	}
-
 	/**
 	 * This method changes the file path stored in the properties file and moves
 	 * the .txt data file to the specified new file path.
