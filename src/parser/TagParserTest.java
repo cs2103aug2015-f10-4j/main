@@ -67,7 +67,7 @@ public class TagParserTest {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton tooShort = new TagParser("t CS2103");
+			ArgsParserAbstract tooShort = new TagParser("t CS2103");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}

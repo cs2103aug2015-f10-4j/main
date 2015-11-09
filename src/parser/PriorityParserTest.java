@@ -27,23 +27,23 @@ public class PriorityParserTest {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		ArgsParserSkeleton tagTask = new PriorityParser("t1 high");
-		ArgsParserSkeleton tagTaskAgain = new PriorityParser("t1 medium");
-		ArgsParserSkeleton tagTaskWithSamePriorityAgain = new PriorityParser("t1 medium");
-		ArgsParserSkeleton tagNextTask = new PriorityParser("t2 low");
-		ArgsParserSkeleton tagLastTask = new PriorityParser("t7 high");
-		ArgsParserSkeleton noPriority = new PriorityParser("t1");
+		ArgsParserAbstract tagTask = new PriorityParser("t1 high");
+		ArgsParserAbstract tagTaskAgain = new PriorityParser("t1 medium");
+		ArgsParserAbstract tagTaskWithSamePriorityAgain = new PriorityParser("t1 medium");
+		ArgsParserAbstract tagNextTask = new PriorityParser("t2 low");
+		ArgsParserAbstract tagLastTask = new PriorityParser("t7 high");
+		ArgsParserAbstract noPriority = new PriorityParser("t1");
 	}
 
 	@Test
 	public void testWrongNumArgs() {
 		try {
-			ArgsParserSkeleton noArgs = new PriorityParser("");
+			ArgsParserAbstract noArgs = new PriorityParser("");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton tooManyArgs = new PriorityParser("t1 high low medium");
+			ArgsParserAbstract tooManyArgs = new PriorityParser("t1 high low medium");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_VALUE_INVALID, e.getMessage());
 		}
@@ -52,32 +52,32 @@ public class PriorityParserTest {
 	@Test
 	public void testInvalidID() {
 		try {
-			ArgsParserSkeleton invalidID = new PriorityParser("t11 high");
+			ArgsParserAbstract invalidID = new PriorityParser("t11 high");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton noLetter = new PriorityParser("1 low");
+			ArgsParserAbstract noLetter = new PriorityParser("1 low");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton wrongLetter = new PriorityParser("a1 medium");
+			ArgsParserAbstract wrongLetter = new PriorityParser("a1 medium");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton tooShort = new PriorityParser("t high");
+			ArgsParserAbstract tooShort = new PriorityParser("t high");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton priorityNumber = new PriorityParser("t1 11");
+			ArgsParserAbstract priorityNumber = new PriorityParser("t1 11");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_VALUE_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton priorityNegNumber = new PriorityParser("t1 -1");
+			ArgsParserAbstract priorityNegNumber = new PriorityParser("t1 -1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_VALUE_INVALID, e.getMessage());
 		}

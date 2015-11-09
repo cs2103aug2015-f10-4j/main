@@ -68,12 +68,12 @@ public class UndoneParserTest {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton tooShort = new UndoneParser("a");
+			ArgsParserAbstract tooShort = new UndoneParser("a");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton youCantUndoneAUndone = new UndoneParser("t1");
+			ArgsParserAbstract youCantUndoneAUndone = new UndoneParser("t1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_UNDONE_INVALID, e.getMessage());
 		}

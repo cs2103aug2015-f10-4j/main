@@ -18,7 +18,7 @@ import main.Magical;
 import main.Storage;
 import main.CustomDate;
 
-public abstract class ArgsParserSkeleton {
+public abstract class ArgsParserAbstract {
 
 	/** Checking */
 	protected static final String STRING_EMPTY = "";
@@ -41,7 +41,7 @@ public abstract class ArgsParserSkeleton {
 	 * 
 	 * @param args
 	 */
-	public ArgsParserSkeleton(String args) {
+	public ArgsParserAbstract(String args) {
 		assertNotNull(args);
 		this.args = args;
 	}
@@ -178,17 +178,17 @@ public abstract class ArgsParserSkeleton {
 	 */
 	String formatDate(String date) {
 		date = date.trim();
-		System.out.println("Date 1: " + date);
+		//System.out.println("Date 1: " + date);
 		date = formatCorrectTime(date);
-		System.out.println("Date 2: " + date);
+		//System.out.println("Date 2: " + date);
 		date = dateWithYear(date);
-		System.out.println("Date 3: " + date);
+		//System.out.println("Date 3: " + date);
 		date = swapDayMonth(date);
-		System.out.println("Date 4: " + date);
+		//System.out.println("Date 4: " + date);
 		date = placeTimeBehind(date);
-		System.out.println("Date 5: " + date);
+		//System.out.println("Date 5: " + date);
 		date = swapDayMonthFlexi(date);
-		System.out.println("Date 6: " + date);
+		//System.out.println("Date 6: " + date);
 		return date;
 	}
 

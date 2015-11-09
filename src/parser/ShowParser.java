@@ -3,7 +3,7 @@ package parser;
 import java.util.ArrayList;
 import command.Command;
 
-public class ShowParser extends ArgsParserSkeleton {
+public class ShowParser extends ArgsParserAbstract {
 
 	/** Command parameters **/
 	private ArrayList<String> tags;

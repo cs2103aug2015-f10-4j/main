@@ -5,7 +5,7 @@ import java.util.Date;
 import command.Command;
 import main.CustomDate;
 
-public class DateParser extends ArgsParserSkeleton {
+public class DateParser extends ArgsParserAbstract {
 
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: date <start date> to <end date>";

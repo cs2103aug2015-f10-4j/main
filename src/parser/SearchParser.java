@@ -2,7 +2,7 @@ package parser;
 
 import command.Command;
 
-public class SearchParser extends ArgsParserSkeleton {
+public class SearchParser extends ArgsParserAbstract {
 
 	/** Command parameters **/
 	private String query;

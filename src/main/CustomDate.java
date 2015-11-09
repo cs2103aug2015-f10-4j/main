@@ -6,7 +6,7 @@ import java.util.Date;
 public class CustomDate implements Comparable<CustomDate> {
 
 	/** Messaging **/
-	private static final String DATE_FORMAT = "%04d on %d %s %s, %s";
+	private static final String DATE_FORMAT = "%s on %d %s %s, %s";
 	private static final String[] dayArray = { "Sun", "Mon", "Tue",
 			"Wed", "Thu", "Fri", "Sat" };
 
@@ -211,7 +211,14 @@ public class CustomDate implements Comparable<CustomDate> {
 		Calendar cal = createCal();
 		String day = dayArray[cal.get(Calendar.DAY_OF_WEEK) - 1];
 		String month = monthArray[getMonth() - 1];
-		return String.format(DATE_FORMAT, getTime(), getDay(), month,
+		int time = getTime();
+		String timeString = String.format("%02d.%02d", time/200, time%100);
+		if (time / 100 < 12) {
+			timeString += " am";
+		} else {
+			timeString += " pm";
+		}
+		return String.format(DATE_FORMAT, timeString, getDay(), month,
 				getYear(), day);
 	}
 }

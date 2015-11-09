@@ -67,7 +67,7 @@ public class UntagParserTest {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton tooShort = new UntagParser("t CS2103");
+			ArgsParserAbstract tooShort = new UntagParser("t CS2103");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
