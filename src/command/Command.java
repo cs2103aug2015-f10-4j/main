@@ -11,6 +11,9 @@ import main.Item;
 import main.Magical;
 import main.Storage;
 
+/**
+ * @@author A0131729E
+ */
 public abstract class Command {
 
 	/** Messaging **/

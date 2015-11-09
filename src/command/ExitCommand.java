@@ -1,5 +1,8 @@
 package command;
 
+/**
+ * @@author A0131729E
+ */
 public class ExitCommand extends Command {
 
 	/**

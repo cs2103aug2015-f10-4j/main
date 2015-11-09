@@ -6,6 +6,9 @@ import command.Command;
 import command.EventCommand;
 import main.CustomDate;
 
+/**
+ * @@author A0129654X
+ */
 public class EventParser extends ArgsParserAbstract {
 
 	/** Messaging **/

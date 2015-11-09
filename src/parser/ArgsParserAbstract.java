@@ -16,6 +16,9 @@ import gui.GUIModel;
 import main.Item;
 import main.CustomDate;
 
+/**
+ * @@author A0129654X
+ */
 public abstract class ArgsParserAbstract {
 
 	/** Checking */

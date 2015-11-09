@@ -10,6 +10,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * @@author A0126310Y
+ * @throws IOException
+ */
 public class StorageTest {
 
 	public static final int NUM_LISTS = 4;

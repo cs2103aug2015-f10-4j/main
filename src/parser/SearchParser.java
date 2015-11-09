@@ -3,6 +3,9 @@ package parser;
 import command.Command;
 import command.SearchCommand;
 
+/**
+ * @@author A0129654X
+ */
 public class SearchParser extends ArgsParserAbstract {
 
 	/** Command parameters **/

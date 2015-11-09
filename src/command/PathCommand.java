@@ -4,6 +4,9 @@ import java.io.FileNotFoundException;
 
 import main.Magical;
 
+/**
+ * @@author A0131729E
+ */
 public class PathCommand extends Command {
 
 	private static final String MESSAGE_DIRECTORY_CHANGED = "Path changed to: %s";

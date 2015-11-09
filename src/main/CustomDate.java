@@ -3,6 +3,9 @@ package main;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * @@author A0129654X
+ */
 public class CustomDate implements Comparable<CustomDate> {
 
 	/** Messaging **/

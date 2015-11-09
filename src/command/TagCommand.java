@@ -8,6 +8,9 @@ import main.Magical;
 import main.Storage;
 import main.Item;
 
+/**
+ * @@author A0131729E
+ */
 public class TagCommand extends Command {
 
 	private static final String MESSAGE_TAG_ERROR = "Unable to add tag to %s";

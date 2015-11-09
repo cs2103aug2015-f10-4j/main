@@ -6,6 +6,9 @@ import main.Magical;
 import main.Storage;
 import main.Item;
 
+/**
+ * @@author A0131729E
+ */
 public class DateCommand extends Command {
 
 	private static final String MESSAGE_DATE_SUCCESS = "Date command successful";

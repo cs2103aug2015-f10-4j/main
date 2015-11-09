@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import command.Command;
 
+/**
+ * @@author A0129654X
+ */
 public class Parser {
 
 	/** List of Command types */

@@ -2,6 +2,9 @@ package command;
 
 import main.Magical;
 
+/**
+ * @@author A0131729E
+ */
 public class HelpCommand extends Command {
 
 	/**

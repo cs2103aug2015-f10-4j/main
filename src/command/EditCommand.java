@@ -9,6 +9,9 @@ import main.Magical;
 import main.Storage;
 import main.Item;
 
+/**
+ * @@author A0131729E
+ */
 public class EditCommand extends Command {
 
 	private static final String MESSAGE_ITEM_ERROR = "Unable to edit item %s";

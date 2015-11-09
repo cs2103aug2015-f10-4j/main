@@ -7,6 +7,9 @@ import main.Item;
 import main.Magical;
 import main.Storage;
 
+/**
+ * @@author A0131729E
+ */
 public class SortCommand extends Command {
 
 	private static final String MESSAGE_SORT_SUCCESS = "sort successful";

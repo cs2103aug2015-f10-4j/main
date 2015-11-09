@@ -16,6 +16,7 @@ import command.ShowCommand;
  * class. Magical should be used to execute the users requests. between GUI and
  * the other classes. All core program execution starts in
  *
+ * @@author A0131729E
  * @author Varun Patro
  */
 public class Magical {

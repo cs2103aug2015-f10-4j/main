@@ -8,6 +8,7 @@ import java.util.Set;
  * Item represents either a task or an event. This class stores all properties
  * essential to meaningfully describe a task or an event.
  *
+ * @@author A0131729E
  * @author Varun Patro
  */
 public class Item {

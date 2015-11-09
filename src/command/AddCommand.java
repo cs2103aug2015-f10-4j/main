@@ -9,6 +9,9 @@ import main.Magical;
 import main.Storage;
 import main.Item;
 
+/**
+ * @@author A0131729E
+ */
 public class AddCommand extends Command {
 
 	/** Messaging */

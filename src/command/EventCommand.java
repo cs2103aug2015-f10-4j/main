@@ -10,6 +10,9 @@ import main.Magical;
 import main.Storage;
 import main.Item;
 
+/**
+ * @@author A0131729E
+ */
 public class EventCommand extends Command {
 
 	private static final String MESSAGE_EVENT_ADDED = "event added";

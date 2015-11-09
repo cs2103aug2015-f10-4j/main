@@ -3,6 +3,9 @@ package parser;
 import command.Command;
 import command.PathCommand;
 
+/**
+ * @@author A0129654X
+ */
 public class PathParser extends ArgsParserAbstract{
 
 	/** Messaging **/

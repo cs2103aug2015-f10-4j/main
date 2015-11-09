@@ -35,7 +35,7 @@ public class Storage {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"dd MMM yyyy");
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
-	private static File file = new File(DEFAULT_FILE_PATH);	
+	private static File file = new File(DEFAULT_FILE_PATH);
 	private static Logger logger = Logger.getLogger("Storage");
 
 	private String storedFilePath;
@@ -49,6 +49,8 @@ public class Storage {
 	 * constructor creates a default folder in where the program is run. In this
 	 * folder, a .properties file is created to store default program settings
 	 * and a default .txt file to store task data.
+	 * 
+	 * @@author A0126310Y
 	 */
 	public Storage() {
 
@@ -73,6 +75,7 @@ public class Storage {
 	 * program is run.
 	 * 
 	 * @return Whether the folder is created successfully or not.
+	 * @@author A0126310Y
 	 */
 	protected static boolean createFolder() {
 		if (!newFolder.exists()) {
@@ -88,6 +91,7 @@ public class Storage {
 	 * @param index
 	 *            Index of the original list.
 	 * @return Integer value of the complementing list.
+	 * @@author A0131729E
 	 */
 	public static int getComplementListIndex(int index) {
 		switch (index) {
@@ -110,6 +114,7 @@ public class Storage {
 	 * @param id
 	 *            ID of the list wanted.
 	 * @return Integer value of list index.
+	 * @@author A0131729E
 	 */
 	public static int getListIndex(String id) {
 		switch (id.charAt(0)) {
@@ -135,9 +140,10 @@ public class Storage {
 	 * @return Whether the file path is changed successfully or not.
 	 * @throws IOException.
 	 * @throws FileNotFoundException.
+	 * @@author A0126310Y
 	 */
 	public void changeFolderPath(String newFolderPath) throws IOException,
-	FileNotFoundException {
+			FileNotFoundException {
 
 		assert (newFolderPath != null);
 		String oldFilePath = readFileSettings();
@@ -161,6 +167,7 @@ public class Storage {
 	 *            Index of the list to be cleared.
 	 * @throws IOException
 	 *             On file input error.
+	 * @@author A0131729E
 	 */
 	protected void clear(int listIndex) throws IOException {
 		lists.set(listIndex, new ArrayList<Item>());
@@ -177,6 +184,7 @@ public class Storage {
 	 *            Item object to store into the list.
 	 * @throws IOException
 	 *             On file input error.
+	 * @@author A0126310Y
 	 */
 	public void create(int listIndex, Item item) throws IOException {
 		lists.get(listIndex).add(item);
@@ -193,6 +201,7 @@ public class Storage {
 	 *            Item to be deleted.
 	 * @throws IOException
 	 *             On file input error.
+	 * @@author A0131729E
 	 */
 	public void delete(int listIndex, Item item) throws IOException {
 		int pos = getPos(listIndex, item);
@@ -206,6 +215,7 @@ public class Storage {
 	 * This method checks whether the data file exist or not.
 	 * 
 	 * @return whether file exists.
+	 * @@author A0126310Y
 	 */
 	protected boolean fileExist() {
 
@@ -221,6 +231,7 @@ public class Storage {
 	 * This method returns the current path of the of the storage file.
 	 * 
 	 * @return Location of storage file.
+	 * @@author A0126310Y
 	 */
 	public String getFilePath() {
 		return storedFilePath;
@@ -230,6 +241,7 @@ public class Storage {
 	 * This method returns the current path of the of the storage folder.
 	 * 
 	 * @return Location of storage folder.
+	 * @@author A0126310Y
 	 */
 	public String getFolderPath() {
 		return folderPath;
@@ -239,6 +251,7 @@ public class Storage {
 	 * This method returns the current path of the of the file specified.
 	 * 
 	 * @return Location of folder.
+	 * @@author A0126310Y
 	 */
 	public String getFolderPath(String storageFile) {
 
@@ -256,6 +269,7 @@ public class Storage {
 	 * @param listIndex
 	 *            Index of the list wanted.
 	 * @return The list specified.
+	 * @@author A0131729E
 	 */
 	public ArrayList<Item> getList(int listIndex) {
 		return lists.get(listIndex);
@@ -265,6 +279,7 @@ public class Storage {
 	 * This method retrieves the list containing all lists of Item objects.
 	 * 
 	 * @return The list containing all lists of Item objects.
+	 * @@author A0131729E
 	 */
 	protected List<ArrayList<Item>> getLists() {
 		return lists;
@@ -279,6 +294,7 @@ public class Storage {
 	 * @param t
 	 *            Item object that you want to get the position of.
 	 * @return Position of the Item in the list it is stored in. (0-based)
+	 * @@author A0131279E
 	 */
 	protected int getPos(int listIndex, Item item) {
 		return lists.get(listIndex).indexOf(item);
@@ -292,6 +308,7 @@ public class Storage {
 	 * @exception IOException
 	 *                On file input error.
 	 * @see IOException.
+	 * @@author A0126310Y
 	 */
 	protected void initFile() {
 
@@ -305,7 +322,8 @@ public class Storage {
 			try {
 				writeLists();
 			} catch (IOException e) {
-				logger.log(Level.WARNING, "Exception while writing to file: ", e);
+				logger.log(Level.WARNING, "Exception while writing to file: ",
+						e);
 				return;
 			}
 		} else {
@@ -324,6 +342,7 @@ public class Storage {
 	 *            File path of the destination .txt file.
 	 * @throws IOException.
 	 * @throws FileNotFoundException.
+	 * @@author A0126310Y
 	 */
 	protected void moveFile(String oldFilePath, String newFilePath)
 			throws IOException, FileNotFoundException {
@@ -360,6 +379,7 @@ public class Storage {
 	 * @param newFilePath
 	 *            New file path to create the folder in.
 	 * @return whether the folder was moved
+	 * @@author A0126310Y
 	 */
 	protected boolean moveFolder(String newFilePath) {
 
@@ -384,6 +404,7 @@ public class Storage {
 	 * @exception IOException
 	 *                On file reading error.
 	 * @see IOException.
+	 * @@author A0126310Y
 	 */
 	protected String readFileSettings() {
 
@@ -397,7 +418,8 @@ public class Storage {
 			filePath = prop.getProperty("filePath");
 
 		} catch (IOException ex) {
-			logger.log(Level.WARNING, "Exception while reading from settings.properties: ", ex);
+			logger.log(Level.WARNING,
+					"Exception while reading from settings.properties: ", ex);
 			return null;
 		}
 
@@ -412,12 +434,14 @@ public class Storage {
 	 * @exception Exception
 	 *                On file reading error.
 	 * @see Exception.
+	 * @@author A0126310Y
 	 */
 	protected void readLists() {
 
 		try {
 			lists = mapper.readValue(file,
-					new TypeReference<List<ArrayList<Item>>>() {});
+					new TypeReference<List<ArrayList<Item>>>() {
+					});
 			logger.log(Level.INFO, "Read data from storage file: Success");
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Exception while reading from file: ", e);
@@ -439,6 +463,7 @@ public class Storage {
 	 *            The list to be set into the parent array.
 	 * @throws IOException
 	 *             On file input error.
+	 * @@author A0131729E
 	 */
 	public void setList(int listIndex, ArrayList<Item> list) throws IOException {
 		lists.set(listIndex, list);
@@ -455,6 +480,7 @@ public class Storage {
 	 *            The updated Item to be stored.
 	 * @throws IOException
 	 *             On file input error.
+	 * @@author A0131729E
 	 */
 	public void update(int listIndex, Item oldItem, Item newItem)
 			throws IOException {
@@ -471,6 +497,7 @@ public class Storage {
 	 * 
 	 * @throws IOException
 	 *             On file input error.
+	 * @@author A0126310Y
 	 */
 	protected void writeLists() throws IOException {
 		mapper.writerWithDefaultPrettyPrinter().writeValue(file, lists);
@@ -486,6 +513,7 @@ public class Storage {
 	 * @exception IOException
 	 *                On input error.
 	 * @see IOException.
+	 * @@author A0126310Y
 	 */
 	protected boolean writeToProperties(String filePath) {
 
@@ -499,10 +527,12 @@ public class Storage {
 			prop.setProperty("filePath", filePath);
 			prop.store(output, null);
 			storedFilePath = filePath;
-			logger.log(Level.INFO, "Written to settings.properties: " + filePath);
+			logger.log(Level.INFO, "Written to settings.properties: "
+					+ filePath);
 			return true;
 		} catch (IOException io) {
-			logger.log(Level.WARNING, "Exception thrown while writing to settings.properties", io);
+			logger.log(Level.WARNING,
+					"Exception thrown while writing to settings.properties", io);
 			return false;
 		}
 	}
