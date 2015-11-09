@@ -7,6 +7,7 @@ import main.Item;
 
 public class SearchCommand extends Command {
 
+	/** Messaging **/
 	private static final String MESSAGE_SEARCH_SUCCESS = "search results for: [ %s ]";
 	/** Command parameters **/
 	private String query;
