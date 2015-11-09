@@ -140,6 +140,11 @@ public class Parser {
 		}
 	}
 	
+	/**
+	 * Creates an instance of Parser if it does not exist, otherwise, return the existing
+	 * instantiated Parser.
+	 * @return
+	 */
 	public static Parser getInstance(){
 		if(parser == null){
 			parser = new Parser();

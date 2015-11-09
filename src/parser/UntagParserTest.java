@@ -3,6 +3,8 @@ package parser;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,6 +24,13 @@ public class UntagParserTest {
 		for (int i = 0; i < 10; i ++) {
 			testList.add(new Item());
 		}
+		Set<String> tags1 = new HashSet<String>(){{
+			add("CS2103");
+			add("CS2105");
+		}};
+		Item t1 = testList.get(0);
+		t1.setTags(tags1);
+		
 		GUIModel.setTaskList(testList);
 		GUIModel.setTaskDoneList(testList);
 	}
@@ -30,9 +39,8 @@ public class UntagParserTest {
 	public void testNormalInputs() throws Exception {
 		UntagParser untagTask = new UntagParser("t1 CS2103");
 		UntagParser untagTaskAgain = new UntagParser("t1 CS2105");
-		UntagParser untagNextTask = new UntagParser("t2 CS2102");
-		UntagParser untagLastTask = new UntagParser("t7 CS2010");
-		UntagParser multipleUntags = new UntagParser("t1 t2 t3 t4");
+		//UntagParser untagNextTask = new UntagParser("t2 CS2102");
+		//UntagParser untagLastTask = new UntagParser("t7 CS2010");
 	}
 
 	@Test
