@@ -452,5 +452,5 @@ public abstract class ArgsParserAbstract {
 	 */
 	abstract boolean validNumArgs();	
 	
-	abstract Command getCommand();
+	abstract Command getCommand() throws Exception;
 }

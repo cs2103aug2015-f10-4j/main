@@ -1,6 +1,7 @@
 package parser;
 
 import command.Command;
+import command.EditCommand;
 import main.Item;
 
 public class EditParser extends ArgsParserAbstract {
@@ -107,7 +108,7 @@ public class EditParser extends ArgsParserAbstract {
 	 * Adds error message if title is invalid
 	 */
 	void checkTitle() {
-		if (getTitle(value) == null) {
+		if ((editObject = getTitle(value)) == null) {
 			invalidArgs.add(MESSAGE_INVALID_TITLE);
 		}
 	}
@@ -198,8 +199,8 @@ public class EditParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command edit = new EditCommand(field, editObject, itemID, item, isTask);
+		return edit;
 	}
 }

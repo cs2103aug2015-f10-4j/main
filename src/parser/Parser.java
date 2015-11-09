@@ -126,7 +126,7 @@ public class Parser {
 	 * @return Command object to use for executing
 	 * @throws Exception
 	 */
-	public static Command parse(String userInput) throws Exception {
+	public Command parse(String userInput) throws Exception {
 		assertNotNull(userInput);
 		if (!userInput.isEmpty()) {
 			String trimInput = userInput.trim();

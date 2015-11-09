@@ -1,6 +1,7 @@
 package parser;
 
 import command.Command;
+import command.DelCommand;
 import main.Item;
 
 public class DelParser extends ArgsParserAbstract {
@@ -58,9 +59,9 @@ public class DelParser extends ArgsParserAbstract {
 	}
 	
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command del = new DelCommand(this.itemID, this.item);
+		return del;
 	}
 	
 }

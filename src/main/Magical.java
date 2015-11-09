@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import parser.Parser;
 import command.Command;
 
 /**
@@ -63,7 +64,8 @@ public class Magical {
 	 * @exception Exception
 	 */
 	public static String execute(String userInput) throws Exception {
-		Command command = Parser.parse(userInput);
+		Parser p = Parser.getInstance();
+		Command command = p.parse(userInput);
 		if (command.isUndoable()) {
 			pushUndoLayer();
 		}
