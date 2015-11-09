@@ -1,5 +1,6 @@
 package main;
 
+import static org.junit.Assert.*;
 import command.AddCommand;
 import command.Command;
 import command.DateCommand;
@@ -44,7 +45,7 @@ public class Parser {
 
 	/** Error Messages */
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %s";
-	private static final String MESSAGE_INVALID_INPUT = "Must enter a command when calling execute";
+	private static final String MESSAGE_INVALID_INPUT = "Please enter a command";
 
 	/**
 	 * Splits a given string of user input and returns the words after the first
@@ -140,7 +141,8 @@ public class Parser {
 	 * @throws Exception
 	 */
 	public static Command parse(String userInput) throws Exception {
-		if (userInput != null) {
+		assertNotNull(userInput);
+		if (!userInput.isEmpty()) {
 			String trimInput = userInput.trim();
 			String command = getCommand(trimInput);
 			String args = getArgs(trimInput);
