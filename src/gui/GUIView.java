@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -29,6 +30,7 @@ public class GUIView extends Application {
 		primaryStage.setTitle(String.format(TITLE_FORMAT, VERSION_NUMBER));
 		Pane rootPane = (Pane) FXMLLoader.load(getClass().getResource("/gui/FXML.fxml"));
 		Scene scene = new Scene(rootPane);
+		primaryStage.getIcons().add(new Image("/gui/magicalLogo.png"));
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
