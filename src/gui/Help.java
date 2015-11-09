@@ -29,6 +29,9 @@ public class Help {
 			"To mark an item as 'done':" + ENDL +
 			"> done [item ID]" + ENDL +
 			ENDL +
+			"To mark a done item as 'undone':" + ENDL +
+			"> undone [done item ID]" + ENDL +
+			ENDL +
 			"To delete an item:" + ENDL +
 			"> delete [item ID]" + ENDL +
 			ENDL +
