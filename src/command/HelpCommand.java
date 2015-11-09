@@ -1,5 +1,7 @@
 package command;
 
+import main.Magical;
+
 public class HelpCommand extends Command {
 
 	/**
@@ -21,7 +23,7 @@ public class HelpCommand extends Command {
 	 */
 	@Override
 	public String execute() throws Exception {
-		gui.GUIModel.showHelpWindow = true;
+		Magical.setShowHelpWindow(true);
 		return null;
 	}
 

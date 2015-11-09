@@ -15,18 +15,21 @@ import command.Command;
  * @author Varun Patro
  */
 public class Magical {
+	private static Storage storage;
 	private static List<ArrayList<Item>> displayLists;
 	private static String currentTab;
+	private static boolean showHelpWindow;
+
 	public static List<Stack<ArrayList<Item>>> undoLists = new ArrayList<Stack<ArrayList<Item>>>(
 			Storage.NUM_LISTS);
 	public static List<Stack<ArrayList<Item>>> redoLists = new ArrayList<Stack<ArrayList<Item>>>(
 			Storage.NUM_LISTS);
 
 	public static Stack<String> undoFolderPaths = new Stack<String>();
-	public static Stack<String> redoFolderPaths = new Stack<String>();
-	public static Command lastCommand;
-	private static Storage storage;
 
+	public static Stack<String> redoFolderPaths = new Stack<String>();
+
+	public static Command lastCommand;
 	/**
 	 * This method archives all events that ended before the current date.
 	 */
@@ -51,7 +54,6 @@ public class Magical {
 		} catch (IOException e) {
 		}
 	}
-
 	/**
 	 * This method reads makes use of the Parser to create the relevant command.
 	 * The command is then executed and its result is returned.
@@ -121,6 +123,15 @@ public class Magical {
 	}
 
 	/**
+	 * Getter for show help window
+	 * 
+	 * @return
+	 */
+	public static boolean isShowHelpWindow() {
+		return showHelpWindow;
+	}
+
+	/**
 	 * This method is used to deep clone an ArrayList of Items. Used for
 	 * creating undo layers of storage.
 	 * 
@@ -177,6 +188,15 @@ public class Magical {
 	 */
 	public static void setDisplayList(int index, ArrayList<Item> newList) {
 		displayLists.set(index, newList);
+	}
+
+	/**
+	 * Setter for show help window
+	 * 
+	 * @param showHelpWindow
+	 */
+	public static void setShowHelpWindow(boolean showHelpWindow) {
+		Magical.showHelpWindow = showHelpWindow;
 	}
 
 }
