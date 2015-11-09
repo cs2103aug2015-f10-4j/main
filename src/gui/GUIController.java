@@ -154,6 +154,8 @@ public class GUIController {
 		Magical.init();
 		GUIModel.update();
 
+		messageLabel.setText("What would you like to do?");
+
 		updateTables();
 
 		initializeTaskTableColumns();
