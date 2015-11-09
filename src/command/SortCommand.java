@@ -5,6 +5,8 @@ import java.util.Collections;
 
 import gui.GUIModel;
 import main.Item;
+import main.Magical;
+import main.Storage;
 
 public class SortCommand extends Command {
 
@@ -63,13 +65,13 @@ public class SortCommand extends Command {
 	public String execute() throws Exception {
 
 		ArrayList<Item> sortedTaskList = new ArrayList<Item>(
-				GUIModel.getTaskList());
+				Magical.getDisplayList(Storage.TASKS_INDEX));
 		ArrayList<Item> sortedTaskDoneList = new ArrayList<Item>(
-				GUIModel.getTaskDoneList());
+				Magical.getDisplayList(Storage.TASKS_DONE_INDEX));
 		ArrayList<Item> sortedEventList = new ArrayList<Item>(
-				GUIModel.getEventList());
+				Magical.getDisplayList(Storage.EVENTS_INDEX));
 		ArrayList<Item> sortedEventDoneList = new ArrayList<Item>(
-				GUIModel.getEventDoneList());
+				Magical.getDisplayList(Storage.EVENTS_DONE_INDEX));
 
 		if (sortParams.contains("title")) {
 			Collections.sort(sortedTaskList, Item.Comparators.TITLE);

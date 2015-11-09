@@ -29,17 +29,13 @@ public class DoneCommand extends Command {
 	 */
 	public DoneCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs(" ", -1);
 		this.count = argsArray.size();
 
 		if (validNumArgs()) {
 			setProperParams();
-
 			checkItemDone();
-
 			errorInvalidArgs();
-
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}

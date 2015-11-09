@@ -32,7 +32,6 @@ public class PriorityCommand extends Command {
 	 */
 	public PriorityCommand(String args) throws Exception {
 		super(args);
-
 		this.argsArray = splitArgs(" ", 2);
 		this.count = argsArray.size();
 

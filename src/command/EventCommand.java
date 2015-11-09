@@ -130,7 +130,7 @@ public class EventCommand extends Command {
 			return MESSAGE_EVENT_ERROR;
 		} finally {
 			updateView();
-			GUIModel.setCurrentTab("events");
+			Magical.setCurrentTab("events");
 		}
 	}
 

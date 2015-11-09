@@ -88,10 +88,10 @@ public abstract class Command {
 		if (m.find()) {
 			String s = m.group(0);
 			assertNotNull(s);
-			
+
 			String temp = addCurrentYear(date, s);
 			assertNotNull(getDate(temp));
-			
+
 			if (getDate(temp).compareTo(today) == -1) {
 				date = addNextYear(date, s);
 				assertNotNull(getDate(date));
@@ -105,6 +105,7 @@ public abstract class Command {
 
 	/**
 	 * Add current year to date string, behind a specific dateformat
+	 * 
 	 * @param date
 	 * @param s
 	 * @return
@@ -116,6 +117,7 @@ public abstract class Command {
 
 	/**
 	 * Add next year to date string, behind a specific dateformat
+	 * 
 	 * @param date
 	 * @param s
 	 * @param temp
@@ -164,7 +166,8 @@ public abstract class Command {
 	 */
 	private String formatCorrectTime(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<![A-z]\\s|/|-)\\d{4}(?=\\s{0,1}!\\d+(am|pm)!\\d{4})");
+		Matcher m = getMatcher(date,
+				"(?<=\\s{0,1})(?<![A-z]\\s|/|-)\\d{4}(?=\\s{0,1}!\\d+(am|pm)!\\d{4})");
 		assertNotNull(m);
 
 		if (m.find()) {
@@ -202,18 +205,19 @@ public abstract class Command {
 
 	/**
 	 * Moves time parameter from front of the date string to back
+	 * 
 	 * @param date
 	 * @return
 	 */
 	private String placeTimeBehind(String date) {
-		ArrayList<String> temp = new ArrayList<String>(Arrays.asList(date.split(" ")));
-		if(temp.get(0).contains(":")
-				||temp.get(0).contains("am")
-				||temp.get(0).contains("pm")){
+		ArrayList<String> temp = new ArrayList<String>(Arrays.asList(date
+				.split(" ")));
+		if (temp.get(0).contains(":") || temp.get(0).contains("am")
+				|| temp.get(0).contains("pm")) {
 			temp.add(temp.get(0));
 			temp.remove(0);
 			date = "";
-			for(String s : temp){
+			for (String s : temp) {
 				date += s + " ";
 			}
 			date = date.trim();
@@ -402,6 +406,7 @@ public abstract class Command {
 
 	/**
 	 * Swaps the given day and month around the date token "-" or "/"
+	 * 
 	 * @param date
 	 * @param m
 	 * @return
@@ -437,27 +442,28 @@ public abstract class Command {
 	 * Updates the new view in the GUI
 	 */
 	void updateView() {
-		GUIModel.setTaskList(Magical.getStorage().getList(Storage.TASKS_INDEX));
-		GUIModel.setTaskDoneList(Magical.getStorage().getList(
-				Storage.TASKS_DONE_INDEX));
-		GUIModel.setEventList(Magical.getStorage()
+		Magical.setDisplayList(Storage.TASKS_INDEX, Magical.getStorage()
+				.getList(Storage.TASKS_INDEX));
+		Magical.setDisplayList(Storage.TASKS_DONE_INDEX, Magical.getStorage()
+				.getList(Storage.TASKS_DONE_INDEX));
+		Magical.setDisplayList(Storage.EVENTS_INDEX, Magical.getStorage()
 				.getList(Storage.EVENTS_INDEX));
-		GUIModel.setEventDoneList(Magical.getStorage().getList(
-				Storage.EVENTS_DONE_INDEX));
+		Magical.setDisplayList(Storage.EVENTS_DONE_INDEX, Magical.getStorage()
+				.getList(Storage.EVENTS_DONE_INDEX));
 	}
 
 	/**
 	 * Updates the new view in the GUI
 	 */
-	void updateView(ArrayList<Item> filteredTaskList,
-			ArrayList<Item> filteredTaskDoneList,
-			ArrayList<Item> filteredEventList,
-			ArrayList<Item> filteredEventDoneList) {
-		
-		GUIModel.setTaskList(filteredTaskList);
-		GUIModel.setTaskDoneList(filteredTaskDoneList);
-		GUIModel.setEventList(filteredEventList);
-		GUIModel.setEventDoneList(filteredEventDoneList);
+	void updateView(ArrayList<Item> newTaskList,
+			ArrayList<Item> newTaskDoneList,
+			ArrayList<Item> newEventList,
+			ArrayList<Item> newEventDoneList) {
+
+		Magical.setDisplayList(Storage.TASKS_INDEX, newTaskList);
+		Magical.setDisplayList(Storage.TASKS_DONE_INDEX, newTaskList);
+		Magical.setDisplayList(Storage.EVENTS_INDEX, newTaskList);
+		Magical.setDisplayList(Storage.EVENTS_DONE_INDEX, newTaskList);
 	}
 
 	/**
@@ -465,5 +471,5 @@ public abstract class Command {
 	 * 
 	 * @return boolean true/false
 	 */
-	protected abstract boolean validNumArgs();	
+	protected abstract boolean validNumArgs();
 }

@@ -186,19 +186,6 @@ public class UntagCommand extends Command {
 		Magical.getStorage().update(listIndex, prevItem, item);
 	}
 
-	/**
-	 * Updates the new view in the GUI
-	 */
-	void updateView() {
-		GUIModel.setTaskList(Magical.getStorage().getList(Storage.TASKS_INDEX));
-		GUIModel.setTaskDoneList(Magical.getStorage().getList(
-				Storage.TASKS_DONE_INDEX));
-		GUIModel.setEventList(Magical.getStorage()
-				.getList(Storage.EVENTS_INDEX));
-		GUIModel.setEventDoneList(Magical.getStorage().getList(
-				Storage.EVENTS_DONE_INDEX));
-	}
-
 	public boolean validNumArgs() {
 		if (this.count < 2) {
 			return false;

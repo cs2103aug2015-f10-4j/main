@@ -109,7 +109,7 @@ public class AddCommand extends Command {
 			return MESSAGE_TASK_ERROR;
 		} finally {
 			updateView();
-			GUIModel.setCurrentTab("tasks");
+			Magical.setCurrentTab("tasks");
 		}
 	}
 
@@ -257,14 +257,6 @@ public class AddCommand extends Command {
 	 */
 	private void storeTask() throws IOException {
 		Magical.getStorage().create(Storage.TASKS_INDEX, task);
-	}
-
-	/**
-	 * Updates the new view in the GUI
-	 */
-	void updateView() {
-		super.updateView();
-		GUIModel.setCurrentTab("tasks");
 	}
 
 	protected boolean validNumArgs() {
