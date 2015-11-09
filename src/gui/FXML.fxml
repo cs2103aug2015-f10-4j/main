@@ -58,6 +58,9 @@
                                                    </columns>
                                                 </TableView>
                                              </children>
+                                             <padding>
+                                                <Insets top="5.0" />
+                                             </padding>
                                           </VBox>
                                        </children>
                                     </AnchorPane>
@@ -106,6 +109,9 @@
                                                    </columnResizePolicy>
                                                 </TableView>
                                              </children>
+                                             <padding>
+                                                <Insets top="5.0" />
+                                             </padding>
                                           </VBox>
                                        </children>
                                     </AnchorPane>
