@@ -55,8 +55,8 @@ public class GUIController {
 	private static final String PRIORITY_LOW = "low";
 
 	private static final String OVERDUE_ROW_COLOR = "lightpink";
-	private static final Color SUCCESS_MESSAGE_COLOR = Color.BLUE;
-	private static final Color ERROR_MESSAGE_COLOR = Color.RED;
+	private static final Color SUCCESS_MESSAGE_COLOR = Color.web("#2eff00");
+	private static final Color ERROR_MESSAGE_COLOR = Color.web("#ff8484");
 
 	/** Shortcuts **/
 	private static final String UNDO_COMMAND = "undo";

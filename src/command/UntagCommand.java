@@ -163,7 +163,7 @@ public class UntagCommand extends Command {
 	 * @param tag
 	 */
 	void removeTagFromItem(Set<String> currentTags, String tag) {
-		currentTags.remove(tag);
+		currentTags.remove(tag.toLowerCase());
 		item.setTags(currentTags);
 	}
 
