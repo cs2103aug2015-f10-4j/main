@@ -38,7 +38,7 @@ import main.Magical;
  * populates tables in GUIView with the model contents, and handles user
  * input in both the command line and other UI controls.
  * Also logs user input and error messages.
- * @@author Joey Yeo
+ * @@author A0127127L
  */
 
 public class GUIController {

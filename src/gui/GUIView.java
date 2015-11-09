@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  * GUIView initializes the application by loading the GUI layout from
  * the FXML file, and launching it.
  *
- * @@author Joey Yeo
+ * @@author A0127127L
  */
 
 public class GUIView extends Application {

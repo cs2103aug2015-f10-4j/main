@@ -14,7 +14,7 @@ import main.Storage;
  * GUIModel holds information pulled from the main application, and
  * must be updated whenever a command is executed.
  *
- * @@author Joey Yeo
+ * @@author A0127127L
  */
 
 public class GUIModel {

@@ -4,7 +4,7 @@ package gui;
  * Help contains the contents of the help window when it is
  * displayed.
  *
- * @@author Joey Yeo
+ * @@author A0127127L
  */
 
 public class Help {
