@@ -201,6 +201,7 @@ public class AddCommand extends Command {
 	 * Set the relevant parameters of AddCommand to that of the specified task
 	 */
 	void setProperParams() {
+		System.out.println(argsArray);
 		this.title = getTitle(argsArray.get(0).trim());
 		this.dueDate = getDate(argsArray.get(1).trim());
 		this.endTime = dueDate == null ? -1 : dueDate.getTime();
@@ -271,5 +272,9 @@ public class AddCommand extends Command {
 		} else {
 			return true;
 		}
+	}
+	
+	public static void main(String[] args) throws Exception {
+		AddCommand a = new AddCommand("testTask by 2578");
 	}
 }

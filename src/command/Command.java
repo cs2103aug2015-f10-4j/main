@@ -82,22 +82,47 @@ public abstract class Command {
 	private String dateWithYear(String date) {
 		assertNotNull(date);
 		Matcher m = getMatcher(date,
-				"(?<=\\s{0,1})\\d{1,2}(/|-)\\d{1,2}(?=\\s{0,1})(?!(/|-|\\d))");
+				"(?<=\\s{0,1})\\d{1,2}(/|-)\\d{1,2}(?=\\s{0,1}!(/|-|\\d))");
 		assertNotNull(m);
 
 		if (m.find()) {
 			String s = m.group(0);
 			assertNotNull(s);
-			String temp = date.replaceAll(s,
-					s + "/" + new CustomDate().getYear());
+			
+			String temp = addCurrentYear(date, s);
+			assertNotNull(getDate(temp));
+			
 			if (getDate(temp).compareTo(today) == -1) {
-				date = date.replaceAll(s, s + "/"
-						+ (new CustomDate().getYear() + 1));
+				date = addNextYear(date, s);
+				assertNotNull(getDate(date));
 			} else {
 				date = temp;
 			}
 
 		}
+		return date;
+	}
+
+	/**
+	 * Add current year to date string, behind a specific dateformat
+	 * @param date
+	 * @param s
+	 * @return
+	 */
+	String addCurrentYear(String date, String s) {
+		date = date.replaceAll(s, s + "/" + new CustomDate().getYear());
+		return date;
+	}
+
+	/**
+	 * Add next year to date string, behind a specific dateformat
+	 * @param date
+	 * @param s
+	 * @param temp
+	 * @return
+	 */
+	String addNextYear(String date, String s) {
+		date = date.replaceAll(s, s + "/" + (new CustomDate().getYear() + 1));
 		return date;
 	}
 
@@ -161,17 +186,17 @@ public abstract class Command {
 	 */
 	String formatDate(String date) {
 		date = date.trim();
-		//System.out.println("Date 1: " + date);
+		System.out.println("Date 1: " + date);
 		date = formatCorrectTime(date);
-		//System.out.println("Date 2: " + date);
+		System.out.println("Date 2: " + date);
 		date = dateWithYear(date);
-		//System.out.println("Date 3: " + date);
+		System.out.println("Date 3: " + date);
 		date = swapDayMonth(date);
-		//System.out.println("Date 4: " + date);
+		System.out.println("Date 4: " + date);
 		date = placeTimeBehind(date);
-		//System.out.println("Date 5: " + date);
+		System.out.println("Date 5: " + date);
 		date = swapDayMonthFlexi(date);
-		//System.out.println("Date 6: " + date);
+		System.out.println("Date 6: " + date);
 		return date;
 	}
 
@@ -370,12 +395,23 @@ public abstract class Command {
 		Matcher m = getMatcher(date,
 				"(?<=\\s{0,1})\\d{1,2}(/|-)\\d{1,2}(?=\\s{0,1}|/)");
 		if (m.find()) {
-			String s = m.group(0);
-			String token = getToken(s);
-			String[] splitS = s.split(token, 2);
-			String newS = splitS[1] + token + splitS[0];
-			date = date.replace(s, newS);
+			date = swapAroundToken(date, m);
 		}
+		return date;
+	}
+
+	/**
+	 * Swaps the given day and month around the date token "-" or "/"
+	 * @param date
+	 * @param m
+	 * @return
+	 */
+	String swapAroundToken(String date, Matcher m) {
+		String s = m.group(0);
+		String token = getToken(s);
+		String[] splitS = s.split(token, 2);
+		String newS = splitS[1] + token + splitS[0];
+		date = date.replace(s, newS);
 		return date;
 	}
 
@@ -387,7 +423,7 @@ public abstract class Command {
 	 */
 	private String swapDayMonthFlexi(String date) {
 		Matcher m = getMatcher(date,
-				"(?<=\\s{0,1})\\d{1,2}\\s[A-z]{3,}(?=\\s{0,1})");
+				"(?<=\\s{0,1})\\d{1,2}(|st|nd|rd|th)\\s[A-z]{3,}(?=\\s{0,1})");
 		if (m.find()) {
 			String s = m.group(0);
 			String[] splitS = s.split(" ", 2);
@@ -417,6 +453,7 @@ public abstract class Command {
 			ArrayList<Item> filteredTaskDoneList,
 			ArrayList<Item> filteredEventList,
 			ArrayList<Item> filteredEventDoneList) {
+		
 		GUIModel.setTaskList(filteredTaskList);
 		GUIModel.setTaskDoneList(filteredTaskDoneList);
 		GUIModel.setEventList(filteredEventList);
@@ -429,4 +466,11 @@ public abstract class Command {
 	 * @return boolean true/false
 	 */
 	protected abstract boolean validNumArgs();
+	
+	/*
+	public static void main(String[] args) {
+		Span s = Chronic.parse("January 21st at 11pm");
+		System.out.println(s.getBeginCalendar().getTime());
+	}
+	*/
 }
