@@ -164,7 +164,7 @@ public abstract class Command {
 	 */
 	private String formatCorrectTime(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<!/|-)\\d{4}(?=\\s)(?!\\s\\d+(am|pm))");
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<![A-z]\\s|/|-)\\d{4}(?=\\s{0,1})");
 		assertNotNull(m);
 
 		if (m.find()) {
@@ -469,8 +469,8 @@ public abstract class Command {
 	
 	/*
 	public static void main(String[] args) {
-		Span s = Chronic.parse("January 21st at 11pm");
+		Span s = Chronic.parse("25:78");
 		System.out.println(s.getBeginCalendar().getTime());
 	}
-	*/
+	//*/
 }

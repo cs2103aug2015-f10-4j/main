@@ -96,7 +96,7 @@ public class AddCommandTest {
 			assertEquals(String.format(MESSAGE_ERROR, "9-10-2015a"), e.getMessage());
 		}
 		try {
-			AddCommand wrongTime = new AddCommand("testTask by 2578");
+			AddCommand wrongTime = new AddCommand("testTask by 25a78");
 			fail();
 		} catch (Exception e){
 			assertEquals(MESSAGE_ERROR, e.getMessage());

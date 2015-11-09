@@ -275,6 +275,6 @@ public class AddCommand extends Command {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		AddCommand a = new AddCommand("testTask by 2578");
+		AddCommand a = new AddCommand("testTask by 25a78");
 	}
 }
