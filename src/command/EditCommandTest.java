@@ -216,6 +216,18 @@ public class EditCommandTest {
 		}
 	}
 
+	@Test
+	public void testInvalidTitle() throws Exception {
+		String[] invalidMsg = new String[1];
+		invalidMsg[0] = MESSAGE_INVALID_TITLE;
+		String result = String.format(MESSAGE_HEADER_INVALID, Arrays.toString(invalidMsg));
+		try {
+			Command taskEndTime = new EditCommand("t1 title " + EMPTY_STRING);
+		} catch (Exception e) {
+			assertEquals(e.getMessage(), result);
+		}
+	}
+
 	@AfterClass
 	public static void tearDown() {
 		GUIModel.taskList = null;
