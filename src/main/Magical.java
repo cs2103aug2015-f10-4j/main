@@ -239,7 +239,7 @@ public class Magical {
 	public static void deleteDisplayList(int listIndex, Item item) {
 		int pos = displayLists.get(listIndex).indexOf(item);
 		if (pos > -1) {
-			displayLists.remove(pos);
+			displayLists.get(listIndex).remove(pos);
 		}
 	}
 
