@@ -419,33 +419,6 @@ public abstract class ArgsParserAbstract {
 	}
 
 	/**
-	 * Updates the new view in the GUI
-	 */
-	void updateView() {
-		GUIModel.setTaskList(Magical.getStorage().getList(Storage.TASKS_INDEX));
-		GUIModel.setTaskDoneList(Magical.getStorage().getList(
-				Storage.TASKS_DONE_INDEX));
-		GUIModel.setEventList(Magical.getStorage()
-				.getList(Storage.EVENTS_INDEX));
-		GUIModel.setEventDoneList(Magical.getStorage().getList(
-				Storage.EVENTS_DONE_INDEX));
-	}
-
-	/**
-	 * Updates the new view in the GUI
-	 */
-	void updateView(ArrayList<Item> filteredTaskList,
-			ArrayList<Item> filteredTaskDoneList,
-			ArrayList<Item> filteredEventList,
-			ArrayList<Item> filteredEventDoneList) {
-		
-		GUIModel.setTaskList(filteredTaskList);
-		GUIModel.setTaskDoneList(filteredTaskDoneList);
-		GUIModel.setEventList(filteredEventList);
-		GUIModel.setEventDoneList(filteredEventDoneList);
-	}
-
-	/**
 	 * Checks if the correct number of arguments are provided
 	 * 
 	 * @return boolean true/false

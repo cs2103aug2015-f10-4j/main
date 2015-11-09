@@ -39,6 +39,7 @@ public class EventParser extends ArgsParserAbstract {
 		super(args);
 		this.argsArray = splitArgs("\\sto\\s|\\sfrom\\s", -1);
 		removeEscapeCharacters();
+		System.out.println(argsArray);
 		this.count = argsArray.size();
 		splitArgsAfterDateTime();
 		this.count = argsArray.size();
@@ -77,8 +78,7 @@ public class EventParser extends ArgsParserAbstract {
 							.get(i)
 							.trim()
 							.replaceAll(
-									"(?<=from)\"|\"(?=from)"
-											+ "(?<=to)\"|\"(?=to)",
+									"(?<=from)\"|\"(?=from)|(?<=to)\"|\"(?=to)",
 									STRING_EMPTY));
 		}
 	}
