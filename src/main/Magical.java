@@ -110,6 +110,8 @@ public class Magical {
 	public static void init() {
 		storage = new Storage();
 		currentTab = "tasks";
+		archivePastEvents();
+		
 		displayLists = new ArrayList<ArrayList<Item>>(Storage.NUM_LISTS);
 		for (int i = 0; i < Storage.NUM_LISTS; i++) {
 			displayLists.add(storage.getList(i));
@@ -120,8 +122,6 @@ public class Magical {
 		for (int i = 0; i < Storage.NUM_LISTS; i++) {
 			redoLists.add(new Stack<ArrayList<Item>>());
 		}
-
-		archivePastEvents();
 	}
 
 	/**
