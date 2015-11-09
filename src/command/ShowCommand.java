@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import gui.GUIModel;
 import main.Magical;
 import main.Storage;
 import main.Item;
@@ -82,16 +81,16 @@ public class ShowCommand extends Command {
 			showEventDoneList = eventDoneList;
 			break;
 		case "task":
-			GUIModel.setCurrentTab("tasks");
+			Magical.setCurrentTab("tasks");
 			break;
 		case "tasks":
-			GUIModel.setCurrentTab("tasks");
+			Magical.setCurrentTab("tasks");
 			break;
 		case "event":
-			GUIModel.setCurrentTab("events");
+			Magical.setCurrentTab("events");
 			break;
 		case "events":
-			GUIModel.setCurrentTab("events");
+			Magical.setCurrentTab("events");
 			break;
 		case "tag":
 			showTaskList = filterList(taskList);
