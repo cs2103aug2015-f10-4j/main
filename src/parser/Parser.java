@@ -69,7 +69,7 @@ public class Parser {
 	 * @return Command subclass object according to the user command
 	 * @throws Exception
 	 */
-	private static ArgsParserSkeleton inputValidation(String command, String args)
+	private static ArgsParserAbstract inputValidation(String command, String args)
 			throws Exception {
 		args = args == null ? "" : args;
 		switch (command) {
@@ -86,15 +86,15 @@ public class Parser {
 		case CMD_EVENT:
 			return new EventParser(args);
 		case CMD_EXIT:
-			return new DefaultParser(args);
+			return new DefaultParser(command);
 		case CMD_HELP:
-			return new DefaultParser(args);
+			return new DefaultParser(command);
 		case CMD_PATH:
 			return new PathParser(args);
 		case CMD_PRIORITY:
 			return new PriorityParser(args);
 		case CMD_REDO:
-			return new DefaultParser(args);
+			return new DefaultParser(command);
 		case CMD_SEARCH:
 			return new SearchParser(args);
 		case CMD_SHOW:
@@ -104,7 +104,7 @@ public class Parser {
 		case CMD_TAG:
 			return new TagParser(args);
 		case CMD_UNDO:
-			return new DefaultParser(args);
+			return new DefaultParser(command);
 		case CMD_UNDONE:
 			return new UndoneParser(args);
 		case CMD_UNTAG:
@@ -127,8 +127,10 @@ public class Parser {
 		assertNotNull(userInput);
 		if (!userInput.isEmpty()) {
 			String trimInput = userInput.trim();
+			
 			String command = getCommand(trimInput);
 			String args = getArgs(trimInput);
+			
 			return inputValidation(command, args).getCommand();
 		} else {
 			throw new Exception(MESSAGE_INVALID_INPUT);

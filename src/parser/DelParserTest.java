@@ -30,25 +30,25 @@ public class DelParserTest {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		ArgsParserSkeleton deleteTask = new DelParser("t1");
-		ArgsParserSkeleton deleteTaskAgain = new DelParser("t1");
-		ArgsParserSkeleton deleteNextTask = new DelParser("t2");
-		ArgsParserSkeleton deleteLastTask = new DelParser("t7");
-		ArgsParserSkeleton delDone = new DelParser("d1");
-		ArgsParserSkeleton delDoneAgain = new DelParser("d1");
-		ArgsParserSkeleton delNextDone = new DelParser("d2");
-		ArgsParserSkeleton delLastDone = new DelParser("d7");
+		ArgsParserAbstract deleteTask = new DelParser("t1");
+		ArgsParserAbstract deleteTaskAgain = new DelParser("t1");
+		ArgsParserAbstract deleteNextTask = new DelParser("t2");
+		ArgsParserAbstract deleteLastTask = new DelParser("t7");
+		ArgsParserAbstract delDone = new DelParser("d1");
+		ArgsParserAbstract delDoneAgain = new DelParser("d1");
+		ArgsParserAbstract delNextDone = new DelParser("d2");
+		ArgsParserAbstract delLastDone = new DelParser("d7");
 	}
 
 	@Test
 	public void testWrongNumArgs() {
 		try {
-			ArgsParserSkeleton noArgs = new DelParser("");
+			ArgsParserAbstract noArgs = new DelParser("");
 		} catch (Exception e) {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			ArgsParserSkeleton moreArgs = new DelParser("t1 t2 t3 t4 t5 t6");
+			ArgsParserAbstract moreArgs = new DelParser("t1 t2 t3 t4 t5 t6");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
 		}
@@ -57,7 +57,7 @@ public class DelParserTest {
 	@Test
 	public void testInvalidId() {
 		try {
-			ArgsParserSkeleton wrongLetter = new DelParser("a1");
+			ArgsParserAbstract wrongLetter = new DelParser("a1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
@@ -67,17 +67,17 @@ public class DelParserTest {
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
-			ArgsParserSkeleton tooLong = new DelParser("abcdefghijklmnop");
+			ArgsParserAbstract tooLong = new DelParser("abcdefghijklmnop");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton tooShort = new DelParser("a");
+			ArgsParserAbstract tooShort = new DelParser("a");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 		try {
-			ArgsParserSkeleton justNumber = new DelParser("1");
+			ArgsParserAbstract justNumber = new DelParser("1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}

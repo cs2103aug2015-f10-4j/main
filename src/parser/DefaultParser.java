@@ -2,7 +2,7 @@ package parser;
 
 import command.Command;
 
-public class DefaultParser extends ArgsParserSkeleton{
+public class DefaultParser extends ArgsParserAbstract{
 
 	public DefaultParser(String args) {
 		super(args);

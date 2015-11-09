@@ -16,13 +16,13 @@ public class AddParserTest {
 	
 	@Test
 	public void testNormalInputs() throws Exception {
-		ArgsParserSkeleton task = new AddParser("testTask by 9-10-2015 at 2359");
-		ArgsParserSkeleton floatTask = new AddParser("testFloat");
-		ArgsParserSkeleton flexiTask1 = new AddParser("testFlexi by 1st January at 12pm");
-		ArgsParserSkeleton flexiTask2 = new AddParser("testFlexi by 21-12-15 at 1234");
-		ArgsParserSkeleton flexiDateOnly = new AddParser("testFlexi by 21-12-15");
-		ArgsParserSkeleton flexiTimeOnly = new AddParser("testFlexi at 1234");
-		ArgsParserSkeleton reverseDateTime = new AddParser("testFlexi at 12pm by 1st January");
+		ArgsParserAbstract task = new AddParser("testTask by 9-10-2015 at 2359");
+		ArgsParserAbstract floatTask = new AddParser("testFloat");
+		ArgsParserAbstract flexiTask1 = new AddParser("testFlexi by 1st January at 12pm");
+		ArgsParserAbstract flexiTask2 = new AddParser("testFlexi by 21-12-15 at 1234");
+		ArgsParserAbstract flexiDateOnly = new AddParser("testFlexi by 21-12-15");
+		ArgsParserAbstract flexiTimeOnly = new AddParser("testFlexi at 1234");
+		ArgsParserAbstract reverseDateTime = new AddParser("testFlexi at 12pm by 1st January");
 	}
 	
 	@Test

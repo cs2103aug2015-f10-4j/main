@@ -6,7 +6,7 @@ import command.Command;
 import main.CustomDate;
 import main.Item;
 
-public class EventParser extends ArgsParserSkeleton {
+public class EventParser extends ArgsParserAbstract {
 
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "

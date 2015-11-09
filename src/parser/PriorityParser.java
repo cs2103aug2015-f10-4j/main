@@ -3,7 +3,7 @@ package parser;
 import command.Command;
 import main.Item;
 
-public class PriorityParser extends ArgsParserSkeleton {
+public class PriorityParser extends ArgsParserAbstract {
 
 	/** Messaging **/
 	private static final String MESSAGE_ARGUMENT_FORMAT = "Use Format: set <item_id> <priority>";

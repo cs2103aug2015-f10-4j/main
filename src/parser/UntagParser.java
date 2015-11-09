@@ -6,7 +6,7 @@ import java.util.Set;
 import command.Command;
 import main.Item;
 
-public class UntagParser extends ArgsParserSkeleton {
+public class UntagParser extends ArgsParserAbstract {
 
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: untag <item_id> <tag name>";

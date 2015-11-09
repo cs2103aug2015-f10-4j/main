@@ -7,7 +7,7 @@ import java.util.Set;
 import command.Command;
 import main.Item;
 
-public class TagParser extends ArgsParserSkeleton {
+public class TagParser extends ArgsParserAbstract {
 
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: tag <item_id> <tag name>";
