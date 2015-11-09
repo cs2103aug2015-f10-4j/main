@@ -294,7 +294,7 @@ public class Storage {
 	 * @param t
 	 *            Item object that you want to get the position of.
 	 * @return Position of the Item in the list it is stored in. (0-based)
-	 * @@author A0131279E
+	 * @@author A0131729E
 	 */
 	protected int getPos(int listIndex, Item item) {
 		return lists.get(listIndex).indexOf(item);
