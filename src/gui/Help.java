@@ -1,5 +1,12 @@
 package gui;
 
+/**
+ * Help contains the contents of the help window when it is
+ * displayed.
+ *
+ * @author Joey Yeo
+ */
+
 public class Help {
 
 	public static final String ENDL = System.getProperty("line.separator");

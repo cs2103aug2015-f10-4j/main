@@ -33,9 +33,11 @@ import main.Item;
 import main.Magical;
 
 /**
+ * GUIController contains the bulk of GUILogic. It updates the GUIModel,
+ * populates tables in GUIView with the model contents, and handles user
+ * input in both the command line and other UI controls.
  *
  * @author Joey Yeo
- *
  */
 
 public class GUIController {
