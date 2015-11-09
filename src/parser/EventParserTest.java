@@ -1,4 +1,4 @@
-package command;
+package parser;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
 import gui.GUIModel;
 import main.Item;
 
-public class EventCommandTest {
+public class EventParserTest {
 
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: ";
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: event <title> "
@@ -59,36 +59,36 @@ public class EventCommandTest {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		EventCommand normalEvent = new EventCommand("Event" + DATE_STRING);
-		EventCommand normalEvent2 = new EventCommand("Event from today to tomorrow");
-		EventCommand normalEventDateFlipped = new EventCommand("Event from 1 Jan 12pm to 1 Jan 1pm");
-		EventCommand normalEventWithYear = new EventCommand("Event from January 1 2016 12pm to January 1 2016 1pm");
-		EventCommand normalEventToday = new EventCommand("Event from today 12pm to today 1pm");
-		EventCommand normalEventLongPeriod = new EventCommand("Event from today 12pm to Jan 1 2115 1pm");
-		EventCommand normalEventLongTitle = new EventCommand(LONG_STRING + DATE_STRING);
-		EventCommand normalEventWeirdTitle = new EventCommand(WEIRD_STRING + DATE_STRING);
-		EventCommand normalEventPastYear = new EventCommand("Grad trip with Harry Potter from 17 Dec 11pm to 10 January 12am");
+		EventParser normalEvent = new EventParser("Event" + DATE_STRING);
+		EventParser normalEvent2 = new EventParser("Event from today to tomorrow");
+		EventParser normalEventDateFlipped = new EventParser("Event from 1 Jan 12pm to 1 Jan 1pm");
+		EventParser normalEventWithYear = new EventParser("Event from January 1 2016 12pm to January 1 2016 1pm");
+		EventParser normalEventToday = new EventParser("Event from today 12pm to today 1pm");
+		EventParser normalEventLongPeriod = new EventParser("Event from today 12pm to Jan 1 2115 1pm");
+		EventParser normalEventLongTitle = new EventParser(LONG_STRING + DATE_STRING);
+		EventParser normalEventWeirdTitle = new EventParser(WEIRD_STRING + DATE_STRING);
+		EventParser normalEventPastYear = new EventParser("Grad trip with Harry Potter from 17 Dec 11pm to 10 January 12am");
 	}
 
 	@Test
 	public void testWrongNumInputs() throws Exception {
 		try {
-			EventCommand noInput = new EventCommand("");
+			EventParser noInput = new EventParser("");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
 		try {
-			EventCommand justID = new EventCommand("t1");
+			EventParser justID = new EventParser("t1");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
 		try {
-			EventCommand noFrom = new EventCommand("t1 January 1 12pm to January 1 1pm");
+			EventParser noFrom = new EventParser("t1 January 1 12pm to January 1 1pm");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
 		try {
-			EventCommand noTo = new EventCommand("t1 from January 1 12pm January 1 1pm");
+			EventParser noTo = new EventParser("t1 from January 1 12pm January 1 1pm");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), MESSAGE_INVALID_FORMAT);
 		}
@@ -97,17 +97,17 @@ public class EventCommandTest {
 	@Test
 	public void testInvalidInputs() throws Exception {
 		try {
-			EventCommand noTitle = new EventCommand(EMPTY_STRING + DATE_STRING);
+			EventParser noTitle = new EventParser(EMPTY_STRING + DATE_STRING);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), MESSAGE_HEADER_INVALID + MESSAGE_INVALID_TITLE);
 		}
 		try {
-			EventCommand nonExistentDate = new EventCommand("Event from January 32 12pm to January 32 1pm");
+			EventParser nonExistentDate = new EventParser("Event from January 32 12pm to January 32 1pm");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START_END);
 		}
 		try {
-			EventCommand nonExistentTime = new EventCommand("Event from January 1 25pm to January 1 26pm");
+			EventParser nonExistentTime = new EventParser("Event from January 1 25pm to January 1 26pm");
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), MESSAGE_HEADER_INVALID + MESSAGE_INVALID_DATETIME_START_END);
 		}
