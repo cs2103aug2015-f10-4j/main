@@ -8,10 +8,9 @@ import java.util.Stack;
 import command.Command;
 
 /**
- * Magical is the used to logic behind the application. It acts as a
- * intermediary between GUI and the rest of the classes. All core program
- * execution starts in this class. Magical should be used to execute the users
- * requests.
+ * Magical is the logic behind the application. It acts as an intermediary this
+ * class. Magical should be used to execute the users requests. between GUI and
+ * the other classes. All core program execution starts in
  *
  * @author Varun Patro
  */
@@ -23,7 +22,7 @@ public class Magical {
 	public static Stack<String> undoFolderPaths = new Stack<String>();
 	public static Stack<String> redoFolderPaths = new Stack<String>();
 	public static Command lastCommand;
-	
+
 	private static Storage storage;
 
 	/**
