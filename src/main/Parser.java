@@ -1,8 +1,24 @@
-package parser;
+package main;
 
-import static org.junit.Assert.*;
-
+import command.AddCommand;
 import command.Command;
+import command.DateCommand;
+import command.DelCommand;
+import command.DoneCommand;
+import command.EditCommand;
+import command.EventCommand;
+import command.ExitCommand;
+import command.HelpCommand;
+import command.PathCommand;
+import command.PriorityCommand;
+import command.RedoCommand;
+import command.SearchCommand;
+import command.ShowCommand;
+import command.SortCommand;
+import command.TagCommand;
+import command.UndoCommand;
+import command.UndoneCommand;
+import command.UntagCommand;
 
 public class Parser {
 
@@ -28,11 +44,8 @@ public class Parser {
 
 	/** Error Messages */
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %s";
-	private static final String MESSAGE_INVALID_INPUT = "Please enter a command";
+	private static final String MESSAGE_INVALID_INPUT = "Must enter a command when calling execute";
 
-	/** Parser Instance**/
-	private static Parser parser;
-	
 	/**
 	 * Splits a given string of user input and returns the words after the first
 	 * word of the input, which are the arguments of the command
@@ -63,63 +76,63 @@ public class Parser {
 
 	/**
 	 * Checks if the command is valid and returns the correct Command subclass
-	 * of the user's command. Passes the arguments to an ArgsParserAbstract subclass,
-	 * which will check the arguments' validity within its constructor. Exception
-	 * thrown if a command is not valid.
+	 * of the user's command. Passes the arguments to the Command subclass,
+	 * which will be checked for validity within the constructor. Exception
+	 * thrown if a command is not valid
 	 * 
 	 * @param command
 	 * @param args
 	 * @return Command subclass object according to the user command
 	 * @throws Exception
 	 */
-	private static ArgsParserAbstract inputValidation(String command, String args)
+	private static Command inputValidation(String command, String args)
 			throws Exception {
 		args = args == null ? "" : args;
 		switch (command) {
 		case CMD_ADD:
-			return new AddParser(args);
+			return new AddCommand(args);
 		case CMD_DATE:
-			return new DateParser(args);
+			return new DateCommand(args);
 		case CMD_DELETE:
-			return new DelParser(args);
+			return new DelCommand(args);
 		case CMD_DONE:
-			return new DoneParser(args);
+			return new DoneCommand(args);
 		case CMD_EDIT:
-			return new EditParser(args);
+			return new EditCommand(args);
 		case CMD_EVENT:
-			return new EventParser(args);
+			return new EventCommand(args);
 		case CMD_EXIT:
-			return new DefaultParser(command);
+			return new ExitCommand(args);
 		case CMD_HELP:
-			return new DefaultParser(command);
+			return new HelpCommand(args);
 		case CMD_PATH:
-			return new PathParser(args);
+			return new PathCommand(args);
 		case CMD_PRIORITY:
-			return new PriorityParser(args);
+			return new PriorityCommand(args);
 		case CMD_REDO:
-			return new DefaultParser(command);
+			return new RedoCommand(args);
 		case CMD_SEARCH:
-			return new SearchParser(args);
+			return new SearchCommand(args);
 		case CMD_SHOW:
-			return new ShowParser(args);
+			return new ShowCommand(args);
 		case CMD_SORT:
-			return new SortParser(args);
+			return new SortCommand(args);
 		case CMD_TAG:
-			return new TagParser(args);
+			return new TagCommand(args);
 		case CMD_UNDO:
-			return new DefaultParser(command);
+			return new UndoCommand(args);
 		case CMD_UNDONE:
-			return new UndoneParser(args);
+			return new UndoneCommand(args);
 		case CMD_UNTAG:
-			return new UntagParser(args);
+			return new UntagCommand(args);
 		default:
 			throw new Exception(String.format(MESSAGE_INVALID_COMMAND, command));
 		}
 	}
 
 	/**
-	 * Takes in an input from the user and splits into command and command arguments, 
-	 * before verifying them and returning the corresponding Command object. 
+	 * Takes in an input from the user and returns the correct command object
+	 * for executing what the user wants. Calls the inputValidation method.
 	 * Exception is thrown if no input is given.
 	 * 
 	 * @param userInput
@@ -127,23 +140,13 @@ public class Parser {
 	 * @throws Exception
 	 */
 	public static Command parse(String userInput) throws Exception {
-		assertNotNull(userInput);
-		if (!userInput.isEmpty()) {
+		if (userInput != null) {
 			String trimInput = userInput.trim();
-			
 			String command = getCommand(trimInput);
 			String args = getArgs(trimInput);
-			
-			return inputValidation(command, args).getCommand();
+			return inputValidation(command, args);
 		} else {
 			throw new Exception(MESSAGE_INVALID_INPUT);
 		}
-	}
-	
-	public static Parser getInstance(){
-		if(parser == null){
-			parser = new Parser();
-		}
-		return parser;
 	}
 }

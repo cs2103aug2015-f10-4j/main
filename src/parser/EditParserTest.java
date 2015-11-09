@@ -222,7 +222,7 @@ public class EditParserTest {
 		invalidMsg[0] = MESSAGE_INVALID_TITLE;
 		String result = String.format(MESSAGE_HEADER_INVALID, Arrays.toString(invalidMsg));
 		try {
-			Command taskEndTime = new EditCommand("t1 title " + EMPTY_STRING);
+			EditParser taskEndTime = new EditParser("t1 title " + EMPTY_STRING);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), result);
 		}
