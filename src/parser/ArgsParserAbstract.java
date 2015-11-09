@@ -417,7 +417,7 @@ public abstract class ArgsParserAbstract {
 	}
 
 	/**
-	 * Checks if the correct number of arguments are provided
+	 * Checks if the correct number of arguments are provided for the given command
 	 * 
 	 * @return boolean true/false
 	 */
