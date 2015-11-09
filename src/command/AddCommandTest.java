@@ -7,7 +7,7 @@ import org.junit.Test;
 public class AddCommandTest {
 
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: add <title> by <date> <time>";
-	private static final String MESSAGE_INVALID_TITLE = "Title";
+	private static final String MESSAGE_INVALID_TITLE = "[Title]";
 	private static final String MESSAGE_INVALID_DATETIME = "[Date/Time]";
 	private static final String MESSAGE_TASK_ADDED = "Task added";
 	private static final String MESSAGE_TASK_CLASH = ". Another task exists on the same date.";
@@ -27,58 +27,41 @@ public class AddCommandTest {
 	
 	@Test
 	public void testWrongNumArgs(){
-		final String MESSAGE_ERROR = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_PARAMS;
-		
+		final String MESSAGE_ERROR = String.format(MESSAGE_HEADER_INVALID, MESSAGE_INVALID_DATETIME);
 		try {
-			AddCommand moreArgs = new AddCommand("testTask/9-10-2015/0000/2359/weekly");
+			AddCommand moreArgs = new AddCommand("testTask by 9-10-2015 at 0000 weekly");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_ERROR);
+			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
 		}
 
 		try {
-			AddCommand flexiMoreArgs = new AddCommand("testFlexi by 1st January at 12pm at 2pm");
+			AddCommand timeMoreArgs = new AddCommand("testFlexi by 1st January at 12pm at 2pm");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_ERROR_FLEXI);
+			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 		
 		try {
-			AddCommand lessArgs = new AddCommand("testFlexi/2359/daily");
+			AddCommand dateMoreArgs = new AddCommand("testFlexi by 1st January by 2nd January at 2359");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_ERROR);
-		}
-		
-		/** flexi with less args is okay */
-		
-		try {
-			AddCommand noArgs = new AddCommand("");
-			fail();
-		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_ERROR_FLEXI);
+			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
 		}
 	}
 	
 	@Test
 	public void testWrongTitle(){
-		final String MESSAGE_ERROR = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_TITLE;
+		final String MESSAGE_ERROR = String.format(MESSAGE_HEADER_INVALID, MESSAGE_INVALID_TITLE);
 		try {
-			AddCommand noTitle = new AddCommand("/9-10-2015/2359/weekly");
+			AddCommand noTitle = new AddCommand("");
 			fail();
 		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_ERROR);
-		}
-		try {
-			AddCommand flexiNoTitle = new AddCommand("by 1st January at 12pm");
-			fail();
-		} catch (Exception e){
-			assertEquals(e.getMessage(), MESSAGE_ERROR_FLEXI);
+			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 	}
 	
 	@Test
-	//NATTY PARSER ALLOWS NONSENSE FOR DATE PARSING
 	public void testWrongDate() throws Exception{
 		final String MESSAGE_ERROR = String.format(MESSAGE_HEADER_INVALID, MESSAGE_INVALID_DATETIME);
 		
@@ -100,47 +83,6 @@ public class AddCommandTest {
 			fail();
 		} catch (Exception e){
 			assertEquals(MESSAGE_ERROR, e.getMessage());
-		}
-	}
-	
-	@Test
-	public void testWrongDate() throws Exception {
-		final String MESSAGE_ERROR = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_END;
-		
-		try {
-			AddCommand wrongEndLength = new AddCommand("testTask 9-10-2015 235 daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ERROR, "235"), e.getMessage());
-		}
-		try {
-			AddCommand negativeEnd = new AddCommand("testTask/9-10-2015/-2345/daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ERROR, "-2345"), e.getMessage());
-		}
-		try {
-			AddCommand endExceed24h = new AddCommand("testTask/9-10-2015/9999/daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ERROR, "9999"), e.getMessage());
-		}
-		try {
-			AddCommand noEnd = new AddCommand("testTask/9-10-2015//daily");
-			fail();
-		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ERROR, ""), e.getMessage());
-		}
-	}
-	
-	@Test
-	public void testRecurrence(){
-		final String MESSAGE_ARG = MESSAGE_HEADER_INVALID + MESSAGE_INVALID_RECURRENCE;
-		try {
-			AddCommand invalidRecurrence = new AddCommand("testTask/9-10-2015/1200/fortnightly");
-			fail();
-		} catch (Exception e){
-			assertEquals(String.format(MESSAGE_ARG, "fortnightly"), e.getMessage());
 		}
 	}
 }

@@ -13,7 +13,9 @@ import main.Item;
 
 public class DelCommandTest {
 
-	protected static final String MESSAGE_INVALID_PARAMS = "Invalid arguments: %sitemID";
+	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %s";
+	private static final String MESSAGE_INVALID_ITEM_ID = "[item_id]";
+	private static final String MESSAGE_ERROR = String.format(MESSAGE_HEADER_INVALID, MESSAGE_INVALID_ITEM_ID);
 
 	@Before
 	public void setUp() {
@@ -47,7 +49,7 @@ public class DelCommandTest {
 		try {
 			Command moreArgs = new DelCommand("t1 t2 t3 t4 t5 t6");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
+			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 	}
 
@@ -56,7 +58,7 @@ public class DelCommandTest {
 		try {
 			Command wrongLetter = new DelCommand("a1");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
+			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 		try {
 			DoneCommand invalidID = new DoneCommand("t100");
@@ -66,17 +68,17 @@ public class DelCommandTest {
 		try {
 			Command tooLong = new DelCommand("abcdefghijklmnop");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
+			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 		try {
 			Command tooShort = new DelCommand("a");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
+			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 		try {
 			Command justNumber = new DelCommand("1");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
+			assertEquals(MESSAGE_ERROR, e.getMessage());
 		}
 	}
 

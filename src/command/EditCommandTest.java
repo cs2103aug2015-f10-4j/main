@@ -21,7 +21,7 @@ public class EditCommandTest {
 	private static final String MESSAGE_INVALID_DATE = "Date";
 	private static final String MESSAGE_INVALID_TIME_END = "End time";
 	private static final String MESSAGE_INVALID_TIME_START = "Start time";
-	private static final String MESSAGE_INVALID_ITEM_ID = "taskID";
+	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
 	private static final String MESSAGE_INVALID_TITLE = "Title";
 	private static final String MESSAGE_ITEM_ERROR = "Unable to edit item %s";
 	private static final String MESSAGE_ITEM_EDITED = "Item edited.";

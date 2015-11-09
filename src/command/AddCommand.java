@@ -37,7 +37,7 @@ public class AddCommand extends Command {
 	 */
 	public AddCommand(String args) throws Exception {
 		super(args);
-		this.argsArray = splitArgs("\\sby\\s", 2);
+		this.argsArray = splitArgs("\\sby\\s", -1);
 		removeEscapeCharacters();
 		this.count = argsArray.size();
 		splitArgsAfterDateTime();
@@ -272,9 +272,5 @@ public class AddCommand extends Command {
 		} else {
 			return true;
 		}
-	}
-	
-	public static void main(String[] args) throws Exception {
-		AddCommand a = new AddCommand("testTask by 25a78");
 	}
 }
