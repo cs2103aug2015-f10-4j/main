@@ -45,7 +45,7 @@ public abstract class ArgsParserAbstract {
 	}
 
 	/**
-	 * Adds the default time of 23:59 to a given string if no time has been
+	 * Adds the time as default to a given string if no time has been
 	 * specified in the string originally. Parses the string into a CustomDate
 	 * object using jChronic natural date parser. Returns null if date string
 	 * cannot be parsed.
@@ -232,7 +232,7 @@ public abstract class ArgsParserAbstract {
 	 * @param date
 	 * @return CustomDate object with valid date and time
 	 */
-	protected CustomDate getDateZero(String date) {
+	protected CustomDate getDateTimeZero(String date) {
 		assertNotNull(date);
 		date = formatDate(date);
 		return dateWithTime(date, "00:00");
