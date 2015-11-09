@@ -13,17 +13,17 @@ public class PriorityParser extends ArgsParserAbstract {
 	private static final String MESSAGE_ARGUMENT_FORMAT = "Use Format: set <item_id> <priority>";
 	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
 	private static final String MESSAGE_INVALID_PRIORITY = "Priority";
-	
+
 	/** Command parameters **/
 	private Item item;
 	private String itemID;
 	private String priority;
-	
+
 	/**
-	 * Constructor for PriorityParser objects. Checks if arguments are valid
-	 * and stores the correct arguments properly. Throws the appropriate
-	 * exception if arguments are invalid. Contains methods to change the
-	 * priority of an item.
+	 * Constructor for PriorityParser objects. Checks if arguments are valid and
+	 * stores the correct arguments properly. Throws the appropriate exception
+	 * if arguments are invalid. Contains methods to change the priority of an
+	 * item.
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -42,7 +42,7 @@ public class PriorityParser extends ArgsParserAbstract {
 			errorInvalidFormat(MESSAGE_ARGUMENT_FORMAT);
 		}
 	}
-	
+
 	/**
 	 * Adds error message if item does not exist or unable to get
 	 */
@@ -51,7 +51,7 @@ public class PriorityParser extends ArgsParserAbstract {
 			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
-	
+
 	/**
 	 * Adds error message if priority given is invalid
 	 */
@@ -83,7 +83,8 @@ public class PriorityParser extends ArgsParserAbstract {
 
 	@Override
 	Command getCommand() throws Exception {
-		Command priority = new PriorityCommand(this.itemID, this.item, this.priority); 
+		Command priority = new PriorityCommand(this.itemID, this.item,
+				this.priority);
 		return priority;
 	}
 }

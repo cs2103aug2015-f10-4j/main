@@ -26,7 +26,7 @@ public class ShowCommand extends Command {
 	 * containing specified tags, or all items
 	 * 
 	 * @param args
-	 * @param tags2 
+	 * @param tags2
 	 * @throws Exception
 	 */
 	public ShowCommand(String type, ArrayList<String> tags) throws Exception {
@@ -101,7 +101,7 @@ public class ShowCommand extends Command {
 	 */
 	private ArrayList<Item> filterList(ArrayList<Item> itemList) {
 		ArrayList<Item> filteredItemList = new ArrayList<Item>();
-		Set<String> queryTags = new HashSet<String>(); 
+		Set<String> queryTags = new HashSet<String>();
 		for (String tag : tags) {
 			queryTags.add(tag.toLowerCase());
 		}

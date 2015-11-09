@@ -16,12 +16,13 @@ public class DelParserTest {
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %s";
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: delete <item_id>";
 	private static final String MESSAGE_INVALID_ITEM_ID = "[item_id]";
-	private static final String MESSAGE_ERROR = String.format(MESSAGE_HEADER_INVALID, MESSAGE_INVALID_ITEM_ID);
+	private static final String MESSAGE_ERROR = String.format(
+			MESSAGE_HEADER_INVALID, MESSAGE_INVALID_ITEM_ID);
 
 	@Before
 	public void setUp() {
 		ArrayList<Item> testList = new ArrayList<Item>();
-		for (int i = 0; i < 10; i ++) {
+		for (int i = 0; i < 10; i++) {
 			testList.add(new Item());
 		}
 		GUIModel.setTaskList(testList);

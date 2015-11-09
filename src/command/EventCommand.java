@@ -33,13 +33,14 @@ public class EventCommand extends Command {
 	 * if arguments are invalid. Contains methods to add an event to storage.
 	 * 
 	 * @param args
-	 * @param endTime 
-	 * @param startTime 
-	 * @param dateEnd 
-	 * @param dateStart 
+	 * @param endTime
+	 * @param startTime
+	 * @param dateEnd
+	 * @param dateStart
 	 * @throws Exception
 	 */
-	public EventCommand(String title, CustomDate dateStart, CustomDate dateEnd, int startTime, int endTime) throws Exception {
+	public EventCommand(String title, CustomDate dateStart, CustomDate dateEnd,
+			int startTime, int endTime) throws Exception {
 		event = new Item();
 		event.setType("event");
 		event.setTitle(title);
@@ -48,7 +49,7 @@ public class EventCommand extends Command {
 		event.setEndDate(dateEnd);
 		event.setEndTime(endTime);
 	}
-	
+
 	/**
 	 * Checks if the event to be added clashes with another event and adds to
 	 * the return message to inform the user

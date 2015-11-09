@@ -27,11 +27,12 @@ public class PriorityCommand extends Command {
 	 * priority of an item.
 	 * 
 	 * @param args
-	 * @param priority 
-	 * @param item 
+	 * @param priority
+	 * @param item
 	 * @throws Exception
 	 */
-	public PriorityCommand(String itemID, Item item, String priority) throws Exception {
+	public PriorityCommand(String itemID, Item item, String priority)
+			throws Exception {
 		this.itemID = itemID;
 		this.item = item;
 		this.priority = priority;
@@ -50,7 +51,7 @@ public class PriorityCommand extends Command {
 	 * priority of the selected task or event to the new priority specified.
 	 * 
 	 * @return message to show user
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Override
 	public String execute() throws Exception {

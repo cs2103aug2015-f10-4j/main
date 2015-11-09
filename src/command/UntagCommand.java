@@ -28,11 +28,12 @@ public class UntagCommand extends Command {
 	 * if arguments are invalid
 	 * 
 	 * @param args
-	 * @param tags 
-	 * @param item 
+	 * @param tags
+	 * @param item
 	 * @throws Exception
 	 */
-	public UntagCommand(String itemID, Item item, ArrayList<String> tags) throws Exception {
+	public UntagCommand(String itemID, Item item, ArrayList<String> tags)
+			throws Exception {
 		this.itemID = itemID;
 		this.item = item;
 		this.tags = tags;
@@ -58,7 +59,7 @@ public class UntagCommand extends Command {
 	public String execute() throws Exception {
 		duplicateItem();
 		Set<String> currentTags = item.getTags();
-		
+
 		for (String tag : tags) {
 			removeTagFromItem(currentTags, tag);
 		}

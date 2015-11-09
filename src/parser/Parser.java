@@ -33,9 +33,9 @@ public class Parser {
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %s";
 	private static final String MESSAGE_INVALID_INPUT = "Please enter a command";
 
-	/** Parser Instance**/
+	/** Parser Instance **/
 	private static Parser parser;
-	
+
 	/**
 	 * Splits a given string of user input and returns the words after the first
 	 * word of the input, which are the arguments of the command string
@@ -65,18 +65,18 @@ public class Parser {
 	}
 
 	/**
-	 * Checks if the command is valid and returns the correct Parser subclass
-	 * of the user's command. Passes the arguments to an ArgsParserAbstract subclass,
-	 * which will check the arguments' validity within its constructor. Exception
-	 * thrown if a command string is not valid.
+	 * Checks if the command is valid and returns the correct Parser subclass of
+	 * the user's command. Passes the arguments to an ArgsParserAbstract
+	 * subclass, which will check the arguments' validity within its
+	 * constructor. Exception thrown if a command string is not valid.
 	 * 
 	 * @param command
 	 * @param args
 	 * @return Command subclass object according to the user command
 	 * @throws Exception
 	 */
-	private static ArgsParserAbstract inputValidation(String command, String args)
-			throws Exception {
+	private static ArgsParserAbstract inputValidation(String command,
+			String args) throws Exception {
 		args = args == null ? "" : args;
 		switch (command) {
 		case CMD_ADD:
@@ -121,9 +121,9 @@ public class Parser {
 	}
 
 	/**
-	 * Takes in an input from the user and splits into command and command arguments, 
-	 * before verifying them and returning the corresponding Command object. 
-	 * Exception is thrown if no input is given.
+	 * Takes in an input from the user and splits into command and command
+	 * arguments, before verifying them and returning the corresponding Command
+	 * object. Exception is thrown if no input is given.
 	 * 
 	 * @param userInput
 	 * @return Command object to use for executing
@@ -133,23 +133,24 @@ public class Parser {
 		assertNotNull(userInput);
 		if (!userInput.isEmpty()) {
 			String trimInput = userInput.trim();
-			
+
 			String command = getStringCommand(trimInput);
 			String args = getStringArgs(trimInput);
-			
+
 			return inputValidation(command, args).getCommand();
 		} else {
 			throw new Exception(MESSAGE_INVALID_INPUT);
 		}
 	}
-	
+
 	/**
-	 * Creates an instance of Parser if it does not exist, otherwise, return the existing
-	 * instantiated Parser.
+	 * Creates an instance of Parser if it does not exist, otherwise, return the
+	 * existing instantiated Parser.
+	 * 
 	 * @return
 	 */
-	public static Parser getInstance(){
-		if(parser == null){
+	public static Parser getInstance() {
+		if (parser == null) {
 			parser = new Parser();
 		}
 		return parser;

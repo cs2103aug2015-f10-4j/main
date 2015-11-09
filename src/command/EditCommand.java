@@ -41,12 +41,13 @@ public class EditCommand extends Command {
 	 * if arguments are invalid. Contains methods to update the item in storage.
 	 * 
 	 * @param args
-	 * @param editObject2 
-	 * @param item2 
-	 * @param itemID2 
+	 * @param editObject2
+	 * @param item2
+	 * @param itemID2
 	 * @throws Exception
 	 */
-	public EditCommand(String field, Object editObject, String itemID, Item item, boolean isTask) throws Exception {
+	public EditCommand(String field, Object editObject, String itemID,
+			Item item, boolean isTask) throws Exception {
 		this.field = field;
 		this.editObject = editObject;
 		this.itemID = itemID;
@@ -72,7 +73,7 @@ public class EditCommand extends Command {
 					"End Date should be after Start Date");
 		}
 	}
-	
+
 	/**
 	 * Make 2 copies of the item to be stored in prevItem and item
 	 */
@@ -90,7 +91,7 @@ public class EditCommand extends Command {
 			item.setEndTime(2359);
 		}
 	}
-	
+
 	/**
 	 * Gives a CustomDate object if the item is floating or a CustomDate object
 	 * with the end date of the item
@@ -125,15 +126,15 @@ public class EditCommand extends Command {
 		item.setEndDate(null);
 		item.setEndTime(-1);
 	}
-	
+
 	@Override
 	public boolean isUndoable() {
 		return true;
 	}
-	
+
 	/**
-	 * Clones the current item and changes the value in the field specified. Updates
-	 * storage with the new item.
+	 * Clones the current item and changes the value in the field specified.
+	 * Updates storage with the new item.
 	 * 
 	 * @return message to show user
 	 * @throws Exception
@@ -211,7 +212,7 @@ public class EditCommand extends Command {
 			throw new Exception(String.format(MESSAGE_ITEM_ERROR, itemID));
 		} finally {
 			updateView();
-			if(isTask){
+			if (isTask) {
 				Magical.setCurrentTab("tasks");
 			} else {
 				Magical.setCurrentTab("events");

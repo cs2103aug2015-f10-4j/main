@@ -18,7 +18,7 @@ public class TagParser extends ArgsParserAbstract {
 	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
 	private static final String MESSAGE_TAG_PRESENT = "%s already has tag: ";
 	private static final String MESSAGE_TAG_RESTRICTED = "%s cannot have tag: ";
-	
+
 	/** For Checking **/
 	private static final ArrayList<String> RESTRICTED = new ArrayList<String>(
 			Arrays.asList("event", "events", "task", "tasks", "done"));
@@ -45,10 +45,10 @@ public class TagParser extends ArgsParserAbstract {
 
 		if (validNumArgs()) {
 			setProperParams();
-			
+
 			checkItemExists();
 			errorInvalidArgs();
-			
+
 			checkTags();
 			errorInvalidArgs();
 		} else {
@@ -66,7 +66,7 @@ public class TagParser extends ArgsParserAbstract {
 			checkRestricted(currentTags, tag);
 		}
 		addTagExistError();
-		
+
 		addTagRestrictedError();
 	}
 
@@ -74,7 +74,7 @@ public class TagParser extends ArgsParserAbstract {
 	 * Adds error message if given tags are restricted
 	 */
 	void addTagRestrictedError() {
-		if(!invalidTags.equals("")){
+		if (!invalidTags.equals("")) {
 			invalidArgs.add(invalidTags);
 		}
 	}
@@ -83,7 +83,7 @@ public class TagParser extends ArgsParserAbstract {
 	 * Adds error message if given tags already exist
 	 */
 	void addTagExistError() {
-		if(!presentTags.equals("")){
+		if (!presentTags.equals("")) {
 			invalidArgs.add(presentTags);
 		}
 	}
@@ -96,7 +96,7 @@ public class TagParser extends ArgsParserAbstract {
 			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
-	
+
 	/**
 	 * Check if a tag is present inside a set of tags and add to return message
 	 * presentTags if it is. Returns true if there are present tags, or false
@@ -118,7 +118,7 @@ public class TagParser extends ArgsParserAbstract {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Check if a tag is restricted and add to return message invalidTags if it
 	 * is. Returns true if tag is restricted, or false otherwise.
@@ -138,7 +138,7 @@ public class TagParser extends ArgsParserAbstract {
 		}
 		return false;
 	}
-	
+
 	@Override
 	void setProperParams() {
 		this.itemID = argsArray.get(0).trim();

@@ -12,7 +12,7 @@ public class SortParser extends ArgsParserAbstract {
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: sort <parameter> (upto 3 parameters)";
 	private static final String MESSAGE_INVALID_PARAMS = "Parameters";
-	
+
 	/** Command parameters **/
 	private ArrayList<String> sortParams;
 
@@ -37,7 +37,7 @@ public class SortParser extends ArgsParserAbstract {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
-	
+
 	/**
 	 * Set the sorting parameters to all types if none are specified, else add
 	 * error message
@@ -51,7 +51,7 @@ public class SortParser extends ArgsParserAbstract {
 			invalidArgs.add(MESSAGE_INVALID_PARAMS);
 		}
 	}
-	
+
 	/**
 	 * Returns true if sort parameters are valid (priority, title, date), or
 	 * false otherwise
@@ -87,5 +87,5 @@ public class SortParser extends ArgsParserAbstract {
 		Command sort = new SortCommand(this.sortParams);
 		return sort;
 	}
-	
+
 }

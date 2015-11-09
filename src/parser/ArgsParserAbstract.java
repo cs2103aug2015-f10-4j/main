@@ -48,10 +48,10 @@ public abstract class ArgsParserAbstract {
 	}
 
 	/**
-	 * Adds the time as default to a given string if no time has been
-	 * specified in the string originally. Parses the string into a CustomDate
-	 * object using jChronic natural date parser. Returns null if date string
-	 * cannot be parsed.
+	 * Adds the time as default to a given string if no time has been specified
+	 * in the string originally. Parses the string into a CustomDate object
+	 * using jChronic natural date parser. Returns null if date string cannot be
+	 * parsed.
 	 * 
 	 * @param date
 	 * @return CustomDate objects with given date and time, default time if not
@@ -89,10 +89,10 @@ public abstract class ArgsParserAbstract {
 		if (m.find()) {
 			String s = m.group(0);
 			assertNotNull(s);
-			
+
 			String temp = addCurrentYear(date, s);
 			assertNotNull(getDate(temp));
-			
+
 			if (getDate(temp).compareTo(today) == -1) {
 				date = addNextYear(date, s);
 				assertNotNull(getDate(date));
@@ -106,6 +106,7 @@ public abstract class ArgsParserAbstract {
 
 	/**
 	 * Add current year to date string, behind a specific dateformat
+	 * 
 	 * @param date
 	 * @param s
 	 * @return
@@ -117,6 +118,7 @@ public abstract class ArgsParserAbstract {
 
 	/**
 	 * Add next year to date string, behind a specific dateformat
+	 * 
 	 * @param date
 	 * @param s
 	 * @param temp
@@ -157,7 +159,8 @@ public abstract class ArgsParserAbstract {
 	 */
 	private String formatCorrectTime(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<![A-z]\\s|/|-)\\d{4}(?=\\s{0,1}!\\d+(am|pm)!\\d{4})");
+		Matcher m = getMatcher(date,
+				"(?<=\\s{0,1})(?<![A-z]\\s|/|-)\\d{4}(?=\\s{0,1}!\\d+(am|pm)!\\d{4})");
 		assertNotNull(m);
 
 		if (m.find()) {
@@ -179,34 +182,35 @@ public abstract class ArgsParserAbstract {
 	 */
 	String formatDate(String date) {
 		date = date.trim();
-		//System.out.println("Date 1: " + date);
+		// System.out.println("Date 1: " + date);
 		date = formatCorrectTime(date);
-		//System.out.println("Date 2: " + date);
+		// System.out.println("Date 2: " + date);
 		date = dateWithYear(date);
-		//System.out.println("Date 3: " + date);
+		// System.out.println("Date 3: " + date);
 		date = swapDayMonth(date);
-		//System.out.println("Date 4: " + date);
+		// System.out.println("Date 4: " + date);
 		date = placeTimeBehind(date);
-		//System.out.println("Date 5: " + date);
+		// System.out.println("Date 5: " + date);
 		date = swapDayMonthFlexi(date);
-		//System.out.println("Date 6: " + date);
+		// System.out.println("Date 6: " + date);
 		return date;
 	}
 
 	/**
 	 * Moves time parameter from front of the date string to back
+	 * 
 	 * @param date
 	 * @return
 	 */
 	private String placeTimeBehind(String date) {
-		ArrayList<String> temp = new ArrayList<String>(Arrays.asList(date.split(" ")));
-		if(temp.get(0).contains(":")
-				||temp.get(0).contains("am")
-				||temp.get(0).contains("pm")){
+		ArrayList<String> temp = new ArrayList<String>(Arrays.asList(date
+				.split(" ")));
+		if (temp.get(0).contains(":") || temp.get(0).contains("am")
+				|| temp.get(0).contains("pm")) {
 			temp.add(temp.get(0));
 			temp.remove(0);
 			date = "";
-			for(String s : temp){
+			for (String s : temp) {
 				date += s + " ";
 			}
 			date = date.trim();
@@ -228,7 +232,7 @@ public abstract class ArgsParserAbstract {
 		date = formatDate(date);
 		return dateWithTime(date, "23:59");
 	}
-	
+
 	/**
 	 * A variation on getDate with default time 0000
 	 * 
@@ -400,6 +404,7 @@ public abstract class ArgsParserAbstract {
 
 	/**
 	 * Swaps the given day and month around the date token "-" or "/"
+	 * 
 	 * @param date
 	 * @param m
 	 * @return
@@ -432,14 +437,17 @@ public abstract class ArgsParserAbstract {
 	}
 
 	/**
-	 * Checks if the correct number of arguments are provided for the given command
+	 * Checks if the correct number of arguments are provided for the given
+	 * command
 	 * 
 	 * @return boolean true/false
 	 */
-	abstract boolean validNumArgs();	
-	
+	abstract boolean validNumArgs();
+
 	/**
-	 * Returns the Command object corresponding to the user command for proper execution 
+	 * Returns the Command object corresponding to the user command for proper
+	 * execution
+	 * 
 	 * @return
 	 * @throws Exception
 	 */

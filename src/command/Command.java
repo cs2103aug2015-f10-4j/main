@@ -22,7 +22,7 @@ public abstract class Command {
 	/** For checking **/
 	protected static final CustomDate today = new CustomDate(Chronic
 			.parse("today 00:00").getEndCalendar().getTime());
-	
+
 	/**
 	 * Constructor for Command objects. Stores the arguments passed in when the
 	 * constructor is called.
@@ -81,14 +81,14 @@ public abstract class Command {
 		Magical.setDisplayList(Storage.EVENTS_INDEX, newEventList);
 		Magical.setDisplayList(Storage.EVENTS_DONE_INDEX, newEventDoneList);
 	}
-	
+
 	/**
 	 * Indicates if the command can be undone or not
 	 * 
 	 * @return boolean true/false
 	 */
 	public abstract boolean isUndoable();
-	
+
 	/**
 	 * Implements functionality for each Command subclass.
 	 * 

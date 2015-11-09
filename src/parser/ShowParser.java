@@ -44,7 +44,7 @@ public class ShowParser extends ArgsParserAbstract {
 			this.type = "tag";
 		}
 	}
-	
+
 	@Override
 	void setProperParams() {
 		this.type = argsArray.get(0).trim();

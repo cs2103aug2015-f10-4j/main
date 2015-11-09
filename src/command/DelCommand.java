@@ -24,7 +24,7 @@ public class DelCommand extends Command {
 	 * if arguments are invalid. Contains methods to remove to item.
 	 * 
 	 * @param args
-	 * @param item 
+	 * @param item
 	 * @throws Exception
 	 */
 	public DelCommand(String itemID, Item item) throws Exception {
@@ -42,18 +42,18 @@ public class DelCommand extends Command {
 		Magical.getStorage().delete(listIndex, item);
 		Magical.deleteDisplayList(listIndex, item);
 	}
-	
+
 	@Override
 	public boolean isUndoable() {
 		return true;
 	}
-	
+
 	/**
 	 * This method executes the delete command, which deletes the specified task
 	 * or event from the database.
 	 * 
 	 * @return message to show user
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Override
 	public String execute() throws Exception {

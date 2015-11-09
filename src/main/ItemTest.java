@@ -68,7 +68,8 @@ public class ItemTest {
 		event3.setPriority("high");
 	}
 
-	private CustomDate createCustomDate(int year, int month, int day, int hour, int min, int sec) {
+	private CustomDate createCustomDate(int year, int month, int day, int hour,
+			int min, int sec) {
 		Calendar date = Calendar.getInstance();
 		date.clear();
 

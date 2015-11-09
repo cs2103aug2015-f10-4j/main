@@ -11,8 +11,8 @@ import main.Magical;
 import main.Storage;
 
 /**
- * GUIModel holds information pulled from the main application, and
- * must be updated whenever a command is executed.
+ * GUIModel holds information pulled from the main application, and must be
+ * updated whenever a command is executed.
  *
  * @@author A0127127L
  */
@@ -28,11 +28,14 @@ public class GUIModel {
 	public static ObservableList<Item> eventList;
 	public static ObservableList<Item> eventDoneList;
 
-	@FXML private AnchorPane rootPane;
+	@FXML
+	private AnchorPane rootPane;
 
 	/**
 	 * This method sets the current tab in the model.
-	 * @param type "tasks" or "events"
+	 * 
+	 * @param type
+	 *            "tasks" or "events"
 	 */
 
 	public static void setCurrentTab(String type) {
@@ -45,6 +48,7 @@ public class GUIModel {
 
 	/**
 	 * Returns the current tab in the model.
+	 * 
 	 * @return String "events" or "tasks"
 	 */
 	public static String getCurrentTab() {
@@ -53,6 +57,7 @@ public class GUIModel {
 
 	/**
 	 * The methods below return the various lists stored in the model.
+	 * 
 	 * @return ObservableList<Item>
 	 */
 	public static ObservableList<Item> getTaskList() {
@@ -72,8 +77,8 @@ public class GUIModel {
 	}
 
 	/**
-	 * The methods below allow the lists in the model to be
-	 * replaced.
+	 * The methods below allow the lists in the model to be replaced.
+	 * 
 	 * @param newTaskList
 	 */
 	public static void setTaskList(ArrayList<Item> newTaskList) {
@@ -94,6 +99,7 @@ public class GUIModel {
 
 	/**
 	 * This method updates GUIModel with lists from the main application.
+	 * 
 	 * @return Nothing
 	 */
 	public static void update() {
@@ -105,10 +111,11 @@ public class GUIModel {
 		setEventDoneList(Magical.getDisplayList(Storage.EVENTS_DONE_INDEX));
 	}
 
-
 	/**
 	 * This method converts an ArrayList of tasks into an ObservableList.
-	 * @param  arrayList list to convert
+	 * 
+	 * @param arrayList
+	 *            list to convert
 	 * @return ObservableList
 	 */
 	private static ObservableList<Item> makeObservable(ArrayList<Item> arrayList) {

@@ -6,7 +6,7 @@ import command.PathCommand;
 /**
  * @@author A0129654X
  */
-public class PathParser extends ArgsParserAbstract{
+public class PathParser extends ArgsParserAbstract {
 
 	/** Messaging **/
 	private static final String MESSAGE_ARGUMENT_FORMAT = "Use Format: path <location>";
@@ -27,7 +27,7 @@ public class PathParser extends ArgsParserAbstract{
 		setProperParams();
 		checkLocation();
 	}
-	
+
 	/**
 	 * Throw exception if no location was specified
 	 * 

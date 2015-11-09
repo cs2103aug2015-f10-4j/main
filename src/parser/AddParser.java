@@ -10,8 +10,8 @@ import main.CustomDate;
 /**
  * @@author A0129654X
  */
-public class AddParser extends ArgsParserAbstract{
-	
+public class AddParser extends ArgsParserAbstract {
+
 	/** Messaging */
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: add <title> by <date> <time>";
 	private static final String MESSAGE_INVALID_TITLE = "Title";
@@ -58,7 +58,7 @@ public class AddParser extends ArgsParserAbstract{
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
-	
+
 	/**
 	 * Replaces characters that were used for escaping the keyword argument that
 	 * was used for splitting
@@ -71,7 +71,7 @@ public class AddParser extends ArgsParserAbstract{
 							.replaceAll("(?<=by)\"|\"(?=by)", STRING_EMPTY));
 		}
 	}
-	
+
 	/**
 	 * Date/time argument might be concatenated with other arguments, thus the
 	 * method splits the arguments properly
@@ -88,7 +88,7 @@ public class AddParser extends ArgsParserAbstract{
 			}
 		}
 	}
-	
+
 	/**
 	 * Gives last word of a string
 	 * 
@@ -98,7 +98,7 @@ public class AddParser extends ArgsParserAbstract{
 	private String getLastWord(String string) {
 		return string.split("\\s(?=\\S+$)")[1];
 	}
-	
+
 	/**
 	 * Adds last word to the argsArray and removes it from the date/time
 	 * argument
@@ -109,7 +109,7 @@ public class AddParser extends ArgsParserAbstract{
 		argsArray.add(count, last);
 		argsArray.set(count - 1, removeLastWord(argsArray.get(count - 1)));
 	}
-	
+
 	/**
 	 * Removes last word from a string
 	 * 
@@ -119,7 +119,7 @@ public class AddParser extends ArgsParserAbstract{
 	private String removeLastWord(String string) {
 		return string.split("\\s(?=\\S+$)")[0];
 	}
-	
+
 	/**
 	 * Set the relevant parameters of AddCommand to that of a floating task
 	 */
@@ -129,7 +129,7 @@ public class AddParser extends ArgsParserAbstract{
 		this.endTime = -1;
 		this.isFloat = true;
 	}
-	
+
 	/**
 	 * Set the relevant parameters of AddCommand to that of the specified task
 	 */
@@ -139,7 +139,7 @@ public class AddParser extends ArgsParserAbstract{
 		this.endTime = dueDate == null ? -1 : dueDate.getTime();
 		assertFalse(isFloat);
 	}
-	
+
 	/**
 	 * Adds error message if title is invalid
 	 */
@@ -148,7 +148,7 @@ public class AddParser extends ArgsParserAbstract{
 			invalidArgs.add(MESSAGE_INVALID_TITLE);
 		}
 	}
-	
+
 	/**
 	 * Adds error message if invalid date and time specified, and task to be
 	 * added is not a floating task
@@ -167,13 +167,14 @@ public class AddParser extends ArgsParserAbstract{
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Returns an AddCommand object with the proper parameters
+	 * 
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	Command getCommand() throws Exception{
+	Command getCommand() throws Exception {
 		Command add = new AddCommand(this.title, this.dueDate, this.endTime);
 		assertNotNull(add);
 		return add;

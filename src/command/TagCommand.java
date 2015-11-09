@@ -28,11 +28,12 @@ public class TagCommand extends Command {
 	 * if arguments are invalid
 	 * 
 	 * @param args
-	 * @param tags2 
-	 * @param item2 
+	 * @param tags2
+	 * @param item2
 	 * @throws Exception
 	 */
-	public TagCommand(String itemID, Item item, ArrayList<String> tags) throws Exception {
+	public TagCommand(String itemID, Item item, ArrayList<String> tags)
+			throws Exception {
 		this.itemID = itemID;
 		this.item = item;
 		this.tags = tags;
@@ -48,7 +49,7 @@ public class TagCommand extends Command {
 		currentTags.add(tag.toLowerCase());
 		item.setTags(currentTags);
 	}
-	
+
 	/**
 	 * Make 2 copies of the item to be stored in prevItem and item
 	 */

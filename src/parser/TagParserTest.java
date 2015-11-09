@@ -22,7 +22,7 @@ public class TagParserTest {
 	@Before
 	public void setUp() {
 		ArrayList<Item> testList = new ArrayList<Item>();
-		for (int i = 0; i < 10; i ++) {
+		for (int i = 0; i < 10; i++) {
 			testList.add(new Item());
 		}
 		GUIModel.setTaskList(testList);

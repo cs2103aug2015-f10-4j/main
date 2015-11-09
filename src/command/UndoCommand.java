@@ -29,7 +29,7 @@ public class UndoCommand extends Command {
 	 * @throws Exception
 	 */
 	public UndoCommand() {
-		
+
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class UndoCommand extends Command {
 
 			setStorage(lastTasksList, lastTasksDoneList, lastEventsList,
 					lastEventsDoneList);
-			
+
 			return MESSAGE_UNDO_SUCCESS;
 		} catch (Exception e) {
 			throw new Exception(MESSAGE_UNDO_ERROR);

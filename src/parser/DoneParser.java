@@ -17,7 +17,7 @@ public class DoneParser extends ArgsParserAbstract {
 	/** Command Parameters **/
 	private Item item;
 	private String itemID;
-	
+
 	/**
 	 * Constructor for DoneParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
@@ -39,7 +39,7 @@ public class DoneParser extends ArgsParserAbstract {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
-	
+
 	/**
 	 * Adds error message if item does not exist or unable to get or is already
 	 * done
@@ -73,5 +73,5 @@ public class DoneParser extends ArgsParserAbstract {
 		Command done = new DoneCommand(this.itemID, this.item);
 		return done;
 	}
-	
+
 }

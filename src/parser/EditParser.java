@@ -8,7 +8,7 @@ import main.Item;
  * @@author A0129654X
  */
 public class EditParser extends ArgsParserAbstract {
-	
+
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <item_id> <field> <value>";
 	private static final String MESSAGE_INVALID_FIELD = "Unknown field";
@@ -60,11 +60,11 @@ public class EditParser extends ArgsParserAbstract {
 
 		if (validNumArgs()) {
 			setProperParams();
-			
+
 			checkItemExists();
-			
+
 			errorInvalidArgs();
-			
+
 			isTask = item.getType().equals("task");
 
 			switch (field.toLowerCase()) {
@@ -106,7 +106,7 @@ public class EditParser extends ArgsParserAbstract {
 			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
-	
+
 	/**
 	 * Adds error message if title is invalid
 	 */
@@ -115,7 +115,7 @@ public class EditParser extends ArgsParserAbstract {
 			invalidArgs.add(MESSAGE_INVALID_TITLE);
 		}
 	}
-	
+
 	/**
 	 * Adds error message if date is invalid or if task is to be made floating,
 	 * sets toFloat to true.
@@ -134,6 +134,7 @@ public class EditParser extends ArgsParserAbstract {
 
 	/**
 	 * Adds the proper invalid date message to error message
+	 * 
 	 * @param type
 	 */
 	void addInvalidDateType(int type) {
@@ -143,7 +144,7 @@ public class EditParser extends ArgsParserAbstract {
 			invalidArgs.add(MESSAGE_INVALID_DATE_END);
 		}
 	}
-	
+
 	/**
 	 * Adds error message if time is invalid, according to type, or error
 	 * message if the start time is provided for tasks, or get the correct time
@@ -164,6 +165,7 @@ public class EditParser extends ArgsParserAbstract {
 
 	/**
 	 * Adds the proper invalid time message to error message
+	 * 
 	 * @param type
 	 */
 	void addInvalidTimeType(int type) {
@@ -173,14 +175,14 @@ public class EditParser extends ArgsParserAbstract {
 			invalidArgs.add(MESSAGE_INVALID_TIME_END);
 		}
 	}
-	
+
 	/**
 	 * Adds invalid field message to error messages
 	 */
 	void invalidField() {
 		invalidArgs.add(MESSAGE_INVALID_FIELD);
 	}
-	
+
 	/**
 	 * Set the relevant parameters of EditCommand to that of the specified task
 	 */

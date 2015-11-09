@@ -31,7 +31,6 @@ public class DateCommand extends Command {
 		this.dateEnd = dateEnd;
 	}
 
-
 	/**
 	 * Filter items according to date in the given list and return it
 	 * 
@@ -49,12 +48,12 @@ public class DateCommand extends Command {
 		}
 		return filteredItemList;
 	}
-	
+
 	@Override
 	public boolean isUndoable() {
 		return false;
 	}
-	
+
 	/**
 	 * This method executes the date command, which filters through all the
 	 * tasks and events and lists only those that fall within the specified date
@@ -79,7 +78,6 @@ public class DateCommand extends Command {
 		ArrayList<Item> filteredTaskDoneList = filterItems(taskDoneList);
 		ArrayList<Item> filteredEventList = filterItems(eventList);
 		ArrayList<Item> filteredEventDoneList = filterItems(eventDoneList);
-
 
 		updateView(filteredTaskList, filteredTaskDoneList, filteredEventList,
 				filteredEventDoneList);

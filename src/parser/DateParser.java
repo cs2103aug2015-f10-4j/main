@@ -17,11 +17,11 @@ public class DateParser extends ArgsParserAbstract {
 	private static final String MESSAGE_INVALID_DATETIME_END = "End date/time";
 	private static final String MESSAGE_INVALID_DATETIME_START = "Start date/time";
 	private static final String MESSAGE_INVALID_DATETIME_RANGE = "End date/time is earlier than Start date/time";
-	
+
 	/** Command parameters **/
 	private CustomDate dateStart;
 	private CustomDate dateEnd;
-	
+
 	/**
 	 * Constructor for DateParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
@@ -46,7 +46,7 @@ public class DateParser extends ArgsParserAbstract {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
-	
+
 	/**
 	 * Adds error message if invalid date and time specified, according to if
 	 * the date is the start or end date.
@@ -61,7 +61,7 @@ public class DateParser extends ArgsParserAbstract {
 			}
 		}
 	}
-	
+
 	/**
 	 * Adds error message if end date is before start date
 	 */
@@ -70,7 +70,7 @@ public class DateParser extends ArgsParserAbstract {
 			invalidArgs.add(MESSAGE_INVALID_DATETIME_RANGE);
 		}
 	}
-	
+
 	/**
 	 * Check if the end date given is after the start date
 	 * 

@@ -12,7 +12,6 @@ import static org.junit.Assert.*;
 
 /**
  * @@author A0126310Y
- * @throws IOException
  */
 public class StorageTest {
 
@@ -20,7 +19,8 @@ public class StorageTest {
 
 	private static final String DEFAULT_FILE_DIRECTORY = "magical";
 	private static final String DEFAULT_FILE_NAME = "storage.txt";
-	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY + "/" + DEFAULT_FILE_NAME;
+	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY
+			+ "/" + DEFAULT_FILE_NAME;
 
 	Item task1 = new Item();
 	Item event1 = new Item();
@@ -65,10 +65,11 @@ public class StorageTest {
 
 		for (int i = 0; i < NUM_LISTS; i++) {
 			localLists.add(new ArrayList<Item>());
-		}	
+		}
 		localLists.get(0).add(task1);
 		localLists.get(0).add(task2);
-		localLists.get(2).add(event1); // adding the updated element into localArray
+		localLists.get(2).add(event1); // adding the updated element into
+										// localArray
 		localLists.get(2).add(event2); // adding items into local array
 	}
 
@@ -81,13 +82,15 @@ public class StorageTest {
 			testStorage.create(0, task1);
 			testStorage.create(0, task2);
 			testStorage.create(2, event1);
-			testStorage.create(2, event2); //adding original items into Storage array
+			testStorage.create(2, event2); // adding original items into Storage
+											// array
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private CustomDate createDateObjects(int year, int month, int day, int hour, int min, int sec) {
+	private CustomDate createDateObjects(int year, int month, int day,
+			int hour, int min, int sec) {
 		Calendar date = Calendar.getInstance();
 		date.clear();
 
@@ -105,7 +108,8 @@ public class StorageTest {
 	/******************* END OF HELPER METHODS *******************/
 
 	/******************* UNIT TEST CASES *******************/
-	// tests whether the file specified will be created when the constructor is called.
+	// tests whether the file specified will be created when the constructor is
+	// called.
 	@Test
 	public void testStorageConstructor() throws IOException {
 		Storage testStorage = new Storage();
@@ -140,7 +144,8 @@ public class StorageTest {
 	@Test
 	public void testCreateTask() throws IOException {
 
-		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
+		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(
+				NUM_LISTS);
 		createLocalArray(localLists);
 
 		Storage testStorage = new Storage();
@@ -149,14 +154,15 @@ public class StorageTest {
 		creatingItems(testStorage);
 
 		List<ArrayList<Item>> testingLists = testStorage.getLists();
-		assertEquals(localLists, testingLists);	
+		assertEquals(localLists, testingLists);
 	}
 
 	// tests whether Items list can be retrieved.
 	@Test
 	public void testGetTaskList() throws IOException {
 
-		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
+		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(
+				NUM_LISTS);
 		createLocalArray(localLists);
 
 		Storage testStorage = new Storage();
@@ -183,11 +189,15 @@ public class StorageTest {
 		event1.setType("event");
 		event1.setTitle("friend's birthday"); // updating the content of event1
 
-		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
+		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(
+				NUM_LISTS);
 		createLocalArray(localLists);
 
-		testStorage.update(2, oldEvent, event1); // updating with the newly updated event1
-		List<ArrayList<Item>> testingLists = testStorage.getLists(); // get updated lists
+		testStorage.update(2, oldEvent, event1); // updating with the newly
+													// updated event1
+		List<ArrayList<Item>> testingLists = testStorage.getLists(); // get
+																		// updated
+																		// lists
 		assertEquals(localLists, testingLists);
 	}
 
@@ -195,7 +205,8 @@ public class StorageTest {
 	@Test
 	public void testDeleteTask() throws IOException {
 
-		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
+		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(
+				NUM_LISTS);
 		createLocalArray(localLists);
 		localLists.get(2).remove(0);
 
@@ -205,7 +216,9 @@ public class StorageTest {
 		creatingItems(testStorage);
 
 		testStorage.delete(2, event1);
-		List<ArrayList<Item>> testingLists = testStorage.getLists(); // get updated lists
+		List<ArrayList<Item>> testingLists = testStorage.getLists(); // get
+																		// updated
+																		// lists
 		assertEquals(localLists, testingLists);
 	}
 
@@ -213,7 +226,8 @@ public class StorageTest {
 	@Test
 	public void testClearTaskList() throws IOException {
 
-		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
+		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(
+				NUM_LISTS);
 		createLocalArray(localLists);
 		localLists.get(0).clear(); // clear list 0
 
@@ -223,15 +237,19 @@ public class StorageTest {
 		creatingItems(testStorage);
 
 		testStorage.clear(0);
-		List<ArrayList<Item>> testingLists = testStorage.getLists(); // get updated lists
+		List<ArrayList<Item>> testingLists = testStorage.getLists(); // get
+																		// updated
+																		// lists
 		assertEquals(localLists, testingLists);
 	}
 
-	// tests whether the correct position of an Item in its respective list can be retrieved.
+	// tests whether the correct position of an Item in its respective list can
+	// be retrieved.
 	@Test
 	public void testGetPos() throws IOException {
 
-		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
+		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(
+				NUM_LISTS);
 		createLocalArray(localLists);
 
 		Storage testStorage = new Storage();
@@ -247,7 +265,8 @@ public class StorageTest {
 	@Test
 	public void testWriteLists() throws IOException {
 
-		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
+		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(
+				NUM_LISTS);
 		createLocalArray(localLists);
 
 		Storage testStorage = new Storage();
@@ -256,15 +275,19 @@ public class StorageTest {
 		creatingItems(testStorage);
 
 		testStorage.writeLists();
-		List<ArrayList<Item>> testingLists = testStorage.getLists(); // get lists from .txt
-		assertEquals(localLists, testingLists);	
+		List<ArrayList<Item>> testingLists = testStorage.getLists(); // get
+																		// lists
+																		// from
+																		// .txt
+		assertEquals(localLists, testingLists);
 	}
 
 	// tests whether data can be read from storage.
 	@Test
 	public void testReadTaskList() throws IOException {
 
-		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
+		List<ArrayList<Item>> localLists = new ArrayList<ArrayList<Item>>(
+				NUM_LISTS);
 		createLocalArray(localLists);
 
 		Storage testStorage = new Storage();

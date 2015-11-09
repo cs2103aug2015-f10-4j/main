@@ -6,10 +6,10 @@ import command.HelpCommand;
 import command.RedoCommand;
 import command.UndoCommand;
 
-public class DefaultParser extends ArgsParserAbstract{
+public class DefaultParser extends ArgsParserAbstract {
 
 	/**
-	 * Constructor for default Parser objects. 
+	 * Constructor for default Parser objects.
 	 * 
 	 * @param args
 	 */
@@ -28,7 +28,7 @@ public class DefaultParser extends ArgsParserAbstract{
 
 	@Override
 	Command getCommand() {
-		switch(args){
+		switch (args) {
 		case "exit":
 			Command exit = new ExitCommand();
 			return exit;

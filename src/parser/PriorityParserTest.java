@@ -18,10 +18,11 @@ public class PriorityParserTest {
 
 	private static final String MESSAGE_ID_INVALID = "Invalid arguments: [item_id]";
 	private static final String MESSAGE_VALUE_INVALID = "Invalid arguments: [Priority]";
+
 	@Before
 	public void setUp() {
 		ArrayList<Item> testList = new ArrayList<Item>();
-		for (int i = 0; i < 10; i ++) {
+		for (int i = 0; i < 10; i++) {
 			testList.add(new Item());
 		}
 		GUIModel.setTaskList(testList);
@@ -32,7 +33,8 @@ public class PriorityParserTest {
 	public void testNormalInputs() throws Exception {
 		ArgsParserAbstract tagTask = new PriorityParser("t1 high");
 		ArgsParserAbstract tagTaskAgain = new PriorityParser("t1 medium");
-		ArgsParserAbstract tagTaskWithSamePriorityAgain = new PriorityParser("t1 medium");
+		ArgsParserAbstract tagTaskWithSamePriorityAgain = new PriorityParser(
+				"t1 medium");
 		ArgsParserAbstract tagNextTask = new PriorityParser("t2 low");
 		ArgsParserAbstract tagLastTask = new PriorityParser("t7 high");
 		ArgsParserAbstract noPriority = new PriorityParser("t1");
@@ -46,7 +48,8 @@ public class PriorityParserTest {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			ArgsParserAbstract tooManyArgs = new PriorityParser("t1 high low medium");
+			ArgsParserAbstract tooManyArgs = new PriorityParser(
+					"t1 high low medium");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_VALUE_INVALID, e.getMessage());
 		}

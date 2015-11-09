@@ -14,7 +14,7 @@ public class HelpCommand extends Command {
 	 * @throws Exception
 	 */
 	public HelpCommand() {
-		
+
 	}
 
 	/**

@@ -38,7 +38,7 @@ public class DelParser extends ArgsParserAbstract {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
 		}
 	}
-	
+
 	/**
 	 * Adds error message if item does not exist or unable to get
 	 */
@@ -47,7 +47,7 @@ public class DelParser extends ArgsParserAbstract {
 			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
-	
+
 	void setProperParams() {
 		itemID = argsArray.get(0).trim();
 		item = getItemByID(itemID);
@@ -60,11 +60,11 @@ public class DelParser extends ArgsParserAbstract {
 			return true;
 		}
 	}
-	
+
 	@Override
 	Command getCommand() throws Exception {
 		Command del = new DelCommand(this.itemID, this.item);
 		return del;
 	}
-	
+
 }

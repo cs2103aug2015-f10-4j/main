@@ -22,7 +22,7 @@ public class UntagParser extends ArgsParserAbstract {
 	private String itemID;
 	private ArrayList<String> tags;
 	private String absentTags = STRING_EMPTY;
-	
+
 	/**
 	 * Constructor for UntagParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
@@ -42,7 +42,7 @@ public class UntagParser extends ArgsParserAbstract {
 
 			checkItemExists();
 			errorInvalidArgs();
-			
+
 			checkTags();
 			errorInvalidArgs();
 		} else {
@@ -65,7 +65,7 @@ public class UntagParser extends ArgsParserAbstract {
 	 * Adds error message if given tags are absent from item
 	 */
 	void addTagsAbsentError() {
-		if(!absentTags.equals("")){
+		if (!absentTags.equals("")) {
 			invalidArgs.add(absentTags);
 		}
 	}
@@ -78,7 +78,7 @@ public class UntagParser extends ArgsParserAbstract {
 			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
 		}
 	}
-	
+
 	/**
 	 * Check if a tag is absent in a set of tags and add to return message
 	 * absentTags if it is not. Returns true if there are absent tags, or false
@@ -100,7 +100,7 @@ public class UntagParser extends ArgsParserAbstract {
 		}
 		return false;
 	}
-	
+
 	@Override
 	void setProperParams() {
 		this.itemID = argsArray.get(0).trim();

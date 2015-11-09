@@ -28,11 +28,12 @@ public class AddCommand extends Command {
 	 * if arguments are invalid. Contains methods to add a task to storage.
 	 * 
 	 * @param args
-	 * @param endTime 
-	 * @param dueDate 
+	 * @param endTime
+	 * @param dueDate
 	 * @throws Exception
 	 */
-	public AddCommand(String title, CustomDate dueDate, int endTime) throws Exception {
+	public AddCommand(String title, CustomDate dueDate, int endTime)
+			throws Exception {
 		task = new Item();
 		task.setType("task");
 		task.setTitle(title);
@@ -66,7 +67,7 @@ public class AddCommand extends Command {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * get task list from storage
 	 * 
@@ -104,7 +105,7 @@ public class AddCommand extends Command {
 	public boolean isUndoable() {
 		return true;
 	}
-	
+
 	/**
 	 * Adds a new task to the storage using the parameters stored
 	 * 

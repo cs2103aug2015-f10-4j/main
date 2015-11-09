@@ -18,13 +18,12 @@ public class UndoneParserTest {
 
 	private static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
 	private static final String MESSAGE_FORMAT_INVALID = "Use Format: undone <item_id>";
-	private static final String MESSAGE_UNDONE_INVALID = 
-			"Invalid arguments: [Undone tasks cannot be undone]";
+	private static final String MESSAGE_UNDONE_INVALID = "Invalid arguments: [Undone tasks cannot be undone]";
 
 	@Before
 	public void setUp() {
 		ArrayList<Item> testList = new ArrayList<Item>();
-		for (int i = 0; i < 10; i ++) {
+		for (int i = 0; i < 10; i++) {
 			testList.add(new Item());
 		}
 		GUIModel.setTaskList(testList);
