@@ -30,6 +30,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import main.CustomDate;
 import main.Item;
+import main.Magical;
+
+/**
+ *
+ * @author Joey Yeo
+ *
+ */
 
 public class GUIController {
 
@@ -142,8 +149,8 @@ public class GUIController {
 	 */
 	public void initialize() throws Exception {
 
-		main.Magical.init();
-		gui.GUIModel.init();
+		Magical.init();
+		GUIModel.update();
 
 		updateTables();
 
@@ -230,8 +237,9 @@ public class GUIController {
 			messageLabel.setTextFill(SUCCESS_MESSAGE_COLOR);
 			String message = main.Magical.execute(userInput);
 			messageLabel.setText(message);
-			updateTables();
 			commandLineField.clear();
+			GUIModel.update();
+			updateTables();
 			updateTableColors();
 			switchToTab(GUIModel.getCurrentTab());
 		} catch (Exception e) {
@@ -273,7 +281,6 @@ public class GUIController {
 	private void handleTaskTabClicked() {
 		GUIModel.setCurrentTab("tasks");
 	}
-
 	@FXML
 	private void handleEventTabClicked() {
 		GUIModel.setCurrentTab("events");
@@ -385,7 +392,6 @@ public class GUIController {
 	 * @param  character depending on table
 	 * @return TableCell
 	 */
-
 	private TableCell<Item, String> makeIndex(String character) {
 	    TableCell<Item, String> cell = new TableCell<>();
 	    cell.textProperty().bind(Bindings.when(cell.emptyProperty())
@@ -401,7 +407,6 @@ public class GUIController {
 	 * event and task tables.
 	 * @return TableCell<Item, CustomDate> with a colored row depending on date
 	 */
-
 	private TableCell<Item, CustomDate> makeDateCellFactory() {
 		return new TableCell<Item, CustomDate>() {
 			@Override

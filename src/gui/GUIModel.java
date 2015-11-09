@@ -7,6 +7,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import main.Item;
+import main.Magical;
+import main.Storage;
+
+/**
+ *
+ * @author Joey Yeo
+ *
+ */
 
 public class GUIModel {
 
@@ -84,21 +92,18 @@ public class GUIModel {
 	}
 
 	/**
-	 * This method initializes GUIModel by converting tasks lists from Storage
-	 * into ObservableLists usable by the controller.
+	 * This method updates GUIModel with lists from the main application.
 	 * @return Nothing
 	 */
-	public static void init() {
-		taskList = makeObservable(main.Magical.getStorage().getList(
-				main.Storage.TASKS_INDEX));
-		taskDoneList = makeObservable(main.Magical.getStorage().getList(
-				main.Storage.TASKS_DONE_INDEX));
-		eventList = makeObservable(main.Magical.getStorage().getList(
-				main.Storage.EVENTS_INDEX));
-		eventDoneList = makeObservable(main.Magical.getStorage().getList(
-				main.Storage.EVENTS_DONE_INDEX));
-
+	public static void update() {
+		currentTab = Magical.getCurrentTab();
+		showHelpWindow = Magical.isShowHelpWindow();
+		setTaskList(Magical.getDisplayList(Storage.TASKS_INDEX));
+		setTaskDoneList(Magical.getDisplayList(Storage.TASKS_DONE_INDEX));
+		setEventList(Magical.getDisplayList(Storage.EVENTS_INDEX));
+		setEventDoneList(Magical.getDisplayList(Storage.EVENTS_DONE_INDEX));
 	}
+
 
 	/**
 	 * This method converts an ArrayList of tasks into an ObservableList.

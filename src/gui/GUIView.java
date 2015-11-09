@@ -8,6 +8,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ *
+ * @author Joey Yeo
+ *
+ */
+
 public class GUIView extends Application {
 
 	private static final String TITLE_FORMAT = "Magical v%s";
