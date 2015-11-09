@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import command.Command;
+import command.UntagCommand;
 import main.Item;
 
 public class UntagParser extends ArgsParserAbstract {
@@ -35,7 +36,7 @@ public class UntagParser extends ArgsParserAbstract {
 
 		if (validNumArgs()) {
 			setProperParams();
-			
+
 			checkItemExists();
 			errorInvalidArgs();
 			
@@ -61,7 +62,9 @@ public class UntagParser extends ArgsParserAbstract {
 	 * Adds error message if given tags are absent from item
 	 */
 	void addTagsAbsentError() {
-		invalidArgs.add(absentTags);
+		if(!absentTags.equals("")){
+			invalidArgs.add(absentTags);
+		}
 	}
 
 	/**
@@ -112,8 +115,8 @@ public class UntagParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command untag = new UntagCommand(this.itemID, this.item, this.tags);
+		return untag;
 	}
 }

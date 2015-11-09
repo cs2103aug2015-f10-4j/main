@@ -10,10 +10,6 @@ import main.Item;
 
 public class UntagCommand extends Command {
 
-	/** Messaging **/
-	private static final String MESSAGE_INVALID_FORMAT = "Use Format: untag <item_id> <tag name>";
-	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
-	private static final String MESSAGE_TAG_ABSENT = "%s does not have tag: ";
 	private static final String MESSAGE_TAG_ERROR = "Unable to remove tag to %s";
 	private static final String MESSAGE_TAG_REMOVED = "%s removed from %s";
 
@@ -22,7 +18,6 @@ public class UntagCommand extends Command {
 	private String itemID;
 	private ArrayList<String> tags;
 	private Item prevItem;
-	private String absentTags = STRING_EMPTY;
 
 	/**
 	 * Constructor for UntagCommand objects. Checks if arguments are valid and
@@ -30,52 +25,14 @@ public class UntagCommand extends Command {
 	 * if arguments are invalid
 	 * 
 	 * @param args
+	 * @param tags 
+	 * @param item 
 	 * @throws Exception
 	 */
-	public UntagCommand(String args) throws Exception {
-		super(args);
-
-		this.argsArray = splitArgs(" ", -1);
-		this.count = argsArray.size();
-
-		if (validNumArgs()) {
-			setProperParams();
-			checkItemExists();
-			errorInvalidArgs();
-		} else {
-			errorInvalidFormat();
-		}
-	}
-
-	/**
-	 * Adds error message if item does not exist or unable to get
-	 */
-	void checkItemExists() {
-		if (item == null) {
-			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
-		}
-	}
-
-	/**
-	 * Check if a tag is absent in a set of tags and add to return message
-	 * absentTags if it is not. Returns true if there are absent tags, or false
-	 * otherwise.
-	 * 
-	 * @param currentTags
-	 * @param tag
-	 * @return boolean
-	 */
-	private boolean checkTags(Set<String> currentTags, String tag) {
-		if (!currentTags.contains(tag)) {
-			if (absentTags.equals(STRING_EMPTY)) {
-				absentTags = String.format(MESSAGE_TAG_ABSENT, itemID) + tag;
-				return true;
-			} else {
-				absentTags += ", " + tag;
-				return true;
-			}
-		}
-		return false;
+	public UntagCommand(String itemID, Item item, ArrayList<String> tags) throws Exception {
+		this.itemID = itemID;
+		this.item = item;
+		this.tags = tags;
 	}
 
 	/**
@@ -84,38 +41,6 @@ public class UntagCommand extends Command {
 	void duplicateItem() {
 		prevItem = item;
 		item = prevItem.copy();
-	}
-
-	/**
-	 * Throws exception if error messages if tags are absent
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	void errorAbsentTags() throws Exception {
-		if (!absentTags.equals(STRING_EMPTY)) {
-			throw new Exception(absentTags);
-		}
-	}
-
-	/**
-	 * Throws exception if error messages for invalid arguments are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	protected void errorInvalidArgs() throws IllegalArgumentException {
-		if (invalidArgs.size() > 0) {
-			throw new IllegalArgumentException(String.format(
-					MESSAGE_HEADER_INVALID, invalidArgs));
-		}
-	}
-
-	/**
-	 * Throws exception if error messages for format are present
-	 * 
-	 * @throws IllegalArgumentException
-	 */
-	private void errorInvalidFormat() throws IllegalArgumentException {
-		throw new IllegalArgumentException(MESSAGE_INVALID_FORMAT);
 	}
 
 	/**
@@ -132,12 +57,8 @@ public class UntagCommand extends Command {
 		Set<String> currentTags = item.getTags();
 		
 		for (String tag : tags) {
-			if (!checkTags(currentTags, tag)) {
-				removeTagFromItem(currentTags, tag);
-			}
+			removeTagFromItem(currentTags, tag);
 		}
-		
-		errorAbsentTags();
 
 		try {
 			updateItem();
@@ -167,29 +88,12 @@ public class UntagCommand extends Command {
 	}
 
 	/**
-	 * Set the relevant parameters of UntagCommand to that of the specified task
-	 */
-	void setProperParams() {
-		this.itemID = argsArray.get(0).trim();
-		this.item = getItemByID(itemID);
-		this.tags = new ArrayList<String>(argsArray.subList(1, count));
-	}
-
-	/**
 	 * Updates the original item with the new modified item
 	 * 
 	 * @throws IOException
 	 */
 	void updateItem() throws IOException {
-		int listIndex = Storage.getListIndex(argsArray.get(0));
+		int listIndex = Storage.getListIndex(itemID);
 		Magical.getStorage().update(listIndex, prevItem, item);
-	}
-
-	public boolean validNumArgs() {
-		if (this.count < 2) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 }
