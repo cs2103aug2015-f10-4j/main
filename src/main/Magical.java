@@ -45,21 +45,21 @@ public class Magical {
 	 */
 	private static void archivePastEvents() {
 		ArrayList<Item> eventList = storage.getList(Storage.EVENTS_INDEX);
+		ArrayList<Item> eventDoneList = storage.getList(Storage.EVENTS_DONE_INDEX);
 		ArrayList<Item> newEventList = new ArrayList<Item>();
-		ArrayList<Item> newEventDoneList = new ArrayList<Item>();
 		CustomDate today = new CustomDate();
 		for (int i = 0; i < eventList.size(); i++) {
 			Item item = eventList.get(i);
 			CustomDate d = item.getEndDate();
 			if (d.compareTo(today) < 0) {
-				newEventDoneList.add(item);
+				eventDoneList.add(item);
 			} else {
 				newEventList.add(item);
 			}
 		}
 		try {
 			storage.setList(Storage.EVENTS_INDEX, newEventList);
-			storage.setList(Storage.EVENTS_DONE_INDEX, newEventDoneList);
+			storage.setList(Storage.EVENTS_DONE_INDEX, eventDoneList);
 		} catch (IOException e) {
 		}
 	}
