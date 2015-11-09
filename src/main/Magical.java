@@ -200,7 +200,7 @@ public class Magical {
 	 * @param newList
 	 */
 	public static void setDisplayList(int index, ArrayList<Item> newList) {
-		displayLists.set(index, newList);
+		displayLists.set(index, listClone(newList));
 	}
 
 	/**
