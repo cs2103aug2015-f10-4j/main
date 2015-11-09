@@ -58,12 +58,17 @@ public class UndoCommand extends Command {
 
 			setStorage(lastTasksList, lastTasksDoneList, lastEventsList,
 					lastEventsDoneList);
-
+			
 			return MESSAGE_UNDO_SUCCESS;
 		} catch (Exception e) {
 			throw new Exception(MESSAGE_UNDO_ERROR);
 		} finally {
-			updateView();
+			if (Magical.lastViewCommand != null) {
+				Magical.lastViewCommand.execute();
+				updateView();
+			} else {
+				updateViewStorage();
+			}
 		}
 	}
 

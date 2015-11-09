@@ -213,7 +213,7 @@ public class CustomDate implements Comparable<CustomDate> {
 		String month = monthArray[getMonth() - 1];
 		int time = getTime();
 		int hour = time/100 - 12 <= 0 ? time/100 : time/100 - 12;
-		String timeString = String.format("%02d.%02d", hour, time%100);
+		String timeString = String.format("%d.%02d", hour, time%100);
 		if (time / 100 < 12) {
 			timeString += " am";
 		} else {

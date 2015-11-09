@@ -62,5 +62,7 @@ public class UndoneCommand extends Command {
 		int complementListIndex = Storage.getComplementListIndex(listIndex);
 		Magical.getStorage().delete(listIndex, item);
 		Magical.getStorage().create(complementListIndex, item);
+		Magical.deleteDisplayList(listIndex, item);
+		Magical.addDisplayList(complementListIndex, item);
 	}
 }

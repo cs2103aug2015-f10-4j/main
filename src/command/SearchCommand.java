@@ -1,6 +1,9 @@
 package command;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
+
 import main.Magical;
 import main.Storage;
 import main.Item;
@@ -20,7 +23,8 @@ public class SearchCommand extends Command {
 	 * @throws Exception
 	 */
 	public SearchCommand(String query) throws Exception {
-		this.query = query;
+		assertNotNull(query);
+		this.query = query.toLowerCase();
 	}
 
 	/**

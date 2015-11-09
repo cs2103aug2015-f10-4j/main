@@ -103,6 +103,7 @@ public class EventCommand extends Command {
 	 */
 	private void storeEvent() throws IOException {
 		Magical.getStorage().create(Storage.EVENTS_INDEX, event);
+		Magical.addDisplayList(Storage.EVENTS_INDEX, event);
 	}
 
 	/**

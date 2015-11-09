@@ -78,5 +78,6 @@ public class PriorityCommand extends Command {
 	void updateItem() throws IOException {
 		int listIndex = Storage.getListIndex(itemID);
 		Magical.getStorage().update(listIndex, prevItem, item);
+		Magical.updateDisplayList(listIndex, prevItem, item);
 	}
 }

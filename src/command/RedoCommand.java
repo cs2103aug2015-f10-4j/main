@@ -99,7 +99,12 @@ public class RedoCommand extends Command {
 		} catch (Exception e) {
 			throw new Exception(MESSAGE_REDO_ERROR);
 		} finally {
-			updateView();
+			if (Magical.lastViewCommand != null) {
+				Magical.lastViewCommand.execute();
+				updateView();
+			} else {
+				updateViewStorage();
+			}
 		}
 	}
 
