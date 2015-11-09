@@ -447,7 +447,7 @@ public class GUIController {
 	 * the cell depending on priority.
 	 * @return TableCell<Item, CustomDate> with a colored row depending on date
 	 */
-	private TableCell<Item, String> makePriorityCellFactory(){
+	private TableCell<Item, String> makePriorityCellFactory() {
 		return new TableCell<Item, String>() {
 			@Override
 			protected void updateItem(String item, boolean empty) {
@@ -458,7 +458,16 @@ public class GUIController {
 				}
 				else {
 					setText(item);
-
+					if (!getTableRow().getStyle().isEmpty()) {
+						return;
+					} else if (item.equals(PRIORITY_HIGH)) {
+						setStyle("-fx-background-color: " + PRIORITY_HIGH_COLOR);
+					} else if (item.equals(PRIORITY_MEDIUM)) {
+						setStyle("-fx-background-color: " + PRIORITY_MEDIUM_COLOR);
+					} else if (item.equals(PRIORITY_LOW)) {
+						setStyle("-fx-background-color: " + PRIORITY_LOW_COLOR);
+					} else {
+					}
 					return;
 				}
 			}
