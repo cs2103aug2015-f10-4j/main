@@ -21,7 +21,7 @@ public class Storage {
 	public static final int TASKS_DONE_INDEX = 1;
 	public static final int EVENTS_INDEX = 2;
 	public static final int EVENTS_DONE_INDEX = 3;
-	
+
 	private static final String DEFAULT_FILE_DIRECTORY = "magical";
 	private static final String DEFAULT_FILE_NAME = "storage.txt";
 	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY
@@ -34,7 +34,7 @@ public class Storage {
 			"dd MMM yyyy");
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
 	private static File file = new File(DEFAULT_FILE_PATH);
-	
+
 	private String storedFilePath;
 	private String folderPath;
 	private List<ArrayList<Item>> lists;
@@ -48,6 +48,7 @@ public class Storage {
 	 * and a default .txt file to store task data.
 	 */
 	public Storage() {
+
 		createFolder();
 		storedFilePath = readFileSettings();
 
@@ -61,7 +62,7 @@ public class Storage {
 
 		folderPath = getFolderPath(storedFilePath);
 	}
-	
+
 	/**
 	 * This method creates a default folder if it does not exist in where the
 	 * program is run.
@@ -131,8 +132,9 @@ public class Storage {
 	 * @throws FileNotFoundException.
 	 */
 	public void changeFolderPath(String newFolderPath) throws IOException,
-			FileNotFoundException {
-		System.out.println(newFolderPath);
+	FileNotFoundException {
+
+		assert (newFolderPath != null);
 		String oldFilePath = readFileSettings();
 
 		moveFolder(newFolderPath + "/" + DEFAULT_FILE_DIRECTORY + "/");
@@ -232,6 +234,7 @@ public class Storage {
 	 * @return Location of folder.
 	 */
 	public String getFolderPath(String storageFile) {
+
 		if (storageFile.equals(DEFAULT_FILE_PATH)) {
 			return ".";
 		}
@@ -317,6 +320,9 @@ public class Storage {
 	protected void moveFile(String oldFilePath, String newFilePath)
 			throws IOException, FileNotFoundException {
 
+		assert (oldFilePath != null);
+		assert (newFilePath != null);
+
 		InputStream inStream = null;
 		OutputStream outStream = null;
 
@@ -348,6 +354,8 @@ public class Storage {
 	 * @return whether the folder was moved
 	 */
 	protected boolean moveFolder(String newFilePath) {
+
+		assert (newFilePath != null);
 
 		File file = new File(newFilePath);
 
@@ -400,8 +408,7 @@ public class Storage {
 
 		try {
 			lists = mapper.readValue(file,
-					new TypeReference<List<ArrayList<Item>>>() {
-					});
+					new TypeReference<List<ArrayList<Item>>>() {});
 		} catch (Exception e) {
 			lists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
 			for (int i = 0; i < NUM_LISTS; i++) {
@@ -470,6 +477,8 @@ public class Storage {
 	 * @see IOException.
 	 */
 	protected boolean writeToProperties(String filePath) {
+
+		assert (filePath != null);
 
 		Properties prop = new Properties();
 		OutputStream output = null;

@@ -2,6 +2,7 @@ package gui;
 
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.logging.*;
 import java.util.Set;
 
 import javafx.application.Platform;
@@ -37,10 +38,12 @@ import main.Magical;
  * populates tables in GUIView with the model contents, and handles user
  * input in both the command line and other UI controls.
  *
- * @author Joey Yeo
+ * @@author Joey Yeo
  */
 
 public class GUIController {
+
+	private static Logger logger = Logger.getLogger("GUIController");
 
 	private static final String TASK_TABLE_LETTER = "t";
 	private static final String TASK_DONE_TABLE_LETTER = "d";
@@ -166,7 +169,6 @@ public class GUIController {
 
 		updateTableColors();
 
-
 		/**Help Controls**/
 		headerLabel.setText(Help.HEADER_TEXT);
 		helpVBox.getChildren().add(new Text(Help.BODY_TEXT));
@@ -215,9 +217,9 @@ public class GUIController {
 	 */
 	@FXML
 	protected void handleKeyPressed(KeyEvent event) throws Exception {
-		helpPane.setVisible(false);
-		mainPane.toFront();
 		if (event.getCode() == KeyCode.ENTER) {
+			helpPane.setVisible(false);
+			mainPane.toFront();
 			String userInput = commandLineField.getText();
 			handleUserInput(userInput);
 		}
@@ -238,9 +240,11 @@ public class GUIController {
 	 * @param userInput usually from commandLine
 	 */
 	private void handleUserInput(String userInput) {
+		logger.log(Level.INFO, userInput);
 		try {
 			messageLabel.setTextFill(SUCCESS_MESSAGE_COLOR);
 			String message = main.Magical.execute(userInput);
+			logger.log(Level.INFO, message);
 			messageLabel.setText(message);
 			commandLineField.clear();
 			GUIModel.update();
@@ -248,7 +252,7 @@ public class GUIController {
 			updateTableColors();
 			switchToTab(GUIModel.getCurrentTab());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage());
 			messageLabel.setTextFill(ERROR_MESSAGE_COLOR);
 			messageLabel.setText(e.getMessage());
 		}
