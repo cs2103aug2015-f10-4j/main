@@ -14,6 +14,7 @@ import main.Item;
 public class DelCommandTest {
 
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %s";
+	private static final String MESSAGE_INVALID_FORMAT = "Use Format: delete <item_id>";
 	private static final String MESSAGE_INVALID_ITEM_ID = "[item_id]";
 	private static final String MESSAGE_ERROR = String.format(MESSAGE_HEADER_INVALID, MESSAGE_INVALID_ITEM_ID);
 
@@ -44,12 +45,12 @@ public class DelCommandTest {
 		try {
 			Command noArgs = new DelCommand("");
 		} catch (Exception e) {
-			assertTrue(e instanceof StringIndexOutOfBoundsException);
+			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
 			Command moreArgs = new DelCommand("t1 t2 t3 t4 t5 t6");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_ERROR, e.getMessage());
+			assertEquals(MESSAGE_INVALID_FORMAT, e.getMessage());
 		}
 	}
 
@@ -63,7 +64,7 @@ public class DelCommandTest {
 		try {
 			DoneCommand invalidID = new DoneCommand("t100");
 		} catch (Exception e) {
-			assertTrue(e instanceof IndexOutOfBoundsException);
+			assertTrue(e instanceof IllegalArgumentException);
 		}
 		try {
 			Command tooLong = new DelCommand("abcdefghijklmnop");

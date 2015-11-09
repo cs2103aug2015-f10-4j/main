@@ -109,6 +109,7 @@ public class AddCommand extends Command {
 			return MESSAGE_TASK_ERROR;
 		} finally {
 			updateView();
+			GUIModel.setCurrentTab("tasks");
 		}
 	}
 

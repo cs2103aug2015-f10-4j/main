@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import gui.GUIModel;
 import main.CustomDate;
 import main.Magical;
 import main.Storage;
@@ -52,11 +54,16 @@ public class EventCommand extends Command {
 
 		if (validNumArgs()) {
 			setProperParams();
+
 			setDefaultEndDay();
+			
 			checkTitle();
+			
 			checkDateTime(dateStart, 0);
 			checkDateTime(dateEnd, 1);
+			
 			checkDateRange();
+			
 			errorInvalidArgs();
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
@@ -123,6 +130,7 @@ public class EventCommand extends Command {
 			return MESSAGE_EVENT_ERROR;
 		} finally {
 			updateView();
+			GUIModel.setCurrentTab("events");
 		}
 	}
 
@@ -209,7 +217,8 @@ public class EventCommand extends Command {
 	 */
 	private void setDefaultEndDay() {
 		if(dateEnd != null){
-			if (dateEnd.getDateString().equals(today.getDateString())) {
+			if (dateEnd.getDateString().equals(today.getDateString())
+					&& !(dateStart.compareTo(today) < 0)) {
 				dateEnd.setDay(dateStart.getDay());
 				dateEnd.setMonth(dateStart.getMonth());
 				dateEnd.setYear(dateStart.getYear());
@@ -292,9 +301,5 @@ public class EventCommand extends Command {
 		} else {
 			return true;
 		}
-	}
-	
-	public static void main(String[] args) throws Exception {
-		EventCommand nonExistentTime = new EventCommand("Event from January 1 25pm to January 1 26pm");
 	}
 }

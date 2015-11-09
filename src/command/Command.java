@@ -22,7 +22,7 @@ public abstract class Command {
 	/** Checking */
 	protected static final String STRING_EMPTY = "";
 	protected static final CustomDate today = new CustomDate(Chronic
-			.parse("today").getEndCalendar().getTime());
+			.parse("today 00:00").getEndCalendar().getTime());
 
 	/** Messaging */
 	protected static final String MESSAGE_HEADER_INVALID = "Invalid arguments: %s";
@@ -164,7 +164,7 @@ public abstract class Command {
 	 */
 	private String formatCorrectTime(String date) {
 		assertNotNull(date);
-		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<![A-z]\\s|/|-)\\d{4}(?=\\s{0,1})");
+		Matcher m = getMatcher(date, "(?<=\\s{0,1})(?<![A-z]\\s|/|-)\\d{4}(?=\\s{0,1}!\\d+(am|pm)!\\d{4})");
 		assertNotNull(m);
 
 		if (m.find()) {

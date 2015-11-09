@@ -95,4 +95,8 @@ public class DelCommand extends Command {
 			return true;
 		}
 	}
+	
+	public static void main(String[] args) throws Exception {
+		DelCommand d = new DelCommand("");
+	}
 }

@@ -166,6 +166,8 @@ public class EditCommand extends Command {
 				throw new IllegalStateException(
 						"Start Date should be before End Date");
 			}
+			System.out.println(item.getEndDate());
+			System.out.println(item.getStartDate());
 			throw new IllegalStateException(
 					"End Date should be after Start Date");
 		}
