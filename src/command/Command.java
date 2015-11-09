@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 import com.mdimension.jchronic.Chronic;
 import com.mdimension.jchronic.utils.Span;
 
-import gui.GUIModel;
 import main.Item;
 import main.Magical;
 import main.Storage;
@@ -256,13 +255,13 @@ public abstract class Command {
 			if (index != -1) {
 				switch (type) {
 				case "t":
-					return GUIModel.taskList.get(index);
+					return Magical.getDisplayList(Storage.TASKS_INDEX).get(index);
 				case "d":
-					return GUIModel.taskDoneList.get(index);
+					return Magical.getDisplayList(Storage.TASKS_DONE_INDEX).get(index);
 				case "e":
-					return GUIModel.eventList.get(index);
+					return Magical.getDisplayList(Storage.EVENTS_INDEX).get(index);
 				case "p":
-					return GUIModel.eventDoneList.get(index);
+					return Magical.getDisplayList(Storage.EVENTS_DONE_INDEX).get(index);
 				default:
 					return null;
 				}
