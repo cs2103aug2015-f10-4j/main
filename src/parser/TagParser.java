@@ -43,9 +43,9 @@ public class TagParser extends ArgsParserSkeleton {
 			setProperParams();
 			
 			checkItemExists();
+			errorInvalidArgs();
 			
 			checkTags();
-			
 			errorInvalidArgs();
 		} else {
 			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
@@ -61,8 +61,27 @@ public class TagParser extends ArgsParserSkeleton {
 			checkTagsExist(currentTags, tag);
 			checkRestricted(currentTags, tag);
 		}
-		invalidArgs.add(presentTags);
-		invalidArgs.add(invalidTags);
+		addTagExistError();
+		
+		addTagRestrictedError();
+	}
+
+	/**
+	 * Adds error message if given tags are restricted
+	 */
+	void addTagRestrictedError() {
+		if(!invalidTags.equals("")){
+			invalidArgs.add(invalidTags);
+		}
+	}
+
+	/**
+	 * Adds error message if given tags already exist
+	 */
+	void addTagExistError() {
+		if(!presentTags.equals("")){
+			invalidArgs.add(presentTags);
+		}
 	}
 
 	/**

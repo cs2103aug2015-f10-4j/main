@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 import command.Command;
+import parser.Parser;
 
 /**
  * Magical is the logic behind the application. It acts as an intermediary this
