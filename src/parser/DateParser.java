@@ -83,7 +83,7 @@ public class DateParser extends ArgsParserAbstract {
 		String end = count == 2 ? argsArray.get(1).trim() : STRING_EMPTY;
 
 		dateStart = start.equals(STRING_EMPTY) ? new CustomDate(new Date(0))
-				: getDate(start);
+				: getDateTimeZero(start);
 		dateEnd = end.equals(STRING_EMPTY) ? new CustomDate(new Date(
 				Long.MAX_VALUE)) : getDate(end);
 	}
