@@ -169,8 +169,8 @@ public class Storage {
 	 * @throws IOException
 	 *             On file input error.
 	 */
-	public void create(int listIndex, Item i) throws IOException {
-		lists.get(listIndex).add(i);
+	public void create(int listIndex, Item item) throws IOException {
+		lists.get(listIndex).add(item);
 		writeLists();
 	}
 
@@ -185,8 +185,8 @@ public class Storage {
 	 * @throws IOException
 	 *             On file input error.
 	 */
-	public void delete(int listIndex, Item i) throws IOException {
-		int pos = getPos(listIndex, i);
+	public void delete(int listIndex, Item item) throws IOException {
+		int pos = getPos(listIndex, item);
 		if (pos > -1) {
 			lists.get(listIndex).remove(pos);
 			writeLists();
@@ -270,8 +270,8 @@ public class Storage {
 	 *            Item object that you want to get the position of.
 	 * @return Position of the Item in the list it is stored in. (0-based)
 	 */
-	protected int getPos(int listIndex, Item i) {
-		return lists.get(listIndex).indexOf(i);
+	protected int getPos(int listIndex, Item item) {
+		return lists.get(listIndex).indexOf(item);
 	}
 
 	/**
