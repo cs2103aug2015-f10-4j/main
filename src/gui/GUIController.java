@@ -38,7 +38,7 @@ import main.Magical;
  * populates tables in GUIView with the model contents, and handles user
  * input in both the command line and other UI controls.
  *
- * @author Joey Yeo
+ * @@author Joey Yeo
  */
 
 public class GUIController {
@@ -217,9 +217,9 @@ public class GUIController {
 	 */
 	@FXML
 	protected void handleKeyPressed(KeyEvent event) throws Exception {
-		helpPane.setVisible(false);
-		mainPane.toFront();
 		if (event.getCode() == KeyCode.ENTER) {
+			helpPane.setVisible(false);
+			mainPane.toFront();
 			String userInput = commandLineField.getText();
 			handleUserInput(userInput);
 		}
