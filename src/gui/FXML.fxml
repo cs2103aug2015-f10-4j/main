@@ -15,7 +15,7 @@
                <children>
                   <VBox focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <TabPane fx:id="tabPane" prefHeight="772.0" prefWidth="701.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                           <tabs>
                             <Tab fx:id="taskTab" closable="false" onSelectionChanged="#handleTaskTabClicked" text="Tasks">
                               <content>
@@ -119,7 +119,7 @@
                             </Tab>
                           </tabs>
                         </TabPane>
-                        <Label fx:id="messageLabel" focusTraversable="false" text="Message Label" wrapText="true">
+                        <Label fx:id="messageLabel" focusTraversable="false" text="Message Label" textFill="WHITE" wrapText="true">
                            <font>
                               <Font size="18.0" />
                            </font>

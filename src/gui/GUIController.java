@@ -222,7 +222,8 @@ public class GUIController {
 		if (GUIModel.showHelpWindow) {
 			helpPane.setVisible(true);
 			helpPane.toFront();
-			GUIModel.showHelpWindow = false;
+			Magical.setShowHelpWindow(false);
+			GUIModel.update();
 		}
 		commandLineField.requestFocus();
 	}

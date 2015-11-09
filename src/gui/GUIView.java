@@ -27,7 +27,7 @@ public class GUIView extends Application {
 	 */
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle(String.format(TITLE_FORMAT, VERSION_NUMBER));
-		Pane rootPane = (Pane) FXMLLoader.load(getClass().getResource("/gui/FXML.fxml"))	;
+		Pane rootPane = (Pane) FXMLLoader.load(getClass().getResource("/gui/FXML.fxml"));
 		Scene scene = new Scene(rootPane);
 		primaryStage.setScene(scene);
 		primaryStage.show();
