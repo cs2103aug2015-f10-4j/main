@@ -237,8 +237,4 @@ public class EventParser extends ArgsParserAbstract {
 		Command event = new EventCommand(title, dateStart, dateEnd, startTime, endTime);
 		return event;
 	}
-	
-	public static void main(String[] args) throws Exception {
-		EventParser e = new EventParser("fuck this shit from 5/11/2015 2pm to 3pm");
-	}
 }
