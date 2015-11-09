@@ -81,6 +81,7 @@ public class DelCommand extends Command {
 	void removeItem() throws IOException {
 		int listIndex = Storage.getListIndex(itemID);
 		Magical.getStorage().delete(listIndex, item);
+		Magical.deleteDisplayList(listIndex, item);
 	}
 
 	void setProperParams() {

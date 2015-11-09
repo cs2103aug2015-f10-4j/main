@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 import command.Command;
+import command.DateCommand;
 import command.SearchCommand;
 import command.ShowCommand;
 
@@ -75,7 +76,8 @@ public class Magical {
 		String message = command.execute();
 		lastCommand = command;
 		if ((command instanceof ShowCommand)
-				|| (command instanceof SearchCommand)) {
+				|| (command instanceof SearchCommand)
+				|| (command instanceof DateCommand)) {
 			lastViewCommand = command;
 		}
 		return message;

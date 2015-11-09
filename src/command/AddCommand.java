@@ -257,6 +257,7 @@ public class AddCommand extends Command {
 	 */
 	private void storeTask() throws IOException {
 		Magical.getStorage().create(Storage.TASKS_INDEX, task);
+		Magical.addDisplayList(Storage.TASKS_INDEX, task);
 	}
 
 	protected boolean validNumArgs() {
