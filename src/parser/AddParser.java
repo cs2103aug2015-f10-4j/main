@@ -24,7 +24,7 @@ public class AddParser extends ArgsParserAbstract{
 	private boolean isFloat;
 
 	/**
-	 * Constructor for AddCommand objects. Checks if arguments are valid and
+	 * Constructor for AddParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid. Contains methods to add a task to storage.
 	 * 

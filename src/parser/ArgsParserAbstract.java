@@ -37,7 +37,7 @@ public abstract class ArgsParserAbstract {
 	protected int count;
 
 	/**
-	 * Constructor for Command objects. Stores the arguments passed in when the
+	 * Constructor for Parser objects. Stores the arguments passed in when the
 	 * constructor is called.
 	 * 
 	 * @param args

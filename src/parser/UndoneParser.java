@@ -19,7 +19,7 @@ public class UndoneParser extends ArgsParserAbstract {
 	private String itemID;
 
 	/**
-	 * Constructor for DoneCommand objects. Checks if arguments are valid and
+	 * Constructor for DoneParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid. Contains methods to move item to undone list.
 	 * 

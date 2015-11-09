@@ -31,7 +31,7 @@ public class EventParser extends ArgsParserAbstract {
 	protected int endTime;
 	
 	/**
-	 * Constructor for EventCommand objects. Checks if arguments are valid and
+	 * Constructor for EventParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid. Contains methods to add an event to storage.
 	 * 

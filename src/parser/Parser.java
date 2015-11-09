@@ -38,10 +38,10 @@ public class Parser {
 	
 	/**
 	 * Splits a given string of user input and returns the words after the first
-	 * word of the input, which are the arguments of the command
+	 * word of the input, which are the arguments of the command string
 	 * 
 	 * @param userInput
-	 * @return String containing the arguments of the command
+	 * @return String containing the arguments of the command string
 	 */
 	private static String getStringArgs(String userInput) {
 		String[] toSplit = userInput.split(" ", 2);
@@ -54,7 +54,7 @@ public class Parser {
 
 	/**
 	 * Splits a given string of user input and returns the first argument, which
-	 * should be the command
+	 * should be the command string
 	 * 
 	 * @param userInput
 	 * @return String stating the command given by user
@@ -65,10 +65,10 @@ public class Parser {
 	}
 
 	/**
-	 * Checks if the command is valid and returns the correct Command subclass
+	 * Checks if the command is valid and returns the correct Parser subclass
 	 * of the user's command. Passes the arguments to an ArgsParserAbstract subclass,
 	 * which will check the arguments' validity within its constructor. Exception
-	 * thrown if a command is not valid.
+	 * thrown if a command string is not valid.
 	 * 
 	 * @param command
 	 * @param args

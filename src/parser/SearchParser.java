@@ -12,7 +12,7 @@ public class SearchParser extends ArgsParserAbstract {
 	private String query;
 
 	/**
-	 * Constructor for SearchCommand objects. Stores the correct arguments
+	 * Constructor for SearchParser objects. Stores the correct arguments
 	 * properly. Contains methods to display items containing query
 	 * 
 	 * @param args

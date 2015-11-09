@@ -14,7 +14,7 @@ public class PathParser extends ArgsParserAbstract{
 	private String location;
 
 	/**
-	 * Constructor for PathCommand objects. Checks if arguments are valid and
+	 * Constructor for PathParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid. Contains methods to change the file path
 	 * location of storage textfile.

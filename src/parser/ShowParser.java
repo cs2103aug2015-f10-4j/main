@@ -14,7 +14,7 @@ public class ShowParser extends ArgsParserAbstract {
 	private String type;
 
 	/**
-	 * Constructor for ShowCommand objects. Sets the command parameters with the
+	 * Constructor for ShowParser objects. Sets the command parameters with the
 	 * proper inputs. Contains methods to display items that are tasks, events,
 	 * containing specified tags, or all items
 	 * 

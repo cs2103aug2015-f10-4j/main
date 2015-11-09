@@ -8,19 +8,21 @@ import command.UndoCommand;
 
 public class DefaultParser extends ArgsParserAbstract{
 
+	/**
+	 * Constructor for default Parser objects. 
+	 * 
+	 * @param args
+	 */
 	public DefaultParser(String args) {
 		super(args);
 	}
 
 	@Override
 	void setProperParams() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	boolean validNumArgs() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

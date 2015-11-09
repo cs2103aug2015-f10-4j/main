@@ -41,7 +41,7 @@ public class EditParser extends ArgsParserAbstract {
 	private Object editObject;
 
 	/**
-	 * Constructor for EditCommand objects. Checks if arguments are valid and
+	 * Constructor for EditParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid. Contains methods to update the item in storage.
 	 * 

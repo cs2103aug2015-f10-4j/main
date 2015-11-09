@@ -24,7 +24,7 @@ public class UntagParser extends ArgsParserAbstract {
 	private String absentTags = STRING_EMPTY;
 	
 	/**
-	 * Constructor for UntagCommand objects. Checks if arguments are valid and
+	 * Constructor for UntagParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid
 	 * 

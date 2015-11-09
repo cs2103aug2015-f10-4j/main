@@ -20,7 +20,7 @@ public class PriorityParser extends ArgsParserAbstract {
 	private String priority;
 	
 	/**
-	 * Constructor for PriorityCommand objects. Checks if arguments are valid
+	 * Constructor for PriorityParser objects. Checks if arguments are valid
 	 * and stores the correct arguments properly. Throws the appropriate
 	 * exception if arguments are invalid. Contains methods to change the
 	 * priority of an item.

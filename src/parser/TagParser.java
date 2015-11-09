@@ -31,7 +31,7 @@ public class TagParser extends ArgsParserAbstract {
 	private String invalidTags = STRING_EMPTY;
 
 	/**
-	 * Constructor for TagCommand objects. Checks if arguments are valid and
+	 * Constructor for TagParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid
 	 * 

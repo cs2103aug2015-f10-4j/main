@@ -17,7 +17,7 @@ public class SortParser extends ArgsParserAbstract {
 	private ArrayList<String> sortParams;
 
 	/**
-	 * Constructor for SortCommand objects. Checks if arguments are valid and
+	 * Constructor for SortParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid. Contains methods to sort the displayed tasks.
 	 * 

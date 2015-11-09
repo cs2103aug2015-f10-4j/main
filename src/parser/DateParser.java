@@ -23,7 +23,7 @@ public class DateParser extends ArgsParserAbstract {
 	private CustomDate dateEnd;
 	
 	/**
-	 * Constructor for DateCommand objects. Checks if arguments are valid and
+	 * Constructor for DateParser objects. Checks if arguments are valid and
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid. Contains methods to display the date within the
 	 * time range.
