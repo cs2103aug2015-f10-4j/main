@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="rootPane" focusTraversable="true" prefHeight="800.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
+<AnchorPane fx:id="rootPane" focusTraversable="true" prefHeight="800.0" prefWidth="850.0" styleClass="root-pane" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
    <children>
       <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -17,13 +17,13 @@
                      <children>
                         <TabPane fx:id="tabPane" prefHeight="772.0" prefWidth="701.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                           <tabs>
-                            <Tab fx:id="taskTab" onSelectionChanged="#handleTaskTabClicked" text="Tasks">
+                            <Tab fx:id="taskTab" closable="false" onSelectionChanged="#handleTaskTabClicked" text="Tasks">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
                                           <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <Label text="To-Do">
+                                                <Label styleClass="label-header" text="To-Do">
                                                    <font>
                                                       <Font name="System Bold" size="20.0" />
                                                    </font>
@@ -40,7 +40,7 @@
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                                    </columnResizePolicy>
                                                 </TableView>
-                                                <Label text="Done">
+                                                <Label styleClass="label-header" text="Done">
                                                    <font>
                                                       <Font name="System Bold" size="20.0" />
                                                    </font>
@@ -63,13 +63,13 @@
                                     </AnchorPane>
                               </content>
                             </Tab>
-                            <Tab fx:id="eventTab" onSelectionChanged="#handleEventTabClicked" text="Events">
+                            <Tab fx:id="eventTab" closable="false" onSelectionChanged="#handleEventTabClicked" text="Events">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
                                           <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <Label text="Upcoming Events">
+                                                <Label styleClass="label-header" text="Upcoming Events">
                                                    <font>
                                                       <Font name="System Bold" size="20.0" />
                                                    </font>
@@ -87,7 +87,7 @@
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                                    </columnResizePolicy>
                                                 </TableView>
-                                                <Label text="Past Events">
+                                                <Label styleClass="label-header" text="Past Events">
                                                    <font>
                                                       <Font name="System Bold" size="20.0" />
                                                    </font>
@@ -113,7 +113,7 @@
                             </Tab>
                           </tabs>
                         </TabPane>
-                        <Label fx:id="messageLabel" focusTraversable="false" wrapText="true">
+                        <Label fx:id="messageLabel" focusTraversable="false" text="Message Label" wrapText="true">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -121,11 +121,11 @@
                         <TextField fx:id="commandLineField" onKeyPressed="#handleKeyPressed" />
                      </children>
                      <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </VBox>
                </children></AnchorPane>
-            <AnchorPane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" stylesheets="@help.css" StackPane.alignment="CENTER">
+            <AnchorPane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" stylesheets="@help.css" visible="false" StackPane.alignment="CENTER">
                <children>
                   <ScrollPane focusTraversable="false" prefHeight="442.0" prefWidth="439.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <content>

@@ -1,0 +1,13 @@
+.root-pane {
+	-fx-background-color: linear-gradient(#9F9FCF, midnightblue);
+}
+.label-header {
+	-fx-text-fill: #FFFFFF;
+}
+.tab-pane {
+	-fx-skin: "com.sun.javafx.scene.control.skin.TabPaneSkin";
+}
+.tab-pane *.tab-header-background {
+    -fx-background-color: #57578C;
+    -fx-effect: innershadow(two-pass-box , rgba(0,0,0,0.6) , 4, 0.0 , 0 , 0);
+}
