@@ -23,30 +23,12 @@ public class ShowCommand extends Command {
 	 * containing specified tags, or all items
 	 * 
 	 * @param args
+	 * @param tags2 
 	 * @throws Exception
 	 */
-	public ShowCommand(String args) throws Exception {
-		super(args);
-
-		this.argsArray = splitArgs(" ", -1);
-		this.count = argsArray.size();
-
-		setProperParams();
-	}
-
-	/**
-	 * Sets the type of the show command to be all if no arguments are given, or
-	 * to display tags if event/task is not given as the argument.
-	 */
-	void checkType() {
-		if (type.equals("")) {
-			this.type = "all";
-		} else if (!type.equalsIgnoreCase("task")
-				&& !type.equalsIgnoreCase("tasks")
-				&& !type.equalsIgnoreCase("event")
-				&& !type.equalsIgnoreCase("events")) {
-			this.type = "tag";
-		}
+	public ShowCommand(String type, ArrayList<String> tags) throws Exception {
+		this.type = type;
+		this.tags = tags;
 	}
 
 	/**
@@ -131,16 +113,5 @@ public class ShowCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return false;
-	}
-
-	void setProperParams() {
-		this.type = argsArray.get(0).trim();
-		this.tags = null;
-		checkType();
-		this.tags = this.argsArray;
-	}
-
-	public boolean validNumArgs() {
-		return true;
 	}
 }

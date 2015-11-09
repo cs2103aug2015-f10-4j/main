@@ -253,6 +253,7 @@ public class GUIController {
 			updateTableColors();
 			switchToTab(GUIModel.getCurrentTab());
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.log(Level.WARNING, e.getMessage());
 			messageLabel.setTextFill(ERROR_MESSAGE_COLOR);
 			messageLabel.setText(e.getMessage());

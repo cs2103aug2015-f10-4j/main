@@ -36,7 +36,7 @@ public class SearchParser extends ArgsParserAbstract {
 	@Override
 	Command getCommand() throws Exception {
 		Command search = new SearchCommand(this.query);
-		return null;
+		return search;
 	}
 
 }

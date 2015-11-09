@@ -2,6 +2,7 @@ package parser;
 
 import java.util.ArrayList;
 import command.Command;
+import command.ShowCommand;
 
 public class ShowParser extends ArgsParserAbstract {
 
@@ -55,8 +56,8 @@ public class ShowParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command show = new ShowCommand(this.type, this.tags);
+		return show;
 	}
 }
