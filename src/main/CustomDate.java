@@ -214,7 +214,7 @@ public class CustomDate implements Comparable<CustomDate> {
 		int time = getTime();
 		int hour = time/100 - 12 <= 0 ? time/100 : time/100 - 12;
 		String timeString = String.format("%d.%02d", hour, time%100);
-		if (time / 100 < 12) {
+		if (time/100 - 12 <= 0) {
 			timeString += " am";
 		} else {
 			timeString += " pm";

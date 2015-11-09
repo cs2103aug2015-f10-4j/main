@@ -54,11 +54,11 @@ public abstract class ArgsParserAbstract {
 	 * @return CustomDate objects with given date and time, default time if not
 	 *         specified
 	 */
-	private CustomDate dateWithTime(String date) {
+	private CustomDate dateWithTime(String date, String time) {
 		assertNotNull(date);
 		Span span;
 		if (Chronic.parse(date) != null) {
-			if ((span = Chronic.parse(date + " 23:59")) != null) {
+			if ((span = Chronic.parse(date + " " + time)) != null) {
 				return new CustomDate(span.getBeginCalendar().getTime());
 			} else {
 				span = Chronic.parse(date);
@@ -223,7 +223,19 @@ public abstract class ArgsParserAbstract {
 	protected CustomDate getDate(String date) {
 		assertNotNull(date);
 		date = formatDate(date);
-		return dateWithTime(date);
+		return dateWithTime(date, "23:59");
+	}
+	
+	/**
+	 * A variation on getDate with default time 0000
+	 * 
+	 * @param date
+	 * @return CustomDate object with valid date and time
+	 */
+	protected CustomDate getDateZero(String date) {
+		assertNotNull(date);
+		date = formatDate(date);
+		return dateWithTime(date, "00:00");
 	}
 
 	/**
@@ -423,5 +435,10 @@ public abstract class ArgsParserAbstract {
 	 */
 	abstract boolean validNumArgs();	
 	
+	/**
+	 * Returns the Command object corresponding to the user command for proper execution 
+	 * @return
+	 * @throws Exception
+	 */
 	abstract Command getCommand() throws Exception;
 }
