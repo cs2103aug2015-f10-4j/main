@@ -30,7 +30,13 @@ public class AddCommand extends Command {
 	 * @throws Exception
 	 */
 	public AddCommand(String title, CustomDate dueDate, int endTime) throws Exception {
-		setTaskParams(title, dueDate, endTime);
+		task = new Item();
+		task.setType("task");
+		task.setTitle(title);
+		task.setStartDate(null);
+		task.setStartTime(-1);
+		task.setEndDate(dueDate);
+		task.setEndTime(endTime);
 	}
 
 	/**
@@ -79,22 +85,6 @@ public class AddCommand extends Command {
 	private boolean isSameEndDate(Item t) {
 		return t.getEndDate() != null
 				&& t.getEndDate().equals(task.getEndDate());
-	}
-
-	/**
-	 * Create an Item object with the correct argument parameters for a task
-	 * @param endTime 
-	 * @param dueDate 
-	 * @param title 
-	 */
-	private void setTaskParams(String title, CustomDate dueDate, int endTime) {
-		task = new Item();
-		task.setType("task");
-		task.setTitle(title);
-		task.setStartDate(null);
-		task.setStartTime(-1);
-		task.setEndDate(dueDate);
-		task.setEndTime(endTime);
 	}
 
 	/**
