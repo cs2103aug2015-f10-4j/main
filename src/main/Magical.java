@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Stack;
 
 import command.Command;
+import command.SearchCommand;
+import command.ShowCommand;
 
 /**
  * Magical is the logic behind the application. It acts as an intermediary this
@@ -30,6 +32,8 @@ public class Magical {
 	public static Stack<String> redoFolderPaths = new Stack<String>();
 
 	public static Command lastCommand;
+	public static Command lastViewCommand;
+
 	/**
 	 * This method archives all events that ended before the current date.
 	 */
@@ -54,6 +58,7 @@ public class Magical {
 		} catch (IOException e) {
 		}
 	}
+
 	/**
 	 * This method reads makes use of the Parser to create the relevant command.
 	 * The command is then executed and its result is returned.
@@ -69,6 +74,10 @@ public class Magical {
 		}
 		String message = command.execute();
 		lastCommand = command;
+		if ((command instanceof ShowCommand)
+				|| (command instanceof SearchCommand)) {
+			lastViewCommand = command;
+		}
 		return message;
 	}
 
@@ -198,20 +207,50 @@ public class Magical {
 	public static void setShowHelpWindow(boolean showHelpWindow) {
 		Magical.showHelpWindow = showHelpWindow;
 	}
-	
+
 	/**
-	 * This method updates a specified Item in the list of Items where the Item is stored in
-	 * and updates the data file.
+	 * This method updates a specified Item in the list of Items where the Item
+	 * is stored in and updates the data file.
 	 * 
-	 * @param listIndex 	Index of the list where the Item to be updated is stored in.
-	 * @param t 			The updated Item to be stored.
-	 * @throws IOException	On file input error.
+	 * @param listIndex
+	 *            Index of the list where the Item to be updated is stored in.
+	 * @param t
+	 *            The updated Item to be stored.
 	 */
-	public static void updateDisplayList(int listIndex, Item oldItem, Item newItem) 
-			throws IOException {
+	public static void updateDisplayList(int listIndex, Item oldItem,
+			Item newItem) {
 		int pos = displayLists.get(listIndex).indexOf(oldItem);
 		if (pos > -1) {
 			displayLists.get(listIndex).set(pos, newItem);
 		}
+	}
+
+	/**
+	 * This method deletes a specified Item in the list of Items where the Item
+	 * is stored in and updates the data file.
+	 * 
+	 * @param listIndex
+	 *            Index of the list where the Item to be updated is stored in.
+	 * @param t
+	 *            The updated Item to be stored.
+	 */
+	public static void deleteDisplayList(int listIndex, Item item) {
+		int pos = displayLists.get(listIndex).indexOf(item);
+		if (pos > -1) {
+			displayLists.remove(pos);
+		}
+	}
+
+	/**
+	 * This method adds a specified Item in the list of Items where the Item is
+	 * stored in and updates the data file.
+	 * 
+	 * @param listIndex
+	 *            Index of the list where the Item to be updated is stored in.
+	 * @param t
+	 *            The updated Item to be stored.
+	 */
+	public static void addDisplayList(int listIndex, Item item) {
+		displayLists.get(listIndex).add(item);
 	}
 }
