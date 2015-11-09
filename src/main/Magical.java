@@ -15,7 +15,7 @@ import command.Command;
  * @author Varun Patro
  */
 public class Magical {
-	private static List<ArrayList<Item>> displayList;
+	private static List<ArrayList<Item>> displayLists;
 	public static String currentTab;
 
 	public static List<Stack<ArrayList<Item>>> undoLists = new ArrayList<Stack<ArrayList<Item>>>(
@@ -29,33 +29,12 @@ public class Magical {
 	private static Storage storage;
 
 	/**
-	 * This method initializes the Magical class by initializing the storage,
-	 * undo and redo history. It also initializes the displayList with the items
-	 * in storage.
-	 */
-	public static void init() {
-		storage = new Storage();
-		currentTab = "tasks";
-		displayList = new ArrayList<ArrayList<Item>>(Storage.NUM_LISTS);
-		for (int i = 0; i < Storage.NUM_LISTS; i++) {
-			displayList.add(storage.getList(i));
-		}
-		for (int i = 0; i < Storage.NUM_LISTS; i++) {
-			undoLists.add(new Stack<ArrayList<Item>>());
-		}
-		for (int i = 0; i < Storage.NUM_LISTS; i++) {
-			redoLists.add(new Stack<ArrayList<Item>>());
-		}
-
-		archivePastEvents();
-	}
-
-	/**
 	 * This method archives all events that ended before the current date.
 	 */
 	private static void archivePastEvents() {
 		ArrayList<Item> eventList = storage.getList(Storage.EVENTS_INDEX);
-		ArrayList<Item> eventDoneList = storage.getList(Storage.EVENTS_DONE_INDEX);
+		ArrayList<Item> eventDoneList = storage
+				.getList(Storage.EVENTS_DONE_INDEX);
 		ArrayList<Item> newEventList = new ArrayList<Item>();
 		CustomDate today = new CustomDate();
 		for (int i = 0; i < eventList.size(); i++) {
@@ -75,20 +54,10 @@ public class Magical {
 	}
 
 	/**
-	 * Getter for storage.
-	 * 
-	 * @return active instance of Storage
-	 */
-	public static Storage getStorage() {
-		return storage;
-	}
-
-	/**
 	 * This method reads makes use of the Parser to create the relevant command.
 	 * The command is then executed and its result is returned.
 	 * 
 	 * @param userInput
-	 *            input to execute
 	 * @return message to display
 	 * @exception Exception
 	 */
@@ -100,6 +69,67 @@ public class Magical {
 		String message = command.execute();
 		lastCommand = command;
 		return message;
+	}
+
+	/**
+	 * Getter for display list.
+	 * 
+	 * @param index
+	 * @return corresponding list of items to return
+	 */
+	public static ArrayList<Item> getDisplayList(int index) {
+		return displayLists.get(index);
+	}
+
+	/**
+	 * Getter for storage.
+	 * 
+	 * @return active instance of Storage
+	 */
+	public static Storage getStorage() {
+		return storage;
+	}
+
+	/**
+	 * This method initializes the Magical class by initializing the storage,
+	 * undo and redo history. It also initializes the displayList with the items
+	 * in storage.
+	 */
+	public static void init() {
+		storage = new Storage();
+		currentTab = "tasks";
+		displayLists = new ArrayList<ArrayList<Item>>(Storage.NUM_LISTS);
+		for (int i = 0; i < Storage.NUM_LISTS; i++) {
+			displayLists.add(storage.getList(i));
+		}
+		for (int i = 0; i < Storage.NUM_LISTS; i++) {
+			undoLists.add(new Stack<ArrayList<Item>>());
+		}
+		for (int i = 0; i < Storage.NUM_LISTS; i++) {
+			redoLists.add(new Stack<ArrayList<Item>>());
+		}
+
+		archivePastEvents();
+	}
+
+	/**
+	 * This method is used to deep clone an ArrayList of Items. Used for
+	 * creating undo layers of storage.
+	 * 
+	 * @param list
+	 *            List to clone
+	 * @return clonedList
+	 */
+	private static ArrayList<Item> listClone(ArrayList<Item> list) {
+		ArrayList<Item> newList = new ArrayList<Item>(list.size());
+		try {
+			for (Item i : list) {
+				newList.add(i.copy());
+			}
+			return newList;
+		} catch (Exception e) {
+			return list;
+		}
 	}
 
 	/**
@@ -123,23 +153,13 @@ public class Magical {
 	}
 
 	/**
-	 * This method is used to deep clone an ArrayList of Items. Used for
-	 * creating undo layers of storage.
+	 * Setter for display list.
 	 * 
-	 * @param list
-	 *            List to clone
-	 * @return clonedList
+	 * @param index
+	 * @param newList
 	 */
-	private static ArrayList<Item> listClone(ArrayList<Item> list) {
-		ArrayList<Item> newList = new ArrayList<Item>(list.size());
-		try {
-			for (Item i : list) {
-				newList.add(i.copy());
-			}
-			return newList;
-		} catch (Exception e) {
-			return list;
-		}
+	public static void setDisplayList(int index, ArrayList<Item> newList) {
+		displayLists.set(index, newList);
 	}
 
 }
