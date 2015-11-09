@@ -1,6 +1,7 @@
 package parser;
 
 import command.Command;
+import command.UndoneCommand;
 import main.Item;
 
 public class UndoneParser extends ArgsParserAbstract {
@@ -65,8 +66,8 @@ public class UndoneParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command undone = new UndoneCommand(this.itemID, this.item);
+		return undone;
 	}
 }

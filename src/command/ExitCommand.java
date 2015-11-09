@@ -6,11 +6,10 @@ public class ExitCommand extends Command {
 	 * Constructor for ExitCommand objects. Arguments are stored but have no
 	 * impact on command's functionality.
 	 * 
-	 * @param args
 	 * @throws Exception
 	 */
-	public ExitCommand(String args) throws Exception {
-		super(args);
+	public ExitCommand() {
+
 	}
 
 	/**
@@ -27,15 +26,5 @@ public class ExitCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return false;
-	}
-
-	@Override
-	void setProperParams() {
-
-	}
-
-	@Override
-	public boolean validNumArgs() {
-		return true;
 	}
 }

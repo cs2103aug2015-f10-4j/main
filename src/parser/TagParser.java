@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 import command.Command;
+import command.TagCommand;
 import main.Item;
 
 public class TagParser extends ArgsParserAbstract {
@@ -152,8 +153,8 @@ public class TagParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command tag = new TagCommand(this.itemID, this.item, this.tags);
+		return tag;
 	}
 }

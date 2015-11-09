@@ -3,6 +3,7 @@ package parser;
 import static org.junit.Assert.*;
 
 import command.Command;
+import command.EventCommand;
 import main.CustomDate;
 import main.Item;
 
@@ -49,6 +50,8 @@ public class EventParser extends ArgsParserAbstract {
 
 		if (validNumArgs()) {
 			setProperParams();
+			System.out.println(dateStart);
+			System.out.println(dateEnd);
 
 			setDefaultEndDay();
 			
@@ -71,8 +74,7 @@ public class EventParser extends ArgsParserAbstract {
 	 */
 	private void removeEscapeCharacters() {
 		for (int i = 0; i < argsArray.size(); i++) {
-			argsArray.set(
-					i,
+			argsArray.set(i,
 					argsArray
 							.get(i)
 							.trim()
@@ -233,8 +235,12 @@ public class EventParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command event = new EventCommand(title, dateStart, dateEnd, startTime, endTime);
+		return event;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		EventParser e = new EventParser("fuck this shit from 5/11/15 2pm to 3pm");
 	}
 }

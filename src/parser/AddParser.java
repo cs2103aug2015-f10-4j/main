@@ -3,6 +3,7 @@ package parser;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import command.AddCommand;
 import command.Command;
 import main.CustomDate;
 
@@ -167,11 +168,11 @@ public class AddParser extends ArgsParserAbstract{
 	/**
 	 * Returns an AddCommand object with the proper parameters
 	 * @return
+	 * @throws Exception 
 	 */
-	Command getCommand(){
-	//	Command add = new AddCommand(this.title, this.dueDate, this.endTime);
-	//	assertNotNull(add);
-	//	return add;
-		return null;
+	Command getCommand() throws Exception{
+		Command add = new AddCommand(this.title, this.dueDate, this.endTime);
+		assertNotNull(add);
+		return add;
 	}
 }

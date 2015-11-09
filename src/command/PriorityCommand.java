@@ -8,10 +8,6 @@ import main.Item;
 
 public class PriorityCommand extends Command {
 
-	/** Messaging **/
-	private static final String MESSAGE_ARGUMENT_FORMAT = "Use Format: set <item_id> <priority>";
-	private static final String MESSAGE_INVALID_ITEM_ID = "item_id";
-	private static final String MESSAGE_INVALID_PRIORITY = "Priority";
 	private static final String MESSAGE_PRIORITY_UPDATED = "Priority updated for %s";
 	private static final String MESSAGE_PRIORITY_ERROR = "Unable to change priority for %s";
 
@@ -28,39 +24,14 @@ public class PriorityCommand extends Command {
 	 * priority of an item.
 	 * 
 	 * @param args
+	 * @param priority 
+	 * @param item 
 	 * @throws Exception
 	 */
-	public PriorityCommand(String args) throws Exception {
-		super(args);
-		this.argsArray = splitArgs(" ", 2);
-		this.count = argsArray.size();
-
-		if (validNumArgs()) {
-			setProperParams();
-			checkItemExists();
-			checkPriorityValid();
-			errorInvalidArgs();
-		} else {
-			errorInvalidFormat(MESSAGE_ARGUMENT_FORMAT);
-		}
-	}
-
-	/**
-	 * Adds error message if item does not exist or unable to get
-	 */
-	void checkItemExists() {
-		if (item == null) {
-			invalidArgs.add(MESSAGE_INVALID_ITEM_ID);
-		}
-	}
-
-	/**
-	 * Adds error message if priority given is invalid
-	 */
-	void checkPriorityValid() {
-		if (priority == null) {
-			invalidArgs.add(MESSAGE_INVALID_PRIORITY);
-		}
+	public PriorityCommand(String itemID, Item item, String priority) throws Exception {
+		this.itemID = itemID;
+		this.item = item;
+		this.priority = priority;
 	}
 
 	/**
@@ -99,32 +70,14 @@ public class PriorityCommand extends Command {
 		return true;
 	}
 
-	void setProperParams() {
-		itemID = argsArray.get(0).trim();
-		item = getItemByID(itemID);
-		if (argsArray.size() == 1) {
-			priority = STRING_EMPTY;
-		} else {
-			priority = getPriority(argsArray.get(1).trim());
-		}
-	}
-
 	/**
 	 * Updates the original item with the new modified item
 	 * 
 	 * @throws IOException
 	 */
 	void updateItem() throws IOException {
-		int listIndex = Storage.getListIndex(argsArray.get(0));
+		int listIndex = Storage.getListIndex(itemID);
 		Magical.getStorage().update(listIndex, prevItem, item);
 		Magical.updateDisplayList(listIndex, prevItem, item);
-	}
-
-	public boolean validNumArgs() {
-		if (this.count > 2 && this.count < 0) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 }

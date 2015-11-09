@@ -4,7 +4,7 @@ package gui;
  * Help contains the contents of the help window when it is
  * displayed.
  *
- * @author Joey Yeo
+ * @@author Joey Yeo
  */
 
 public class Help {
@@ -13,7 +13,7 @@ public class Help {
 
 	public static final String HEADER_TEXT = "Magical User Guide";
 
-	public static final String BODY_TEXT = "Press any key to close this window." + ENDL +
+	public static final String BODY_TEXT = "Press the Enter key to close this window." + ENDL +
 			ENDL + "Sample formats for dates and times:" +
 			ENDL + "- today" +
 			ENDL + "- today 2359" +

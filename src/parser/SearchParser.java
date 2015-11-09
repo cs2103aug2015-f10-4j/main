@@ -1,6 +1,7 @@
 package parser;
 
 import command.Command;
+import command.SearchCommand;
 
 public class SearchParser extends ArgsParserAbstract {
 
@@ -33,9 +34,9 @@ public class SearchParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command search = new SearchCommand(this.query);
+		return search;
 	}
 
 }

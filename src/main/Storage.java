@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +23,7 @@ public class Storage {
 	public static final int TASKS_DONE_INDEX = 1;
 	public static final int EVENTS_INDEX = 2;
 	public static final int EVENTS_DONE_INDEX = 3;
-	
+
 	private static final String DEFAULT_FILE_DIRECTORY = "magical";
 	private static final String DEFAULT_FILE_NAME = "storage.txt";
 	private static final String DEFAULT_FILE_PATH = DEFAULT_FILE_DIRECTORY
@@ -33,8 +35,9 @@ public class Storage {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"dd MMM yyyy");
 	private static File newFolder = new File(DEFAULT_FILE_DIRECTORY);
-	private static File file = new File(DEFAULT_FILE_PATH);
-	
+	private static File file = new File(DEFAULT_FILE_PATH);	
+	private static Logger logger = Logger.getLogger("Storage");
+
 	private String storedFilePath;
 	private String folderPath;
 	private List<ArrayList<Item>> lists;
@@ -48,20 +51,23 @@ public class Storage {
 	 * and a default .txt file to store task data.
 	 */
 	public Storage() {
+
 		createFolder();
 		storedFilePath = readFileSettings();
 
 		if (storedFilePath == null) {
 			writeToProperties(DEFAULT_FILE_PATH);
+			logger.log(Level.INFO, DEFAULT_FILE_PATH);
 			initFile();
 		} else {
 			file = new File(storedFilePath);
+			logger.log(Level.INFO, storedFilePath);
 			initFile();
 		}
 
 		folderPath = getFolderPath(storedFilePath);
 	}
-	
+
 	/**
 	 * This method creates a default folder if it does not exist in where the
 	 * program is run.
@@ -131,8 +137,9 @@ public class Storage {
 	 * @throws FileNotFoundException.
 	 */
 	public void changeFolderPath(String newFolderPath) throws IOException,
-			FileNotFoundException {
-		System.out.println(newFolderPath);
+	FileNotFoundException {
+
+		assert (newFolderPath != null);
 		String oldFilePath = readFileSettings();
 
 		moveFolder(newFolderPath + "/" + DEFAULT_FILE_DIRECTORY + "/");
@@ -142,6 +149,8 @@ public class Storage {
 
 		writeToProperties(newFilePath);
 		folderPath = newFolderPath;
+
+		logger.log(Level.INFO, "Changed to new folder path: " + newFolderPath);
 	}
 
 	/**
@@ -232,6 +241,7 @@ public class Storage {
 	 * @return Location of folder.
 	 */
 	public String getFolderPath(String storageFile) {
+
 		if (storageFile.equals(DEFAULT_FILE_PATH)) {
 			return ".";
 		}
@@ -295,6 +305,7 @@ public class Storage {
 			try {
 				writeLists();
 			} catch (IOException e) {
+				logger.log(Level.WARNING, "Exception while writing to file: ", e);
 				return;
 			}
 		} else {
@@ -316,6 +327,9 @@ public class Storage {
 	 */
 	protected void moveFile(String oldFilePath, String newFilePath)
 			throws IOException, FileNotFoundException {
+
+		assert (oldFilePath != null);
+		assert (newFilePath != null);
 
 		InputStream inStream = null;
 		OutputStream outStream = null;
@@ -349,6 +363,8 @@ public class Storage {
 	 */
 	protected boolean moveFolder(String newFilePath) {
 
+		assert (newFilePath != null);
+
 		File file = new File(newFilePath);
 
 		if (!file.exists()) {
@@ -381,6 +397,7 @@ public class Storage {
 			filePath = prop.getProperty("filePath");
 
 		} catch (IOException ex) {
+			logger.log(Level.WARNING, "Exception while reading from settings.properties: ", ex);
 			return null;
 		}
 
@@ -400,9 +417,10 @@ public class Storage {
 
 		try {
 			lists = mapper.readValue(file,
-					new TypeReference<List<ArrayList<Item>>>() {
-					});
+					new TypeReference<List<ArrayList<Item>>>() {});
+			logger.log(Level.INFO, "Read data from storage file: Success");
 		} catch (Exception e) {
+			logger.log(Level.WARNING, "Exception while reading from file: ", e);
 			lists = new ArrayList<ArrayList<Item>>(NUM_LISTS);
 			for (int i = 0; i < NUM_LISTS; i++) {
 				lists.add(new ArrayList<Item>());
@@ -471,6 +489,8 @@ public class Storage {
 	 */
 	protected boolean writeToProperties(String filePath) {
 
+		assert (filePath != null);
+
 		Properties prop = new Properties();
 		OutputStream output = null;
 
@@ -479,9 +499,10 @@ public class Storage {
 			prop.setProperty("filePath", filePath);
 			prop.store(output, null);
 			storedFilePath = filePath;
+			logger.log(Level.INFO, "Written to settings.properties: " + filePath);
 			return true;
 		} catch (IOException io) {
-			io.printStackTrace();
+			logger.log(Level.WARNING, "Exception thrown while writing to settings.properties", io);
 			return false;
 		}
 	}

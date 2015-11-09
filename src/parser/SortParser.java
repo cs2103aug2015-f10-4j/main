@@ -2,6 +2,7 @@ package parser;
 
 import java.util.ArrayList;
 import command.Command;
+import command.SortCommand;
 
 public class SortParser extends ArgsParserAbstract {
 
@@ -79,9 +80,9 @@ public class SortParser extends ArgsParserAbstract {
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command sort = new SortCommand(this.sortParams);
+		return sort;
 	}
 	
 }

@@ -25,8 +25,8 @@ public class UndoCommand extends Command {
 	 * @param args
 	 * @throws Exception
 	 */
-	public UndoCommand(String args) {
-		super(args);
+	public UndoCommand() {
+		
 	}
 
 	/**
@@ -133,15 +133,5 @@ public class UndoCommand extends Command {
 	@Override
 	public boolean isUndoable() {
 		return false;
-	}
-
-	@Override
-	public boolean validNumArgs() {
-		return true;
-	}
-
-	@Override
-	void setProperParams() {
-
 	}
 }

@@ -1,6 +1,10 @@
 package parser;
 
 import command.Command;
+import command.ExitCommand;
+import command.HelpCommand;
+import command.RedoCommand;
+import command.UndoCommand;
 
 public class DefaultParser extends ArgsParserAbstract{
 
@@ -24,13 +28,17 @@ public class DefaultParser extends ArgsParserAbstract{
 	Command getCommand() {
 		switch(args){
 		case "exit":
-			return null;
+			Command exit = new ExitCommand();
+			return exit;
 		case "help":
-			return null;
+			Command help = new HelpCommand();
+			return help;
 		case "undo":
-			return null;
+			Command undo = new UndoCommand();
+			return undo;
 		case "redo":
-			return null;
+			Command redo = new RedoCommand();
+			return redo;
 		default:
 			break;
 		}

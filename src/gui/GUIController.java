@@ -37,8 +37,8 @@ import main.Magical;
  * GUIController contains the bulk of GUILogic. It updates the GUIModel,
  * populates tables in GUIView with the model contents, and handles user
  * input in both the command line and other UI controls.
- *
- * @author Joey Yeo
+ * Also logs user input and error messages.
+ * @@author Joey Yeo
  */
 
 public class GUIController {
@@ -135,6 +135,7 @@ public class GUIController {
 
 	/** Help Elements **/
 	@FXML private Label headerLabel;
+	@FXML private Text bodyText;
 	@FXML private VBox helpVBox;
 
 	/** Other Controls **/
@@ -171,7 +172,7 @@ public class GUIController {
 
 		/**Help Controls**/
 		headerLabel.setText(Help.HEADER_TEXT);
-		helpVBox.getChildren().add(new Text(Help.BODY_TEXT));
+		bodyText.setText(Help.BODY_TEXT);
 
 		/** For dealing with controls that need to be initialized first**/
 		Platform.runLater(new Runnable() {
@@ -217,9 +218,9 @@ public class GUIController {
 	 */
 	@FXML
 	protected void handleKeyPressed(KeyEvent event) throws Exception {
-		helpPane.setVisible(false);
-		mainPane.toFront();
 		if (event.getCode() == KeyCode.ENTER) {
+			helpPane.setVisible(false);
+			mainPane.toFront();
 			String userInput = commandLineField.getText();
 			handleUserInput(userInput);
 		}
@@ -240,7 +241,7 @@ public class GUIController {
 	 * @param userInput usually from commandLine
 	 */
 	private void handleUserInput(String userInput) {
-		logger.log(Level.INFO, userInput);
+		logger.log(Level.INFO, "> " + userInput);
 		try {
 			messageLabel.setTextFill(SUCCESS_MESSAGE_COLOR);
 			String message = main.Magical.execute(userInput);
@@ -252,6 +253,7 @@ public class GUIController {
 			updateTableColors();
 			switchToTab(GUIModel.getCurrentTab());
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.log(Level.WARNING, e.getMessage());
 			messageLabel.setTextFill(ERROR_MESSAGE_COLOR);
 			messageLabel.setText(e.getMessage());
@@ -289,10 +291,12 @@ public class GUIController {
 	 */
 	@FXML
 	private void handleTaskTabClicked() {
+		Magical.setCurrentTab("tasks");
 		GUIModel.setCurrentTab("tasks");
 	}
 	@FXML
 	private void handleEventTabClicked() {
+		Magical.setCurrentTab("events");
 		GUIModel.setCurrentTab("events");
 	}
 

@@ -9,9 +9,6 @@ import main.Storage;
 
 public class SortCommand extends Command {
 
-	/** Messaging **/
-	private static final String MESSAGE_INVALID_FORMAT = "Use Format: sort <parameter> (upto 3 parameters)";
-	private static final String MESSAGE_INVALID_PARAMS = "Parameters";
 	private static final String MESSAGE_SORT_SUCCESS = "sort successful";
 
 	/** Command parameters **/
@@ -22,35 +19,11 @@ public class SortCommand extends Command {
 	 * stores the correct arguments properly. Throws the appropriate exception
 	 * if arguments are invalid. Contains methods to sort the displayed tasks.
 	 * 
-	 * @param args
+	 * @param sortParams
 	 * @throws Exception
 	 */
-	public SortCommand(String args) throws Exception {
-		super(args);
-		this.argsArray = splitArgs(" ", 3);
-		this.count = argsArray.size();
-		setProperParams();
-
-		if (validNumArgs()) {
-			checkParams();
-			errorInvalidArgs();
-		} else {
-			errorInvalidFormat(MESSAGE_INVALID_FORMAT);
-		}
-	}
-
-	/**
-	 * Set the sorting parameters to all types if none are specified, else add
-	 * error message
-	 */
-	void checkParams() {
-		if (sortParams.size() == 1 && sortParams.get(0).isEmpty()) {
-			sortParams.add("priority");
-			sortParams.add("date");
-			sortParams.add("title");
-		} else if (!isValidSortParams()) {
-			invalidArgs.add(MESSAGE_INVALID_PARAMS);
-		}
+	public SortCommand(ArrayList<String> sortParams) throws Exception {
+		this.sortParams = sortParams;
 	}
 
 	/**
@@ -101,34 +74,4 @@ public class SortCommand extends Command {
 	public boolean isUndoable() {
 		return false;
 	}
-
-	/**
-	 * Returns true if sort parameters are valid (priority, title, date), or
-	 * false otherwise
-	 * 
-	 * @return whether sort paramters are valid
-	 */
-	private boolean isValidSortParams() {
-		for (String param : sortParams) {
-			if (!(param.equals("priority") || param.equals("title") || param
-					.equals("date"))) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	void setProperParams() {
-		this.sortParams = argsArray;
-	}
-
-	@Override
-	public boolean validNumArgs() {
-		if (count > 3) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
 }

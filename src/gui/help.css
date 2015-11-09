@@ -1,9 +1,17 @@
-.header-style {
+/** @@author Joey Yeo**/
+.help-pane{
+	-fx-background: linear-gradient(white, #C1C1E0);
+	-fx-effect: innershadow(two-pass-box , rgba(0,0,0,0.5) , 8, 0.0 , 0 , 0);
+}
+.help-inner-pane{
+	-fx-background-color: transparent;
+}
+.header-label {
 	-fx-underline: true;
 	-fx-font-size: 18;
 	-fx-font-weight: bold;
 }
-.body-style {
+.body-text {
 	-fx-font-size: 15;
 	-fx-text-alignment: justify;
 }
