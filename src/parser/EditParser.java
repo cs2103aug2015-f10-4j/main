@@ -3,7 +3,7 @@ package parser;
 import command.Command;
 import main.Item;
 
-public class EditParser extends ArgsParserSkeleton {
+public class EditParser extends ArgsParserAbstract {
 	
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: edit <item_id> <field> <value>";

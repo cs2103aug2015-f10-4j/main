@@ -1,4 +1,4 @@
-package command;
+package parser;
 
 import static org.junit.Assert.*;
 
@@ -11,10 +11,10 @@ import org.junit.Test;
 import gui.GUIModel;
 import main.Item;
 
-public class UntagCommandTest {
+public class DoneParserTest {
 
 	private static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
-	private static final String MESSAGE_INVALID_PARAMS = "Use Format: untag <item_id> <tag name>";
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: done <item_id>";
 
 	@Before
 	public void setUp() {
@@ -28,22 +28,21 @@ public class UntagCommandTest {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		UntagCommand untagTask = new UntagCommand("t1 CS2103");
-		UntagCommand untagTaskAgain = new UntagCommand("t1 CS2105");
-		UntagCommand untagNextTask = new UntagCommand("t2 CS2102");
-		UntagCommand untagLastTask = new UntagCommand("t7 CS2010");
-		UntagCommand multipleUntags = new UntagCommand("t1 t2 t3 t4");
+		ArgsParserAbstract doneTask = new DoneParser("t1");
+		ArgsParserAbstract doneTaskAgain = new DoneParser("t1");
+		ArgsParserAbstract doneNextTask = new DoneParser("t2");
+		ArgsParserAbstract doneLastTask = new DoneParser("t7");
 	}
 
 	@Test
 	public void testWrongNumArgs() {
 		try {
-			UntagCommand noArgs = new UntagCommand("");
+			ArgsParserAbstract noArgs = new DoneParser("");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
+			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			UntagCommand tooFewArgs = new UntagCommand("t1");
+			ArgsParserAbstract tooManyArgs = new DoneParser("t1 t2");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
@@ -52,24 +51,29 @@ public class UntagCommandTest {
 	@Test
 	public void testInvalidID() {
 		try {
-			UntagCommand invalidID = new UntagCommand("t11 CS2103");
+			ArgsParserAbstract invalidID = new DoneParser("t11");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			UntagCommand noLetter = new UntagCommand("1 CS2103");
+			ArgsParserAbstract noLetter = new DoneParser("1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			UntagCommand wrongLetter = new UntagCommand("a1 CS2103");
+			ArgsParserAbstract wrongLetter = new DoneParser("a1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			Command tooShort = new UntagCommand("t CS2103");
+			ArgsParserAbstract tooShort = new DoneParser("a");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
+		}
+		try {
+			ArgsParserAbstract youCantDoneADone = new DoneParser("d1");
+		} catch (Exception e) {
+			assertTrue(e instanceof IllegalArgumentException);
 		}
 	}
 

@@ -3,7 +3,7 @@ package parser;
 import command.Command;
 import main.Item;
 
-public class DoneParser extends ArgsParserSkeleton {
+public class DoneParser extends ArgsParserAbstract {
 
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: done <item_id>";

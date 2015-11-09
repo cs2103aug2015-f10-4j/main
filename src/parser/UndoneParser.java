@@ -3,7 +3,7 @@ package parser;
 import command.Command;
 import main.Item;
 
-public class UndoneParser extends ArgsParserSkeleton {
+public class UndoneParser extends ArgsParserAbstract {
 
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: undone <item_id>";

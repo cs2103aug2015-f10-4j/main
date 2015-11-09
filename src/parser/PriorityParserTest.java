@@ -1,4 +1,4 @@
-package command;
+package parser;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
 import gui.GUIModel;
 import main.Item;
 
-public class PriorityCommandTest {
+public class PriorityParserTest {
 
 	private static final String MESSAGE_ID_INVALID = "Invalid arguments: [item_id]";
 	private static final String MESSAGE_VALUE_INVALID = "Invalid arguments: [Priority]";
@@ -27,23 +27,23 @@ public class PriorityCommandTest {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		PriorityCommand tagTask = new PriorityCommand("t1 high");
-		PriorityCommand tagTaskAgain = new PriorityCommand("t1 medium");
-		PriorityCommand tagTaskWithSamePriorityAgain = new PriorityCommand("t1 medium");
-		PriorityCommand tagNextTask = new PriorityCommand("t2 low");
-		PriorityCommand tagLastTask = new PriorityCommand("t7 high");
-		PriorityCommand noPriority = new PriorityCommand("t1");
+		ArgsParserAbstract tagTask = new PriorityParser("t1 high");
+		ArgsParserAbstract tagTaskAgain = new PriorityParser("t1 medium");
+		ArgsParserAbstract tagTaskWithSamePriorityAgain = new PriorityParser("t1 medium");
+		ArgsParserAbstract tagNextTask = new PriorityParser("t2 low");
+		ArgsParserAbstract tagLastTask = new PriorityParser("t7 high");
+		ArgsParserAbstract noPriority = new PriorityParser("t1");
 	}
 
 	@Test
 	public void testWrongNumArgs() {
 		try {
-			PriorityCommand noArgs = new PriorityCommand("");
+			ArgsParserAbstract noArgs = new PriorityParser("");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			PriorityCommand tooManyArgs = new PriorityCommand("t1 high low medium");
+			ArgsParserAbstract tooManyArgs = new PriorityParser("t1 high low medium");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_VALUE_INVALID, e.getMessage());
 		}
@@ -52,32 +52,32 @@ public class PriorityCommandTest {
 	@Test
 	public void testInvalidID() {
 		try {
-			PriorityCommand invalidID = new PriorityCommand("t11 high");
+			ArgsParserAbstract invalidID = new PriorityParser("t11 high");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			PriorityCommand noLetter = new PriorityCommand("1 low");
+			ArgsParserAbstract noLetter = new PriorityParser("1 low");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			PriorityCommand wrongLetter = new PriorityCommand("a1 medium");
+			ArgsParserAbstract wrongLetter = new PriorityParser("a1 medium");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			Command tooShort = new PriorityCommand("t high");
+			ArgsParserAbstract tooShort = new PriorityParser("t high");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_ID_INVALID, e.getMessage());
 		}
 		try {
-			Command priorityNumber = new PriorityCommand("t1 11");
+			ArgsParserAbstract priorityNumber = new PriorityParser("t1 11");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_VALUE_INVALID, e.getMessage());
 		}
 		try {
-			Command priorityNegNumber = new PriorityCommand("t1 -1");
+			ArgsParserAbstract priorityNegNumber = new PriorityParser("t1 -1");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_VALUE_INVALID, e.getMessage());
 		}

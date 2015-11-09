@@ -3,7 +3,7 @@ package parser;
 import java.util.ArrayList;
 import command.Command;
 
-public class SortParser extends ArgsParserSkeleton {
+public class SortParser extends ArgsParserAbstract {
 
 	/** Messaging **/
 	private static final String MESSAGE_INVALID_FORMAT = "Use Format: sort <parameter> (upto 3 parameters)";

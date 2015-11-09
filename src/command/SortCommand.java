@@ -3,7 +3,6 @@ package command;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import gui.GUIModel;
 import main.Item;
 import main.Magical;
 import main.Storage;

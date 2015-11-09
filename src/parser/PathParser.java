@@ -2,7 +2,7 @@ package parser;
 
 import command.Command;
 
-public class PathParser extends ArgsParserSkeleton{
+public class PathParser extends ArgsParserAbstract{
 
 	/** Messaging **/
 	private static final String MESSAGE_ARGUMENT_FORMAT = "Use Format: path <location>";

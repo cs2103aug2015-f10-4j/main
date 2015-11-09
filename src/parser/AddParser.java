@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import command.Command;
 import main.CustomDate;
 
-public class AddParser extends ArgsParserSkeleton{
+public class AddParser extends ArgsParserAbstract{
 	
 	/** Messaging */
 	private static final String MESSAGE_INVALID_FORMAT = "Use format: add <title> by <date> <time>";

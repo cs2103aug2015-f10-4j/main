@@ -1,4 +1,4 @@
-package command;
+package parser;
 
 import static org.junit.Assert.*;
 
@@ -11,12 +11,10 @@ import org.junit.Test;
 import gui.GUIModel;
 import main.Item;
 
-public class UndoneCommandTest {
+public class TagParserTest {
 
 	private static final String MESSAGE_HEADER_INVALID = "Invalid arguments: [item_id]";
-	private static final String MESSAGE_FORMAT_INVALID = "Use Format: undone <item_id>";
-	private static final String MESSAGE_UNDONE_INVALID = 
-			"Invalid arguments: [Undone tasks cannot be undone]";
+	private static final String MESSAGE_INVALID_PARAMS = "Use Format: tag <item_id> <tag name>";
 
 	@Before
 	public void setUp() {
@@ -30,52 +28,48 @@ public class UndoneCommandTest {
 
 	@Test
 	public void testNormalInputs() throws Exception {
-		UndoneCommand UndoneTask = new UndoneCommand("d1");
-		UndoneCommand UndoneTaskAgain = new UndoneCommand("d1");
-		UndoneCommand UndoneNextTask = new UndoneCommand("d2");
-		UndoneCommand UndoneLastTask = new UndoneCommand("d7");
+		TagParser tagTask = new TagParser("t1 CS2103");
+		TagParser tagTaskAgain = new TagParser("t1 CS2105");
+		TagParser tagManyTagsAtOnce = new TagParser("t1 t2 t3 t4");
+		TagParser tagNextTask = new TagParser("t2 CS2102");
+		TagParser tagLastTask = new TagParser("t7 CS2010");
 	}
 
 	@Test
 	public void testWrongNumArgs() {
 		try {
-			UndoneCommand noArgs = new UndoneCommand("");
+			TagParser noArgs = new TagParser("");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
+			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 		try {
-			UndoneCommand tooManyArgs = new UndoneCommand("d1 d2");
+			TagParser tooFewArgs = new TagParser("t1");
 		} catch (Exception e) {
-			assertEquals(MESSAGE_FORMAT_INVALID, e.getMessage());
+			assertEquals(MESSAGE_INVALID_PARAMS, e.getMessage());
 		}
 	}
 
 	@Test
 	public void testInvalidID() {
 		try {
-			UndoneCommand invalidID = new UndoneCommand("d11");
+			TagParser invalidID = new TagParser("t11 CS2103");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			UndoneCommand noLetter = new UndoneCommand("1");
+			TagParser noLetter = new TagParser("1 CS2103");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			UndoneCommand wrongLetter = new UndoneCommand("a1");
+			TagParser wrongLetter = new TagParser("a1 CS2103");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
 		}
 		try {
-			Command tooShort = new UndoneCommand("a");
+			ArgsParserAbstract tooShort = new TagParser("t CS2103");
 		} catch (Exception e) {
 			assertEquals(MESSAGE_HEADER_INVALID, e.getMessage());
-		}
-		try {
-			Command youCantUndoneAUndone = new UndoneCommand("t1");
-		} catch (Exception e) {
-			assertEquals(MESSAGE_UNDONE_INVALID, e.getMessage());
 		}
 	}
 
