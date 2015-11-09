@@ -24,10 +24,8 @@ public class PathCommand extends Command {
 	 * @param args
 	 * @throws Exception
 	 */
-	public PathCommand(String args) throws Exception {
-		super(args);
-		setProperParams();
-		checkLocation();
+	public PathCommand(String location) throws Exception {
+		this.location = location;
 	}
 
 	/**
@@ -62,15 +60,4 @@ public class PathCommand extends Command {
 	public boolean isUndoable() {
 		return true;
 	}
-
-	@Override
-	void setProperParams() {
-		this.location = args;
-	}
-
-	@Override
-	public boolean validNumArgs() {
-		return true;
-	}
-
 }

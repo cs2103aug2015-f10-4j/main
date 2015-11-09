@@ -207,6 +207,11 @@ public class EditCommand extends Command {
 			throw new Exception(String.format(MESSAGE_ITEM_ERROR, itemID));
 		} finally {
 			updateView();
+			if(isTask){
+				Magical.setCurrentTab("tasks");
+			} else {
+				Magical.setCurrentTab("events");
+			}
 		}
 
 		return MESSAGE_ITEM_EDITED;

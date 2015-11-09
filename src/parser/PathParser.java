@@ -1,6 +1,7 @@
 package parser;
 
 import command.Command;
+import command.PathCommand;
 
 public class PathParser extends ArgsParserAbstract{
 
@@ -46,8 +47,8 @@ public class PathParser extends ArgsParserAbstract{
 	}
 
 	@Override
-	Command getCommand() {
-		// TODO Auto-generated method stub
-		return null;
+	Command getCommand() throws Exception {
+		Command path = new PathCommand(this.location);
+		return path;
 	}
 }
