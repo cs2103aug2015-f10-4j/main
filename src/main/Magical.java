@@ -15,6 +15,9 @@ import command.Command;
  * @author Varun Patro
  */
 public class Magical {
+	private static List<ArrayList<Item>> displayList;
+	public static String currentTab;
+
 	public static List<Stack<ArrayList<Item>>> undoLists = new ArrayList<Stack<ArrayList<Item>>>(
 			Storage.NUM_LISTS);
 	public static List<Stack<ArrayList<Item>>> redoLists = new ArrayList<Stack<ArrayList<Item>>>(
@@ -26,18 +29,25 @@ public class Magical {
 	private static Storage storage;
 
 	/**
-	 * This method initializes the Magical class by initializing the storage and
-	 * undo history
+	 * This method initializes the Magical class by initializing the storage,
+	 * undo and redo history. It also initializes the displayList with the items
+	 * in storage.
 	 */
 	public static void init() {
 		storage = new Storage();
-		archivePastEvents();
+		currentTab = "tasks";
+		displayList = new ArrayList<ArrayList<Item>>(Storage.NUM_LISTS);
+		for (int i = 0; i < Storage.NUM_LISTS; i++) {
+			displayList.add(storage.getList(i));
+		}
 		for (int i = 0; i < Storage.NUM_LISTS; i++) {
 			undoLists.add(new Stack<ArrayList<Item>>());
 		}
 		for (int i = 0; i < Storage.NUM_LISTS; i++) {
 			redoLists.add(new Stack<ArrayList<Item>>());
 		}
+
+		archivePastEvents();
 	}
 
 	/**
